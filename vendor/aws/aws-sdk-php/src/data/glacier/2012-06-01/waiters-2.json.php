@@ -1,0 +1,3 @@
+<?php
+// This file was auto-generated from sdk-root/src/data/glacier/2012-06-01/waiters-2.json
+return [ 'version' => 2, 'waiters' => [ 'VaultExists' => [ 'acceptors' => [ [ 'expected' => 200, 'matcher' => 'status', 'state' => 'success', ], [ 'expected' => 'ResourceNotFoundException', 'matcher' => 'error', 'state' => 'retry', ], ], 'delay' => 3, 'maxAttempts' => 15, 'operation' => 'DescribeVault', ], 'VaultNotExists' => [ 'acceptors' => [ [ 'expected' => 200, 'matcher' => 'status', 'state' => 'retry', ], [ 'expected' => 'ResourceNotFoundException', 'matcher' => 'error', 'state' => 'success', ], ], 'delay' => 3, 'maxAttempts' => 15, 'operation' => 'DescribeVault', ], ],];
