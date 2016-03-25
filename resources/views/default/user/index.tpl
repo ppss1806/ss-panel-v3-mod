@@ -25,7 +25,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table class="table table-hover">
+                        <table class="table table-hover" style="table-layout:fixed;word-wrap:break-word;word-break;break-all;">
                             <tr>
                                 <th>ID</th>
                                 <th>日期</th>
