@@ -175,17 +175,17 @@ class SyncRadius
         $users = User::all();
         foreach($users as $user){
 
-		Radius::Add($user,$user->passwd);
+		//Radius::Add($user,$user->passwd);
 		Da::Add($user->email);
 
 		echo "Send sync mail to user: ".$user->id;
-		$subject = Config::get('appName')."-密码更新通知";
+		/*$subject = Config::get('appName')."-密码更新通知";
 		$to = $user->email;
 		$text = "您好，为了保证密码系统的统一，刚刚系统已经将您 vpn 等连接方式的用户名已经重置为：".$email."，密码自动重置为您 ss 的密码：". $user->passwd."  了，以后您修改 ss 密码就会自动修改 vpn 等连接方式的密码了，感谢您的支持。 " ;
 		try{
 			Mail::send($to,$subject,$text);
 		}catch(\Exception $e){
-			echo $e->getMessage();}
+			echo $e->getMessage();}*/
         }
     }
 }

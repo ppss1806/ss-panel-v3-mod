@@ -54,7 +54,7 @@
 											<div class="info-box-content">
 												<div class=row>
 													<div class="col-sm-6">
-														<div class="info-box-number">
+														<div class="info-box-number" >
 															<a href="./node/{$node->id}">{$node->name}</a> <sub><span
 																		class="label label-success">{$node->status}</span></sub>
 														</div>
@@ -62,7 +62,7 @@
 														<div class="info-box-text row">
 															<div class="col-xs-4 col-sm-2">地址：</div>
 															<div class="col-xs-8 col-sm-4"><span
-																		class="label text-lowercase  label-primary">{$node->server}</span>
+																		class="label text-lowercase  label-primary" >{$node->server}</span>
 															</div>
 															<div class="col-xs-4 col-sm-2">加密：</div>
 															<div class="col-xs-8 col-sm-4">

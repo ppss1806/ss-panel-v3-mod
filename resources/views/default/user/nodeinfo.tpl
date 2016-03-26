@@ -101,7 +101,7 @@
             <!-- /.col (right) -->
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12"  style="table-layout:fixed;word-wrap:break-word;word-break;break-all;" >
                 <div class="box box-solid">
                     <div class="box-header">
                         <i class="fa fa-qrcode"></i>
@@ -118,9 +118,9 @@
 								<p>3、下载 surge(<a href="{$global_url}/Surge_pp.ipa">{$global_url}/Surge_pp.ipa</a>)，用 PP 助手安装。</p>
 								<p>配置的话，这里有两种方法：</p>
 								<h4>第一种：直接下载生成好的配置文件，然后在 APP 里添加设置时选择 Download configuration from URL ，把地址粘贴进去添加。</h4>
-								<p>第一种分流方式，按照域名的文件下载地址，点击直接下载：<a href="{$global_url}/node_suger.php?server={$info_server}&method={$info_method}&port={$info_port}&pass={$info_pass}">{$global_url}/node_suger.php?server={$info_server}&method={$info_method}&port={$info_port}&pass={$info_pass}</a></p>
+								<p>第一种分流方式，按照域名的文件下载地址，点击直接下载：<a href="{$global_url}/node_suger.php?server={$info_server}&method={$info_method}&port={$info_port}&pass={$info_pass}&baseurl={$global_url}">{$global_url}/node_suger.php?server={$info_server}&method={$info_method}&port={$info_port}&pass={$info_pass}&baseurl={$global_url}</a></p>
 
-								<p>第二种分流方式，按照地区的文件下载地址，感谢 @Tony 提供，点击直接下载：<a href="{$global_url}/node_suger_geo.php?server={$info_server}&method={$info_method}&port={$info_port}&pass={$info_pass}">{$global_url}/node_suger_geo.php?server={$info_server}&method={$info_method}&port={$info_port}&pass={$info_pass}</a></p>
+								<p>第二种分流方式，按照地区的文件下载地址，感谢 @Tony 提供，点击直接下载：<a href="{$global_url}/node_suger_geo.php?server={$info_server}&method={$info_method}&port={$info_port}&pass={$info_pass}&baseurl={$global_url}">{$global_url}/node_suger_geo.php?server={$info_server}&method={$info_method}&port={$info_port}&pass={$info_pass}&baseurl={$global_url}</a></p>
 								<br>
                                 <h4>第二种：Surge使用步骤</h4>
 

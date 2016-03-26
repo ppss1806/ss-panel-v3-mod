@@ -1,5 +1,3 @@
-More in [https://www.zhaojin97.cn](https://www.zhaojin97.cn)
-
 # ss-panel
 
 Let's talk about cat.  Base on [LightFish](https://github.com/OzCat/LightFish)
