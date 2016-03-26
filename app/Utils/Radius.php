@@ -118,4 +118,11 @@ Class Radius
 		}
 	}
 	
+	static function GetUserName($email)
+	{
+		$emailt=str_replace("@","",$email);
+		$emailt=str_replace(".","",$emailt);
+		return $emailt;
+	}
+	
 }
