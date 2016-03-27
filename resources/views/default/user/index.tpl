@@ -190,7 +190,7 @@
             </div>
             <!-- /.col (right) -->
         
-
+			{if $duoshuo_shortname!=""}
 			<div class="col-md-6">
 							<div class="box box-primary">
 								<div class="box-header">
@@ -232,7 +232,7 @@
                 <!-- /.box -->
             </div>
             <!-- /.col (right) -->
-        
+			{/if}
 
 </div>
 
