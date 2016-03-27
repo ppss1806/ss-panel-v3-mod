@@ -65,7 +65,7 @@ ALTER TABLE `user` ADD `expire_in` DATETIME NOT NULL DEFAULT '2099:06:04 00:05:0
 UPDATE `user` SET `expire_in` = '2099-06-04 00:05:00' ;
 
 
-UPDATE `glzjin_ss2`.`user` SET `class_expire` = '1989-06-04 02:00:00' ;
+UPDATE `user` SET `class_expire` = '1989-06-04 02:00:00' ;
 
 
 
