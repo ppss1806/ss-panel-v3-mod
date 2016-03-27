@@ -9,6 +9,7 @@ use App\Services\Config;
 use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Da;
 
 use App\Models\User;
+use App\Models\Code;
 
 
 
@@ -30,6 +31,66 @@ class UserController extends BaseController
 		$Anns = Ann::orderBy('id', 'desc')->get();
         return $this->view()->assign('anns',$Anns)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
+	
+	public function code($request, $response, $args)
+    {
+		$pageNum = 1;
+        if (isset($request->getQueryParams()["page"])) {
+            $pageNum = $request->getQueryParams()["page"];
+        }
+		$codes = Code::where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
+		$codes->setPath('/user/code');
+        return $this->view()->assign('codes',$codes)->display('user/code.tpl');
+    }
+	
+	public function codepost($request, $response, $args)
+    {
+		$code = $request->getParam('code');
+		$user = $this->user;
+		
+
+		
+		if ( $code == "") {
+            $res['ret'] = 0;
+            $res['msg'] = "请填好兑换码";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+		$codeq=Code::where("code","=",$code)->where("isused","=",0)->first();
+        if ( $codeq == null) {
+            $res['ret'] = 0;
+            $res['msg'] = "此兑换码错误";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+		$codeq->isused=1;
+		$codeq->usedatetime=date("Y-m-d H:i:s");
+		$codeq->userid=$user->id;
+		$codeq->save();
+		
+		if($codeq->type==10001)
+		{
+			$user->transfer_enable=$user->transfer_enable+$codeq->number*1024*1024*1024;
+			$user->save();
+		}
+		
+		if($codeq->type==10002)
+		{
+			$user->expire_in=date("Y-m-d H:i:s",strtotime($user->expire_in)+$codeq->number*86400);
+			$user->save();
+		}
+		
+		if($codeq->type>=1&&$code->type<=10000)
+		{
+			$user->class_expire=date("Y-m-d H:i:s",strtotime($user->expire_in)+$codeq->number*86400);
+			$user->class=$codeq->type;
+			$user->save();
+		}
+		
+		$res['ret'] = 1;
+		$res['msg'] = "兑换成功";
+        return $response->getBody()->write(json_encode($res));
+    }
 
     public function node()
     {
@@ -41,6 +102,9 @@ class UserController extends BaseController
 		$node_order=array();
 		$node_alive=array();
 		$node_prealive=array();
+		$node_heartbeat=Array();
+		$node_bandwidth=Array();
+		
 		foreach ($nodes as $node) {
 			$temp=explode(" - ",$node->name);
 			if(!isset($node_prefix[$temp[0]]))
@@ -56,6 +120,24 @@ class UserController extends BaseController
 			{
 				$node_tempalive=$node->getOnlineUserCount();
 				$node_prealive[$node->id]=$node_tempalive;
+				if(time()-$node->node_heartbeat>90||$node->node_heartbeat==0)
+				{
+					$node_heartbeat[$temp[0]]="离线";
+				}
+				else
+				{
+					$node_heartbeat[$temp[0]]="在线";
+				}
+				
+				if($node->node_bandwidth_limit==0)
+				{
+					$node_bandwidth[$temp[0]]=(int)($node->node_bandwidth/1024/1024/1024)." GB / 不限";
+				}
+				else
+				{
+					$node_bandwidth[$temp[0]]=(int)($node->node_bandwidth/1024/1024/1024)." GB / ".(int)($node->node_bandwidth_limit/1024/1024/1024)." GB - ".$node->bandwidthlimit_resetday." 日重置";
+				}
+				
 				if($node_tempalive!="暂无数据")
 				{
 
@@ -72,14 +154,16 @@ class UserController extends BaseController
 			{
 				$node_method[$temp[0]]=$node_method[$temp[0]]." ".$temp[1];
 			}
-
-
-
-			array_push($node_prefix[$temp[0]],$node);
+	
+			
+			if($user->class>=$node->node_class)
+			{
+				array_push($node_prefix[$temp[0]],$node);
+			}
 		}
 		$node_prefix=(object)$node_prefix;
 		$node_order=(object)$node_order;
-        return $this->view()->assign('node_method', $node_method)->assign('node_prefix', $node_prefix)->assign('node_prealive', $node_prealive)->assign('node_order', $node_order)->assign('user', $user)->assign('node_alive', $node_alive)->display('user/node.tpl');
+        return $this->view()->assign('node_method', $node_method)->assign('node_bandwidth',$node_bandwidth)->assign('node_heartbeat',$node_heartbeat)->assign('node_prefix', $node_prefix)->assign('node_prealive', $node_prealive)->assign('node_order', $node_order)->assign('user', $user)->assign('node_alive', $node_alive)->display('user/node.tpl');
     }
 
 
@@ -411,14 +495,6 @@ class UserController extends BaseController
 		
 		Da::delete($email);
 			
-			
-		
-
-
-
-
-
-
         $passwd = $request->getParam('passwd');
         // check passwd
         $res = array();
@@ -429,13 +505,6 @@ class UserController extends BaseController
         }
 
 		Radius::Delete($email);
-
-
-
-
-
-
-
 
         Auth::logout();
         $user->delete();

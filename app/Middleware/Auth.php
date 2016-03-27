@@ -30,6 +30,8 @@ class Auth{
 			"name"=>$user->user_name,
 		);
 		
+		
+		
 		$duoshuoToken = \JWT::encode($token, Config::get('duoshuo_apptoken'));
 		
 		setcookie('duoshuo_token',  $duoshuoToken);

@@ -65,6 +65,8 @@ $app->group('/user', function () {
     $this->get('/kill', 'App\Controllers\UserController:kill');
     $this->post('/kill', 'App\Controllers\UserController:handleKill');
     $this->get('/logout', 'App\Controllers\UserController:logout');
+	$this->get('/code', 'App\Controllers\UserController:code');
+	$this->post('/code', 'App\Controllers\UserController:codepost');
 })->add(new Auth());
 
 // Auth
@@ -106,6 +108,11 @@ $app->group('/admin', function () {
     $this->put('/announcement/{id}', 'App\Controllers\Admin\AnnController:update');
     $this->delete('/announcement/{id}', 'App\Controllers\Admin\AnnController:delete');
     $this->get('/announcement/{id}/delete', 'App\Controllers\Admin\AnnController:deleteGet');
+	
+	// Code Mange
+    $this->get('/code', 'App\Controllers\Admin\CodeController:index');
+    $this->get('/code/create', 'App\Controllers\Admin\CodeController:create');
+    $this->post('/code', 'App\Controllers\Admin\CodeController:add');
 
     // User Mange
     $this->get('/user', 'App\Controllers\Admin\UserController:index');

@@ -39,7 +39,7 @@
 							<div class="panel-heading" role="tab" id="heading{$node_order->$prefix}">
 							  <h4 class="panel-title">
 								<a role="button" data-toggle="collapse" href="#collapse{$node_order->$prefix}" aria-expanded="false" aria-controls="collapse{$node_order->$prefix}">
-									{$prefix} | 在线人数： {$node_alive[$prefix]} | 提供方式： {$node_method[$prefix]}
+									{$prefix} | 在线人数： {$node_alive[$prefix]} | 提供方式： {$node_method[$prefix]} | {$node_heartbeat[$prefix]} | {$node_bandwidth[$prefix]}
 								</a>
 							  </h4>
 							</div>

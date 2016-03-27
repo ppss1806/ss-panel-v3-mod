@@ -116,7 +116,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="sort" class="col-sm-3 control-label">排序</label>
+                                        <label for="sort" class="col-sm-3 control-label">类型（SS=0,VPN=1.....请看 zhaojin97.cn）</label>
 
                                         <div class="col-sm-9">
                                             <input class="form-control" id="sort" type="number" value="{$node->sort}">
@@ -127,6 +127,36 @@
 
                                         <div class="col-sm-9">
                                             <textarea class="form-control" id="info" rows="3">{$node->info}</textarea>
+                                        </div>
+                                    </div>
+									
+									<div class="form-group">
+                                        <label for="info" class="col-sm-3 control-label">节点类别（不分类请填0，分类为数字）</label>
+
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="class" type="text" value="{$node->node_class}">
+                                        </div>
+                                    </div>
+									
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">节点流量上限（不使用的话请填0）</label>
+
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input class="form-control" id="node_bandwidth_limit" type="number" value="{$node->node_bandwidth_limit/1024/1024/1024}" >
+
+                                                <div class="input-group-addon">GB</div>
+                                            </div>
+                                        </div>
+                                    </div>
+									
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">节点流量上限清空日</label>
+
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                每月的<input class="form-control" id="bandwidthlimit_resetday" type="number" value="{$node->bandwidthlimit_resetday}" >日
+                                            </div>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -162,7 +192,10 @@
                     info: $("#info").val(),
                     type: $("#type").val(),
                     status: $("#status").val(),
-                    sort: $("#sort").val()
+                    sort: $("#sort").val(),
+					class: $("#class").val(),
+					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
+					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val()
                 },
                 success: function (data) {
                     if (data.ret) {

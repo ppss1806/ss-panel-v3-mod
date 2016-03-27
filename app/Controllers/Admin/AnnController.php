@@ -13,6 +13,7 @@ class AnnController extends BaseController
             $pageNum = $request->getQueryParams()["page"];
         }
         $logs = Ann::orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
+		$logs->setPath('/admin/announcement');
         return $this->view()->assign('logs',$logs)->display('admin/announcement/index.tpl');
     }
 

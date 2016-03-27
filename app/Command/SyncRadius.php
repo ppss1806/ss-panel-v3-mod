@@ -61,6 +61,7 @@ class SyncRadius
 				$traffic->log_time = time();
 				$traffic->save();
 				
+				$user=User::find($tempuserbox[$row["username"]]);
 				$user->t = time();
 				$user->u = $user->u + 0;
 				$user->d = $user->d + 10000;
@@ -158,6 +159,7 @@ class SyncRadius
 			$traffic->log_time = time();
 			$traffic->save();	
 			
+			$user=User::find($tempuserbox[$row["username"]]);
 			$user->t = time();
 			$user->u = $user->u + $row["acctinputoctets"];
 			$user->d = $user->d + $row["acctoutputoctets"];

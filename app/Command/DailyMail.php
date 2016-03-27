@@ -18,7 +18,7 @@ class DailyMail
 		$text1="";
 		
 		foreach($logs as $log){
-			if(strpos($log->content,"#Links")==FALSE)
+			if(strpos($log->content,"Links")===FALSE)
 			{
 				$text1=$text1.$log->content."\n\n";
 			}

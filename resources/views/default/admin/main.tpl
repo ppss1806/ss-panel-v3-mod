@@ -111,6 +111,13 @@
                     </a>
                 </li>
 
+				<li>
+                    <a href="/admin/code">
+                        <i class="fa fa-code"></i> <span>兑换码管理</span>
+                    </a>
+                </li>
+				
+				
                 <li>
                     <a href="/admin/user">
                         <i class="fa fa-user"></i> <span>用户管理</span>

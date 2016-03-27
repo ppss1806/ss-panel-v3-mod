@@ -23,23 +23,22 @@ class Node extends Model
     }
 
 
-function getTrafficFromLogs()
+	function getTrafficFromLogs()
+	{
 
-{
+		$id = $this->attributes['id'];
 
-$id = $this->attributes['id'];
+		$traffic = TrafficLog::where('node_id', $id)->sum('u') + TrafficLog::where('node_id', $id)->sum('d');
 
-$traffic = TrafficLog::where('node_id', $id)->sum('u') + TrafficLog::where('node_id', $id)->sum('d');
+		if ($traffic == 0) {
 
-if ($traffic == 0) {
+			return "暂无数据";
 
-return "暂无数据";
+		}
 
-}
+		return Tools::flowAutoShow($traffic);
 
-return Tools::flowAutoShow($traffic);
-
-}
+	}
 
 
 

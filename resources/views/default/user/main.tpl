@@ -119,6 +119,12 @@
                     </a>
                 </li>
 
+				<li>
+                    <a href="/user/code">
+                        <i class="fa fa-code"></i> <span>兑换码</span>
+                    </a>
+                </li>
+
 
                 <li>
                     <a href="/user/edit">

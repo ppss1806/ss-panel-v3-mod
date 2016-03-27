@@ -26,6 +26,17 @@ class NodeController extends BaseController
         $node->info = $request->getParam('info');
         $node->type = $request->getParam('type');
         $node->status = $request->getParam('status');
+		if($node->sort==0)
+		{
+			$node->node_ip=gethostbyname($request->getParam('server'));
+		}
+		else
+		{
+			$node->node_ip="";
+		}
+		$node->node_class=$request->getParam('class');
+		$node->node_bandwidth_limit=$request->getParam('node_bandwidth_limit')*1024*1024*1024;
+		$node->bandwidthlimit_resetday=$request->getParam('bandwidthlimit_resetday');
         $node->sort = $request->getParam('sort');
         if(!$node->save()){
             $rs['ret'] = 0;
@@ -57,7 +68,19 @@ class NodeController extends BaseController
         $node->traffic_rate = $request->getParam('rate');
         $node->info = $request->getParam('info');
         $node->type = $request->getParam('type');
+		if($node->sort==0)
+		{
+			$node->node_ip=gethostbyname($request->getParam('server'));
+		}
+		else
+		{
+			$node->node_ip="";
+		}
+
         $node->status = $request->getParam('status');
+		$node->node_class=$request->getParam('class');
+		$node->node_bandwidth_limit=$request->getParam('node_bandwidth_limit')*1024*1024*1024;
+		$node->bandwidthlimit_resetday=$request->getParam('bandwidthlimit_resetday');
         $node->sort = $request->getParam('sort');
         if(!$node->save()){
             $rs['ret'] = 0;

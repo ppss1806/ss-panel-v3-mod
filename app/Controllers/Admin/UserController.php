@@ -57,6 +57,9 @@ class UserController extends BaseController
         $user->enable = $request->getParam('enable');
         $user->is_admin = $request->getParam('is_admin');
         $user->ref_by = $request->getParam('ref_by');
+		$user->class = $request->getParam('class');
+		$user->class_expire = $request->getParam('class_expire');
+		$user->expire_in = $request->getParam('expire_in');
         if(!$user->save()){
             $rs['ret'] = 0;
             $rs['msg'] = "修改失败";

@@ -67,6 +67,34 @@
                 <!-- /.box -->
             </div>
             <!-- /.col (right) -->
+			
+			<div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-clock-o"></i>
+
+                        <h3 class="box-title">帐号使用情况</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                     
+                        <dl class="dl-horizontal">
+                            <dt>帐号等级</dt>
+                            <dd>{$user->class}</dd>
+
+							<dt>等级过期时间</dt>
+                            <dd>{$user->class_expire}</dd>
+
+                            <dt>帐号过期时间</dt>
+                            <dd>{$user->expire_in}</dd>
+                        </dl>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col (left) -->
+			
 
             <div class="col-md-6">
                 <div class="box box-primary">

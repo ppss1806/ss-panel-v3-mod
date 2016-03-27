@@ -13,11 +13,30 @@ class UserController extends BaseController
     // User List
     public function index($request, $response, $args)
     {
-        $user = User::all();
+		$node = Node::where("node_ip","=",$_SERVER["REMOTE_ADDR"])->first();
+		$node->node_heartbeat=time();
+		$node->save();
+		
+		
+        $users = User::where("class",">=",$node->node_class)->where("expire_in",">",date("Y-m-d H:i:s"))->get();
+		
+		if($node->node_bandwidth_limit!=0)
+		{
+			if($node->node_bandwidth_limit<$node->node_bandwidth)
+			{
+				$users=null;
+			}
+			
+		}
+		
+		
+		
+		$users=(object)$users;
+		
         $res = [
             "ret" => 1,
             "msg" => "ok",
-            "data" => $user
+            "data" => $users
         ];
         return $this->echoJson($response, $res);
     }
@@ -30,6 +49,12 @@ class UserController extends BaseController
         $d = $request->getParam('d');
         $nodeId = $request->getParam('node_id');
         $node = Node::find($nodeId);
+		
+		$node->node_bandwidth=$node->node_bandwidth+$d+$u;
+		
+		$node->save();
+		
+		
         $rate = $node->traffic_rate;
         $user = User::find($id);
 
@@ -41,7 +66,7 @@ class UserController extends BaseController
                 "ret" => 0,
                 "msg" => "update failed",
             ];
-            return $this->echoJson($response, $res);
+            //return $this->echoJson($response, $res);
         }
         // log
         $traffic = new TrafficLog();

@@ -15,7 +15,7 @@ class Boot
 
     public static function setDebug(){
         // debug
-        if (Config::get('debug') == "true" ){
+        if (Config::get('debug') == "true"){
             define("DEBUG",true);
         }
     }

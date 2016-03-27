@@ -160,6 +160,36 @@
                                         </div>
                                     </div>
                                 </fieldset>
+								
+								<fieldset class="col-sm-6">
+                                    <legend>节点分类</legend>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">用户级别（用户只能访问到小于等于这个数字的节点）</label>
+
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="class" type="number"
+                                                   value="{$user->class}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">用户级别过期时间(不过期就请不要动)</label>
+
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="class_expire" type="text"
+                                                   value="{$user->class_expire}">
+                                        </div>
+                                    </div>
+									
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">用户账户过期时间(不过期就请不要动)</label>
+
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="expire_in" type="text"
+                                                   value="{$user->expire_in}">
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
                         </div>
                     </div>
@@ -178,6 +208,7 @@
 <!-- /.content-wrapper -->
 
 <script>
+	//document.getElementById("class_expire").value="{$user->class_expire}";
     $(document).ready(function () {
         function submit() {
             $.ajax({
@@ -194,7 +225,10 @@
                     method: $("#method").val(),
                     enable: $("#enable").val(),
                     is_admin: $("#is_admin").val(),
-                    ref_by: $("#ref_by").val()
+                    ref_by: $("#ref_by").val(),
+					class: $("#class").val(),
+					class_expire: $("#class_expire").val(),
+					expire_in: $("#expire_in").val()
                 },
                 success: function (data) {
                     if (data.ret) {

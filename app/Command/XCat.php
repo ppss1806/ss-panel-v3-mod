@@ -41,7 +41,12 @@ class XCat
                 return ExtMail::sendNoMail();
 			case("oldusers"):
                 return ExtMail::sendOldMail();
-
+			case("syncnode"):
+                return Job::syncnode();
+			case("dailyjob"):
+				return Job::DailyJob();
+			case("checkjob"):
+				return Job::CheckJob();
             default:
                 return $this->defaultAction();
         }
