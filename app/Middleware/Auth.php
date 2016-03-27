@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use App\Services\Auth as AuthService;
 use App\Services\Config;
 
-require PUBLIC_PATH.'/../lib/JWT.php';
+use App\Services\Jwt;
 
 class Auth{
 
@@ -32,7 +32,7 @@ class Auth{
 		
 		
 		
-		$duoshuoToken = \JWT::encode($token, Config::get('duoshuo_apptoken'));
+		$duoshuoToken = JWT::encode_withkey($token, Config::get('duoshuo_apptoken'));
 		
 		setcookie('duoshuo_token',  $duoshuoToken);
 		

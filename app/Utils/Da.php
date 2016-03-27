@@ -5,7 +5,7 @@ namespace App\Utils;
 use App\Models\User;
 use App\Services\Config;
 
-require BASE_PATH.'/lib/httpsocket.php';
+use App\Utils\HTTPSocket;
 
 Class Da
 {
@@ -17,7 +17,7 @@ Class Da
     {
         if(Config::get('da_username')!='')
 		{
-			$sock = new \HTTPSocket;
+			$sock = new HTTPSocket;
 			$sock->connect(Config::get('da_host'), Config::get('da_port')); 	
 			$sock->set_login(Config::get('da_username'),Config::get('da_password'));
 			$sock->set_method('GET');
@@ -31,7 +31,7 @@ Class Da
 	{
 		if(Config::get('da_username')!='')
 		{
-			$sock = new \HTTPSocket;
+			$sock = new HTTPSocket;
 			$sock->connect(Config::get('da_host'), Config::get('da_port')); 	
 			$sock->set_login(Config::get('da_username'),Config::get('da_password'));
 			$sock->set_method('GET');
