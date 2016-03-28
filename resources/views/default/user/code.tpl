@@ -31,7 +31,7 @@
             <div class="col-md-12">
                 <div class="callout callout-warning">
                     <h4>注意!</h4>
-                    <p>类型 10001=流量充值，数量则为要充值的流量大小(单位 GB)，10002=用户有效期充值，数量为要续的天数，1～10000=用户级别充值，类型就是你要充值的级别啦，数量就是要续的天数.</p>
+                    <p>类型 10001=流量充值，数目则为要充值的流量大小(单位 GB)，10002=用户有效期充值，数目为要续的天数，1～10000=用户级别充值，类型就是你要充值的级别啦，数目就是要续的天数.</p>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
-                        <i class="fa fa-key"></i>
+                        <i class="fa fa-key"></i目
 
                         <h3 class="box-title">兑换码键入</h3>
                     </div>
@@ -100,7 +100,6 @@
                                     <td>{$code->code}</td>
                                     <td>{$code->type}</td>
 									<td>{$code->number}</td>
-									<td>{$code->isused}</td>
 									<td>{$code->usedatetime}</td>
                                 </tr>
                             {/foreach}
