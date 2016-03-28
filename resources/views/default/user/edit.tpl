@@ -259,7 +259,7 @@
                                 <p id="msg-successm-w"></p>
                             </div>
 							
-							<p>当前设置：{$user->sendDailyMail} (1=发送，0=不发送)</p>
+							<p>当前设置：{if $user->sendDailyMail==1} 发送 {else} 不发送 {/if}</p>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">发送设置</label>

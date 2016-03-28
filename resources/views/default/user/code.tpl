@@ -27,14 +27,6 @@
                 </div>
             </div>
         </div>
-		<div class="row">
-            <div class="col-md-12">
-                <div class="callout callout-warning">
-                    <h4>注意!</h4>
-                    <p>类型 10001=流量充值，数目则为要充值的流量大小(单位 GB)，10002=用户有效期充值，数目为要续的天数，1～10000=用户级别充值，类型就是你要充值的级别啦，数目就是要续的天数.</p>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <!-- left column -->
             <div class="col-md-12">
@@ -90,7 +82,7 @@
                                 <th>ID</th>
                                 <th>代码</th>
                                 <th>类型</th>
-								<th>数目</th>
+								<th>操作</th>
 								<th>使用时间</th>
 								
                             </tr>
@@ -98,8 +90,24 @@
                                 <tr>
                                     <td>#{$code->id}</td>
                                     <td>{$code->code}</td>
-                                    <td>{$code->type}</td>
-									<td>{$code->number}</td>
+									{if $code->type==10001}
+                                    <td>流量充值</td>
+									{/if}
+									{if $code->type==10002}
+                                    <td>用户续期</td>
+									{/if}
+									{if $code->type>=1&&$code->type<=10000}
+                                    <td>等级续期 - 等级{$code->type}</td>
+									{/if}
+									{if $code->type==10001}
+                                    <td>充值了 {$code->number} GB 流量</td>
+									{/if}
+									{if $code->type==10002}
+                                    <td>延长账户有效期 {$code->number} 天</td>
+									{/if}
+									{if $code->type>=1&&$code->type<=10000}
+                                    <td>延长等级有效期 {$code->number} 天</td>
+									{/if}
 									<td>{$code->usedatetime}</td>
                                 </tr>
                             {/foreach}
