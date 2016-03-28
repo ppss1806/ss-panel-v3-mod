@@ -45,7 +45,7 @@
                                     <td>等级续期 - 等级{$code->type}</td>
 									{/if}
 									{if $code->type==10001}
-                                    <td>充值了 {$code->number} GB 流量</td>
+                                    <td>充值 {$code->number} GB 流量</td>
 									{/if}
 									{if $code->type==10002}
                                     <td>延长账户有效期 {$code->number} 天</td>
@@ -53,7 +53,11 @@
 									{if $code->type>=1&&$code->type<=10000}
                                     <td>延长等级有效期 {$code->number} 天</td>
 									{/if}
-									<td>{$code->isused}</td>
+									{if $code->isused}
+									<td>已使用</td>
+									{else}
+									<td>未使用</td>
+									{/if}
 									<td>{$code->userid}</td>
 									{if $code->usedatetime=="1989-06-04 02:30:00"}
 									<td>未使用</td>
