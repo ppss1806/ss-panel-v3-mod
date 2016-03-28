@@ -19,7 +19,7 @@
                 </div>
             </div>
 
- <div class="col-md-6">
+			<div class="col-md-6">
                 <div class="box box-solid">
                     <div class="box-header">
                         <i class="fa fa-code"></i>
@@ -43,6 +43,25 @@
             </div>
             <!-- /.col (right) -->
 
+			<div class="col-md-6">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <i class="fa fa-download"></i>
+
+                        <h3 class="box-title">客户端下载</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <p><a href="{$global_url}/client/ShadowsocksR-win.7z"><i class="fa fa-windows">Windows</i></a></p>
+						<p><a href="{$global_url}/client/ShadowsocksX.dmg"><i class="fa fa-apple">Mac OS X</i></a></p>
+						<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation"><i class="fa fa-linux">Linux</i></a></p>
+						<p><a href="{$global_url}/client/shadowsocks.apk"><i class="fa fa-android">Android</i></a></p>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col (right) -->
 
 
 
