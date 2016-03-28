@@ -41,7 +41,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
-                        <i class="fa fa-key"></i目
+                        <i class="fa fa-code"></i>
 
                         <h3 class="box-title">兑换码键入</h3>
                     </div>
