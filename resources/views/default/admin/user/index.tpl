@@ -42,7 +42,7 @@
                                 <td>{$user->enable}</td>
                                 <td>{$user->method}</td>
                                 <td>{$user->usedTraffic()}/{$user->enableTraffic()}</td>
-<td>{(($user->u+$user->d)-$user->last_day_t)/1024/1024}MB</td>
+								<td>{(($user->u+$user->d)-$user->last_day_t)/1024/1024}MB</td>
                                 <td>{$user->lastSsTime()}</td>
                                 <td>{$user->lastCheckInTime()}</td>
 								<th>{$user->wechat}</th>

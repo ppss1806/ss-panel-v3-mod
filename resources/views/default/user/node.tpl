@@ -19,7 +19,7 @@
                     <h4>注意!</h4>
                     <p>请勿在任何地方公开节点地址！</p>
                     <p>流量比例为0.5即使用1000MB按照500MB流量记录记录结算.</p>
-<p>菜单分两级，点击某个节点名称展开这个节点的方式后，可以点击这个方式查看具体的配置信息。</p>
+					<p>菜单分两级，点击某个节点名称展开这个节点的方式后，可以点击这个方式查看具体的配置信息。</p>
                 </div>
             </div>
         </div>
@@ -39,8 +39,13 @@
 							<div class="panel-heading" role="tab" id="heading{$node_order->$prefix}">
 							  <h4 class="panel-title">
 								<a role="button" data-toggle="collapse" href="#collapse{$node_order->$prefix}" aria-expanded="false" aria-controls="collapse{$node_order->$prefix}">
-									{$prefix} | 在线人数： {$node_alive[$prefix]} | 提供方式： {$node_method[$prefix]} | {$node_heartbeat[$prefix]} | {$node_bandwidth[$prefix]}
+									{$prefix} | 在线人数： {$node_alive[$prefix]} | 提供方式： {$node_method[$prefix]}
 								</a>
+								{if $node_heartbeat[$prefix]=="在线"}
+								<i style="float:right" class="fa fa-circle text-success">{$node_bandwidth[$prefix]}</i>
+								{else}
+								<i style="float:right" class="fa fa-circle text-error">{$node_bandwidth[$prefix]}</i>
+								{/if}
 							  </h4>
 							</div>
 							<div id="collapse{$node_order->$prefix}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{$node_order->$prefix}">
