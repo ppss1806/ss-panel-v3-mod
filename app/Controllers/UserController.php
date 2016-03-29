@@ -82,6 +82,11 @@ class UserController extends BaseController
 		
 		if($codeq->type>=1&&$codeq->type<=10000)
 		{
+			if($user->class==0)
+			{
+				$user->class_expire=date("Y-m-d H:i:s",strtotime($user->class_expire));
+				$user->save();
+			}
 			$user->class_expire=date("Y-m-d H:i:s",strtotime($user->class_expire)+$codeq->number*86400);
 			$user->class=$codeq->type;
 			$user->save();

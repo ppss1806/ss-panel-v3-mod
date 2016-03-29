@@ -44,7 +44,7 @@
 								{if $node_heartbeat[$prefix]=="在线"}
 								<i style="float:right" class="fa fa-circle text-success">{$node_bandwidth[$prefix]}</i>
 								{else}
-								<i style="float:right" class="fa fa-circle text-error">{$node_bandwidth[$prefix]}</i>
+								<i style="float:right" class="fa fa-circle text-danger">{$node_bandwidth[$prefix]}</i>
 								{/if}
 							  </h4>
 							</div>

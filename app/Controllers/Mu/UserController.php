@@ -13,7 +13,7 @@ class UserController extends BaseController
     // User List
     public function index($request, $response, $args)
     {
-		$node = Node::where("node_ip","=",$_SERVER["REMOTE_ADDR"])->first();
+		$node = Node::where("node_ip","=",$_SERVER["REMOTE_ADDR"])->where("sort","=","0")->first();
 		$node->node_heartbeat=time();
 		$node->save();
 		
