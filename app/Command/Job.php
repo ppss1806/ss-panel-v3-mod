@@ -65,7 +65,7 @@ class Job
 			}
 			
 			
-			if($user->class!=0&&strtotime($user->class_expirr)>644447105&&strtotime($user->class_expirr)<time())
+			if($user->class!=0&&strtotime($user->class_expire)>644447105&&strtotime($user->class_expire)<time())
 			{
 				$user->class=0;
 				$user->save();
