@@ -84,7 +84,7 @@ class UserController extends BaseController
 		{
 			if($user->class==0)
 			{
-				$user->class_expire=date("Y-m-d H:i:s",strtotime($user->class_expire));
+				$user->class_expire=date("Y-m-d H:i:s",time());
 				$user->save();
 			}
 			$user->class_expire=date("Y-m-d H:i:s",strtotime($user->class_expire)+$codeq->number*86400);
