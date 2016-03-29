@@ -21,7 +21,8 @@ Class Radius
 			$email=$user->email;
 			$email=str_replace("@","",$email);
 			$email=str_replace(".","",$email);
-			$stmt = $db->query("SELECT * FROM `radcheck` WHERE `username`='".addslashes($email)."'");
+			$stmt = $db->prepare("SELECT * FROM `radcheck` WHERE `username`=:username");
+			$stmt->execute(array(':username'=>$email));
 			
 			if($stmt->rowCount()==0)
 			{
@@ -56,7 +57,8 @@ Class Radius
 			
 			$email=str_replace("@","",$email);
 			$email=str_replace(".","",$email);
-			$stmt = $db->query("SELECT * FROM `radcheck` WHERE `username`='".addslashes($email)."'");
+			$stmt = $db->prepare("SELECT * FROM `radcheck` WHERE `username`=:username");
+			$stmt->execute(array(':username'=>$email));
 		
 			if($stmt->rowCount()>0)
 			{
@@ -85,7 +87,8 @@ Class Radius
 			$email1=str_replace(".","",$email1);
 			$email2=str_replace("@","",$email2);
 			$email2=str_replace(".","",$email2);
-			$stmt = $db->query("SELECT * FROM `radcheck` WHERE `username`='".addslashes($email1)."'");
+			$stmt = $db->prepare("SELECT * FROM `radcheck` WHERE `username`=:username");
+			$stmt->execute(array(':username'=>$email1));
 			if($stmt->rowCount()>0)
 			{
 				$sql = "UPDATE `radcheck` SET `username` = :username,`value` = :passwd WHERE `radcheck`.`username` = :username1;";
@@ -114,6 +117,40 @@ Class Radius
 				$sql = "INSERT INTO `userinfo` ( `username`) VALUES ( :username);";
 				$stmt = $db->prepare($sql);
 				$stmt->execute(array(':username'=>addslashes($email2)));
+			}
+		}
+	}
+	
+	static function AddNas($ip,$name)
+	{
+		if(Config::get('radius_db_user')!='')
+		{
+			$dsn = "mysql:host=".Config::get('radius_db_host').";dbname=".Config::get('radius_db_database');  
+			$db = new \PDO($dsn, Config::get('radius_db_user'), Config::get('radius_db_password'));
+			$stmt = $db->prepare("SELECT * FROM `nas` WHERE `shortname`=:shortname");
+			$stmt->execute(array(':shortname'=>$ip));
+			if($stmt->rowCount()==0)
+			{
+				$sql = "INSERT INTO `nas` (`id`, `nasname`, `shortname`, `type`, `ports`, `secret`, `server`, `community`, `description`) VALUES (NULL, :ip, :ip2, 'other', NULL, :secret, NULL, NULL, :name);";
+				$stmt = $db->prepare($sql);
+				$stmt->execute(array(':ip'=>$ip,':ip2'=>$ip,':secret'=>Config::get('radius_secret'),':name'=>$name));
+			}
+		}
+	}
+	
+	static function DelNas($ip)
+	{
+		if(Config::get('radius_db_user')!='')
+		{
+			$dsn = "mysql:host=".Config::get('radius_db_host').";dbname=".Config::get('radius_db_database');  
+			$db = new \PDO($dsn, Config::get('radius_db_user'), Config::get('radius_db_password'));
+			$stmt = $db->prepare("SELECT * FROM `nas` WHERE `shortname`=:shortname");
+			$stmt->execute(array(':shortname'=>$ip));
+			if($stmt->rowCount()>0)
+			{
+				$sql = "DELETE FROM `nas` WHERE `shortname` = :ip";
+				$stmt = $db->prepare($sql);
+				$stmt->execute(array(':ip'=>$ip));
 			}
 		}
 	}

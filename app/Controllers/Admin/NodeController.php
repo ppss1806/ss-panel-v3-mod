@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Models\Node;
+use App\Utils\Radius;
 use App\Controllers\BaseController;
 
 class NodeController extends BaseController
@@ -26,6 +27,7 @@ class NodeController extends BaseController
         $node->info = $request->getParam('info');
         $node->type = $request->getParam('type');
         $node->status = $request->getParam('status');
+		$node->sort = $request->getParam('sort');
 		if($node->sort==0)
 		{
 			$node->node_ip=gethostbyname($request->getParam('server'));
@@ -34,10 +36,16 @@ class NodeController extends BaseController
 		{
 			$node->node_ip="";
 		}
+		
+		if($node->sort==1)
+		{
+			$node->node_ip=gethostbyname($request->getParam('server'));
+			Radius::AddNas($node->node_ip,$request->getParam('server'));
+		}
 		$node->node_class=$request->getParam('class');
 		$node->node_bandwidth_limit=$request->getParam('node_bandwidth_limit')*1024*1024*1024;
 		$node->bandwidthlimit_resetday=$request->getParam('bandwidthlimit_resetday');
-        $node->sort = $request->getParam('sort');
+        
         if(!$node->save()){
             $rs['ret'] = 0;
             $rs['msg'] = "添加失败";
@@ -68,6 +76,7 @@ class NodeController extends BaseController
         $node->traffic_rate = $request->getParam('rate');
         $node->info = $request->getParam('info');
         $node->type = $request->getParam('type');
+		$node->sort = $request->getParam('sort');
 		if($node->sort==0)
 		{
 			$node->node_ip=gethostbyname($request->getParam('server'));
@@ -76,12 +85,18 @@ class NodeController extends BaseController
 		{
 			$node->node_ip="";
 		}
+		
+		if($node->sort==1)
+		{
+			$node->node_ip=gethostbyname($request->getParam('server'));
+			Radius::AddNas($node->node_ip,$request->getParam('server'));
+		}
 
         $node->status = $request->getParam('status');
 		$node->node_class=$request->getParam('class');
 		$node->node_bandwidth_limit=$request->getParam('node_bandwidth_limit')*1024*1024*1024;
 		$node->bandwidthlimit_resetday=$request->getParam('bandwidthlimit_resetday');
-        $node->sort = $request->getParam('sort');
+        
         if(!$node->save()){
             $rs['ret'] = 0;
             $rs['msg'] = "修改失败";

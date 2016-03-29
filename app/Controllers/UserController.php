@@ -169,6 +169,7 @@ class UserController extends BaseController
 
     public function nodeInfo($request, $response, $args)
     {
+		$user = Auth::getUser();
         $id = $args['id'];
         $node = Node::find($id);
 
@@ -180,118 +181,130 @@ class UserController extends BaseController
 		switch ($node->sort) { 
 
 			case 0: 
-				$ary['server'] = $node->server;
-				$ary['server_port'] = $this->user->port;
-				$ary['password'] = $this->user->passwd;
-				$ary['method'] = $node->method;
-				if ($node->custom_method) {
-					$ary['method'] = $this->user->method;
+				if($user->class>=$node->node_class)
+				{
+					$ary['server'] = $node->server;
+					$ary['server_port'] = $this->user->port;
+					$ary['password'] = $this->user->passwd;
+					$ary['method'] = $node->method;
+					if ($node->custom_method) {
+						$ary['method'] = $this->user->method;
+					}
+					$json = json_encode($ary);
+					$json_show = json_encode($ary, JSON_PRETTY_PRINT);
+					$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
+					$ssqr = "ss://" . base64_encode($ssurl);
+
+					$surge_base = Config::get('baseUrl') . "/downloads/ProxyBase.conf";
+					$surge_proxy = "#!PROXY-OVERRIDE:ProxyBase.conf\n";
+					$surge_proxy .= "[Proxy]\n";
+					$surge_proxy .= "Proxy = custom," . $ary['server'] . "," . $ary['server_port'] . "," . $ary['method'] . "," . $ary['password'] . "," . Config::get('baseUrl') . "/downloads/SSEncrypt.module";
+					return $this->view()->assign('ary', $ary)->assign('json', $json)->assign('global_url',Config::get('baseUrl')."/downloads")->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
 				}
-				$json = json_encode($ary);
-				$json_show = json_encode($ary, JSON_PRETTY_PRINT);
-				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-				$ssqr = "ss://" . base64_encode($ssurl);
-
-				$surge_base = Config::get('baseUrl') . "/downloads/ProxyBase.conf";
-				$surge_proxy = "#!PROXY-OVERRIDE:ProxyBase.conf\n";
-				$surge_proxy .= "[Proxy]\n";
-				$surge_proxy .= "Proxy = custom," . $ary['server'] . "," . $ary['server_port'] . "," . $ary['method'] . "," . $ary['password'] . "," . Config::get('baseUrl') . "/downloads/SSEncrypt.module";
-				return $this->view()->assign('ary', $ary)->assign('json', $json)->assign('global_url',Config::get('baseUrl')."/downloads")->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
-
 			break; 
 
 			case 1: 
+				if($user->class>=$node->node_class)
+				{
+						
+					$email=$this->user->email;
+					$email=Radius::GetUserName($email);
+					$json_show="VPN 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
-				$email=$this->user->email;
-				$email=Radius::GetUserName($email);
-				$json_show="VPN 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
-
-				return $this->view()->assign('json_show', $json_show)->display('user/nodeinfovpn.tpl');
-
+					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfovpn.tpl');
+				}
 			break; 
 
 			case 2: 
+				if($user->class>=$node->node_class)
+				{
+					$email=$this->user->email;
+					$email=Radius::GetUserName($email);
+					$json_show="SSH 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
-				$email=$this->user->email;
-				$email=Radius::GetUserName($email);
-				$json_show="SSH 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
+					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfossh.tpl');
 
-				return $this->view()->assign('json_show', $json_show)->display('user/nodeinfossh.tpl');
-
-
+				}
 
 			break; 
 
 
 			case 3: 
+				if($user->class>=$node->node_class)
+				{
 
-				$email=$this->user->email;
-				$email=Radius::GetUserName($email);
-				$json_show="PAC 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
+					$email=$this->user->email;
+					$email=Radius::GetUserName($email);
+					$json_show="PAC 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
-				return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopac.tpl');
+					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopac.tpl');
 
-
+				}
 
 			break; 
 
 			case 4: 
+				if($user->class>=$node->node_class)
+				{
+					$email=$this->user->email;
+					$email=Radius::GetUserName($email);
+					$json_show="APN 信息<br>下载地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
-				$email=$this->user->email;
-				$email=Radius::GetUserName($email);
-				$json_show="APN 信息<br>下载地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
+					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfoapn.tpl');
 
-				return $this->view()->assign('json_show', $json_show)->display('user/nodeinfoapn.tpl');
-
-
+				}
 
 			break; 
 
 			case 5: 
+				if($user->class>=$node->node_class)
+				{
+					$email=$this->user->email;
+					$email=Radius::GetUserName($email);
+					$json_show="Anyconnect 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
-				$email=$this->user->email;
-				$email=Radius::GetUserName($email);
-				$json_show="Anyconnect 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
-
-				return $this->view()->assign('json_show', $json_show)->display('user/nodeinfoanyconnect.tpl');
-
+					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfoanyconnect.tpl');
+				}
 
 
 			break; 
 
 			case 6: 
+				if($user->class>=$node->node_class)
+				{
+					$email=$this->user->email;
+					$email=Radius::GetUserName($email);
+					$json_show="APN 文件<br>移动地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=cmcc<br>联通地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=cnunc<br>电信地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=ctnet<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
-				$email=$this->user->email;
-				$email=Radius::GetUserName($email);
-				$json_show="APN 文件<br>移动地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=cmcc<br>联通地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=cnunc<br>电信地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=ctnet<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
-
-				return $this->view()->assign('json_show', $json_show)->display('user/nodeinfoapndownload.tpl');
-
+					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfoapndownload.tpl');
+				}
 
 
 			break; 
 
 			case 7: 
+				if($user->class>=$node->node_class)
+				{
+					$email=$this->user->email;
+					$email=Radius::GetUserName($email);
+					$json_show="PAC Plus 信息<br>PAC 地址：".Config::get('baseUrl')."downloads/node_pac.php?address=".$node->server."&port=".($this->user->port-20000)."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
-				$email=$this->user->email;
-				$email=Radius::GetUserName($email);
-				$json_show="PAC Plus 信息<br>PAC 地址：".Config::get('baseUrl')."downloads/node_pac.php?address=".$node->server."&port=".($this->user->port-20000)."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
-
-				return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacplus.tpl');
-
+					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacplus.tpl');
+				}
 
 
 			break; 
 
 			case 8: 
+				if($user->class>=$node->node_class)
+				{
+					$email=$this->user->email;
+					$email=Radius::GetUserName($email);
+					$json_show="PAC Plus Plus信息<br>PAC 一般地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port-20000)."<br>PAC iOS 地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port-20000)."&ios=1<br>"."备注：".$node->info;
 
-				$email=$this->user->email;
-				$email=Radius::GetUserName($email);
-				$json_show="PAC Plus Plus信息<br>PAC 一般地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port-20000)."<br>PAC iOS 地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port-20000)."&ios=1<br>"."备注：".$node->info;
-
-				return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacpp.tpl');
-
+					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacpp.tpl');
+				}
 
 
 			break; 

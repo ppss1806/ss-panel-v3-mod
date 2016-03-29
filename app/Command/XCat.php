@@ -43,6 +43,10 @@ class XCat
                 return ExtMail::sendOldMail();
 			case("syncnode"):
                 return Job::syncnode();
+			case("syncnasnode"):
+                return Job::syncnasnode();
+			case("syncnas"):
+                return SyncRadius::syncnas();
 			case("dailyjob"):
 				return Job::DailyJob();
 			case("checkjob"):

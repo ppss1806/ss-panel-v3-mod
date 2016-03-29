@@ -12,11 +12,26 @@ class Job
     {
 		$nodes = Node::all();
         foreach($nodes as $node){
-			if(strpos($node->name,"Shadowsocks")!=FALSE)
+			if($node->sort==0)
 			{
 				$ip=gethostbyname($node->server);
 				$node->node_ip=$ip;
 				$node->save();
+			}
+		}
+	}
+	
+	public static function syncnasnode()
+    {
+		$nodes = Node::all();
+        foreach($nodes as $node){
+			if($node->sort==1)
+			{
+				$ip=gethostbyname($node->server);
+				$node->node_ip=$ip;
+				$node->save();
+				
+				Radius::AddNas($node->node_ip,$node->server);
 			}
 		}
 	}

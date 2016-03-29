@@ -188,4 +188,42 @@ class SyncRadius
 				echo $e->getMessage();}
         }
     }
+	
+	public static function syncnas()
+    {
+		$dsn = "mysql:host=".Config::get('radius_db_host').";dbname=".Config::get('radius_db_database');  
+		$db = new \PDO($dsn, Config::get('radius_db_user'), Config::get('radius_db_password'));
+		$stmt = $db->query("SELECT * FROM `nas` ");
+		$result = $stmt->fetchAll();
+		
+		$md5txt="";
+		
+		foreach($result as $row)  
+		{  
+			//if($row["pass"]!="")
+			{	
+				$md5txt=$md5txt.$row["id"].$row["nasname"].$row["shortname"].$row["secret"].$row["description"];
+			}
+			
+			
+		}  
+		
+		$md5=MD5($md5txt);
+		
+		
+		$oldmd5=file_get_contents(BASE_PATH."/storage/nas.md5");
+		
+		if($oldmd5!=$md5)
+		{
+			//Restart radius
+			$myfile = fopen(BASE_PATH."/storage/nas.md5", "w+") or die("Unable to open file!");
+			echo("Restarting...");
+			system("/bin/bash /sbin/service radiusd restart",$retval);
+			echo($retval);
+			$txt = $md5;
+			fwrite($myfile, $txt);
+			fclose($myfile);
+		}
+		
+	}
 }
