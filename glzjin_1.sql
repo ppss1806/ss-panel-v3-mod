@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `t` int(11) NOT NULL DEFAULT '0',
   `u` bigint(20) NOT NULL,
   `d` bigint(20) NOT NULL,
-  `plan` varchar(2) CHARACTER SET utf8mb4 NOT NULL,
+  `plan` varchar(2) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'A',
   `transfer_enable` bigint(20) NOT NULL,
   `port` int(11) NOT NULL,
   `switch` tinyint(4) NOT NULL DEFAULT '1',
