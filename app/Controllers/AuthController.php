@@ -143,6 +143,12 @@ class AuthController extends BaseController
         $user->invite_num = Config::get('inviteNum');
         $user->ref_by = $c->user_id;
 		$user->expire_in=date("Y-m-d H:i:s",time()+Config::get('user_expire_in_default')*86400);
+		$user->reg_date=date("Y-m-d H:i:s");
+		$user->money=0;
+		$user->node_class=0;
+		$user->plan='A';
+		$user->node_speedlimit=0;
+		
 
         if($user->save()){
             $res['ret'] = 1;
