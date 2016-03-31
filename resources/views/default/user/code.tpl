@@ -21,7 +21,7 @@
                 </div>
                 <div id="ss-msg-success" class="alert alert-success alert-dismissable" style="display:none">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-info"></i> 修改成功!</h4>
+                    <h4><i class="icon fa fa-info"></i> 成功!</h4>
 
                     <p id="ss-msg-success-p"></p>
                 </div>

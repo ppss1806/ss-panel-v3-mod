@@ -236,6 +236,54 @@
             </div>
 			
 			
+			<div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-paint-brush "></i>
+
+                        <h3 class="box-title">主题修改</h3>
+                    </div>
+                    <!-- /.box-header --><!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-horizontal">
+
+                            <div id="msg-successt" class="alert alert-info alert-dismissable" style="display:none">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-info"></i> Ok!</h4>
+
+                                <p id="msg-successt-w"></p>
+                            </div>
+							
+							<p>当前主题：{$user->theme}</p>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">主题</label>
+
+                                <div class="col-sm-9">
+                                    <select id="theme" class="form-control">
+										{foreach $themes as $theme}
+											<option value="{$theme}">{$theme}</option>
+										{/foreach}
+									</select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" id="theme-update" class="btn btn-primary">修改</button>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+            </div>
+			
+			
 			
 			
 			<div class="col-md-6">
@@ -402,6 +450,33 @@
                 dataType: "json",
                 data: {
                     mail: $("#mail").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#ss-msg-success").show();
+                        $("#ss-msg-success-p").html(data.msg);
+                    } else {
+                        $("#ss-msg-error").show();
+                        $("#ss-msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#theme-update").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "theme",
+                dataType: "json",
+                data: {
+                    theme: $("#theme").val()
                 },
                 success: function (data) {
                     if (data.ret) {

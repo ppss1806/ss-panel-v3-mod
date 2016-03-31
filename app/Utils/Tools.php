@@ -142,4 +142,19 @@ class Tools
         }
         return $user->port;
     }
+	
+	public static function getDir($dir) {
+		$dirArray[]=NULL;
+		if (false != ($handle = opendir ( $dir ))) {
+			$i=0;
+			while ( false !== ($file = readdir ( $handle )) ) {
+				if ($file != "." && $file != ".."&&!strpos($file,".")) {
+					$dirArray[$i]=$file;
+					$i++;
+				}
+			}
+			closedir ( $handle );
+		}
+		return $dirArray;
+	}
 }

@@ -76,7 +76,14 @@ class UserController extends BaseController
 		
 		if($codeq->type==10002)
 		{
-			$user->expire_in=date("Y-m-d H:i:s",strtotime($user->expire_in)+$codeq->number*86400);
+			if(time()>strtotime($user->expire_in))
+			{
+				$user->expire_in=date("Y-m-d H:i:s",time()+$codeq->number*86400);
+			}
+			else
+			{
+				$user->expire_in=date("Y-m-d H:i:s",strtotime($user->expire_in)+$codeq->number*86400);
+			}
 			$user->save();
 		}
 		
@@ -337,7 +344,8 @@ class UserController extends BaseController
 
     public function edit()
     {
-        return $this->view()->assign('user',$this->user)->display('user/edit.tpl');
+		$themes=Tools::getDir(BASE_PATH."/resources/views");
+        return $this->view()->assign('user',$this->user)->assign('themes',$themes)->display('user/edit.tpl');
     }
 
 
@@ -423,6 +431,27 @@ class UserController extends BaseController
         }
         
         $user->wechat = filter_var($wechat, FILTER_SANITIZE_STRING);
+        $user->save();
+
+        $res['ret'] = 1;
+        $res['msg'] = "ok";
+        return $this->echoJson($response, $res);
+    }
+	
+	public function updateTheme($request, $response, $args)
+    {
+        $theme = $request->getParam('theme');
+        
+        $user = $this->user;
+		
+		if ( $theme == "") {
+            $res['ret'] = 0;
+            $res['msg'] = "???";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+        
+        $user->theme = filter_var($theme, FILTER_SANITIZE_STRING);
         $user->save();
 
         $res['ret'] = 1;
