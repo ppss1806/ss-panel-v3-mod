@@ -1,5 +1,5 @@
 ALTER TABLE `user` ADD `theme` TEXT NOT NULL DEFAULT '' AFTER `expire_in`;
-UPDATE `user` SET `theme` = 'default' ;
+UPDATE `user` SET `theme` = 'phantom' ;
 
 DROP TABLE IF EXISTS `ss_node_info`;
 CREATE TABLE `ss_node_info` (
