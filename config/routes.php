@@ -57,6 +57,7 @@ $app->group('/user', function () {
     $this->get('/edit', 'App\Controllers\UserController:edit');
     $this->post('/password', 'App\Controllers\UserController:updatePassword');
 	$this->post('/wechat', 'App\Controllers\UserController:updateWechat');
+	$this->post('/theme', 'App\Controllers\UserController:updateTheme');
 	$this->post('/mail', 'App\Controllers\UserController:updateMail');
     $this->post('/sspwd', 'App\Controllers\UserController:updateSsPwd');
     $this->post('/method', 'App\Controllers\UserController:updateMethod');
@@ -141,6 +142,7 @@ $app->group('/mu', function () {
     $this->get('/users', 'App\Controllers\Mu\UserController:index');
     $this->post('/users/{id}/traffic', 'App\Controllers\Mu\UserController:addTraffic');
     $this->post('/nodes/{id}/online_count', 'App\Controllers\Mu\NodeController:onlineUserLog');
+	$this->post('/nodes/{id}/info', 'App\Controllers\Mu\NodeController:info');
 })->add(new Mu());
 
 // res
