@@ -148,6 +148,7 @@ class AuthController extends BaseController
 		$user->node_class=0;
 		$user->plan='A';
 		$user->node_speedlimit=0;
+		$user->theme=Config::get('theme');
 		
 
         if($user->save()){
