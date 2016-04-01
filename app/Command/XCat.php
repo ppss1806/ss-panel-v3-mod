@@ -93,6 +93,13 @@ class XCat
             $user->invite_num = Config::get('inviteNum');
             $user->ref_by = 0;
             $user->is_admin = 1;
+			$user->expire_in=date("Y-m-d H:i:s",time()+Config::get('user_expire_in_default')*86400);
+			$user->reg_date=date("Y-m-d H:i:s");
+			$user->money=0;
+			$user->node_class=0;
+			$user->plan='A';
+			$user->node_speedlimit=0;
+			$user->theme=Config::get('theme');
             if ($user->save()){
                 echo "Successful/添加成功!";
                 return true;
