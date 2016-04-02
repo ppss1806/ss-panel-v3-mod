@@ -118,59 +118,61 @@ class UserController extends BaseController
 		$node_bandwidth=Array();
 		
 		foreach ($nodes as $node) {
-			$temp=explode(" - ",$node->name);
-			if(!isset($node_prefix[$temp[0]]))
-			{
-				$node_prefix[$temp[0]]=array();
-				$node_order[$temp[0]]=$a;
-				$node_alive[$temp[0]]=0;
-				$node_method[$temp[0]]=$temp[1];
-				$a++;
-			}
-
-			if($node->sort==0)
-			{
-				$node_tempalive=$node->getOnlineUserCount();
-				$node_prealive[$node->id]=$node_tempalive;
-				if(time()-$node->node_heartbeat>90||$node->node_heartbeat==0)
-				{
-					$node_heartbeat[$temp[0]]="离线";
-				}
-				else
-				{
-					$node_heartbeat[$temp[0]]="在线";
-				}
-				
-				if($node->node_bandwidth_limit==0)
-				{
-					$node_bandwidth[$temp[0]]=(int)($node->node_bandwidth/1024/1024/1024)." GB / 不限";
-				}
-				else
-				{
-					$node_bandwidth[$temp[0]]=(int)($node->node_bandwidth/1024/1024/1024)." GB / ".(int)($node->node_bandwidth_limit/1024/1024/1024)." GB - ".$node->bandwidthlimit_resetday." 日重置";
-				}
-				
-				if($node_tempalive!="暂无数据")
-				{
-
-					$node_alive[$temp[0]]=$node_alive[$temp[0]]+$node_tempalive;
-
-				}
-			}
-			else
-			{
-				$node_prealive[$node->id]="暂无数据";
-			}
-			
-			if(strpos($node_method[$temp[0]],$temp[1])===FALSE)
-			{
-				$node_method[$temp[0]]=$node_method[$temp[0]]." ".$temp[1];
-			}
-	
-			
 			if($user->class>=$node->node_class)
 			{
+				$temp=explode(" - ",$node->name);
+				if(!isset($node_prefix[$temp[0]]))
+				{
+					$node_prefix[$temp[0]]=array();
+					$node_order[$temp[0]]=$a;
+					$node_alive[$temp[0]]=0;
+					$node_method[$temp[0]]=$temp[1];
+					$a++;
+				}
+
+				if($node->sort==0)
+				{
+					$node_tempalive=$node->getOnlineUserCount();
+					$node_prealive[$node->id]=$node_tempalive;
+					if(time()-$node->node_heartbeat>90||$node->node_heartbeat==0)
+					{
+						$node_heartbeat[$temp[0]]="离线";
+					}
+					else
+					{
+						$node_heartbeat[$temp[0]]="在线";
+					}
+					
+					if($node->node_bandwidth_limit==0)
+					{
+						$node_bandwidth[$temp[0]]=(int)($node->node_bandwidth/1024/1024/1024)." GB / 不限";
+					}
+					else
+					{
+						$node_bandwidth[$temp[0]]=(int)($node->node_bandwidth/1024/1024/1024)." GB / ".(int)($node->node_bandwidth_limit/1024/1024/1024)." GB - ".$node->bandwidthlimit_resetday." 日重置";
+					}
+					
+					if($node_tempalive!="暂无数据")
+					{
+
+						$node_alive[$temp[0]]=$node_alive[$temp[0]]+$node_tempalive;
+
+					}
+				}
+				else
+				{
+					$node_prealive[$node->id]="暂无数据";
+				}
+				
+				if(strpos($node_method[$temp[0]],$temp[1])===FALSE)
+				{
+					$node_method[$temp[0]]=$node_method[$temp[0]]." ".$temp[1];
+				}
+		
+				
+				
 				array_push($node_prefix[$temp[0]],$node);
+				
 			}
 		}
 		$node_prefix=(object)$node_prefix;
