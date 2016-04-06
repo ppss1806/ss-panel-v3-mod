@@ -586,7 +586,7 @@ class UserController extends BaseController
 				$rate=$log->rate;
 				if($log_order[$a]["node"]=="")
 				{
-				$log_order[$a]["node"]="阿卡林";
+					$log_order[$a]["node"]="阿卡林";
 				}
 				$nodes[$log->node_id]=Node::find($log->node_id)->name;
 				$log_order[$a]["d"]=($log->d/1024/1024)*$rate;
@@ -607,7 +607,7 @@ class UserController extends BaseController
 				}
 
 				$node=$nodes[$log->node_id];
-				$log_order[$a-1]["d"]=$log_order[$a-1]["d"]+($d/1024/1024)*$rate;
+				$log_order[$a-1]["d"]=$log_order[$a-1]["d"]+($d/1024/1024)*$log->rate;
 				if(strpos($log_order[$a-1]["node"],$node)===FALSE)
 				{
 
