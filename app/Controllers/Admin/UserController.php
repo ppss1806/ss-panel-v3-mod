@@ -3,10 +3,10 @@
 namespace App\Controllers\Admin;
 
 use App\Models\User;
-use App\Controllers\BaseController;
+use App\Controllers\AdminController;
 use App\Utils\Hash,App\Utils\Radius,App\Utils\Da;
 
-class UserController extends BaseController
+class UserController extends AdminController
 {
     public function index($request, $response, $args){
         $pageNum = 1;
@@ -54,6 +54,7 @@ class UserController extends BaseController
         $user->transfer_enable = $request->getParam('transfer_enable');
         $user->invite_num = $request->getParam('invite_num');
         $user->method = $request->getParam('method');
+		$user->node_speedlimit = $request->getParam('node_speedlimit');
         $user->enable = $request->getParam('enable');
         $user->is_admin = $request->getParam('is_admin');
         $user->ref_by = $request->getParam('ref_by');

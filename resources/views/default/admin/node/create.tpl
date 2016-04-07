@@ -154,7 +154,17 @@
 
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                每月的<input class="form-control" id="bandwidthlimit_resetday" type="number" value="0" >日
+                                                每月的<input class="form-control" id="bandwidthlimit_resetday" type="number" value="0" ><div class="input-group-addon">日</div>
+                                            </div>
+                                        </div>
+                                    </div>
+									
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">节点限速(对于每个用户端口)</label>
+
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input class="form-control" id="node_speedlimit" type="number" value="0" ><div class="input-group-addon">Mbps</div>
                                             </div>
                                         </div>
                                     </div>
@@ -193,6 +203,7 @@
                     info: $("#info").val(),
                     type: $("#type").val(),
                     status: $("#status").val(),
+					node_speedlimit: $("#node_speedlimit").val(),
                     sort: $("#sort").val(),
 					class: $("#class").val(),
 					node_bandwidth_limit: $("#node_bandwidth_limit").val(),

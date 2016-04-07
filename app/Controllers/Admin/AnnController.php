@@ -3,9 +3,9 @@
 namespace App\Controllers\Admin;
 
 use App\Models\Ann;
-use App\Controllers\BaseController;
+use App\Controllers\AdminController;
 
-class AnnController extends BaseController
+class AnnController extends AdminController
 {
     public function index($request, $response, $args){
 		$pageNum = 1;

@@ -159,6 +159,16 @@
                                             </div>
                                         </div>
                                     </div>
+									
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">节点限速(对于每个用户端口)</label>
+
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input class="form-control" id="node_speedlimit" type="number" value="{$node->node_speedlimit}" ><div class="input-group-addon">Mbps</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </fieldset>
                             </div>
                         </div>
@@ -193,6 +203,7 @@
                     type: $("#type").val(),
                     status: $("#status").val(),
                     sort: $("#sort").val(),
+					node_speedlimit: $("#node_speedlimit").val(),
 					class: $("#class").val(),
 					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
 					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val()

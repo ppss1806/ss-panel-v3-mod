@@ -189,6 +189,15 @@
                                                    value="{$user->expire_in}">
                                         </div>
                                     </div>
+									
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">用户限速，用户在每个节点所享受到的速度</label>
+
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="node_speedlimit" type="text"
+                                                   value="{$user->node_speedlimit}"><div class="input-group-addon">Mbps</div>
+                                        </div>
+                                    </div>
                                 </fieldset>
                             </div>
                         </div>
@@ -222,6 +231,7 @@
                     passwd: $("#passwd").val(),
                     transfer_enable: $("#transfer_enable").val(),
                     invite_num: $("#invite_num").val(),
+					node_speedlimit: $("#node_speedlimit").val(),
                     method: $("#method").val(),
                     enable: $("#enable").val(),
                     is_admin: $("#is_admin").val(),

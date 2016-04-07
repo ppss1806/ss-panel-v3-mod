@@ -1,5 +1,5 @@
 {include file='auth/header.tpl'}
-<body>
+
 
 
 <div id="main">
@@ -93,5 +93,4 @@
         });
     })
 </script>
-</body>
-</html>
+

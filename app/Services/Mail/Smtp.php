@@ -6,12 +6,13 @@ namespace App\Services\Mail;
 use PHPMailer;
 use App\Services\Config;
 
-class Smtp
+class Smtp extends Base
 {
 
-    private $mail,$config;
+    private $mail, $config;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->config = $this->getConfig();
         $mail = new PHPMailer;
         //$mail->SMTPDebug = 3;                               // Enable verbose debug output
@@ -23,10 +24,12 @@ class Smtp
         $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
         $mail->Port = $this->config['port'];                                    // TCP port to connect to
         $mail->setFrom($this->config['sender'], $this->config['name']);
+        $mail->CharSet = 'UTF-8';
         $this->mail = $mail;
     }
 
-    public function getConfig(){
+    public function getConfig()
+    {
         return [
             "host" => Config::get('smtp_host'),
             "username" => Config::get('smtp_username'),
@@ -37,14 +40,15 @@ class Smtp
         ];
     }
 
-    public function send($to,$subject,$text){
+    public function send($to, $subject, $text, $file)
+    {
         $mail = $this->mail;
         $mail->addAddress($to);     // Add a recipient
-        // $mail->isHTML(true);
+        $mail->isHTML(true);
         $mail->Subject = $subject;
-        $mail->Body    = $text;
+        $mail->Body = $text;
         // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-        if(!$mail->send()) {
+        if (!$mail->send()) {
             return true;
         }
         return false;

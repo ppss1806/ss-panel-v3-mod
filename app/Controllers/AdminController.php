@@ -9,7 +9,7 @@ use App\Services\Analytics;
 /**
  *  Admin Controller
  */
-class AdminController extends BaseController
+class AdminController extends UserController
 {
 
     public function index()

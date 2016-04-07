@@ -12,10 +12,38 @@ class Node extends Model
 
 {
     protected $table = "ss_node";
+	
+	public function getLastNodeInfoLog()
+    {
+        $id = $this->attributes['id'];
+        $log = NodeInfoLog::where('node_id', $id)->orderBy('id', 'desc')->first();
+        if ($log == null) {
+            return null;
+        }
+        return $log;
+    }
 
+    public function getNodeUptime()
+    {
+        $log = $this->getLastNodeInfoLog();
+        if ($log == null) {
+            return "暂无数据";
+        }
+        return Tools::secondsToTime((int)$log->uptime);
+    }
+
+    public function getNodeLoad()
+    {
+        $log = $this->getLastNodeInfoLog();
+        if ($log == null) {
+            return "暂无数据";
+        }
+        return $log->load;
+    }
+	
     function getOnlineUserCount(){
         $id = $this->attributes['id'];
-        $log = NodeOnlineLog::where('node_id',$id)->orderBy('id', 'desc')->take(1)->first();
+        $log = NodeOnlineLog::where('node_id',$id)->orderBy('id', 'desc')->first();
         if($log == null){
             return "暂无数据";
         }

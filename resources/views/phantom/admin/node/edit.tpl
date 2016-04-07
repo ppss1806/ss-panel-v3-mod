@@ -106,7 +106,10 @@
 				<input type="text" id="bandwidthlimit_resetday" class="form-control" value="{$node->bandwidthlimit_resetday}"/>
 			</div>
 			
-			
+			<div class="12u 12u$(xsmall)">
+				<label class="control-label">节点限速(对于每个用户端口)</label>
+				<input type="text" id="node_speedlimit" class="form-control" value="{$node->node_speedlimit}"/><div class="input-group-addon">Mbps</div>
+			</div>
 		
 	</section>
 	<section>
@@ -137,6 +140,7 @@
                     status: $("#status").val(),
                     sort: $("#sort").val(),
 					class: $("#class").val(),
+					node_speedlimit: $("#node_speedlimit").val(),
 					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
 					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val()
                 },

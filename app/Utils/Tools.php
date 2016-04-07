@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Models\User;
 use App\Services\Config;
+use DateTime;
 
 class Tools
 {
@@ -61,6 +62,13 @@ class Tools
     public static function toDateTime($time)
     {
         return date('Y-m-d H:i:s', $time);
+    }
+	
+	public static function secondsToTime($seconds)
+    {
+        $dtF = new DateTime("@0");
+        $dtT = new DateTime("@$seconds");
+        return $dtF->diff($dtT)->format('%a 天, %h 小时, %i 分 and %s 秒');
     }
 
     // check html

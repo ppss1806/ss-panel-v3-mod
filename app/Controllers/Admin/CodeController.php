@@ -3,11 +3,11 @@
 namespace App\Controllers\Admin;
 
 use App\Models\Code;
-use App\Controllers\BaseController;
+use App\Controllers\AdminController;
 use App\Utils\Tools;
 
 
-class CodeController extends BaseController
+class CodeController extends AdminController
 {
     public function index($request, $response, $args){
 		$pageNum = 1;

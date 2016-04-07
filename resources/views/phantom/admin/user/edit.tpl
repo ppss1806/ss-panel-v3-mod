@@ -145,7 +145,15 @@
 			<label class="control-label">用户账户过期时间(不过期就请不要动)</label>
 			<input class="form-control" id="expire_in" type="text"
 				   value="{$user->expire_in}">
-		</div>		
+		</div>	
+
+		<div class="12u 12u$(xsmall)">
+			<label class="control-label">用户限速，用户在每个节点所享受到的速度</label>
+			<input class="form-control" id="node_speedlimit" type="text"
+				   value="{$user->node_speedlimit}">
+		</div>	
+		
+		
 		</section>
 		<div class="12u 12u$(xsmall)">
 			<button type="submit" id="add" class="special fit">修改</button>
@@ -175,6 +183,7 @@
                     method: $("#method").val(),
                     enable: $("#enable").val(),
                     is_admin: $("#is_admin").val(),
+					node_speedlimit: $("#node_speedlimit").val(),
                     ref_by: $("#ref_by").val(),
 					class: $("#class").val(),
 					class_expire: $("#class_expire").val(),

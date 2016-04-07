@@ -4,9 +4,9 @@ namespace App\Controllers\Admin;
 
 use App\Models\Node;
 use App\Utils\Radius;
-use App\Controllers\BaseController;
+use App\Controllers\AdminController;
 
-class NodeController extends BaseController
+class NodeController extends AdminController
 {
     public function index(){
         $nodes = Node::all();
@@ -26,6 +26,7 @@ class NodeController extends BaseController
         $node->traffic_rate = $request->getParam('rate');
         $node->info = $request->getParam('info');
         $node->type = $request->getParam('type');
+		$node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->status = $request->getParam('status');
 		$node->sort = $request->getParam('sort');
 		if($node->sort==0)
@@ -75,6 +76,7 @@ class NodeController extends BaseController
         $node->custom_method =  $request->getParam('custom_method');
         $node->traffic_rate = $request->getParam('rate');
         $node->info = $request->getParam('info');
+		$node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->type = $request->getParam('type');
 		$node->sort = $request->getParam('sort');
 		if($node->sort==0)

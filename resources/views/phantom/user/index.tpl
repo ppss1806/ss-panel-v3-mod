@@ -55,6 +55,13 @@
 
 						<dt>帐号过期时间</dt>
 						<dd>{$user->expire_in}</dd>
+						
+						<dt>速度限制</dt>
+						{if $user->node_speedlimit!=0}
+						<dd>{$user->node_speedlimit}Mbps</dd>
+						{else}
+						<dd>不限速</dd>
+						{/if}
 					</dl>
 				</div>
 				

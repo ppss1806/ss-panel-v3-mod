@@ -1,5 +1,5 @@
 {include file='auth/header.tpl'}
-<body>
+
 
 
 <div id="main">
@@ -23,7 +23,7 @@
 							<h4>成功!</h4>
 							<p id="msg-success-p"></p>
 					
-				</div>
+				
 				
 				<pre class="12u 12u$(xsmall)" id="msg-error" style="display: none;">
 					
@@ -37,16 +37,12 @@
 					<a href="/password/reset">忘记密码</a><br>
 					<a href="/auth/register" class="text-center">注册个帐号</a>
 				</div>
-			</div><!-- /.form-box -->
-	</div>
+			</div>
+	</div><!-- /.form-box -->
 </div>
 
 
 
-
-
-</body>
-</html>
 
 
 
@@ -104,5 +100,4 @@
         });
     })
 </script>
-</body>
-</html>
+

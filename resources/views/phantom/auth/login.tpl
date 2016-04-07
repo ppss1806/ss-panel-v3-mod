@@ -21,13 +21,13 @@
 				</div>
 
 				<div class="12u 12u$(xsmall)">
-					<button type="submit" id="login" class="special fit">登陆</button>
+					<button type="submit" id="login" class="special fit">登录</button>
 				</div>
 
 				<pre class="12u 12u$(xsmall)" id="msg-success" style="display: none;">
 					
 						<div style="float:right;"><button type="button" class="close" id="ok-close" aria-hidden="true">&times;</button></div>
-							<h4>登陆成功!</h4>
+							<h4>登录成功!</h4>
 							<p id="msg-success-p"></p>
 					
 				</pre>

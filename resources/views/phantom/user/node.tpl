@@ -65,9 +65,16 @@
 
 														<div class="info-box-text row">
 															<div class="col-xs-4 col-sm-2">地址：</div>
-															<div class="col-xs-8 col-sm-4"><span
-																		class="label text-lowercase label-primary" >{$node->server}</span>
-															</div>
+															{if $node->sort > 2 && $node->sort != 5}
+																<div class="col-xs-8 col-sm-4"><a href="./node/{$node->id}"><span
+																			class="label text-lowercase label-primary" >请点这里进入查看详细信息</span></a>
+																</div>
+															{else}
+																<div class="col-xs-8 col-sm-4"><span
+																			class="label text-lowercase label-primary">{$node->server}</span>
+																</div>
+
+															{/if}
 															<div class="col-xs-4 col-sm-2">加密：</div>
 															<div class="col-xs-8 col-sm-4">
 															<span class="label label-danger">
@@ -86,12 +93,33 @@
 
 
 
-                                                        <div class="col-xs-4 col-sm-2">在线人数：</div>
-                                                        <div class="col-xs-8 col-sm-4"><span
-                                                                    class="label label-danger">{$node_prealive[$node->id]}</span>
-                                                        </div>
+															<div class="col-xs-4 col-sm-2">在线人数：</div>
+															<div class="col-xs-8 col-sm-4"><span
+																		class="label label-danger">{$node_prealive[$node->id]}</span>
+															</div>
+															
+															<div class="col-xs-4 col-sm-2">负载：</div>
+															<div class="col-xs-8 col-sm-4"><span
+																		class="label label-danger">{$node->getNodeLoad()}</span>
+															</div>
 
+															<div class="col-xs-4 col-sm-2">Uptime：</div>
+															<div class="col-xs-8 col-sm-4"><span
+																		class="label label-warning">{$node->getNodeUptime()}</span>
+															</div>
 
+															{if $node->sort==0&&$node->node_speedlimit!=0}
+															<div class="col-xs-4 col-sm-2">节点限速：</div>
+															<div class="col-xs-8 col-sm-4">
+																{if $node->node_speedlimit>$user->node_speedlimit}
+																	<span class="label label-primary">{$node->node_speedlimit}Mbps</span>
+																{else}
+																	<span class="label label-primary">{$user->node_speedlimit}Mbps</span>
+																{/if}
+															
+															</div>
+															{/if}
+															
 
 
 

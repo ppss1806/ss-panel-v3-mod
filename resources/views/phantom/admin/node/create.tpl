@@ -91,17 +91,22 @@
 			
 			<div class="12u 12u$(xsmall)">
 				<label class="control-label">节点类别（不分类请填0，分类为数字）</label>
-				<input type="text" id="class" class="form-control" value=""/>
+				<input type="text" id="class" class="form-control" value="0"/>
 			</div>
 
 			<div class="12u 12u$(xsmall)">
 				<label class="control-label">节点流量上限（不使用的话请填0）</label>
-				<input type="text" id="node_bandwidth_limit" class="form-control" value=""/>
+				<input type="text" id="node_bandwidth_limit" class="form-control" value="0"/>
 			</div>
 			
 			<div class="12u 12u$(xsmall)">
 				<label class="control-label">节点流量上限清空日</label>
-				<input type="text" id="bandwidthlimit_resetday" class="form-control" value=""/>
+				<input type="text" id="bandwidthlimit_resetday" class="form-control" value="0"/>
+			</div>
+			
+			<div class="12u 12u$(xsmall)">
+				<label class="control-label">节点限速(对于每个用户端口)</label>
+				<input type="text" id="node_speedlimit" class="form-control" value="0"/><div class="input-group-addon">Mbps</div>
 			</div>
 			
 	</section>
@@ -131,6 +136,7 @@
                     type: $("#type").val(),
                     status: $("#status").val(),
                     sort: $("#sort").val(),
+					node_speedlimit: $("#node_speedlimit").val(),
 					class: $("#class").val(),
 					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
 					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val()
