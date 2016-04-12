@@ -104,15 +104,7 @@
 															</div>
 															{/if}
 															
-															<div class="col-xs-4 col-sm-2">负载：</div>
-															<div class="col-xs-8 col-sm-4"><span
-																		class="label label-danger">{$node->getNodeLoad()}</span>
-															</div>
-
-															<div class="col-xs-4 col-sm-2">Uptime：</div>
-															<div class="col-xs-8 col-sm-4"><span
-																		class="label label-warning">{$node->getNodeUptime()}</span>
-															</div>
+															
 
 															{if $node->sort==0&&$node->node_speedlimit!=0}
 															<div class="col-xs-4 col-sm-2">节点限速：</div>
@@ -146,7 +138,7 @@
 														{$node->info}
 													</div>
 												</div>
-
+												<hr>
 
 											</div>
 											<!-- /.info-box-content -->
