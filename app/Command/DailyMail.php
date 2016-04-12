@@ -37,7 +37,7 @@ class DailyMail
 				
 				try {
 					Mail::send($to, $subject, 'news/daily-traffic-report.tpl', [
-						"user" => $user,"text" => $text
+						"user" => $user,"text" => $text,"lastday"=>$lastday
 					], [
 					]);
 				} catch (Exception $e) {
