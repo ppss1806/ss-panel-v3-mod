@@ -169,6 +169,16 @@
                                                             </td>
                                                         </tr>
 														
+														<tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                            <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;"
+                                                                valign="top">今日使用流量
+                                                            </td>
+                                                            <td class="alignright"
+                                                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;"
+                                                                align="right" valign="top">{(($user->u+$user->d)-$user->last_day_t)/1024/1024}MB
+                                                            </td>
+                                                        </tr>
+														
 														
                                                     </table>
                                                 </td>
