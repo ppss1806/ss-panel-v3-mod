@@ -58,8 +58,8 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<div class="info-box">
+											
 											<span class="info-box-icon bg-aqua"><i class="fa fa-server"></i></span>
-
 											<div class="info-box-content">
 												<div class=row>
 													<div class="col-sm-6">
@@ -80,6 +80,8 @@
 																</div>
 
 															{/if}
+															
+															{if $node->sort == 0}
 															<div class="col-xs-4 col-sm-2">加密：</div>
 															<div class="col-xs-8 col-sm-4">
 															<span class="label label-danger">
@@ -95,23 +97,13 @@
 															<div class="col-xs-8 col-sm-4"><span
 																		class="label label-warning">{$node->traffic_rate}</span>
 															</div>
-
-
-
+															
                                                         <div class="col-xs-4 col-sm-2">在线人数：</div>
                                                         <div class="col-xs-8 col-sm-4"><span
                                                                     class="label label-danger">{$node_prealive[$node->id]}</span>
                                                         </div>
+														{/if}
 														
-														<div class="col-xs-4 col-sm-2">负载：</div>
-                                                        <div class="col-xs-8 col-sm-4"><span
-                                                                    class="label label-danger">{$node->getNodeLoad()}</span>
-                                                        </div>
-
-														<div class="col-xs-4 col-sm-2">Uptime：</div>
-                                                        <div class="col-xs-8 col-sm-4"><span
-                                                                    class="label label-danger">{$node->getNodeUptime()}</span>
-                                                        </div>
 
 
 														{if $node->sort==0&&$node->node_speedlimit!=0}
@@ -150,7 +142,12 @@
 										<!-- /.info-box -->
 									</div>
 								</div>
+								{if $node->sort==0}
+								{$load=$node->getNodeLoad()}
+								{$uptime=$node->getNodeUptime()}
+								{/if}
                         {/foreach}
+						<i class="fa fa-server"></i>负载：{$load} <i class="fa fa-upload" aria-hidden="true"></i>Uptime：{$uptime}
 						</div>
 						</div>
 					  </div>
