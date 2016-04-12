@@ -38,13 +38,16 @@
 						  <div class="panel panel-default">
 							<div class="panel-heading" role="tab" id="heading{$node_order->$prefix}">
 							  <h4 class="panel-title">
-								<a role="button" data-toggle="collapse" href="#collapse{$node_order->$prefix}" aria-expanded="false" aria-controls="collapse{$node_order->$prefix}">
-									{$prefix} | 在线人数： {$node_alive[$prefix]} | 提供方式： {$node_method[$prefix]}
-								</a>
 								{if $node_heartbeat[$prefix]=="在线"}
-								<i style="float:right" class="fa fa-circle text-success">{$node_bandwidth[$prefix]}</i>
+								<i class="fa fa-cloud-upload text-success"></i><a role="button" data-toggle="collapse" href="#collapse{$node_order->$prefix}" aria-expanded="false" aria-controls="collapse{$node_order->$prefix}">
+									{$prefix} | <i class="fa fa-user"></i> {$node_alive[$prefix]} | <i class="fa fa-wrench"></i> {$node_method[$prefix]} | <i class="fa fa-arrows"></i> {$node_bandwidth[$prefix]}
+								</a>
+								
 								{else}
-								<i style="float:right" class="fa fa-circle text-danger">{$node_bandwidth[$prefix]}</i>
+								<i class="fa fa-exclamation-triangle text-danger"></i><a role="button" data-toggle="collapse" href="#collapse{$node_order->$prefix}" aria-expanded="false" aria-controls="collapse{$node_order->$prefix}">
+									{$prefix} | <i class="fa fa-user"></i> {$node_alive[$prefix]} | <i class="fa fa-wrench"></i> {$node_method[$prefix]} | <i class="fa fa-arrows"></i> {$node_bandwidth[$prefix]}
+								</a>
+								
 								{/if}
 							  </h4>
 							</div>

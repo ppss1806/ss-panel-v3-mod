@@ -191,11 +191,20 @@
                                     </div>
 									
 									<div class="form-group">
-                                        <label class="col-sm-3 control-label">用户限速，用户在每个节点所享受到的速度</label>
+                                        <label class="col-sm-3 control-label">用户限速，用户在每个节点所享受到的速度(0 为不限制)</label>
 
                                         <div class="col-sm-9">
                                             <input class="form-control" id="node_speedlimit" type="text"
                                                    value="{$user->node_speedlimit}"><div class="input-group-addon">Mbps</div>
+                                        </div>
+                                    </div>
+									
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">用户同时连接 IP 数(0 为不限制)</label>
+
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="node_connector" type="text"
+                                                   value="{$user->node_connector}">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -238,7 +247,8 @@
                     ref_by: $("#ref_by").val(),
 					class: $("#class").val(),
 					class_expire: $("#class_expire").val(),
-					expire_in: $("#expire_in").val()
+					expire_in: $("#expire_in").val(),
+					node_connector: $("#node_connector").val()
                 },
                 success: function (data) {
                     if (data.ret) {
