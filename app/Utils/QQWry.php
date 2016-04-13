@@ -3,7 +3,7 @@ namespace App\Utils;
 
 
 /**  
-* IP µØÀíÎ»ÖÃ²éÑ¯Àà  
+* IP åœ°ç†ä½ç½®æŸ¥è¯¢ç±»  
 *   
 * @author joyphper  
 * @version 1.0  
@@ -12,7 +12,7 @@ namespace App\Utils;
  
 class QQWry {  
      /**  
-      * QQWry.DatÎÄ¼şÖ¸Õë  
+      * QQWry.Datæ–‡ä»¶æŒ‡é’ˆ  
       *  
       * @var resource  
       */ 
@@ -20,7 +20,7 @@ class QQWry {
      private $fp;  
  
      /**  
-      * µÚÒ»ÌõIP¼ÇÂ¼µÄÆ«ÒÆµØÖ·  
+      * ç¬¬ä¸€æ¡IPè®°å½•çš„åç§»åœ°å€  
       *  
       * @var int  
       */ 
@@ -28,7 +28,7 @@ class QQWry {
      private $firstip;  
  
      /**  
-      * ×îºóÒ»ÌõIP¼ÇÂ¼µÄÆ«ÒÆµØÖ·  
+      * æœ€åä¸€æ¡IPè®°å½•çš„åç§»åœ°å€  
       *  
       * @var int  
       */ 
@@ -36,7 +36,7 @@ class QQWry {
      private $lastip;  
  
      /**  
-      * IP¼ÇÂ¼µÄ×ÜÌõÊı£¨²»°üº¬°æ±¾ĞÅÏ¢¼ÇÂ¼£©  
+      * IPè®°å½•çš„æ€»æ¡æ•°ï¼ˆä¸åŒ…å«ç‰ˆæœ¬ä¿¡æ¯è®°å½•ï¼‰  
       *  
       * @var int  
       */ 
@@ -44,7 +44,7 @@ class QQWry {
      private $totalip;  
  
     /**  
-      * ¹¹Ôìº¯Êı£¬´ò¿ª QQWry.Dat ÎÄ¼ş²¢³õÊ¼»¯ÀàÖĞµÄĞÅÏ¢  
+      * æ„é€ å‡½æ•°ï¼Œæ‰“å¼€ QQWry.Dat æ–‡ä»¶å¹¶åˆå§‹åŒ–ç±»ä¸­çš„ä¿¡æ¯  
       *  
       * @param string $filename  
       * @return IpLocation  
@@ -62,7 +62,7 @@ class QQWry {
  
              $this->totalip = ($this->lastip - $this->firstip) / 7;  
  
-             //×¢²áÎö¹¹º¯Êı£¬Ê¹ÆäÔÚ³ÌĞòÖ´ĞĞ½áÊøÊ±Ö´ĞĞ  
+             //æ³¨å†Œææ„å‡½æ•°ï¼Œä½¿å…¶åœ¨ç¨‹åºæ‰§è¡Œç»“æŸæ—¶æ‰§è¡Œ  
  
              register_shutdown_function(array(&$this, '__destruct'));  
                
@@ -72,7 +72,7 @@ class QQWry {
  
      /**  
  
-      * Îö¹¹º¯Êı£¬ÓÃÓÚÔÚÒ³ÃæÖ´ĞĞ½áÊøºó×Ô¶¯¹Ø±Õ´ò¿ªµÄÎÄ¼ş¡£  
+      * ææ„å‡½æ•°ï¼Œç”¨äºåœ¨é¡µé¢æ‰§è¡Œç»“æŸåè‡ªåŠ¨å…³é—­æ‰“å¼€çš„æ–‡ä»¶ã€‚  
       *  
       */ 
  
@@ -90,7 +90,7 @@ class QQWry {
        
      /**  
  
-      * ·µ»Ø¶ÁÈ¡µÄ³¤ÕûĞÍÊı  
+      * è¿”å›è¯»å–çš„é•¿æ•´å‹æ•°  
       *  
       * @access private  
       * @return int  
@@ -98,7 +98,7 @@ class QQWry {
  
     private function getlong() {  
  
-         //½«¶ÁÈ¡µÄlittle-endian±àÂëµÄ4¸ö×Ö½Ú×ª»¯Îª³¤ÕûĞÍÊı  
+         //å°†è¯»å–çš„little-endianç¼–ç çš„4ä¸ªå­—èŠ‚è½¬åŒ–ä¸ºé•¿æ•´å‹æ•°  
  
          $result = unpack('Vlong', fread($this->fp, 4));  
  
@@ -108,7 +108,7 @@ class QQWry {
  
      /**  
  
-      * ·µ»Ø¶ÁÈ¡µÄ3¸ö×Ö½ÚµÄ³¤ÕûĞÍÊı  
+      * è¿”å›è¯»å–çš„3ä¸ªå­—èŠ‚çš„é•¿æ•´å‹æ•°  
       *  
       * @access private  
       * @return int  
@@ -116,7 +116,7 @@ class QQWry {
  
      private function getlong3() {  
  
-         //½«¶ÁÈ¡µÄlittle-endian±àÂëµÄ3¸ö×Ö½Ú×ª»¯Îª³¤ÕûĞÍÊı  
+         //å°†è¯»å–çš„little-endianç¼–ç çš„3ä¸ªå­—èŠ‚è½¬åŒ–ä¸ºé•¿æ•´å‹æ•°  
  
          $result = unpack('Vlong', fread($this->fp, 3).chr(0));  
  
@@ -125,7 +125,7 @@ class QQWry {
      }  
  
      /**  
-      * ·µ»ØÑ¹Ëõºó¿É½øĞĞ±È½ÏµÄIPµØÖ·  
+      * è¿”å›å‹ç¼©åå¯è¿›è¡Œæ¯”è¾ƒçš„IPåœ°å€  
       *  
       * @access private  
       * @param string $ip  
@@ -134,9 +134,9 @@ class QQWry {
  
      private function packip($ip) {  
           
-         // ½«IPµØÖ·×ª»¯Îª³¤ÕûĞÍÊı£¬Èç¹ûÔÚPHP5ÖĞ£¬IPµØÖ·´íÎó£¬Ôò·µ»ØFalse£¬  
+         // å°†IPåœ°å€è½¬åŒ–ä¸ºé•¿æ•´å‹æ•°ï¼Œå¦‚æœåœ¨PHP5ä¸­ï¼ŒIPåœ°å€é”™è¯¯ï¼Œåˆ™è¿”å›Falseï¼Œ  
            
-         // ÕâÊ±intval½«Flase×ª»¯ÎªÕûÊı-1£¬Ö®ºóÑ¹Ëõ³Ébig-endian±àÂëµÄ×Ö·û´®  
+         // è¿™æ—¶intvalå°†Flaseè½¬åŒ–ä¸ºæ•´æ•°-1ï¼Œä¹‹åå‹ç¼©æˆbig-endianç¼–ç çš„å­—ç¬¦ä¸²  
  
          return pack('N', intval(ip2long($ip)));  
  
@@ -144,7 +144,7 @@ class QQWry {
  
      /**  
  
-      * ·µ»Ø¶ÁÈ¡µÄ×Ö·û´®  
+      * è¿”å›è¯»å–çš„å­—ç¬¦ä¸²  
       *  
       * @access private  
       * @param string $data  
@@ -155,9 +155,9 @@ class QQWry {
  
          $char = fread($this->fp, 1);  
  
-         while (ord($char) > 0) {        // ×Ö·û´®°´ÕÕC¸ñÊ½±£´æ£¬ÒÔ½áÊø  
+         while (ord($char) > 0) {        // å­—ç¬¦ä¸²æŒ‰ç…§Cæ ¼å¼ä¿å­˜ï¼Œä»¥ç»“æŸ  
  
-             $data .= $char;             // ½«¶ÁÈ¡µÄ×Ö·ûÁ¬½Óµ½¸ø¶¨×Ö·û´®Ö®ºó  
+             $data .= $char;             // å°†è¯»å–çš„å­—ç¬¦è¿æ¥åˆ°ç»™å®šå­—ç¬¦ä¸²ä¹‹å  
  
              $char = fread($this->fp, 1);  
  
@@ -168,7 +168,7 @@ class QQWry {
      }  
  
      /**  
-      * ·µ»ØµØÇøĞÅÏ¢  
+      * è¿”å›åœ°åŒºä¿¡æ¯  
       *  
       * @access private  
       * @return string  
@@ -176,11 +176,11 @@ class QQWry {
  
      private function getarea() {  
  
-         $byte = fread($this->fp, 1);    // ±êÖ¾×Ö½Ú  
+         $byte = fread($this->fp, 1);    // æ ‡å¿—å­—èŠ‚  
  
          switch (ord($byte)) {  
  
-             case 0:                     // Ã»ÓĞÇøÓòĞÅÏ¢  
+             case 0:                     // æ²¡æœ‰åŒºåŸŸä¿¡æ¯  
  
                  $area = "";  
  
@@ -188,7 +188,7 @@ class QQWry {
  
              case 1:  
  
-             case 2:                     // ±êÖ¾×Ö½ÚÎª1»ò2£¬±íÊ¾ÇøÓòĞÅÏ¢±»ÖØ¶¨Ïò  
+             case 2:                     // æ ‡å¿—å­—èŠ‚ä¸º1æˆ–2ï¼Œè¡¨ç¤ºåŒºåŸŸä¿¡æ¯è¢«é‡å®šå‘  
  
                  fseek($this->fp, $this->getlong3());  
  
@@ -196,7 +196,7 @@ class QQWry {
  
                  break;  
  
-             default:                    // ·ñÔò£¬±íÊ¾ÇøÓòĞÅÏ¢Ã»ÓĞ±»ÖØ¶¨Ïò  
+             default:                    // å¦åˆ™ï¼Œè¡¨ç¤ºåŒºåŸŸä¿¡æ¯æ²¡æœ‰è¢«é‡å®šå‘  
  
                  $area = $this->getstring($byte);  
  
@@ -209,7 +209,7 @@ class QQWry {
      }  
  
      /**  
-      * ¸ù¾İËù¸ø IP µØÖ·»òÓòÃû·µ»ØËùÔÚµØÇøĞÅÏ¢  
+      * æ ¹æ®æ‰€ç»™ IP åœ°å€æˆ–åŸŸåè¿”å›æ‰€åœ¨åœ°åŒºä¿¡æ¯  
       *  
       * @access public  
       * @param string $ip  
@@ -218,37 +218,37 @@ class QQWry {
  
      public function getlocation($ip) {  
  
-         if (!$this->fp) return null;            // Èç¹ûÊı¾İÎÄ¼şÃ»ÓĞ±»ÕıÈ·´ò¿ª£¬ÔòÖ±½Ó·µ»Ø¿Õ  
+         if (!$this->fp) return null;            // å¦‚æœæ•°æ®æ–‡ä»¶æ²¡æœ‰è¢«æ­£ç¡®æ‰“å¼€ï¼Œåˆ™ç›´æ¥è¿”å›ç©º  
  
-         $location['ip'] = gethostbyname($ip);   // ½«ÊäÈëµÄÓòÃû×ª»¯ÎªIPµØÖ·  
+         $location['ip'] = gethostbyname($ip);   // å°†è¾“å…¥çš„åŸŸåè½¬åŒ–ä¸ºIPåœ°å€  
  
-         $ip = $this->packip($location['ip']);   // ½«ÊäÈëµÄIPµØÖ·×ª»¯Îª¿É±È½ÏµÄIPµØÖ·  
+         $ip = $this->packip($location['ip']);   // å°†è¾“å…¥çš„IPåœ°å€è½¬åŒ–ä¸ºå¯æ¯”è¾ƒçš„IPåœ°å€  
  
-                                                 // ²»ºÏ·¨µÄIPµØÖ·»á±»×ª»¯Îª255.255.255.255  
+                                                 // ä¸åˆæ³•çš„IPåœ°å€ä¼šè¢«è½¬åŒ–ä¸º255.255.255.255  
  
-         // ¶Ô·ÖËÑË÷  
+         // å¯¹åˆ†æœç´¢  
  
-         $l = 0;                         // ËÑË÷µÄÏÂ±ß½ç  
+         $l = 0;                         // æœç´¢çš„ä¸‹è¾¹ç•Œ  
  
-         $u = $this->totalip;            // ËÑË÷µÄÉÏ±ß½ç  
+         $u = $this->totalip;            // æœç´¢çš„ä¸Šè¾¹ç•Œ  
  
-         $findip = $this->lastip;        // Èç¹ûÃ»ÓĞÕÒµ½¾Í·µ»Ø×îºóÒ»ÌõIP¼ÇÂ¼£¨QQWry.DatµÄ°æ±¾ĞÅÏ¢£©  
+         $findip = $this->lastip;        // å¦‚æœæ²¡æœ‰æ‰¾åˆ°å°±è¿”å›æœ€åä¸€æ¡IPè®°å½•ï¼ˆQQWry.Datçš„ç‰ˆæœ¬ä¿¡æ¯ï¼‰  
  
-         while ($l <= $u) {              // µ±ÉÏ±ß½çĞ¡ÓÚÏÂ±ß½çÊ±£¬²éÕÒÊ§°Ü  
+         while ($l <= $u) {              // å½“ä¸Šè¾¹ç•Œå°äºä¸‹è¾¹ç•Œæ—¶ï¼ŒæŸ¥æ‰¾å¤±è´¥  
  
-             $i = floor(($l + $u) / 2); // ¼ÆËã½üËÆÖĞ¼ä¼ÇÂ¼  
+             $i = floor(($l + $u) / 2); // è®¡ç®—è¿‘ä¼¼ä¸­é—´è®°å½•  
  
              fseek($this->fp, $this->firstip + $i * 7);  
  
-            $beginip = strrev(fread($this->fp, 4));     // »ñÈ¡ÖĞ¼ä¼ÇÂ¼µÄ¿ªÊ¼IPµØÖ·  
+            $beginip = strrev(fread($this->fp, 4));     // è·å–ä¸­é—´è®°å½•çš„å¼€å§‹IPåœ°å€  
  
-             // strrevº¯ÊıÔÚÕâÀïµÄ×÷ÓÃÊÇ½«little-endianµÄÑ¹ËõIPµØÖ·×ª»¯Îªbig-endianµÄ¸ñÊ½  
+             // strrevå‡½æ•°åœ¨è¿™é‡Œçš„ä½œç”¨æ˜¯å°†little-endiançš„å‹ç¼©IPåœ°å€è½¬åŒ–ä¸ºbig-endiançš„æ ¼å¼  
  
-             // ÒÔ±ãÓÃÓÚ±È½Ï£¬ºóÃæÏàÍ¬¡£  
+             // ä»¥ä¾¿ç”¨äºæ¯”è¾ƒï¼Œåé¢ç›¸åŒã€‚  
  
-             if ($ip < $beginip) {       // ÓÃ»§µÄIPĞ¡ÓÚÖĞ¼ä¼ÇÂ¼µÄ¿ªÊ¼IPµØÖ·Ê±  
+             if ($ip < $beginip) {       // ç”¨æˆ·çš„IPå°äºä¸­é—´è®°å½•çš„å¼€å§‹IPåœ°å€æ—¶  
  
-                 $u = $i - 1;            // ½«ËÑË÷µÄÉÏ±ß½çĞŞ¸ÄÎªÖĞ¼ä¼ÇÂ¼¼õÒ»  
+                 $u = $i - 1;            // å°†æœç´¢çš„ä¸Šè¾¹ç•Œä¿®æ”¹ä¸ºä¸­é—´è®°å½•å‡ä¸€  
  
              }  
  
@@ -256,19 +256,19 @@ class QQWry {
  
                  fseek($this->fp, $this->getlong3());  
  
-                 $endip = strrev(fread($this->fp, 4));   // »ñÈ¡ÖĞ¼ä¼ÇÂ¼µÄ½áÊøIPµØÖ·  
+                 $endip = strrev(fread($this->fp, 4));   // è·å–ä¸­é—´è®°å½•çš„ç»“æŸIPåœ°å€  
  
-                 if ($ip > $endip) {     // ÓÃ»§µÄIP´óÓÚÖĞ¼ä¼ÇÂ¼µÄ½áÊøIPµØÖ·Ê±  
+                 if ($ip > $endip) {     // ç”¨æˆ·çš„IPå¤§äºä¸­é—´è®°å½•çš„ç»“æŸIPåœ°å€æ—¶  
  
-                     $l = $i + 1;        // ½«ËÑË÷µÄÏÂ±ß½çĞŞ¸ÄÎªÖĞ¼ä¼ÇÂ¼¼ÓÒ»  
+                     $l = $i + 1;        // å°†æœç´¢çš„ä¸‹è¾¹ç•Œä¿®æ”¹ä¸ºä¸­é—´è®°å½•åŠ ä¸€  
  
                  }  
  
-                 else {                  // ÓÃ»§µÄIPÔÚÖĞ¼ä¼ÇÂ¼µÄIP·¶Î§ÄÚÊ±  
+                 else {                  // ç”¨æˆ·çš„IPåœ¨ä¸­é—´è®°å½•çš„IPèŒƒå›´å†…æ—¶  
  
                      $findip = $this->firstip + $i * 7;  
  
-                     break;              // Ôò±íÊ¾ÕÒµ½½á¹û£¬ÍË³öÑ­»·  
+                     break;              // åˆ™è¡¨ç¤ºæ‰¾åˆ°ç»“æœï¼Œé€€å‡ºå¾ªç¯  
  
                  }  
  
@@ -276,33 +276,33 @@ class QQWry {
  
          }  
  
-         //»ñÈ¡²éÕÒµ½µÄIPµØÀíÎ»ÖÃĞÅÏ¢  
+         //è·å–æŸ¥æ‰¾åˆ°çš„IPåœ°ç†ä½ç½®ä¿¡æ¯  
  
          fseek($this->fp, $findip);  
  
-         $location['beginip'] = long2ip($this->getlong());   // ÓÃ»§IPËùÔÚ·¶Î§µÄ¿ªÊ¼µØÖ·  
+         $location['beginip'] = long2ip($this->getlong());   // ç”¨æˆ·IPæ‰€åœ¨èŒƒå›´çš„å¼€å§‹åœ°å€  
  
          $offset = $this->getlong3();  
  
          fseek($this->fp, $offset);  
  
-         $location['endip'] = long2ip($this->getlong());     // ÓÃ»§IPËùÔÚ·¶Î§µÄ½áÊøµØÖ·  
+         $location['endip'] = long2ip($this->getlong());     // ç”¨æˆ·IPæ‰€åœ¨èŒƒå›´çš„ç»“æŸåœ°å€  
  
-         $byte = fread($this->fp, 1);    // ±êÖ¾×Ö½Ú  
+         $byte = fread($this->fp, 1);    // æ ‡å¿—å­—èŠ‚  
  
          switch (ord($byte)) {  
  
-             case 1:                     // ±êÖ¾×Ö½ÚÎª1£¬±íÊ¾¹ú¼ÒºÍÇøÓòĞÅÏ¢¶¼±»Í¬Ê±ÖØ¶¨Ïò  
+             case 1:                     // æ ‡å¿—å­—èŠ‚ä¸º1ï¼Œè¡¨ç¤ºå›½å®¶å’ŒåŒºåŸŸä¿¡æ¯éƒ½è¢«åŒæ—¶é‡å®šå‘  
  
-                 $countryOffset = $this->getlong3();         // ÖØ¶¨ÏòµØÖ·  
+                 $countryOffset = $this->getlong3();         // é‡å®šå‘åœ°å€  
  
                  fseek($this->fp, $countryOffset);  
  
-                 $byte = fread($this->fp, 1);    // ±êÖ¾×Ö½Ú  
+                 $byte = fread($this->fp, 1);    // æ ‡å¿—å­—èŠ‚  
  
                  switch (ord($byte)) {  
  
-                     case 2:             // ±êÖ¾×Ö½ÚÎª2£¬±íÊ¾¹ú¼ÒĞÅÏ¢ÓÖ±»ÖØ¶¨Ïò  
+                     case 2:             // æ ‡å¿—å­—èŠ‚ä¸º2ï¼Œè¡¨ç¤ºå›½å®¶ä¿¡æ¯åˆè¢«é‡å®šå‘  
  
                          fseek($this->fp, $this->getlong3());  
  
@@ -314,7 +314,7 @@ class QQWry {
  
                          break;  
  
-                     default:            // ·ñÔò£¬±íÊ¾¹ú¼ÒĞÅÏ¢Ã»ÓĞ±»ÖØ¶¨Ïò  
+                     default:            // å¦åˆ™ï¼Œè¡¨ç¤ºå›½å®¶ä¿¡æ¯æ²¡æœ‰è¢«é‡å®šå‘  
  
                          $location['country'] = $this->getstring($byte);  
  
@@ -326,7 +326,7 @@ class QQWry {
  
                  break;  
  
-             case 2:                     // ±êÖ¾×Ö½ÚÎª2£¬±íÊ¾¹ú¼ÒĞÅÏ¢±»ÖØ¶¨Ïò  
+             case 2:                     // æ ‡å¿—å­—èŠ‚ä¸º2ï¼Œè¡¨ç¤ºå›½å®¶ä¿¡æ¯è¢«é‡å®šå‘  
  
                  fseek($this->fp, $this->getlong3());  
  
@@ -338,7 +338,7 @@ class QQWry {
  
                  break;  
  
-             default:                    // ·ñÔò£¬±íÊ¾¹ú¼ÒĞÅÏ¢Ã»ÓĞ±»ÖØ¶¨Ïò  
+             default:                    // å¦åˆ™ï¼Œè¡¨ç¤ºå›½å®¶ä¿¡æ¯æ²¡æœ‰è¢«é‡å®šå‘  
  
                  $location['country'] = $this->getstring($byte);  
  
@@ -348,9 +348,9 @@ class QQWry {
  
          }  
  
-         if ($location['country'] == " CZ88.NET") { // CZ88.NET±íÊ¾Ã»ÓĞÓĞĞ§ĞÅÏ¢  
+         if ($location['country'] == " CZ88.NET") { // CZ88.NETè¡¨ç¤ºæ²¡æœ‰æœ‰æ•ˆä¿¡æ¯  
  
-             $location['country'] = "Î´Öª";  
+             $location['country'] = "æœªçŸ¥";  
  
          }  
  
