@@ -52,7 +52,7 @@ class IpController extends AdminController
 		
 		
 		$logs->setPath('/admin/alive');
-        return $this->view()->assign("loc",$loc)->assign('logs',$logs)->display('admin/login/login.tpl');
+        return $this->view()->assign("loc",$loc)->assign('logs',$logs)->display('admin/ip/login.tpl');
     }
 
 }
