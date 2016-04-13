@@ -121,21 +121,6 @@ class User extends Model
         return Tools::flowAutoShow($total);
     }
 	
-	public function AliveIpCount()
-    {
-        $total = Ip::where("datetime",">",time()-90)->where("userid","=",$this->id)->get();
-		$count = 0;
-		$TempIp = array();
-		foreach($total as $single)
-		{
-			if(!isset($TempIp[$single->ip]))
-			{
-				$TempIp[$single->ip]=1;
-				$count++;
-			}
-		}
-        return $count;
-    }
 
     public function unusedTraffic()
     {

@@ -10,6 +10,10 @@ use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Da;
 
 use App\Models\User;
 use App\Models\Code;
+use App\Models\Ip;
+use App\Models\LoginIp;
+use App\Utils\QQWry;
+
 
 
 
@@ -26,10 +30,46 @@ class UserController extends BaseController
         $this->user = Auth::getUser();
     }
 
-    public function index()
+    public function index($request, $response, $args)
     {
 		$Anns = Ann::orderBy('id', 'desc')->get();
-        return $this->view()->assign('anns',$Anns)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+		
+		$userip=array();
+		
+		$total = Ip::where("datetime",">=",time()-86400)->where('userid', '=',$this->user->id)->get();
+		
+		$iplocation = new QQWry(); 
+		foreach($total as $single)
+		{
+			//if(isset($useripcount[$single->userid]))
+			{
+				if(!isset($userip[$single->ip]))
+				{
+					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
+					$location=$iplocation->getlocation($single->ip);
+					$userip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+				}
+			}
+		}
+		
+		$totallogin = LoginIp::where('userid', '=',$this->user->id)->where("type","=",0)->orderBy("datetime","desc")->limit(10)->get();
+		
+		$userloginip=array();
+		
+		foreach($totallogin as $single)
+		{
+			//if(isset($useripcount[$single->userid]))
+			{
+				if(!isset($userloginip[$single->ip]))
+				{
+					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
+					$location=$iplocation->getlocation($single->ip);
+					$userloginip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+				}
+			}
+		}
+		
+        return $this->view()->assign('anns',$Anns)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
 	
 	public function code($request, $response, $args)
@@ -134,7 +174,7 @@ class UserController extends BaseController
 				{
 					$node_tempalive=$node->getOnlineUserCount();
 					$node_prealive[$node->id]=$node_tempalive;
-					if(time()-$node->node_heartbeat>90||$node->node_heartbeat==0)
+					if(time()-$node->node_heartbeat>90)
 					{
 						$node_heartbeat[$temp[0]]="离线";
 					}
@@ -344,7 +384,7 @@ class UserController extends BaseController
         return $this->view()->display('user/profile.tpl');
     }
 
-    public function edit()
+    public function edit($request, $response, $args)
     {
 		$themes=Tools::getDir(BASE_PATH."/resources/views");
         return $this->view()->assign('user',$this->user)->assign('themes',$themes)->display('user/edit.tpl');

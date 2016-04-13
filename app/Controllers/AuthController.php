@@ -13,6 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use App\Utils\Hash,App\Utils\Da;
 use App\Services\Auth;
 use App\Models\User;
+use App\Models\LoginIp;
 
 /**
  *  AuthController
@@ -46,6 +47,15 @@ class AuthController extends BaseController
         if (!Hash::checkPassword($user->pass,$passwd)){
             $rs['ret'] = 0;
             $rs['msg'] = "402 邮箱或者密码错误";
+			
+			
+			$loginip=new LoginIp();
+			$loginip->ip=$_SERVER["REMOTE_ADDR"];
+			$loginip->userid=$user->id;
+			$loginip->datetime=time();
+			$loginip->type=1;
+			$loginip->save();
+			
             return $response->getBody()->write(json_encode($rs));
         }
         // @todo
@@ -56,6 +66,16 @@ class AuthController extends BaseController
         Auth::login($user->id,$time);
         $rs['ret'] = 1;
         $rs['msg'] = "欢迎回来";
+		
+		
+		
+		$loginip=new LoginIp();
+		$loginip->ip=$_SERVER["REMOTE_ADDR"];
+		$loginip->userid=$user->id;
+		$loginip->datetime=time();
+		$loginip->type=0;
+		$loginip->save();
+		
         return $response->getBody()->write(json_encode($rs));
     }
 
@@ -144,6 +164,7 @@ class AuthController extends BaseController
         $user->ref_by = $c->user_id;
 		$user->expire_in=date("Y-m-d H:i:s",time()+Config::get('user_expire_in_default')*86400);
 		$user->reg_date=date("Y-m-d H:i:s");
+		$user->reg_ip=$_SERVER["REMOTE_ADDR"];
 		$user->money=0;
 		$user->node_class=0;
 		$user->plan='A';

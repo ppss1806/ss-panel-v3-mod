@@ -110,6 +110,11 @@ $app->group('/admin', function () {
     $this->delete('/announcement/{id}', 'App\Controllers\Admin\AnnController:delete');
     $this->get('/announcement/{id}/delete', 'App\Controllers\Admin\AnnController:deleteGet');
 	
+	// IP Mange
+    $this->get('/alive', 'App\Controllers\Admin\IpController:index');
+	
+	$this->get('/login', 'App\Controllers\Admin\IpController:index1');
+	
 	// Code Mange
     $this->get('/code', 'App\Controllers\Admin\CodeController:index');
     $this->get('/code/create', 'App\Controllers\Admin\CodeController:create');

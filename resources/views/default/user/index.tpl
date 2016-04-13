@@ -16,7 +16,7 @@
         <div class="row">
 		
 		
-		<div class="col-md-6">
+			<div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa fa-bullhorn"></i>
@@ -36,6 +36,78 @@
                                     <td>#{$ann->id}</td>
                                     <td>{$ann->date}</td>
                                     <td>{$ann->content}</td>
+                                </tr>
+                            {/foreach}
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col (right) -->
+			
+			
+			<div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+
+                        <h3 class="box-title">最近一天使用IP</h3>
+                    </div>
+                    <!-- /.box-header -->
+					
+					<div class="box-body">
+                        <p>请确认都为自己的IP，如有异常请及时修改连接密码。部分节点不支持记录。</p>
+
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-hover" style="table-layout:fixed;word-wrap:break-word;word-break;break-all;">
+                            <tr>
+                                
+                                <th>IP</th>
+                                <th>归属地</th>
+                            </tr>
+                            {foreach $userip as $single=>$location}
+                                <tr>
+                                    
+                                    <td>{$single}</td>
+                                    <td>{$location}</td>
+                                </tr>
+                            {/foreach}
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col (right) -->
+			
+			
+			<div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+
+                        <h3 class="box-title">最近10次登陆IP</h3>
+                    </div>
+                    <!-- /.box-header -->
+					
+					<div class="box-body">
+                        <p>请确认都为自己的IP，如有异常请及时修改密码。</p>
+
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-hover" style="table-layout:fixed;word-wrap:break-word;word-break;break-all;">
+                            <tr>
+                                
+                                <th>IP</th>
+                                <th>归属地</th>
+                            </tr>
+                            {foreach $userloginip as $single=>$location}
+                                <tr>
+                                    
+                                    <td>{$single}</td>
+                                    <td>{$location}</td>
                                 </tr>
                             {/foreach}
                         </table>

@@ -34,6 +34,54 @@
 					</table>
 				</div>
 				
+				<div class="12u 12u$(medium)">
+					<h3>最近一天使用IP</h3>
+					
+					<p>请确认都为自己的IP，如有异常请及时修改连接密码。部分节点不支持记录。</p>
+				</div>
+				
+				<div class="12u 12u$(medium)">
+					<table class="table table-hover" style="table-layout:fixed;word-wrap:break-word;word-break;break-all;">
+						<tr>
+							
+							<th>IP</th>
+							<th>归属地</th>
+						</tr>
+						{foreach $userip as $single=>$location}
+							<tr>
+								
+								<td>{$single}</td>
+								<td>{$location}</td>
+							</tr>
+						{/foreach}
+					</table>
+				</div>
+				
+				
+				
+				<div class="12u 12u$(medium)">
+					<h3>最近10次登陆IP</h3>
+					
+					<p>请确认都为自己的IP，如有异常请及时修改密码。</p>
+				</div>
+				
+				<div class="12u 12u$(medium)">
+					<table class="table table-hover" style="table-layout:fixed;word-wrap:break-word;word-break;break-all;">
+						<tr>
+							
+							<th>IP</th>
+							<th>归属地</th>
+						</tr>
+						{foreach $userloginip as $single=>$location}
+							<tr>
+								
+								<td>{$single}</td>
+								<td>{$location}</td>
+							</tr>
+						{/foreach}
+					</table>
+				</div>
+				
 				
 				<div class="12u 12u$(medium)">
 					<h3>FAQ</h3>

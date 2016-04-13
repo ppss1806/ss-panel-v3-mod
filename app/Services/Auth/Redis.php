@@ -28,6 +28,7 @@ class Redis extends Base
         ],$time+time());
         $value = $uid;
         $this->client->setex($sid,$time,$value);
+		$this->client->setex($sid."ip",$time,$_SERVER["REMOTE_ADDR"]);
     }
 
     public  function logout(){
@@ -38,6 +39,15 @@ class Redis extends Base
     public  function getUser(){
         $sid = Cookie::get('sid');
         $value = $this->client->get($sid);
+		
+		$ip = $this->client->get($sid."ip");
+		if($ip != $_SERVER["REMOTE_ADDR"])
+		{
+			$user = new User();
+            $user->isLogin = false;
+            return $user;
+		}
+		
         if($value == null ){
             $user = new User();
             $user->isLogin = false;

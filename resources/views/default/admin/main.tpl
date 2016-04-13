@@ -135,6 +135,18 @@
                         <i class="fa fa-history"></i> <span>流量记录</span>
                     </a>
                 </li>
+				
+				<li>
+                    <a href="/admin/alive">
+                        <i class="fa fa-lock"></i> <span>在线IP</span>
+                    </a>
+                </li>
+				
+				<li>
+                    <a href="/admin/login">
+                        <i class="fa fa-lock"></i> <span>登陆记录</span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="/user">

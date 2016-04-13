@@ -1,8 +1,6 @@
 
 
 
-</body>
-</html>
 
 
 
@@ -30,7 +28,7 @@
 			</div>
 
 		<!-- Scripts -->
-			<script src="/theme/phantom/assets/js/jquery.min.js"></script>
+			
 			<script src="/theme/phantom/assets/js/skel.min.js"></script>
 			<script src="/theme/phantom/assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="/theme/phantom/assets/js/ie/respond.min.js"></script><![endif]-->

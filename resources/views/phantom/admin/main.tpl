@@ -16,6 +16,7 @@
 		<!-- jQuery 2.1.3 -->
 		<script src="/assets/public/js/jquery.min.js"></script>
 		<link href="/assets/public/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+		<script src="/assets/public/js/bootstrap.min.js"></script>
 		<!--[if lte IE 9]><link rel="stylesheet" href="/theme/phantom/assets/css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="/theme/phantom/assets/css/ie8.css" /><![endif]-->
 	</head>
@@ -86,6 +87,8 @@
 							<li><a href="/admin/user">用户管理</a></li>
 							<li><a href="/admin/invite">邀请管理</a></li>
 							<li><a href="/admin/trafficlog">流量记录</a></li>
+							<li><a href="/admin/alive">在线IP</a></li>
+							<li><a href="/admin/login">登陆记录</a></li>
 							<li><a href="/user">用户中心</a></li>
 							<li><a href="/user/logout">退出</a></li>
 

@@ -12,8 +12,16 @@ class Ip extends Model
 
 {
     protected $table = "alive_ip";
+	
+	public function user()
+    {
+        return User::find($this->attributes['userid']);
+    }
 
-
+	public function Node()
+    {
+        return Node::find($this->attributes['nodeid']);
+    }
 
 
 

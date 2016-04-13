@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use App\Models\User;
 use App\Utils;
 use App\Utils\Hash;
+use App\Services\Config;
 
 
 class Cookie extends Base
@@ -15,18 +16,27 @@ class Cookie extends Base
         Utils\Cookie::set([
             "uid" => $uid,
             "email" => $user->email,
-            "key" => $key
+            "key" => $key,
+			"ip" => md5($_SERVER["REMOTE_ADDR"].Config::get('key').$uid)
         ],$time+time());
     }
 
     public  function getUser(){
         $uid = Utils\Cookie::get('uid');
         $key = Utils\Cookie::get('key');
+		$ip = Utils\Cookie::get('ip');
         if ($uid == null){
             $user = new User();
             $user->isLogin = false;
             return $user;
         }
+		
+		if($ip != md5($_SERVER["REMOTE_ADDR"].Config::get('key').$uid))
+		{
+			$user = new User();
+            $user->isLogin = false;
+            return $user;
+		}
 
         $user = User::find($uid);
         if ($user == null){

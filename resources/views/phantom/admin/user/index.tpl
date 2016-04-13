@@ -32,6 +32,7 @@
 						<th>最后签到时间</th>
 						<th>在线 IP 数</th>
 						<th>微信号</th>
+						<th>注册时间</th>
 						<th>邀请者</th>
 						<th>操作</th>
 					</tr>
@@ -47,8 +48,9 @@
 						<td>{(($user->u+$user->d)-$user->last_day_t)/1024/1024}MB</td>
 						<td>{$user->lastSsTime()}</td>
 						<td>{$user->lastCheckInTime()}</td>
-						<th>{$user->AliveIpCount()}</th>
+						<td><div data-trigger="hover" data-toggle="ippopover" data-placement="left" data-content="{foreach $userip[$user->id] as $singleip => $location}{$singleip} {$location}<br>{/foreach}">{$useripcount[$user->id]}</div></td>
 						<th>{$user->wechat}</th>
+						<th><div data-trigger="hover" data-toggle="regpopover" data-placement="left" data-content="注册IP：{$user->reg_ip}　{$regloc[$user->id]}">{$user->reg_date}</div></td></th>
 						<th>{$user->ref_by}</th>
 						<td>
 							<a class="btn btn-info btn-sm" href="/admin/user/{$user->id}/edit">编辑</a>
@@ -70,49 +72,24 @@
 
 
 <script>
-    $(document).ready(function(){
-        function delete(){
-            $.ajax({
-                type:"DELETE",
-                url:"/admin/user/",
-                dataType:"json",
-                data:{
-                    name: $("#name").val()
-                },
-                success:function(data){
-                    if(data.ret){
-                        $("#msg-error").hide(100);
-                        $("#msg-success").show(100);
-                        $("#msg-success-p").html(data.msg);
-                        window.setTimeout("location.href='/admin/user'", 2000);
-                    }else{
-                        $("#msg-error").hide(10);
-                        $("#msg-error").show(100);
-                        $("#msg-error-p").html(data.msg);
-                    }
-                },
-                error:function(jqXHR){
-                    $("#msg-error").hide(10);
-                    $("#msg-error").show(100);
-                    $("#msg-error-p").html("发生错误："+jqXHR.status);
-                }
-            });
-        }
-        $("html").keydown(function(event){
-            if(event.keyCode==13){
-                login();
-            }
-        });
-        $("#delete").click(function(){
-            delete();
-        });
-        $("#ok-close").click(function(){
-            $("#msg-success").hide(100);
-        });
-        $("#error-close").click(function(){
-            $("#msg-error").hide(100);
-        });
-    })
+
+    $(function() {  
+		$("[data-toggle='ippopover']").popover({  
+			html : true,       
+			delay:{
+			show:500, hide:1500
+			}
+		});  
+    }); 
+
+	$(function() {  
+        $("[data-toggle='regpopover']").popover({  
+            html : true,       
+            delay:{
+			show:500, hide:1500
+			}
+        });  
+    }); 	
 </script>
 
 {include file='admin/footer.tpl'}

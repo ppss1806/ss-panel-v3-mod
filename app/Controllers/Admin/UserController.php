@@ -2,9 +2,9 @@
 
 namespace App\Controllers\Admin;
 
-use App\Models\User;
+use App\Models\User,App\Models\Ip;
 use App\Controllers\AdminController;
-use App\Utils\Hash,App\Utils\Radius,App\Utils\Da;
+use App\Utils\Hash,App\Utils\Radius,App\Utils\Da,App\Utils\QQWry;
 
 class UserController extends AdminController
 {
@@ -15,7 +15,44 @@ class UserController extends AdminController
         }
         $users = User::paginate(60,['*'],'page',$pageNum);
         $users->setPath('/admin/user');
-        return $this->view()->assign('users',$users)->display('admin/user/index.tpl');
+		
+		
+
+		//Ip::where("datetime","<",time()-90)->get()->delete();
+		$total = Ip::where("datetime",">=",time()-90)->orderBy('userid', 'desc')->get();
+		
+		
+		$userip=array();
+		$useripcount=array();
+		$regloc=array();
+		
+		$iplocation = new QQWry(); 
+		foreach($users as $user)
+		{
+			$useripcount[$user->id]=0;
+			$userip[$user->id]=array();
+			
+			$location=$iplocation->getlocation($user->reg_ip);
+			$regloc[$user->id]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+		}
+		
+		  
+		
+		foreach($total as $single)
+		{
+			if(isset($useripcount[$single->userid]))
+			{
+				if(!isset($userip[$single->userid][$single->ip]))
+				{
+					$useripcount[$single->userid]=$useripcount[$single->userid]+1;
+					$location=$iplocation->getlocation($single->ip);
+					$userip[$single->userid][$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+				}
+			}
+		}
+
+		
+        return $this->view()->assign('users',$users)->assign("regloc",$regloc)->assign("useripcount",$useripcount)->assign("userip",$userip)->display('admin/user/index.tpl');
     }
 
     public function edit($request, $response, $args){
@@ -106,4 +143,6 @@ class UserController extends AdminController
         $newResponse = $response->withStatus(302)->withHeader('Location', '/admin/user');
         return $newResponse;
     }
+	
+	
 }

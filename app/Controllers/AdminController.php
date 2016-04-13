@@ -12,7 +12,7 @@ use App\Services\Analytics;
 class AdminController extends UserController
 {
 
-    public function index()
+    public function index($request, $response, $args)
     {
         $sts = new Analytics();
         return $this->view()->assign('sts', $sts)->display('admin/index.tpl');

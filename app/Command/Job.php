@@ -4,7 +4,12 @@ namespace App\Command;
 use App\Models\Node;
 use App\Models\User;
 use App\Models\RadiusBan;
+use App\Models\LoginIp;
+use App\Services\Config;
 use App\Utils\Radius;
+use App\Utils\Tools;
+use App\Services\Mail;
+use App\Utils\QQWry;
 
 class Job
 {
@@ -53,6 +58,82 @@ class Job
 	
 	public static function CheckJob()
     {
+		//节点掉线检测
+		if(Config::get("node_offline_warn")=="true")
+		{
+			$nodes = Node::all();
+			$adminUser = User::where("is_admin","=","1")->get();
+			foreach($nodes as $node){
+				if(time()-$node->node_heartbeat>90&&time()-$node->node_heartbeat<150&&$node->node_heartbeat!=0&&$node->sort==0)
+				{
+					foreach($adminUser as $user)
+					{
+						echo "Send offline mail to user: ".$user->id;
+						$subject = Config::get('appName')."-系统警告";
+						$to = $user->email;
+						$text = "管理员您好，系统发现节点 ".$node->name." 掉线了，请您及时处理。" ;
+						try {
+							Mail::send($to, $subject, 'news/warn.tpl', [
+								"user" => $user,"text" => $text
+							], [
+							]);
+						} catch (Exception $e) {
+							echo $e->getMessage();
+						}
+					}
+				}
+			}
+		}
+		
+		//登陆地检测
+		if(Config::get("login_warn")=="true")
+		{
+			$iplocation = new QQWry(); 
+			$Logs = LoginIp::where("datetime",">",time()-60)->get();
+			foreach($Logs as $log){
+				$UserLogs=LoginIp::where("userid","=",$log->userid)->limit(2)->get();
+				if($UserLogs->count()==2)
+				{
+					$i = 0;
+					$Userlocation = "";
+					foreach($UserLogs as $userlog)
+					{
+						if($i == 0)
+						{
+							$location=$iplocation->getlocation($userlog->ip);
+							$Userlocation = $location['country'];
+							$i++;
+						}
+						else
+						{
+							$location=$iplocation->getlocation($userlog->ip);
+							if($Userlocation!=$location['country'])
+							{
+								$user=User::where("id","=",$userlog->userid)->first();
+								echo "Send warn mail to user: ".$user->id;
+								$subject = Config::get('appName')."-系统警告";
+								$to = $user->email;
+								$text = "您好，系统发现您的账号在 ".iconv('gbk', 'utf-8//IGNORE', $location['country'])." 有异常登录，请您自己自行核实登陆行为。有异常请及时修改密码。" ;
+								try {
+									Mail::send($to, $subject, 'news/warn.tpl', [
+										"user" => $user,"text" => $text
+									], [
+									]);
+								} catch (Exception $e) {
+									echo $e->getMessage();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		
 		$users = User::all();
         foreach($users as $user){
 			if(($user->transfer_enable<=$user->u+$user->d||$user->enable==0||(strtotime($user->expire_in)<time()&&strtotime($user->expire_in)>644447105))&&RadiusBan::where("userid",$user->id)->first()==null)
