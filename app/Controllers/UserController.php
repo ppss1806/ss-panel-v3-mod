@@ -52,7 +52,7 @@ class UserController extends BaseController
 			}
 		}
 		
-		$totallogin = LoginIp::where('userid', '=',$this->user->id)->where("type","=",0)->orderBy("datetime","desc")->limit(10)->get();
+		$totallogin = LoginIp::where('userid', '=',$this->user->id)->where("type","=",0)->orderBy("datetime","desc")->take(10)->get();
 		
 		$userloginip=array();
 		

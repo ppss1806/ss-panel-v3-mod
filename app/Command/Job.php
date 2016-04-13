@@ -91,7 +91,7 @@ class Job
 			$iplocation = new QQWry(); 
 			$Logs = LoginIp::where("datetime",">",time()-60)->get();
 			foreach($Logs as $log){
-				$UserLogs=LoginIp::where("userid","=",$log->userid)->where("datetime",">",time()-60)->orderBy("datetime","desc")->limit(2)->get();
+				$UserLogs=LoginIp::where("userid","=",$log->userid)->orderBy("id","desc")->take(2)->get();
 				if($UserLogs->count()==2)
 				{
 					$i = 0;
@@ -109,10 +109,12 @@ class Job
 							$location=$iplocation->getlocation($userlog->ip);
 							if($Userlocation!=$location['country'])
 							{
+								
 								$user=User::where("id","=",$userlog->userid)->first();
+								echo "Send warn mail to user: ".$user->id."-".iconv('gbk', 'utf-8//IGNORE', $Userlocation)."-".iconv('gbk', 'utf-8//IGNORE', $location['country']);
 								$subject = Config::get('appName')."-系统警告";
 								$to = $user->email;
-								$text = "您好，系统发现您的账号在 ".iconv('gbk', 'utf-8//IGNORE', $location['country'])." 有异常登录，请您自己自行核实登陆行为。有异常请及时修改密码。" ;
+								$text = "您好，系统发现您的账号在 ".iconv('gbk', 'utf-8//IGNORE', $Userlocation)." 有异常登录，请您自己自行核实登陆行为。有异常请及时修改密码。" ;
 								try {
 									Mail::send($to, $subject, 'news/warn.tpl', [
 										"user" => $user,"text" => $text
