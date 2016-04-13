@@ -51,7 +51,7 @@ class IpController extends AdminController
 		}
 		
 		
-		$logs->setPath('/admin/alive');
+		$logs->setPath('/admin/login');
         return $this->view()->assign("loc",$loc)->assign('logs',$logs)->display('admin/ip/login.tpl');
     }
 
