@@ -6,7 +6,7 @@
     <section class="content-header">
         <h1>
             最近登陆记录
-            <small>Announcement</small>
+           
         </h1>
     </section>
 

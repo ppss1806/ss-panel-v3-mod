@@ -6,7 +6,7 @@
     <section class="content-header">
         <h1>
             节点在线IP
-            <small>Announcement</small>
+            
         </h1>
     </section>
 

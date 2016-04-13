@@ -11,7 +11,7 @@ use App\Services\Boot;
 
 //  BASE_PATH
 define('BASE_PATH', __DIR__);
-define('VERSION', '3.2.0 - glzjin mod b1-1604131800');
+define('VERSION', '3.2.0 - glzjin mod b1-1604132000');
 
 // Vendor Autoload
 require BASE_PATH.'/vendor/autoload.php';
