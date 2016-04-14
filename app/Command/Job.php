@@ -134,7 +134,8 @@ class Job
 						{
 							$location=$iplocation->getlocation($userlog->ip);
 							$nodes=Node::where("node_ip","=",$ip)->first();
-							if($Userlocation!=$location['country']&&$nodes==null)
+							$nodes2=Node::where("node_ip","=",$userlog->ip)->first();
+							if($Userlocation!=$location['country']&&$nodes==null&&$nodes2==null)
 							{
 								
 								$user=User::where("id","=",$userlog->userid)->first();

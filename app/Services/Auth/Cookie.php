@@ -28,6 +28,7 @@ class Cookie extends Base
         $uid = Utils\Cookie::get('uid');
         $key = Utils\Cookie::get('key');
 		$ip = Utils\Cookie::get('ip');
+		
 		$expire_in = Utils\Cookie::get('expire_in');
 		
         if ($uid == null){
