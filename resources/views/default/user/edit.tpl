@@ -332,7 +332,75 @@
                 <!-- /.box -->
             </div>
 			
-			
+			<div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-google"></i>
+
+                        <h3 class="box-title">两步验证</h3>
+                    </div>
+                    <!-- /.box-header --><!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-horizontal">
+
+                            <div class="alert alert-info " >
+                                <h4><i class="icon fa fa-info"></i>请下载 Google 的两步验证器，扫描下面的二维码。
+								<p><i class="fa fa-android" aria-hidden="true"></i><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Android</a></p>
+								<p><i class="fa fa-apple" aria-hidden="true"></i><a href="https://itunes.apple.com/cn/app/google-authenticator/id388497605?mt=8">iOS</a></p>
+								<p>在没有测试完成绑定成功之前请不要启用。</p></h4>
+								
+                            </div>
+							
+							<p>当前设置：{if $user->ga_enable==1} 登陆时要求验证 {else} 不要求 {/if}</p>
+							<p>当前服务器时间：{date("Y-m-d H:i:s")}</p>
+							
+							<div id="msg-successc" class="alert alert-info alert-dismissable" style="display:none">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-info"></i> Ok!</h4>
+
+                                <p id="msg-successc-w"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">验证设置</label>
+
+                                <div class="col-sm-9">
+                                    <select id="ga-enable" class="form-control">
+										<option value="1">要求验证</option>
+										<option value="0">不要求</option>
+									</select>
+                                </div>
+								
+								
+								<div class="col-sm-12">
+									<div class="text-center">
+										<div id="ga-qr"></div>
+									</div>
+                                </div>
+								
+								<label class="col-sm-3 control-label">测试一下</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" id="code" placeholder="输入验证器生成的数字来测试" class="form-control">
+                                </div>
+								
+								
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <a class="btn btn-primary" href="/user/gareset">重置二维码</a> <button type="submit" id="ga-test" class="btn btn-primary">测试</button> <button type="submit" id="ga-set" class="btn btn-primary">设置</button>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+            </div>
 			
 			
 			
@@ -384,6 +452,14 @@
     })
 </script>
 
+<script src=" /assets/public/js/jquery.qrcode.min.js "></script>
+<script>
+	var ga_qrcode = '{$user->getGAurl()}';
+	jQuery('#ga-qr').qrcode({
+		"text": ga_qrcode
+	});
+</script>
+
 
 <script>
     $(document).ready(function () {
@@ -400,6 +476,64 @@
                         $("#msg-errorw").hide();
                         $("#msg-successw").show();
                         $("#msg-successw-w").html(data.msg);
+                    } else {
+                        $("#msg-error").show();
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#ga-test").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "gacheck",
+                dataType: "json",
+                data: {
+                    code: $("#code").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#msg-errorc").hide();
+                        $("#msg-successc").show();
+                        $("#msg-successc-w").html(data.msg);
+                    } else {
+                        $("#msg-error").show();
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#ga-set").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "gaset",
+                dataType: "json",
+                data: {
+                    enable: $("#ga-enable").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#msg-errorc").hide();
+                        $("#msg-successc").show();
+                        $("#msg-successc-w").html(data.msg);
                     } else {
                         $("#msg-error").show();
                         $("#msg-error-p").html(data.msg);

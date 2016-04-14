@@ -13,6 +13,8 @@ use App\Models\Code;
 use App\Models\Ip;
 use App\Models\LoginIp;
 use App\Utils\QQWry;
+use App\Utils\GA;
+
 
 
 
@@ -143,6 +145,73 @@ class UserController extends BaseController
 		$res['msg'] = "兑换成功";
         return $response->getBody()->write(json_encode($res));
     }
+	
+	
+	
+	
+	public function GaCheck($request, $response, $args)
+    {
+		$code = $request->getParam('code');
+		$user = $this->user;
+		
+
+		
+		if ( $code == "") {
+            $res['ret'] = 0;
+            $res['msg'] = "悟空别闹";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+		$ga = new GA();
+		$rcode = $ga->verifyCode($user->ga_token,$code);
+        if (!$rcode) {
+            $res['ret'] = 0;
+            $res['msg'] = "测试错误";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+		
+		$res['ret'] = 1;
+		$res['msg'] = "测试成功";
+        return $response->getBody()->write(json_encode($res));
+    }
+	
+	
+	public function GaSet($request, $response, $args)
+    {
+		$enable = $request->getParam('enable');
+		$user = $this->user;
+		
+
+		
+		if ( $enable == "") {
+            $res['ret'] = 0;
+            $res['msg'] = "悟空别闹";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+		$user->ga_enable=$enable;
+		$user->save();
+		
+		
+		$res['ret'] = 1;
+		$res['msg'] = "设置成功";
+        return $response->getBody()->write(json_encode($res));
+    }
+	
+	public function GaReset($request, $response, $args)
+	{
+		$user = $this->user;
+		$ga = new GA();
+		$secret = $ga->createSecret();
+		
+		$user->ga_token=$secret;
+		$user->save();
+		$newResponse = $response->withStatus(302)->withHeader('Location', '/user/edit');
+        return $newResponse;
+	}
+	
+	
 
     public function node()
     {

@@ -16,6 +16,10 @@
                 <input id="passwd" name="Password" type="password" class="form-control" placeholder="密码"/>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
+			<div class="form-group has-feedback">
+                <input id="passwd" name="Password" type="code" class="form-control" placeholder="两步验证码，没有设置就请不要输入"/>
+                <span class="glyphicon glyphicon-tag form-control-feedback"></span>
+            </div>
         </form>
         <div class="row">
             <div class="col-xs-8">
@@ -72,6 +76,7 @@
                 data:{
                     email: $("#email").val(),
                     passwd: $("#passwd").val(),
+					code: $("#code").val(),
                     remember_me: $("#remember_me").val()
                 },
                 success:function(data){

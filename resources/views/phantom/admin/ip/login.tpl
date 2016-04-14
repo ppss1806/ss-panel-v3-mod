@@ -25,6 +25,8 @@
 						<th>用户名</th>
 						<th>IP</th>
 						<th>归属地</th>
+						<th>时间</th>
+						<th>类型</th>
 					</tr>
 					{foreach $logs as $log}
 						<tr>
@@ -33,6 +35,12 @@
 							<td>{$log->user()->user_name}</td>
 							<td>{$log->ip}</td>
 							<td>{$loc[$log->ip]}</td>
+							<td>{$log->datetime()}</td>
+							{if $log->type==0}
+								<td>成功</td>
+							{else}
+								<td>失败</td>
+							{/if}
 						</tr>
 					{/foreach}
 				</table>

@@ -7,7 +7,7 @@
     <!-- Bootstrap 3.3.2 -->
     <link href="/assets/public/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <!-- Font Awesome Icons -->
-    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <!-- Theme style -->
     <link href="/assets/public/css/AdminLTE.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/public/css/blue.css" rel="stylesheet" type="text/css"/>

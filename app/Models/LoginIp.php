@@ -17,6 +17,11 @@ class LoginIp extends Model
     {
         return User::find($this->attributes['userid']);
     }
+	
+	public function datetime()
+	{
+		return date("Y-m-d H:i:s",$this->attributes['datetime']);
+	}
 
 
 

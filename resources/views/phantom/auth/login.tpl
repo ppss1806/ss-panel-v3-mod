@@ -16,6 +16,10 @@
 				</div>
 				
 				<div class="12u 12u$(xsmall)">
+					<input type="password" id="code" class="form-control" placeholder="两步验证码，没有设置就请不要输入"/>
+				</div>
+				
+				<div class="12u 12u$(xsmall)">
 					<input id="remember_me" value="week" type="checkbox">
 					<label for="remember_me">记住我</label>
 				</div>
@@ -68,6 +72,7 @@
                 data:{
                     email: $("#email").val(),
                     passwd: $("#passwd").val(),
+					code: $("#code").val(),
                     remember_me: $("#remember_me").val()
                 },
                 success:function(data){

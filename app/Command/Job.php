@@ -10,6 +10,8 @@ use App\Utils\Radius;
 use App\Utils\Tools;
 use App\Services\Mail;
 use App\Utils\QQWry;
+use App\Utils\Duoshuo;
+use App\Utils\GA;
 
 class Job
 {
@@ -24,6 +26,29 @@ class Job
 				$node->save();
 			}
 		}
+	}
+	
+	public static function SyncDuoshuo()
+    {
+		$users = User::all();
+        foreach($users as $user){
+			Duoshuo::add($user);
+		}
+		echo "ok";
+	}
+	
+	public static function UserGa()
+    {
+		$users = User::all();
+        foreach($users as $user){
+			
+			$ga = new GA();
+			$secret = $ga->createSecret();
+			
+			$user->ga_token=$secret;
+			$user->save();
+		}
+		echo "ok";
 	}
 	
 	public static function syncnasnode()

@@ -136,11 +136,6 @@
 		</div>
 	</section>
 	
-	<pre class="12u 12u$(xsmall)" id="msg-successm" style="display: none;">
-
-				<h4>成功!</h4>
-				<p id="msg-successm-w"></p>
-	</pre>
 	
 	<section>
 		<legend>每日邮件接收设置</legend>
@@ -163,6 +158,45 @@
 		</div>
 	</section>
 	
+	
+	
+	<section>
+		<legend>两步验证</legend>
+		<div class="12u 12u$(xsmall)">
+			<p>请下载 Google 的两步验证器，扫描下面的二维码。</p>
+			<p><i class="fa fa-android" aria-hidden="true"></i><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Android</a></p>
+			<p><i class="fa fa-apple" aria-hidden="true"></i><a href="https://itunes.apple.com/cn/app/google-authenticator/id388497605?mt=8">iOS</a></p>
+			<p>当前设置：{if $user->ga_enable==1} 登陆时要求验证 {else} 不验证 {/if}</p>
+			<p>当前服务器时间：{date("Y-m-d H:i:s")}</p>
+		</div>
+		
+		<div class="12u 12u$(xsmall)">
+			<div class="select-wrapper">
+			<select id="ga-enable">
+				<option value="1">要求验证</option>
+				<option value="0">不要求</option>
+			</select>
+			</div>
+		</div>
+		
+		<div class="12u 12u$(xsmall)">
+			<div class="text-center">
+				<div id="ga-qr"></div>
+			</div>
+		</div>
+		
+		<h3>测试一下</h3>
+
+		<div class="12u 12u$(xsmall)">
+			<input type="text" id="code" placeholder="输入验证器生成的数字来测试">
+		</div>
+		
+		<div class="12u 12u$(xsmall)">
+			<a class="special fit" href="/user/gareset">重置二维码</a></button><button type="submit" id="ga-test" class="special fit">测试</button><button type="submit" id="ga-set" class="special fit">设置</button>
+		</div>
+	</section>
+	
+	
 	</div>
 </div>
 
@@ -172,6 +206,73 @@
     $("#msg-success").hide();
     $("#msg-error").hide();
     $("#ss-msg-success").hide();
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#ga-test").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "gacheck",
+                dataType: "json",
+                data: {
+                    code: $("#code").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#msg-error").hide();
+                        $("#msg-success").show();
+                        $("#msg-success-p").html(data.msg);
+                    } else {
+                        $("#msg-error").show();
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
+</script>
+
+<script src=" /assets/public/js/jquery.qrcode.min.js "></script>
+<script>
+	var ga_qrcode = '{$user->getGAurl()}';
+	jQuery('#ga-qr').qrcode({
+		"text": ga_qrcode
+	});
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#ga-set").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "gaset",
+                dataType: "json",
+                data: {
+                    enable: $("#ga-enable").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#msg-error").hide();
+                        $("#msg-success").show();
+                        $("#msg-success-p").html(data.msg);
+                    } else {
+                        $("#msg-error").show();
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
 </script>
 
 <script>

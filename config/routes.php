@@ -68,6 +68,9 @@ $app->group('/user', function () {
     $this->get('/logout', 'App\Controllers\UserController:logout');
 	$this->get('/code', 'App\Controllers\UserController:code');
 	$this->post('/code', 'App\Controllers\UserController:codepost');
+	$this->post('/gacheck', 'App\Controllers\UserController:GaCheck');
+	$this->post('/gaset', 'App\Controllers\UserController:GaSet');
+	$this->get('/gareset', 'App\Controllers\UserController:GaReset');
 })->add(new Auth());
 
 // Auth

@@ -62,6 +62,7 @@ class PasswordController extends BaseController
         // reset password
         $hashPassword = Hash::passwordHash($password);
         $user->pass = $hashPassword;
+		$user->ga_enable = 0;
         if(!$user->save()){
             $rs['ret'] = 0;
             $rs['msg'] = '重置失败,请重试';

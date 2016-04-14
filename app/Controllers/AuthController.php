@@ -14,6 +14,11 @@ use App\Utils\Hash,App\Utils\Da;
 use App\Services\Auth;
 use App\Models\User;
 use App\Models\LoginIp;
+use App\Utils\Duoshuo;
+use App\Utils\GA;
+
+
+
 
 /**
  *  AuthController
@@ -33,6 +38,7 @@ class AuthController extends BaseController
         $email =  $request->getParam('email');
         $email = strtolower($email);
         $passwd = $request->getParam('passwd');
+		$code = $request->getParam('code');
         $rememberMe = $request->getParam('remember_me');
 
         // Handle Login
@@ -63,6 +69,20 @@ class AuthController extends BaseController
         if($rememberMe){
             $time = 3600*24*7;
         }
+		
+		if($user->ga_enable==1)
+		{
+			$ga = new GA();
+			$rcode = $ga->verifyCode($user->ga_token,$code);
+			
+			if (!$rcode) {
+				$res['ret'] = 0;
+				$res['msg'] = "403 两步验证码错误";
+				return $response->getBody()->write(json_encode($res));
+			}
+		}
+		
+		
         Auth::login($user->id,$time);
         $rs['ret'] = 1;
         $rs['msg'] = "欢迎回来";
@@ -170,6 +190,12 @@ class AuthController extends BaseController
 		$user->plan='A';
 		$user->node_speedlimit=0;
 		$user->theme=Config::get('theme');
+		
+		$ga = new GA();
+		$secret = $ga->createSecret();
+		
+		$user->ga_token=$secret;
+		$user->ga_enable=0;
 		
 
         if($user->save()){
