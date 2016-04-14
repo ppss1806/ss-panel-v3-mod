@@ -9,6 +9,9 @@ namespace App\Command;
 
 use App\Models\User;
 use App\Utils\Hash,App\Utils\Tools,App\Services\Config;
+
+use App\Utils\GA;
+
 class XCat
 {
 
@@ -105,6 +108,16 @@ class XCat
 			$user->plan='A';
 			$user->node_speedlimit=0;
 			$user->theme=Config::get('theme');
+
+
+
+		$ga = new GA();
+                $secret = $ga->createSecret();
+                $user->ga_token=$secret;
+                $user->ga_enable=0;
+
+
+
             if ($user->save()){
                 echo "Successful/添加成功!";
                 return true;
