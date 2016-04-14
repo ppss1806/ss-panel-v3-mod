@@ -126,13 +126,15 @@ class Job
 						if($i == 0)
 						{
 							$location=$iplocation->getlocation($userlog->ip);
+							$ip=$userlog->ip;
 							$Userlocation = $location['country'];
 							$i++;
 						}
 						else
 						{
 							$location=$iplocation->getlocation($userlog->ip);
-							if($Userlocation!=$location['country'])
+							$nodes=Node::where("node_ip","=",$ip)->first();
+							if($Userlocation!=$location['country']&&$nodes==null)
 							{
 								
 								$user=User::where("id","=",$userlog->userid)->first();

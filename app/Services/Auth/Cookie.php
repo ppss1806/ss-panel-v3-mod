@@ -3,6 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
+use App\Models\Node;
 use App\Utils;
 use App\Utils\Hash;
 use App\Services\Config;
@@ -35,7 +36,8 @@ class Cookie extends Base
             return $user;
         }
 		
-		if($ip != md5($_SERVER["REMOTE_ADDR"].Config::get('key').$uid.$expire_in))
+		$nodes=Node::where("node_ip","=",$_SERVER["REMOTE_ADDR"])->first();
+		if($ip != md5($_SERVER["REMOTE_ADDR"].Config::get('key').$uid.$expire_in)&&$nodes==null)
 		{
 			$user = new User();
             $user->isLogin = false;

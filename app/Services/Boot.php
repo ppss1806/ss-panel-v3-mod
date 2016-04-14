@@ -21,7 +21,7 @@ class Boot
     }
 
     public static function setVersion($version){
-        $_ENV['version'] = $version;
+        $System_Config['version'] = $version;
     }
 
     public static function setTimezone(){

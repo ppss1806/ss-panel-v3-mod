@@ -5,8 +5,10 @@ namespace App\Services;
 
 class Config
 {
+	
     public static function get($key){
-       return $_ENV[$key];
+		require PUBLIC_PATH."/../config/config.php";
+		return $System_Config[$key];
     }
 
     public static function getPublicConfig(){

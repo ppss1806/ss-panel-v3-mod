@@ -202,7 +202,7 @@ class AuthController extends BaseController
             $res['ret'] = 1;
             $res['msg'] = "注册成功";
 
-
+			Duoshuo::add($user);
 		
 			Da::add($email);
 			

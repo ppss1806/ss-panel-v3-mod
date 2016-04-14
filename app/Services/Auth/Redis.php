@@ -3,6 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
+use App\Models\Node;
 use App\Services\RedisClient;
 use App\Utils\Tools;
 use App\Utils\Cookie;
@@ -41,7 +42,8 @@ class Redis extends Base
         $value = $this->client->get($sid);
 		
 		$ip = $this->client->get($sid."ip");
-		if($ip != $_SERVER["REMOTE_ADDR"])
+		$nodes=Node::where("node_ip","=",$_SERVER["REMOTE_ADDR"])->first();
+		if($ip != $_SERVER["REMOTE_ADDR"]&&$nodes==null)
 		{
 			$user = new User();
             $user->isLogin = false;
