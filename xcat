@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-define('PUBLIC_PATH', __DIR__);
+define('PUBLIC_PATH', __DIR__."/public");
 require __DIR__.'/bootstrap.php';
 /***
  * ss-panel xcat script
