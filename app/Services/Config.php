@@ -7,7 +7,7 @@ class Config
 {
 	
     public static function get($key){
-		require PUBLIC_PATH."/../config/config.php";
+		require BASE_PATH."/config/.config.php";
 		return $System_Config[$key];
     }
 
