@@ -162,7 +162,7 @@
 		
 		</section>
 		<div class="12u 12u$(xsmall)">
-			<button type="submit" id="add" class="special fit">修改</button>
+			<button type="submit" id="submit" class="special fit">修改</button>
 		</div>
 		
 	</div>
