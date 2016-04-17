@@ -151,6 +151,27 @@ class Tools
         return $user->port;
     }
 	
+	public static function getAvPort()
+    {
+		$retry=10;
+		$i=0;
+		while($i<$retry)
+		{
+			$port=(int)rand(Config::get('min_port'),Config::get('max_port'));
+			$user = User::where('port', $port)->first();
+			if ($user == null) {
+				return $port; 
+			}
+			else
+			{
+				$i++;
+			}
+			
+		}
+        
+        return (int)Rand(0,65535);
+    }
+	
 	public static function getDir($dir) {
 		$dirArray[]=NULL;
 		if (false != ($handle = opendir ( $dir ))) {

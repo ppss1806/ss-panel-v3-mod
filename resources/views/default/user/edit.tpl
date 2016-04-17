@@ -378,6 +378,7 @@
 								<div class="col-sm-12">
 									<div class="text-center">
 										<div id="ga-qr"></div>
+										密钥：{$user->ga_token}
 									</div>
                                 </div>
 								
@@ -395,7 +396,47 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <a class="btn btn-primary" href="/user/gareset">重置二维码</a> <button type="submit" id="ga-test" class="btn btn-primary">测试</button> <button type="submit" id="ga-set" class="btn btn-primary">设置</button>
+                        <a class="btn btn-primary" href="/user/gareset">重置</a> <button type="submit" id="ga-test" class="btn btn-primary">测试</button> <button type="submit" id="ga-set" class="btn btn-primary">设置</button>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+				
+				</div>
+				
+				<div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-fire"></i>
+
+                        <h3 class="box-title">重置端口</h3>
+                    </div>
+                    <!-- /.box-header --><!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-horizontal">
+							<div class="col-sm-12">
+                                当前端口：{$user->port}
+                            </div>
+                            
+							
+							<div id="msg-successpo" class="alert alert-info alert-dismissable" style="display:none">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-info"></i> Ok!</h4>
+
+                                <p id="msg-successpo-w"></p>
+                            </div>
+
+                           
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                         <button type="submit" id="portreset" class="btn btn-primary">重置端口</button>
                     </div>
 
                 </div>
@@ -420,6 +461,35 @@
     $("#msg-success").hide();
     $("#msg-error").hide();
     $("#ss-msg-success").hide();
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#portreset").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "resetport",
+                dataType: "json",
+                data: {
+                   
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#msg-error").hide();
+                        $("#msg-successpo").show();
+                        $("#msg-successpo-w").html(data.msg);
+                    } else {
+                        $("#msg-error").show();
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
 </script>
 
 <script>

@@ -104,3 +104,7 @@ $System_Config['node_offline_warn']='true';
 
 #异地登陆提示
 $System_Config['login_warn']='true';
+
+#端口池
+$System_Config['min_port']='10000';
+$System_Config['max_port']='65535';

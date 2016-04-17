@@ -16,7 +16,7 @@
 				</div>
 				
 				<div class="12u 12u$(xsmall)">
-					<input type="password" id="code" class="form-control" placeholder="两步验证码，没有设置就请不要输入"/>
+					<input type="text" id="code" class="form-control" placeholder="两步验证码，没有设置就请不要输入"/>
 				</div>
 				
 				<div class="12u 12u$(xsmall)">

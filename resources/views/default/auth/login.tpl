@@ -17,7 +17,7 @@
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
 			<div class="form-group has-feedback">
-                <input id="passwd" name="Password" type="code" class="form-control" placeholder="两步验证码，没有设置就请不要输入"/>
+                <input id="code" name="code" type="text" class="form-control" placeholder="两步验证码，没有设置就请不要输入"/>
                 <span class="glyphicon glyphicon-tag form-control-feedback"></span>
             </div>
         </form>

@@ -182,6 +182,7 @@
 		<div class="12u 12u$(xsmall)">
 			<div class="text-center">
 				<div id="ga-qr"></div>
+				密钥：{$user->ga_token}
 			</div>
 		</div>
 		
@@ -192,7 +193,27 @@
 		</div>
 		
 		<div class="12u 12u$(xsmall)">
-			<a class="special fit" href="/user/gareset">重置二维码</a></button><button type="submit" id="ga-test" class="special fit">测试</button><button type="submit" id="ga-set" class="special fit">设置</button>
+			<a class="special fit" href="/user/gareset">重置</a><button type="submit" id="ga-test" class="special fit">测试</button><button type="submit" id="ga-set" class="special fit">设置</button>
+		</div>
+	</section>
+	
+	
+	
+	
+	
+	
+	
+	
+	<section>
+		<legend>重置端口</legend>
+		<div class="12u 12u$(xsmall)">
+			当前端口：{$user->port}
+		</div>
+		
+		
+		
+		<div class="12u 12u$(xsmall)">
+			<button type="submit" id="portreset" class="special fit">重置端口</button>
 		</div>
 	</section>
 	
@@ -208,6 +229,34 @@
     $("#ss-msg-success").hide();
 </script>
 
+
+<script>
+    $(document).ready(function () {
+        $("#portreset").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "resetport",
+                dataType: "json",
+                data: {
+                   
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#msg-error").hide();
+                        $("#msg-success").show();
+                        $("#msg-success-w").html(data.msg);
+                    } else {
+                        $("#msg-error").show();
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
+</script>
 
 
 <script>

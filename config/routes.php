@@ -71,6 +71,7 @@ $app->group('/user', function () {
 	$this->post('/gacheck', 'App\Controllers\UserController:GaCheck');
 	$this->post('/gaset', 'App\Controllers\UserController:GaSet');
 	$this->get('/gareset', 'App\Controllers\UserController:GaReset');
+	$this->post('/resetport', 'App\Controllers\UserController:ResetPort');
 })->add(new Auth());
 
 // Auth

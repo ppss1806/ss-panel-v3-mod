@@ -199,6 +199,20 @@ class UserController extends BaseController
         return $response->getBody()->write(json_encode($res));
     }
 	
+	public function ResetPort($request, $response, $args)
+    {
+		
+		$user = $this->user;
+		
+		$user->port=Tools::getAvPort();
+		$user->save();
+		
+		
+		$res['ret'] = 1;
+		$res['msg'] = "设置成功，新端口是".$user->port;
+        return $response->getBody()->write(json_encode($res));
+    }
+	
 	public function GaReset($request, $response, $args)
 	{
 		$user = $this->user;
@@ -239,7 +253,7 @@ class UserController extends BaseController
 					$a++;
 				}
 
-				if($node->sort==0)
+				if($node->sort==0||$node->sort==7||$node->sort==8)
 				{
 					$node_tempalive=$node->getOnlineUserCount();
 					$node_prealive[$node->id]=$node_tempalive;

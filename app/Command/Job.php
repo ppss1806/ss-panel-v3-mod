@@ -89,7 +89,7 @@ class Job
 			$nodes = Node::all();
 			$adminUser = User::where("is_admin","=","1")->get();
 			foreach($nodes as $node){
-				if(time()-$node->node_heartbeat>90&&time()-$node->node_heartbeat<150&&$node->node_heartbeat!=0&&$node->sort==0)
+				if(time()-$node->node_heartbeat>150&&time()-$node->node_heartbeat<210&&$node->node_heartbeat!=0&&$node->sort==0)
 				{
 					foreach($adminUser as $user)
 					{

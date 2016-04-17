@@ -79,7 +79,7 @@
 
 															{/if}
 															
-															{if $node->sort == 0}
+															{if $node->sort==0||$node->sort==7||$node->sort==8}
 															<div class="col-xs-4 col-sm-2">加密：</div>
 															<div class="col-xs-8 col-sm-4">
 															<span class="label label-danger">
@@ -106,7 +106,7 @@
 															
 															
 
-															{if $node->sort==0&&$node->node_speedlimit!=0}
+															{if ($node->sort==0||$node->sort==7||$node->sort==8)&&$node->node_speedlimit!=0}
 															<div class="col-xs-4 col-sm-2">节点限速：</div>
 															<div class="col-xs-8 col-sm-4">
 																{if $node->node_speedlimit>$user->node_speedlimit}
@@ -146,7 +146,7 @@
 										<!-- /.info-box -->
 									</div>
 								</div>
-								{if $node->sort==0}
+								{if $node->sort==0||$node->sort==7||$node->sort==8}
 								{$load=$node->getNodeLoad()}
 								{$uptime=$node->getNodeUptime()}
 								{/if}
