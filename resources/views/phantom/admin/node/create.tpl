@@ -33,7 +33,7 @@
 		
 		<div class="12u 12u$(xsmall)">
 			<label class="control-label">节点地址</label>
-			<input type="text" id="address" class="form-control" value=""/>
+			<input type="text" id="server" class="form-control" value=""/>
 		</div>
 		
 		<div class="12u 12u$(xsmall)">
