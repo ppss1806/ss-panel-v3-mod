@@ -10,13 +10,13 @@ $System_Config['baseUrl'] = 'https://zhaojin97.cn';            // 站点地址
 $System_Config['timeZone'] = 'PRC';        // RPC 天朝时间  UTC 格林时间
 $System_Config['pwdMethod'] = 'sha256';       // 密码加密   可选 md5,sha256
 $System_Config['salt'] = '';               // 密码加密用，从旧版升级请留空
-$System_Config['theme']    = 'default';   // 主题
+$System_Config['theme']    = 'material';   // 主题
 $System_Config['authDriver'] = 'cookie';   // 登录验证存储方式,推荐使用Redis   可选: cookie,redis
 $System_Config['sessionDriver'] = 'cookie';
 $System_Config['cacheDriver'] = 'cookie';
 $System_Config['tokenDriver'] = 'db';
 
-$System_Config['version'] = '3.2 glzjin mod-20160414180900';
+$System_Config['version'] = '3.2 glzjin mod-201604191600';
 
 // mu key 用于校验ss-go mu的请求,半角逗号分隔
 $System_Config['muKey'] = '';
@@ -108,3 +108,7 @@ $System_Config['login_warn']='true';
 #端口池
 $System_Config['min_port']='10000';
 $System_Config['max_port']='65535';
+
+
+$System_Config['pacp_offset']='-20000';
+$System_Config['pacpp_offset']='-20000';

@@ -100,7 +100,7 @@
 															
                                                         <div class="col-xs-4 col-sm-2">在线人数：</div>
                                                         <div class="col-xs-8 col-sm-4"><span
-                                                                    class="label label-danger">{$node_prealive[$node->id]}</span>
+                                                                    class="label label-danger">{$node->getOnlineUserCount()}</span>
                                                         </div>
 														{/if}
 														
@@ -142,11 +142,11 @@
 										<!-- /.info-box -->
 									</div>
 								</div>
-								{if $node->sort==0||$node->sort==7||$node->sort==8}
+								{if ($node->sort==0||$node->sort==7||$node->sort==8)&&$node->getNodeLoad()!="暂无数据"}
 								{$load=$node->getNodeLoad()}
 								{$uptime=$node->getNodeUptime()}
 								{/if}
-                        {/foreach}
+							{/foreach}
 						<i class="fa fa-server"></i>负载：{$load} <i class="fa fa-upload" aria-hidden="true"></i>Uptime：{$uptime}
 						</div>
 						</div>

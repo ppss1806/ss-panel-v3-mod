@@ -424,7 +424,7 @@ class UserController extends BaseController
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
-					$json_show="PAC Plus 信息<br>PAC 地址：".Config::get('baseUrl')."downloads/node_pac.php?address=".$node->server."&port=".($this->user->port-20000)."<br>支持方式：".$node->method."<br>备注：".$node->info;
+					$json_show="PAC Plus 信息<br>PAC 地址：".Config::get('baseUrl')."downloads/node_pac.php?address=".$node->server."&port=".($this->user->port+Config::get('pacp_offset'))."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
 
 					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacplus.tpl');
@@ -438,7 +438,7 @@ class UserController extends BaseController
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
-					$json_show="PAC Plus Plus信息<br>PAC 一般地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port-20000)."<br>PAC iOS 地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port-20000)."&ios=1<br>"."备注：".$node->info;
+					$json_show="PAC Plus Plus信息<br>PAC 一般地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port+Config::get('pacpp_offset'))."<br>PAC iOS 地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port-20000)."&ios=1<br>"."备注：".$node->info;
 
 					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacpp.tpl');
 				}
