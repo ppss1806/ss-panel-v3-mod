@@ -32,7 +32,6 @@
 					</div>
 					
 					
-					<h2 class="content-sub-heading">邀请码</h2>
 					<div class="table-responsive">
 						{$logs->render()}
                         <table class="table">
