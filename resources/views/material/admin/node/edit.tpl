@@ -68,16 +68,6 @@
 								</div>
 								
 								<div class="form-group form-group-label">
-									<label class="floating-label" for="passwd">连接密码</label>
-									<input class="form-control" id="passwd" type="text" value="{$node->passwd}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="method">自定义加密</label>
-									<input class="form-control" id="method" type="text" value="{$node->method}">
-								</div>
-								
-								<div class="form-group form-group-label">
 									<label class="floating-label" for="status">节点状态</label>
 									<input class="form-control" id="status" type="text" value="{$node->status}">
 								</div>

@@ -65,15 +65,6 @@
 									</div>
 								</div>
 								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="passwd">连接密码</label>
-									<input class="form-control" id="passwd" type="text" >
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="method">自定义加密</label>
-									<input class="form-control" id="method" type="text">
-								</div>
 								
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="status">节点状态</label>
