@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
-	<meta name="theme-color" content="#3f51b5">
+	<meta name="theme-color" content="#f44336">
 	<title>{$config["appName"]}</title>
 
 	
@@ -163,10 +163,19 @@
 			white-space: pre-wrap;
 			word-wrap: break-word;
 		}
+		
+		.page-red .ui-content-header {
+			background-image: url(/theme/material/css/images/bg/red.jpg);
+		}
+		
+		.content-heading {
+			font-weight: 300;
+			color: #fff;
+		}
 	</style>
 </head>
-<body class="page-brand">
-	<header class="header header-transparent header-waterfall ui-header">
+<body class="page-red">
+	<header class="header header-red header-transparent header-waterfall ui-header">
 		<ul class="nav nav-list pull-left">
 			<div>
 				<a data-toggle="menu" href="#ui_menu">

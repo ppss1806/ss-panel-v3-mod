@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
-	<meta name="theme-color" content="#3f51b5">
+	<meta name="theme-color" content="#ff9800">
 	<title>{$config["appName"]}</title>
 
 	
@@ -175,14 +175,24 @@
 		.progress-green .progress-bar {
 			background-color: #ff0a00;
 		}
+		
+		.page-orange .ui-content-header {
+			background-image: url(/theme/material/css/images/bg/amber.jpg);
+		}
+		
+		.content-heading {
+			font-weight: 300;
+			color: #fff;
+		}
+				
 	</style>
 </head>
-<body class="page-brand">
-	<header class="header header-transparent header-waterfall ui-header">
+<body class="page-orange">
+	<header class="header header-orange header-transparent header-waterfall ui-header">
 		<ul class="nav nav-list pull-left">
 			<div>
 				<a data-toggle="menu" href="#ui_menu">
-					<span class="icon icon-lg">menu</span>
+					<span class="icon icon-lg text-white">menu</span>
 				</a>
 			</div>
 		</ul>
@@ -223,11 +233,7 @@
 		<div class="menu-scroll">
 			<div class="menu-content">
 				<a class="menu-logo" href="/"><i class="icon icon-lg">person_pin_circle</i>&nbsp;用户面板</a>
-				<ul class="nav">
-					
-					
-					
-					
+				<ul class="nav">		
 					<li>
 						<a href="/user">
 							<i class="icon icon-lg">recent_actors</i>&nbsp;用户中心
