@@ -163,6 +163,18 @@
 			white-space: pre-wrap;
 			word-wrap: break-word;
 		}
+		
+		.progress-green .progress-bar {
+			background-color: #f0231b;
+		}
+		
+		.progress-green {
+			background-color: #000;
+		}
+		
+		.progress-green .progress-bar {
+			background-color: #ff0a00;
+		}
 	</style>
 </head>
 <body class="page-brand">
