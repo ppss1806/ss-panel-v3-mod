@@ -207,7 +207,7 @@
 			</div>
 		</ul>
 	</header>
-	<nav aria-hidden="true" class="menu" id="ui_menu" tabindex="-1">
+	<nav aria-hidden="true" class="menu menu-left nav-drawer nav-drawer-md" id="ui_menu" tabindex="-1">
 		<div class="menu-scroll">
 			<div class="menu-content">
 				<a class="menu-logo" href="/"><i class="icon icon-lg">person_pin</i>&nbsp;管理面板</a>

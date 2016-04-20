@@ -19,7 +19,7 @@
 			<section class="content-inner margin-top-no">
 				<div class="row">
 				
-					<div class="col-lg-12 col-md-12">
+					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -50,7 +50,7 @@
 						</div>
 					</div>
 					
-					<div class="col-lg-12 col-md-12">
+					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -73,7 +73,7 @@
 						</div>
 					</div>
 					
-					<div class="col-lg-12 col-md-12">
+					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -96,7 +96,7 @@
 						</div>
 					</div>
 					
-					<div class="col-lg-12 col-md-12">
+					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -135,7 +135,7 @@
 						</div>
 					</div>
 					
-					<div class="col-lg-12 col-md-12">
+					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -162,7 +162,7 @@
 						</div>
 					</div>
 					
-					<div class="col-lg-12 col-md-12">
+					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -189,7 +189,7 @@
 					</div>
 					
 					
-					<div class="col-lg-12 col-md-12">
+					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -236,7 +236,7 @@
 						</div>
 					</div>
 					
-					<div class="col-lg-12 col-md-12">
+					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">

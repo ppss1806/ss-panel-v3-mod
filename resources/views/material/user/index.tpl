@@ -33,7 +33,7 @@
 				</div>
 				<div class="ui-card-wrap">
 					<div class="row">
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
@@ -62,7 +62,7 @@
 							</div>
 						</div>
 						
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
@@ -92,7 +92,7 @@
 							</div>
 						</div>
 						
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
@@ -123,7 +123,7 @@
 						</div>
 						
 						
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
@@ -137,7 +137,7 @@
 							</div>
 						</div>
 						
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
@@ -165,13 +165,13 @@
 							</div>
 						</div>
 						
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">流量使用情况</p>
 											<div class="row">
-												<div class="col-xs-12">
+												<div class="col-xs-6">
 													<div class="progress progress-striped">
 														<div class="progress-bar" role="progressbar" aria-valuenow="40"
 															 aria-valuemin="0" aria-valuemax="100"
@@ -199,7 +199,7 @@
 							</div>
 						</div>
 						
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
@@ -229,7 +229,7 @@
 						
 						
 						
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
@@ -253,7 +253,7 @@
 						</div>
 						
 						{if $duoshuo_shortname!=""}
-						<div class="col-lg-12 col-sm-12">
+						<div class="col-lg-6 col-sm-6">
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
