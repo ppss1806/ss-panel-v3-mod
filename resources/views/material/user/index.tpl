@@ -171,8 +171,8 @@
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">流量使用情况</p>
 											<div class="row">
-												<div class="col-xs-6">
-													<div class="progress progress-striped">
+												<div class="col-xs-12">
+													<div class="progress progress-striped progress-green">
 														<div class="progress-bar" role="progressbar" aria-valuenow="40"
 															 aria-valuemin="0" aria-valuemax="100"
 															 style="width: {$user->trafficUsagePercent()}%">
@@ -215,10 +215,10 @@
 										<div class="card-action-btn pull-left">
 											{if $user->isAbleToCheckin() }
 												<p id="checkin-btn">
-													<button id="checkin" class="btn btn-brand-accent btn-flat waves-attach"><span class="icon">check</span>&nbsp;续命</button>
+													<button id="checkin" class="btn btn-brand btn-flat waves-attach"><span class="icon">check</span>&nbsp;续命</button>
 												</p>
 											{else}
-												<p><a class="btn btn-brand-accent disabled btn-flat waves-attach" href="#"><span class="icon">check</span>&nbsp;不能续命</a></p>
+												<p><a class="btn btn-brand disabled btn-flat waves-attach" href="#"><span class="icon">check</span>&nbsp;不能续命</a></p>
 											{/if}
 										</div>
 									</div>
