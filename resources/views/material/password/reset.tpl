@@ -83,6 +83,8 @@
 <script>
     $(document).ready(function(){
         function reset(){
+			$("#result").modal();
+            $("#msg").html("正在发送，请稍候。。。");
             $.ajax({
                 type:"POST",
                 url:"/password/reset",
@@ -102,7 +104,7 @@
                 },
                 error:function(jqXHR){
                     $("#result").modal();
-                        $("#msg").html(data.msg);
+                    $("#msg").html(data.msg);
                 }
             });
         }
