@@ -16,7 +16,7 @@ $System_Config['sessionDriver'] = 'cookie';
 $System_Config['cacheDriver'] = 'cookie';
 $System_Config['tokenDriver'] = 'db';
 
-$System_Config['version'] = '3.2 glzjin mod-201604191600';
+$System_Config['version'] = '<a href="https://www.zhaoj.in">Glzjin</a> mod-201604200945';
 
 // mu key 用于校验ss-go mu的请求,半角逗号分隔
 $System_Config['muKey'] = '';
