@@ -1,7 +1,7 @@
 
 
 
-{include file='user/main.tpl'}
+{include file='user/header_info.tpl'}
 
 
 
