@@ -146,7 +146,11 @@
 								{$load=$node->getNodeLoad()}
 								{$uptime=$node->getNodeUptime()}
 								{/if}
+								{if $node->sort==0}
+								{$speedtest=$node->getSpeedtest()}
+								{/if}
 							{/foreach}
+						<p>{$speedtest}</p>
 						<i class="fa fa-server"></i>负载：{$load} <i class="fa fa-upload" aria-hidden="true"></i>Uptime：{$uptime}
 						</div>
 						</div>

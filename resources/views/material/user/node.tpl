@@ -11,9 +11,6 @@
 
 
 
-
-
-
 	<main class="content">
 		<div class="content-header ui-content-header">
 			<div class="container">
@@ -116,7 +113,13 @@
 																	{$load=$node->getNodeLoad()}
 																	{$uptime=$node->getNodeUptime()}
 																	{/if}
+																	
+																	{if $node->sort==0}
+																	{$speedtest=$node->getSpeedtest()}
+																	{/if}
 																	{/foreach}
+																	
+																	
 																
 																
 																	
@@ -124,7 +127,7 @@
 															
 																
 																
-														
+															<p>{$speedtest}</p>
 															<p><i class="icon icon-lg">cloud_down</i>负载：{$load} </p><p><i class="icon icon-lg">trending_up</i>Uptime：{$uptime}</p>
 															<div class="tile-footer">
 																<div class="tile-footer-btn pull-left">
