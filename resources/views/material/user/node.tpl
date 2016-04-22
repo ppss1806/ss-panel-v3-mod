@@ -136,6 +136,9 @@
 															</div>
 														</div>
 												</div>
+												{$load="暂无数据"}
+												{$uptime="暂无数据"}
+												{$speedtest="暂无数据"}
 											{/foreach}
 										</div>
 									</div>
