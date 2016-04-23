@@ -72,6 +72,7 @@ $app->group('/user', function () {
 	$this->post('/gaset', 'App\Controllers\UserController:GaSet');
 	$this->get('/gareset', 'App\Controllers\UserController:GaReset');
 	$this->post('/resetport', 'App\Controllers\UserController:ResetPort');
+	$this->post('/pacset', 'App\Controllers\UserController:PacSet');
 })->add(new Auth());
 
 // Auth
@@ -158,6 +159,12 @@ $app->group('/mu', function () {
 $app->group('/res', function () {
     $this->get('/captcha/{id}', 'App\Controllers\ResController:captcha');
 });
+
+
+$app->group('/link', function () {
+    $this->get('/{token}', 'App\Controllers\LinkController:GetContent');
+});
+
 
 // Run Slim Routes for App
 $app->run();

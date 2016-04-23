@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\InviteCode;
 use App\Services\Auth;
-use App\Models\Node,App\Models\TrafficLog,App\Models\CheckInLog,App\Models\Ann;
+use App\Models\Node,App\Models\TrafficLog,App\Models\CheckInLog,App\Models\Ann,App\Models\Speedtest;
 use App\Services\Config;
 use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Da;
 
@@ -70,6 +70,15 @@ class UserController extends BaseController
 				}
 			}
 		}
+		
+		
+		
+		/*$Speedtest['Tping']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("telecomping","desc")->get();
+		$Speedtest['Uping']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("unicomping","desc")->take(3);
+		$Speedtest['Cping']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("cmccping","desc")->take(3);
+		$Speedtest['Tspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("telecomeupload","desc")->take(3);
+		$Speedtest['Uspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("unicomupload","desc")->take(3);
+		$Speedtest['Cspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("cmccupload","desc")->take(3);*/
 		
         return $this->view()->assign('anns',$Anns)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
@@ -331,12 +340,15 @@ class UserController extends BaseController
 					$json_show = json_encode($ary, JSON_PRETTY_PRINT);
 					$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
 					$ssqr = "ss://" . base64_encode($ssurl);
+					
+					$token_1 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,0,$ary['method']);
+					$token_2 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,1,$ary['method']);
 
 					$surge_base = Config::get('baseUrl') . "/downloads/ProxyBase.conf";
 					$surge_proxy = "#!PROXY-OVERRIDE:ProxyBase.conf\n";
 					$surge_proxy .= "[Proxy]\n";
 					$surge_proxy .= "Proxy = custom," . $ary['server'] . "," . $ary['server_port'] . "," . $ary['method'] . "," . $ary['password'] . "," . Config::get('baseUrl') . "/downloads/SSEncrypt.module";
-					return $this->view()->assign('ary', $ary)->assign('json', $json)->assign('global_url',Config::get('baseUrl')."/downloads")->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
+					return $this->view()->assign('ary', $ary)->assign('json', $json)->assign('link1',Config::get('baseUrl')."/link/".$token_1)->assign('link2',Config::get('baseUrl')."/link/".$token_2)->assign('global_url',Config::get('baseUrl')."/downloads")->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
 				}
 			break; 
 
@@ -372,7 +384,9 @@ class UserController extends BaseController
 
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
-					$json_show="PAC 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
+					$exp = explode(":",$node->server);
+					$token = LinkController::GenerateCode(3,$exp[0],$exp[1],0,$this->user->id);
+					$json_show="PAC 信息<br>地址：".Config::get('baseUrl')."/link/".$token."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
 					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopac.tpl');
 
@@ -398,6 +412,7 @@ class UserController extends BaseController
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
+					
 					$json_show="Anyconnect 信息<br>地址：".$node->server."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
 					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfoanyconnect.tpl');
@@ -411,7 +426,13 @@ class UserController extends BaseController
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
-					$json_show="APN 文件<br>移动地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=cmcc<br>联通地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=cnunc<br>电信地址：".Config::get('baseUrl')."/downloads/node_apn.php?server=".$node->server."&isp=ctnet<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
+					$exp = explode(":",$node->server);
+					
+					$token_cmcc = LinkController::GenerateApnCode("cmnet",$exp[0],$exp[1],$this->user->id);
+					$token_cnunc = LinkController::GenerateApnCode("3gnet",$exp[0],$exp[1],$this->user->id);
+					$token_ctnet = LinkController::GenerateApnCode("ctnet",$exp[0],$exp[1],$this->user->id);
+					
+					$json_show="APN 文件<br>移动地址：".Config::get('baseUrl')."/link/".$token_cmcc."<br>联通地址：".Config::get('baseUrl')."/link/".$token_cnunc."<br>电信地址：".Config::get('baseUrl')."/link/".$token_ctnet."<br>"."用户名：".$email."<br>密码：".$this->user->passwd."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
 					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfoapndownload.tpl');
 				}
@@ -424,7 +445,8 @@ class UserController extends BaseController
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
-					$json_show="PAC Plus 信息<br>PAC 地址：".Config::get('baseUrl')."downloads/node_pac.php?address=".$node->server."&port=".($this->user->port+Config::get('pacp_offset'))."<br>支持方式：".$node->method."<br>备注：".$node->info;
+					$token = LinkController::GenerateCode(7,$node->server,($this->user->port-20000),0,$this->user->id);
+					$json_show="PAC Plus 信息<br>PAC 地址：".Config::get('baseUrl')."/link/".$token."<br>支持方式：".$node->method."<br>备注：".$node->info;
 
 
 					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacplus.tpl');
@@ -438,7 +460,9 @@ class UserController extends BaseController
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
-					$json_show="PAC Plus Plus信息<br>PAC 一般地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port+Config::get('pacpp_offset'))."<br>PAC iOS 地址：".Config::get('baseUrl')."/downloads/node_pacpp.php?address=".$node->server."&port=".($this->user->port-20000)."&ios=1<br>"."备注：".$node->info;
+					$token = LinkController::GenerateCode(8,$node->server,($this->user->port-20000),0,$this->user->id);
+					$token_ios = LinkController::GenerateCode(8,$node->server,($this->user->port-20000),1);
+					$json_show="PAC Plus Plus信息<br>PAC 一般地址：".Config::get('baseUrl')."/link/".$token."<br>PAC iOS 地址：".Config::get('baseUrl')."/link/".$token_ios."<br>"."备注：".$node->info;
 
 					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacpp.tpl');
 				}
@@ -599,6 +623,27 @@ class UserController extends BaseController
 		
         
         $user->sendDailyMail = $mail;
+        $user->save();
+
+        $res['ret'] = 1;
+        $res['msg'] = "ok";
+        return $this->echoJson($response, $res);
+    }
+	
+	public function PacSet($request, $response, $args)
+    {
+        $pac = $request->getParam('pac');
+        
+        $user = $this->user;
+		
+		if ($pac == "") {
+            $res['ret'] = 0;
+            $res['msg'] = "悟空别闹";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+        
+        $user->pac = $pac;
         $user->save();
 
         $res['ret'] = 1;

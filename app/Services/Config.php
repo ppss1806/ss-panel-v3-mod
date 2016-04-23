@@ -14,7 +14,7 @@ class Config
     public static function getPublicConfig(){
         return [
             "appName" => self::get("appName"),
-            "version" => self::get("version"),
+            "version" => VERSION,
             "baseUrl" => self::get("baseUrl"),
             "checkinTime" => self::get("checkinTime"),
             "checkinMin" => self::get("checkinMin"),

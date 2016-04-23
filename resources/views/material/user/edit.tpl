@@ -36,7 +36,7 @@
 										</div>
 										
 										<div class="form-group form-group-label">
-											<label class="floating-label" for="repwd">当前密码</label>
+											<label class="floating-label" for="repwd">确认新密码</label>
 											<input class="form-control" id="repwd" type="password">
 										</div>
 									</div>
@@ -255,6 +255,33 @@
 						</div>
 					</div>
 					
+					
+					
+					<div class="col-lg-6 col-md-6">
+						<div class="card margin-bottom-no">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="card-inner">
+										<p class="card-heading">自定义PAC/Surge</p>
+										<p>参看<a href="https://adblockplus.org/zh_CN/filters">https://adblockplus.org/zh_CN/filters</a></p>
+										<div class="form-group form-group-label">
+											<label class="floating-label" for="pac">自定义PAC/Surge规则</label>
+											<textarea class="form-control" id="pac" rows="8">{$user->pac}</textarea>
+										</div>
+										
+									</div>
+									<div class="card-action">
+										<div class="card-action-btn pull-left">
+											<button class="btn btn-flat waves-attach" id="setpac" ><span class="icon">check</span>&nbsp;设置</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					
 					<div aria-hidden="true" class="modal fade" id="result" role="dialog" tabindex="-1">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -294,6 +321,35 @@
                 dataType: "json",
                 data: {
                    
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#result").modal();
+						$("#msg").html(data.msg);
+                    } else {
+                        $("#result").modal();
+						$("#msg").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    $("#result").modal();
+					$("#msg").html(data.msg+"     出现了一些错误。");
+                }
+            })
+        })
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#setpac").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "pacset",
+                dataType: "json",
+                data: {
+                   pac: $("#pac").val()
                 },
                 success: function (data) {
                     if (data.ret) {
@@ -448,13 +504,13 @@
                 data: {
                     sspwd: $("#sspwd").val()
                 },
-                success: function (data) {
+                 success: function (data) {
                     if (data.ret) {
                         $("#result").modal();
-						$("#msg").html(data.msg);
+						$("#msg").html("成功了");
                     } else {
                         $("#result").modal();
-						$("#msg").html(data.msg);
+						$("#msg").html("失败了");
                     }
                 },
                 error: function (jqXHR) {

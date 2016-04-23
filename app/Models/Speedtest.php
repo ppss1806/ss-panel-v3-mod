@@ -13,6 +13,10 @@ class Speedtest extends Model
 {
     protected $table = "speedtest";
 	
+	public function node()
+    {
+        return Node::find($this->attributes['nodeid']);
+    }
 
 
 
