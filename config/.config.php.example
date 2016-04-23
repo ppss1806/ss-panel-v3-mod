@@ -112,3 +112,7 @@ $System_Config['max_port']='65535';
 
 $System_Config['pacp_offset']='-20000';
 $System_Config['pacpp_offset']='-20000';
+
+#测速周期/h
+
+$System_Config['Speedtest_duration']='6';

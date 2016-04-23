@@ -89,7 +89,7 @@ class UserController extends BaseController
 		
 		
 		
-		$Speedtest=Speedtest::where("datetime",">",time()-6*3600)->get();
+		$Speedtest=Speedtest::where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->get();
 		
         return $this->view()->assign('speedtest',$Speedtest)->display('user/lookingglass.tpl');
     }
