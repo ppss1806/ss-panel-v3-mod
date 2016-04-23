@@ -83,6 +83,19 @@ class UserController extends BaseController
         return $this->view()->assign('anns',$Anns)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
 	
+	
+	public function lookingglass($request, $response, $args)
+    {
+		
+		
+		
+		$Speedtest=Speedtest::where("datetime",">",time()-6*3600)->get();
+		
+        return $this->view()->assign('speedtest',$Speedtest)->display('user/lookingglass.tpl');
+    }
+	
+	
+	
 	public function code($request, $response, $args)
     {
 		$pageNum = 1;

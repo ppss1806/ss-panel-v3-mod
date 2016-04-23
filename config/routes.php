@@ -50,6 +50,7 @@ $app->group('/user', function () {
     $this->get('/', 'App\Controllers\UserController:index');
     $this->post('/checkin', 'App\Controllers\UserController:doCheckin');
     $this->get('/node', 'App\Controllers\UserController:node');
+	$this->get('/lookingglass', 'App\Controllers\UserController:lookingglass');
     $this->get('/node/{id}', 'App\Controllers\UserController:nodeInfo');
     $this->get('/profile', 'App\Controllers\UserController:profile');
     $this->get('/invite', 'App\Controllers\UserController:invite');

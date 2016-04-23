@@ -13,7 +13,9 @@
     "zeuxisoo/slim-whoops": "0.4.*",
     "firebase/php-jwt": "~3.0",
     "aws/aws-sdk-php": "3.*",
-    "gregwar/captcha": "1.*"
+    "gregwar/captcha": "1.*",
+    "cloudxns/cloud-xns-api-sdk-php": "*",
+    "guzzlehttp/guzzle": " ~5.0"
   },
   "autoload": {
     "classmap": [
@@ -25,6 +27,6 @@
   },
 
  "config": {
-        "secure-http": "false"
-    }
+        "secure-http": false
+ }
 }
