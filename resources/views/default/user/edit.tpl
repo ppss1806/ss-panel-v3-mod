@@ -284,55 +284,7 @@
             </div>
 			
 			
-			
-			
-			<div class="col-md-6">
-                <!-- general form elements -->
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <i class="fa fa-envelope-o"></i>
-
-                        <h3 class="box-title">每日邮件接收设置</h3>
-                    </div>
-                    <!-- /.box-header --><!-- form start -->
-
-                    <div class="box-body">
-                        <div class="form-horizontal">
-
-                            <div id="msg-successm" class="alert alert-info alert-dismissable" style="display:none">
-                                <button type="button" class="close" data-dismiss="alert"
-                                        aria-hidden="true">&times;</button>
-                                <h4><i class="icon fa fa-info"></i> Ok!</h4>
-
-                                <p id="msg-successm-w"></p>
-                            </div>
-							
-							<p>当前设置：{if $user->sendDailyMail==1} 发送 {else} 不发送 {/if}</p>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">发送设置</label>
-
-                                <div class="col-sm-9">
-                                    <select id="mail" class="form-control">
-										<option value="1">发送</option>
-										<option value="0">不发送</option>
-									</select>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-
-                    <div class="box-footer">
-                        <button type="submit" id="mail-update" class="btn btn-primary">修改</button>
-                    </div>
-
-                </div>
-                <!-- /.box -->
-            </div>
-			
-			<div class="col-md-6">
+				<div class="col-md-6">
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -403,8 +355,9 @@
                 <!-- /.box -->
 				
 				</div>
-				
-				<div class="col-md-12">
+			
+			
+				<div class="col-md-6">
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -428,7 +381,6 @@
 
                                 <p id="msg-successpo-w"></p>
                             </div>
-
                            
 
                         </div>
@@ -442,13 +394,93 @@
                 </div>
                 <!-- /.box -->
             </div>
+                
+                <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-key"></i>
+                        <h3 class="box-title">自定义PAC/Surge</h3>
+                    </div>
+                    <!-- /.box-header --><!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-horizontal">
+                            <div id="msg-successpac" class="alert alert-info alert-dismissable" style="display:none">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-info"></i> Ok!</h4>
+
+                                <p id="msg-successpac-w"></p>
+                            </div>
+                            <p>参看<a href="https://adblockplus.org/zh_CN/filters">https://adblockplus.org/zh_CN/filters</a></p>
+                            <div class="form-group form-group-label">
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" id="pac" placeholder="自定义PAC/Surge规则" rows="8">{$user->pac}</textarea>
+                                </div>
+							</div>
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" id="setpac" class="btn btn-primary">设置</button>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+            </div>
 			
-			
-			
-			
-			
-			
-			
+
+			<div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-envelope-o"></i>
+
+                        <h3 class="box-title">每日邮件接收设置</h3>
+                    </div>
+                    <!-- /.box-header --><!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-horizontal">
+
+                            <div id="msg-successm" class="alert alert-info alert-dismissable" style="display:none">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-info"></i> Ok!</h4>
+
+                                <p id="msg-successm-w"></p>
+                            </div>
+							
+							<p>当前设置：{if $user->sendDailyMail==1} 发送 {else} 不发送 {/if}</p>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">发送设置</label>
+
+                                <div class="col-sm-9">
+                                    <select id="mail" class="form-control">
+										<option value="1">发送</option>
+										<option value="0">不发送</option>
+									</select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" id="mail-update" class="btn btn-primary">修改</button>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+            </div>
+            
+
+	
             </div>
             <!-- /.col (right) -->
 
@@ -491,6 +523,36 @@
         })
     })
 </script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#setpac").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "pacset",
+                dataType: "json",
+                data: {
+                   pac: $("#pac").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#msg-error").hide();
+                        $("#msg-successpac").show();
+                        $("#msg-successpac-w").html(data.msg);
+                    } else {
+                        $("#msg-error").show();
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
+</script>
+
 
 <script>
     $(document).ready(function () {
