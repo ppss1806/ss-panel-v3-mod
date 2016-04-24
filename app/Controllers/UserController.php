@@ -474,7 +474,7 @@ class UserController extends BaseController
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
 					$token = LinkController::GenerateCode(8,$node->server,($this->user->port-20000),0,$this->user->id);
-					$token_ios = LinkController::GenerateCode(8,$node->server,($this->user->port-20000),1);
+					$token_ios = LinkController::GenerateCode(8,$node->server,($this->user->port-20000),1,$this->user->id);
 					$json_show="PAC Plus Plus信息<br>PAC 一般地址：".Config::get('baseUrl')."/link/".$token."<br>PAC iOS 地址：".Config::get('baseUrl')."/link/".$token_ios."<br>"."备注：".$node->info;
 
 					return $this->view()->assign('json_show', $json_show)->display('user/nodeinfopacpp.tpl');

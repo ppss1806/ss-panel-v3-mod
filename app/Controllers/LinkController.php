@@ -101,7 +101,7 @@ class LinkController extends BaseController
 				$type = "PROXY";
 				break;
 			case 7:
-				$type = "HTTPS";
+				$type = "PROXY";
 				break;
 			case 6:
 				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.mobileconfig');//->getBody()->write($builder->output());
