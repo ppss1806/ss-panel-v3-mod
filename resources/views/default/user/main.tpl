@@ -118,7 +118,11 @@
                         <i class="fa fa-history"></i> <span>流量记录</span>
                     </a>
                 </li>
-
+				<li>
+					<a href="/user/lookingglass">
+						<i class="fa fa-search"></i> <span>观察窗</span>
+					</a>
+				</li>
 				<li>
                     <a href="/user/code">
                         <i class="fa fa-code"></i> <span>兑换码</span>
