@@ -27,7 +27,7 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">注意!</p>
-										<p>此处只展示最近一次的记录.</p>
+										<p>此处只展示最近{$hour}小时的记录.</p>
 									</div>
 									
 								</div>

@@ -12,6 +12,7 @@ use App\Services\Mail;
 use App\Utils\QQWry;
 use App\Utils\Duoshuo;
 use App\Utils\GA;
+use CloudXNS\Api;
 
 class Job
 {
@@ -83,6 +84,16 @@ class Job
 	
 	public static function CheckJob()
     {
+		//require_once BASE_PATH.'/vendor/autoload.php';
+		//DNS
+		/*$api = new Api();
+		$api->setApiKey(Config::get("cloudxns_apikey"));//修改成自己API KEY
+		$api->setSecretKey(Config::get("cloudxns_apisecret"));//修改成自己的SECERET KEY
+		
+		$api->setProtocol(false);*/
+		
+
+		
 		//节点掉线检测
 		if(Config::get("node_offline_warn")=="true")
 		{

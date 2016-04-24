@@ -116,3 +116,10 @@ $System_Config['pacpp_offset']='-20000';
 #测速周期/h
 
 $System_Config['Speedtest_duration']='6';
+
+
+#Cloudxns
+$System_Config['cloudxns_apikey']='';
+$System_Config['cloudxns_apisecret']='';
+$System_Config['cloudxns_domain']='';
+$System_Config['cloudxns_prefix']=''; 
