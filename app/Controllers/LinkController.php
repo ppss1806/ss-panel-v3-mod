@@ -21,7 +21,7 @@ class LinkController extends BaseController
         
     }
 
-    public function GenerateCode($type,$address,$port,$ios,$userid)
+    public static function GenerateCode($type,$address,$port,$ios,$userid)
     {
         $Elink = Link::where("type","=",$type)->where("address","=",$address)->where("port","=",$port)->where("ios","=",$ios)->where("userid","=",$userid)->first();
 		if($Elink != null)
@@ -44,7 +44,7 @@ class LinkController extends BaseController
 	
 	
 	
-	public function GenerateApnCode($isp,$address,$port,$userid)
+	public static function GenerateApnCode($isp,$address,$port,$userid)
     {
         $Elink = Link::where("type","=",6)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("isp","=",$isp)->first();
 		if($Elink != null)
@@ -65,7 +65,7 @@ class LinkController extends BaseController
     }
 	
 	
-	public function GenerateSurgeCode($address,$port,$userid,$geo,$method)
+	public static function GenerateSurgeCode($address,$port,$userid,$geo,$method)
     {
         $Elink = Link::where("type","=",6)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
 		if($Elink != null)
@@ -88,7 +88,7 @@ class LinkController extends BaseController
 	
 	
 	
-	public function GetContent($request, $response, $args){
+	public static function GetContent($request, $response, $args){
         $token = $args['token'];
         
         //$builder->getPhrase();
@@ -141,7 +141,7 @@ class LinkController extends BaseController
         return $newResponse;
     }
 	
-	public function GetPcConf($nodes,$user){
+	public static function GetPcConf($nodes,$user){
 		$string='
 {
 	"index" : 4,
@@ -192,7 +192,7 @@ class LinkController extends BaseController
     }
 	
 	
-	public function GetIosConf($nodes,$user){
+	public static function GetIosConf($nodes,$user){
 		$proxy_name="";
 		$proxy_group="";
 		foreach($nodes as $node)
@@ -565,7 +565,7 @@ FINAL,Proxy';
 		
     }
 	
-	private function GetSurge($passwd,$method,$server,$port,$defined)
+	private static function GetSurge($passwd,$method,$server,$port,$defined)
 	{
 		$rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$defined;  
 		$gfwlist = explode("\n", $rulelist);  
@@ -639,7 +639,12 @@ $isget=array();
 					continue;					
 				// !开头相当于正则表达式^  
 				} else if (substr($rule, 2, 1) == '|') {  
-					preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 3), $matches);  
+					preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 3), $matches); 
+					if(!isset($matches[0]))
+					{
+						continue;
+					}
+					
 					$host = $matches[0];
 					if($host != "")
 					{
@@ -654,6 +659,12 @@ $isget=array();
 					else
 					{
 						preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,3), $matches);  
+						
+						if(!isset($matches[4][0]))
+						{
+							continue;
+						}
+						
 						$host = $matches[4][0];
 						if($host != "")
 						{
@@ -712,6 +723,12 @@ $isget=array();
 			// !开头相当于正则表达式^  
 			} else if (substr($rule, 0, 1) == '|') {  
 				preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 1), $matches);  
+				
+				if(!isset($matches[0]))
+				{
+					continue;
+				}
+				
 				$host = $matches[0];
 				if($host != "")
 				{
@@ -726,6 +743,12 @@ $isget=array();
 				else
 				{
 					preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,1), $matches);  
+					
+					if(!isset($matches[4][0]))
+					{
+						continue;
+					}
+					
 					$host = $matches[4][0];
 					if(strpos($host,"*")!==FALSE)
 					{
@@ -794,7 +817,7 @@ FINAL,DIRECT
 	}
 	
 	
-	private function GetSurgeGeo($passwd,$method,$server,$port)
+	private static function GetSurgeGeo($passwd,$method,$server,$port)
 	{
 		return '
 [General]
@@ -1155,7 +1178,7 @@ GEOIP,CN,DIRECT
 FINAL,Proxy';
 	}
 	
-	private function GetApn($apn,$server,$port)
+	private static function GetApn($apn,$server,$port)
 	{
 		return '
 		<?xml version="1.0" encoding="UTF-8"?>
@@ -1224,7 +1247,7 @@ FINAL,Proxy';
 	}
 	
 	
-	private function GetPac($type,$address,$port,$defined)
+	private static function GetPac($type,$address,$port,$defined)
 	{
 		
 		header('Content-type: application/x-ns-proxy-autoconfig');
