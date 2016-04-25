@@ -498,6 +498,21 @@ class UserController extends BaseController
 
 
     }
+	
+	public function GetPcConf($request, $response, $args){
+        
+        $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=gui-config.json');//->getBody()->write($builder->output());
+        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("node_class","<=",$this->user->node_class)->get(),$this->user));
+        return $newResponse;
+    }
+	
+	public function GetIosConf($request, $response, $args){
+        
+        $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
+        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("node_class","<=",$this->user->node_class)->get(),$this->user));
+        return $newResponse;
+    }
+	
 
     public function profile()
     {

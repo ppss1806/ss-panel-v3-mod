@@ -74,6 +74,8 @@ $app->group('/user', function () {
 	$this->get('/gareset', 'App\Controllers\UserController:GaReset');
 	$this->post('/resetport', 'App\Controllers\UserController:ResetPort');
 	$this->post('/pacset', 'App\Controllers\UserController:PacSet');
+	$this->get('/getpcconf', 'App\Controllers\UserController:GetPcConf');
+	$this->get('/getiosconf', 'App\Controllers\UserController:GetIosConf');
 })->add(new Auth());
 
 // Auth
