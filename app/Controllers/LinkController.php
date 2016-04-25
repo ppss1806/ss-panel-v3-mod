@@ -189,7 +189,7 @@ DOMAIN-SUFFIX,umeng.co,REJECT
 DOMAIN-SUFFIX,umeng.com,REJECT
 DOMAIN-SUFFIX,umtrack.com,REJECT
 DOMAIN-SUFFIX,uyunad.com,REJECT
-DOMAIN-SUFFIX,youmi.net,REJECT';  
+DOMAIN-SUFFIX,youmi.net,REJECT'."\n";  
 $isget=array();
 		foreach($gfwlist as $index=>$rule) {  
 			if (empty($rule))  
@@ -197,56 +197,160 @@ $isget=array();
 			else if (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[')  
 				continue;  
 			
+			if (substr($rule, 0, 2) == '@@') {  
+			  	// ||开头表示前面还有路径  
+				if (substr($rule, 2, 2) =='||') {  
+					//$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
+					$host = substr($rule, 4);
+					//preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
+					if(isset($isget[$host]))
+					{
+						continue;
+					}
+					$isget[$host]=1;
+					$find_function_content.="DOMAIN,".$host.",DIRECT,force-remote-dns\n";
+					continue;					
+				// !开头相当于正则表达式^  
+				} else if (substr($rule, 2, 1) == '|') {  
+					preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 3), $matches);  
+					$host = $matches[0];
+					if($host != "")
+					{
+						if(isset($isget[$$host]))
+						{
+							continue;
+						}
+						$isget[$host]=1;
+						$find_function_content.="IP-CIDR,".$host."/32,DIRECT,no-resolve \n";  
+						continue;
+					}
+					else
+					{
+						preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,3), $matches);  
+						$host = $matches[4][0];
+						if($host != "")
+						{
+							if(isset($isget[$$host]))
+							{
+								continue;
+							}
+							$isget[$host]=1;
+							$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns\n";  
+							continue;
+						}
+					}
+				} else if (substr($rule, 2, 1) == '.') {
+					$host = substr($rule, 3);
+					if($host != "")
+					{
+						if(isset($isget[$$host]))
+						{
+							continue;
+						}
+						$isget[$host]=1;
+						$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns \n";  
+						continue;
+					}
+				}
+			} 
+			
 			// ||开头表示前面还有路径  
 			if (substr($rule, 0, 2) =='||') {  
-			  $rule_reg = preg_match("/^(http:\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
-			  $host = $matches[2];
-			  //preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
-			  $rule_reg = $host;
-			  if(isset($isget[$host]))
-			  {
-				  continue;
-			  }
-			  $isget[$host]=1;
-			  $find_function_content.="DOMAIN-SUFFIX,".$rule_reg.",Proxy,force-remote-dns\n";  
+				//$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
+				$host = substr($rule, 2);
+				//preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
+				
+				if(strpos($host,"*")!==FALSE)
+				{
+					$host = substr($host,strpos($host,"*")+1);
+					if(strpos($host,".")!==FALSE)
+					{
+						$host = substr($host,strpos($host,".")+1);
+					}
+					if(isset($isget[$host]))
+					{
+						continue;
+					}
+					$isget[$host]=1;
+					$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n";  
+					continue;
+				}
+					
+				if(isset($isget[$host]))
+				{
+					continue;
+				}
+				$isget[$host]=1;
+				$find_function_content.="DOMAIN,".$host.",Proxy,force-remote-dns\n";  
 			// !开头相当于正则表达式^  
 			} else if (substr($rule, 0, 1) == '|') {  
-			  $rule_reg = preg_match("/^(http:\/\/)?([^\/]+)/i",substr($rule, 1), $matches);  
-			  $host = $matches[2];
-			  //preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
-			  $rule_reg = $host;
-			  if(isset($isget[$host]))
-			  {
-				  continue;
-			  }
-			  $isget[$host]=1;
-			  $find_function_content.="DOMAIN-SUFFIX,".$rule_reg.",Proxy,force-remote-dns\n";  
-			// 前后匹配的/表示精确匹配  
-			} 
+				preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 1), $matches);  
+				$host = $matches[0];
+				if($host != "")
+				{
+					if(isset($isget[$$host]))
+					{
+						continue;
+					}
+					$isget[$host]=1;
+					$find_function_content.="IP-CIDR,".$host."/32,Proxy,no-resolve \n";  
+					continue;
+				}
+				else
+				{
+					preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,1), $matches);  
+					$host = $matches[4][0];
+					if(strpos($host,"*")!==FALSE)
+					{
+						$host = substr($host,strpos($host,"*")+1);
+						if(strpos($host,".")!==FALSE)
+						{
+							$host = substr($host,strpos($host,".")+1);
+						}
+						if(isset($isget[$host]))
+						{
+							continue;
+						}
+						$isget[$host]=1;
+						$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n";  
+						continue;
+					}
+					
+					if($host != "")
+					{
+						if(isset($isget[$$host]))
+						{
+							continue;
+						}
+						$isget[$host]=1;
+						$find_function_content.="DOMAIN-SUFFIX,".$host.",Proxy,force-remote-dns\n";  
+						continue;
+					}
+				}
+			} else {
+				$host = substr($rule, 0);
+				if(strpos($host,"/")!==FALSE)
+				{
+					$host = substr($host,0,strpos($host,"/"));
+				}
+				
+				if($host != "")
+				{
+					if(isset($isget[$$host]))
+					{
+						continue;
+					}
+					$isget[$host]=1;
+					$find_function_content.="DOMAIN-KEYWORD,".$host.",PROXY,force-remote-dns \n";  
+					continue;
+				}
+			}
 			
 			
 			$count = $count + 1;  
 	  }  
 	  $find_function_content.='
-DOMAIN-SUFFIX,google.cn,Proxy,force-remote-dns
-DOMAIN-SUFFIX,google.co.jp,Proxy,force-remote-dns
-DOMAIN-SUFFIX,google.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,google.com.hk,Proxy,force-remote-dns
-DOMAIN-SUFFIX,google.com.sg,Proxy,force-remote-dns
-DOMAIN-SUFFIX,google.com.tw,Proxy,force-remote-dns
-DOMAIN-SUFFIX,google.org,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googleadservices.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,google-analytics.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googleapis.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googlecode.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googlegroups.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googlehosted.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googlemail.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googlesource.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googlesyndication.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googletagservices.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googleusercontent.com,Proxy,force-remote-dns
-DOMAIN-SUFFIX,googlevideo.com,Proxy,force-remote-dns
+DOMAIN-KEYWORD,google,Proxy,force-remote-dns
 IP-CIDR,91.108.4.0/22,Proxy,no-resolve
 IP-CIDR,91.108.56.0/22,Proxy,no-resolve
 IP-CIDR,109.239.140.0/24,Proxy,no-resolve
@@ -621,7 +725,7 @@ IP-CIDR,192.168.0.0/16,DIRECT
 
 GEOIP,CN,DIRECT
 
-FINAL,DIRECT';
+FINAL,Proxy';
 	}
 	
 	private function GetApn($apn,$server,$port)

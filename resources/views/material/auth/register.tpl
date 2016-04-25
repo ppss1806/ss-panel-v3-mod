@@ -107,22 +107,7 @@
 						
 						
 								
-						<div aria-hidden="true" class="modal fade" id="result" role="dialog" tabindex="-1">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-heading">
-										<a class="modal-close" data-dismiss="modal">×</a>
-										<h2 class="modal-title">操作结果</h2>
-									</div>
-									<div class="modal-inner">
-										<p id="msg"></p>
-									</div>
-									<div class="modal-footer">
-										<button class="btn btn-flat btn-brand waves-attach" data-dismiss="modal" type="button">知道了</button></p>
-									</div>
-								</div>
-							</div>
-						</div>
+						{include file='dialog.tpl'}
 						
 						
 						

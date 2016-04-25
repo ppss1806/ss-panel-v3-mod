@@ -17,7 +17,7 @@
 		</div>
 		<div class="container">
 			<section class="content-inner margin-top-no">
-				<div class="row">
+				
 				
 					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
@@ -48,9 +48,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
 					
-					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -71,9 +69,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
 					
-					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -94,9 +90,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
 					
-					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -133,9 +127,9 @@
 								</div>
 							</div>
 						</div>
-					</div>
+						
 					
-					<div class="col-lg-6 col-md-6">
+					
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -160,9 +154,12 @@
 								</div>
 							</div>
 						</div>
+						
 					</div>
 					
+					
 					<div class="col-lg-6 col-md-6">
+					
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -186,10 +183,9 @@
 								</div>
 							</div>
 						</div>
-					</div>
+						
 					
 					
-					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -234,9 +230,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
 					
-					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -253,11 +247,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
 					
-					
-					
-					<div class="col-lg-6 col-md-6">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -282,23 +272,8 @@
 					
 					
 					
-					<div aria-hidden="true" class="modal fade" id="result" role="dialog" tabindex="-1">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-heading">
-									<a class="modal-close" data-dismiss="modal">×</a>
-									<h2 class="modal-title">操作结果</h2>
-								</div>
-								<div class="modal-inner">
-									<p id="msg"></p>
-								</div>
-								<div class="modal-footer">
-									<button class="btn btn-flat btn-brand waves-attach" data-dismiss="modal" type="button">知道了</button></p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+					{include file='dialog.tpl'}
+				
 			</section>
 		</div>
 	</main>
