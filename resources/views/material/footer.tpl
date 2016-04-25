@@ -6,7 +6,7 @@
 	</footer>
 
 	<!-- js -->
-	<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+	<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
 	<script src="/theme/material/js/base.min.js"></script>
 	<script src="/theme/material/js/project.min.js"></script>
 </body>
