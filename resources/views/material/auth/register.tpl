@@ -84,7 +84,7 @@
 										<div class="form-group">
 											<div class="row">
 												<div class="col-md-10 col-md-push-1">
-													<button id="reg" type="submit" class="btn btn-block btn-brand waves-attach waves-light">注册</button>
+													<button id="tos" type="submit" class="btn btn-block btn-brand waves-attach waves-light">注册</button>
 												</div>
 											</div>
 										</div>
@@ -110,6 +110,22 @@
 						{include file='dialog.tpl'}
 						
 						
+						<div aria-hidden="true" class="modal modal-va-middle fade" id="tos_modal" role="dialog" tabindex="-1">
+							<div class="modal-dialog modal-full">
+								<div class="modal-content">
+									<div class="modal-heading">
+										<h2 class="modal-title">注册 TOS</h2>
+									</div>
+									<div class="modal-inner"  style="height:70%">
+										{include file='reg_tos.tpl'}
+									</div>
+									<div class="modal-footer">
+										<p class="text-right"><button class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal" type="button">我不服</button><button class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal" id="reg" type="button">资慈</button></p>
+										
+									</div>
+								</div>
+							</div>
+						</div>
 						
 					</section>
 				</div>
@@ -156,11 +172,15 @@
         }
         $("html").keydown(function(event){
             if(event.keyCode==13){
-                register();
+                $("#tos_modal").modal();
             }
         });
         $("#reg").click(function(){
             register();
+        });
+		
+		$("#tos").click(function(){
+            $("#tos_modal").modal();
         });
     })
 </script>
