@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 <div class="callout callout-warning">
                     <h4>注意!</h4>  
-					<p>此处只展示最近一次的记录.</p>
+					<p>此处只展示最近{$hour}小时的记录.</p>
                 </div>
             </div>
         </div>
