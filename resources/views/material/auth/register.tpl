@@ -116,7 +116,7 @@
 									<div class="modal-heading">
 										<h2 class="modal-title">注册 TOS</h2>
 									</div>
-									<div class="modal-inner"  style="height:70%">
+									<div class="modal-inner">
 										{include file='reg_tos.tpl'}
 									</div>
 									<div class="modal-footer">
