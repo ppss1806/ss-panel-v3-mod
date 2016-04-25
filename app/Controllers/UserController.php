@@ -80,7 +80,41 @@ class UserController extends BaseController
 		$Speedtest['Uspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("unicomupload","desc")->take(3);
 		$Speedtest['Cspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("cmccupload","desc")->take(3);*/
 		
-        return $this->view()->assign('anns',$Anns)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+		$nodes=Node::where('sort', 0)->where("node_class","<=",$this->user->node_class)->get();
+		$android_add="";
+		foreach($nodes as $node)
+		{
+			if($android_add=="")
+			{
+				$ary['server'] = $node->server;
+				$ary['server_port'] = $this->user->port;
+				$ary['password'] = $this->user->passwd;
+				$ary['method'] = $node->method;
+				if ($node->custom_method) {
+					$ary['method'] = $this->user->method;
+				}
+				
+				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
+				$ssqr = "ss://" . base64_encode($ssurl);
+				$android_add .="'".$ssqr."'";
+			}
+			else
+			{
+				$ary['server'] = $node->server;
+				$ary['server_port'] = $this->user->port;
+				$ary['password'] = $this->user->passwd;
+				$ary['method'] = $node->method;
+				if ($node->custom_method) {
+					$ary['method'] = $this->user->method;
+				}
+				
+				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
+				$ssqr = "ss://" . base64_encode($ssurl);
+				$android_add .=",'".$ssqr."'";
+			}
+		}
+		
+        return $this->view()->assign('anns',$Anns)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
 	
 	
