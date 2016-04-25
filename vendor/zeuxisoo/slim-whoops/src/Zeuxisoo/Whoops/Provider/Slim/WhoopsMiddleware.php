@@ -1,7 +1,7 @@
 <?php
 namespace Zeuxisoo\Whoops\Provider\Slim;
 
-use Whoops\Run;
+use Whoops\Util\Misc;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsErrorHandler;
@@ -13,7 +13,6 @@ class WhoopsMiddleware {
         $container   = $app->getContainer();
         $settings    = $container['settings'];
         $environment = $container['environment'];
-        $request     = $container['request'];
 
         if (isset($settings['debug']) === true && $settings['debug'] === true) {
             // Enable PrettyPageHandler with editor options
@@ -22,10 +21,6 @@ class WhoopsMiddleware {
             if (empty($settings['whoops.editor']) === false) {
                 $prettyPageHandler->setEditor($settings['whoops.editor']);
             }
-
-            // Enable JsonResponseHandler when request is AJAX
-            $jsonResponseHandler = new JsonResponseHandler();
-            $jsonResponseHandler->onlyForAjaxRequests(true);
 
             // Add more information to the PrettyPageHandler
             $prettyPageHandler->addDataTable('Slim Application', [
@@ -49,7 +44,12 @@ class WhoopsMiddleware {
             // Set Whoops to default exception handler
             $whoops = new \Whoops\Run;
             $whoops->pushHandler($prettyPageHandler);
-            $whoops->pushHandler($jsonResponseHandler);
+
+            // Enable JsonResponseHandler when request is AJAX
+            if (Misc::isAjaxRequest()){
+                $whoops->pushHandler(new JsonResponseHandler());
+            }
+
             $whoops->register();
 
             $container['errorHandler'] = function() use ($whoops) {

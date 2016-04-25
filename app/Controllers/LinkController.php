@@ -859,7 +859,7 @@ FINAL,Proxy';
 		  $rule_reg = LinkController::reg_encode($rule);  
 		}  
 		// 以|结尾，替换为$结尾  
-		if (eregi("\|$", $rule_reg)) {  
+		if (preg_match("/\|$/i", $rule_reg)) {  
 		  $rule_reg = substr($rule_reg, 0, strlen($rule_reg) - 1)."$";  
 		}  
 		$find_function_content.='if (/' . $rule_reg . '/i.test(url)) return '.$return_proxy.';'."\n";  

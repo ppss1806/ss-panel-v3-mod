@@ -154,7 +154,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
             [self::RFC3986_BASE, 'g;x=1/../y',    'http://a/b/c/y'],
             ['http://u@a/b/c/d;p?q', '.',         'http://u@a/b/c/'],
             ['http://u:p@a/b/c/d;p?q', '.',       'http://u:p@a/b/c/'],
-            //[self::RFC3986_BASE, 'http:g',        'http:g'],
+            ['http://a/b/c/d/', 'e',              'http://a/b/c/d/e'],
         ];
     }
 
@@ -278,4 +278,19 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $input = 'urn://example:animal:ferret:nose';
         $uri = new Uri($input);
     }
+
+    public function testExtendingClassesInstantiates()
+    {
+        // The non-standard port triggers a cascade of private methods which
+        //  should not use late static binding to access private static members.
+        // If they do, this will fatal.
+        $this->assertInstanceOf(
+            '\GuzzleHttp\Tests\Psr7\ExtendingClassTest',
+            new ExtendingClassTest('http://h:9/')
+        );
+    }
+}
+
+class ExtendingClassTest extends \GuzzleHttp\Psr7\Uri
+{
 }

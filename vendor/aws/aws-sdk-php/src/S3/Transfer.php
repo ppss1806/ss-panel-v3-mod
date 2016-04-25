@@ -61,13 +61,13 @@ class Transfer implements PromisorInterface
      *   transfers. Set to an fopen() resource to write to a specific stream
      *   rather than writing to STDOUT.
      *
-     * @param S3Client         $client  Client used for transfers.
-     * @param string|Iterator  $source  Where the files are transferred from.
-     * @param string           $dest    Where the files are transferred to.
-     * @param array            $options Hash of options.
+     * @param S3ClientInterface $client  Client used for transfers.
+     * @param string|Iterator   $source  Where the files are transferred from.
+     * @param string            $dest    Where the files are transferred to.
+     * @param array             $options Hash of options.
      */
     public function __construct(
-        S3Client $client,
+        S3ClientInterface $client,
         $source,
         $dest,
         array $options = []
@@ -219,9 +219,9 @@ class Transfer implements PromisorInterface
         $prefix = "s3://{$parts['Bucket']}/"
             . (isset($parts['Key']) ? $parts['Key'] . '/' : '');
 
-        $commands = Aws\map($this->getDownloadsIterator(), function (
-            $object
-        ) use ($prefix) {
+
+        $commands = [];
+        foreach ($this->getDownloadsIterator() as $object) {
             // Prepare the sink.
             $sink = $this->destination['path'] . '/'
                 . preg_replace('/^' . preg_quote($prefix, '/') . '/', '', $object);
@@ -233,11 +233,11 @@ class Transfer implements PromisorInterface
             }
 
             // Create the command.
-            return $this->client->getCommand(
+            $commands []= $this->client->getCommand(
                 'GetObject',
                 $this->getS3Args($object) + ['@http'  => ['sink'  => $sink]]
             );
-        });
+        }
 
         // Create a GetObject command pool and return the promise.
         return (new Aws\CommandPool($this->client, $commands, [

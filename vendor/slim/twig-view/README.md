@@ -12,7 +12,7 @@ Via [Composer](https://getcomposer.org/)
 $ composer require slim/twig-view
 ```
 
-Requires Slim Framework 3 and PHP 5.4.0 or newer.
+Requires Slim Framework 3 and PHP 5.5.0 or newer.
 
 ## Usage
 
@@ -30,10 +30,8 @@ $container['view'] = function ($c) {
     ]);
     
     // Instantiate and add Slim specific extension
-    $view->addExtension(new Slim\Views\TwigExtension(
-        $c['router'],
-        $c['request']->getUri()
-    ));
+    $basePath = rtrim(str_ireplace('index.php', '', $c['request']->getUri()->getBasePath()), '/');
+    $view->addExtension(new Slim\Views\TwigExtension($c['router'], $basePath));
 
     return $view;
 };

@@ -7,7 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Zeuxisoo\\Whoops\\Provider\\Slim' => array($vendorDir . '/zeuxisoo/slim-whoops/src'),
-    'Whoops' => array($vendorDir . '/filp/whoops/src'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'Mailgun\\Tests' => array($vendorDir . '/mailgun/mailgun-php/tests'),

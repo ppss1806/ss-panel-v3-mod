@@ -12,12 +12,13 @@ curl -sS https://getcomposer.org/installer | php
 
 - Edit composer.json
 
-For Slim framework 3, Pease use the `0.4.0`.
+For Slim framework 3, Pease use the `0.4.0` or `0.5.0`
 
 ```
 {
 	"require": {
-		"zeuxisoo/slim-whoops": "0.4.*"
+		"zeuxisoo/slim-whoops": "0.4.*" // for whoops <= 1.*
+        "zeuxisoo/slim-whoops": "0.5.*" // for whoops >= 2.*
 	}
 }
 ```
@@ -62,8 +63,10 @@ $app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 
 ```
 $app = new App([
-    'debug'         => true,
-    'whoops.editor' => 'sublime' // Support click to open editor
+    'settings' => [
+        'debug'         => true,
+        'whoops.editor' => 'sublime' // Support click to open editor
+    ]
 ]);
 ```
 

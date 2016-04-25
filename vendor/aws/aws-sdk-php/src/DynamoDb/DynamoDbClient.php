@@ -21,6 +21,8 @@ use Aws\RetryMiddleware;
  * @method \GuzzleHttp\Promise\Promise deleteItemAsync(array $args = [])
  * @method \Aws\Result deleteTable(array $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteTableAsync(array $args = [])
+ * @method \Aws\Result describeLimits(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeLimitsAsync(array $args = [])
  * @method \Aws\Result describeTable(array $args = [])
  * @method \GuzzleHttp\Promise\Promise describeTableAsync(array $args = [])
  * @method \Aws\Result getItem(array $args = [])
@@ -43,7 +45,7 @@ class DynamoDbClient extends AwsClient
     public static function getArguments()
     {
         $args = parent::getArguments();
-        $args['retries']['default'] = 11;
+        $args['retries']['default'] = 10;
         $args['retries']['fn'] = [__CLASS__, '_applyRetryConfig'];
         $args['api_provider']['fn'] = [__CLASS__, '_applyApiProvider'];
 
@@ -80,7 +82,10 @@ class DynamoDbClient extends AwsClient
                     return $retries
                         ? RetryMiddleware::exponentialDelay($retries) / 2
                         : 0;
-                }
+                },
+                isset($args['stats']['retries'])
+                    ? (bool) $args['stats']['retries']
+                    : false
             ),
             'retry'
         );
