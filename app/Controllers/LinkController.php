@@ -643,7 +643,7 @@ $isget=array();
 					$host = $matches[0];
 					if($host != "")
 					{
-						if(isset($isget[$$host]))
+						if(isset($isget[$host]))
 						{
 							continue;
 						}
@@ -657,7 +657,7 @@ $isget=array();
 						$host = $matches[4][0];
 						if($host != "")
 						{
-							if(isset($isget[$$host]))
+							if(isset($isget[$host]))
 							{
 								continue;
 							}
@@ -670,7 +670,7 @@ $isget=array();
 					$host = substr($rule, 3);
 					if($host != "")
 					{
-						if(isset($isget[$$host]))
+						if(isset($isget[$host]))
 						{
 							continue;
 						}
@@ -715,7 +715,7 @@ $isget=array();
 				$host = $matches[0];
 				if($host != "")
 				{
-					if(isset($isget[$$host]))
+					if(isset($isget[$host]))
 					{
 						continue;
 					}
@@ -745,7 +745,7 @@ $isget=array();
 					
 					if($host != "")
 					{
-						if(isset($isget[$$host]))
+						if(isset($isget[$host]))
 						{
 							continue;
 						}
@@ -763,7 +763,7 @@ $isget=array();
 				
 				if($host != "")
 				{
-					if(isset($isget[$$host]))
+					if(isset($isget[$host]))
 					{
 						continue;
 					}
