@@ -97,6 +97,16 @@
 																				<p>在线人数：<span class="label label-orange"> 
 																					{$node->getOnlineUserCount()}
 																				</span></p>
+																			
+																				{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
+																					<p>节点限速：<span class="label label-green"> 
+																						{if $node->node_speedlimit>$user->node_speedlimit}
+																							{$node->node_speedlimit}Mbps
+																						{else}
+																							{$user->node_speedlimit}Mbps
+																						{/if}
+																					</span></p>
+																				{/if}
 																			{/if}
 																			
 																			<p>{$node->info}</p>
