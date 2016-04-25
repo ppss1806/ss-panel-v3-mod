@@ -83,10 +83,7 @@
 
                 </div>
                 <!-- /.box -->
-            </div>
-			
-			
-			<div class="col-md-6">
+
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -127,11 +124,7 @@
 
                 </div>
                 <!-- /.box -->
-            </div>
-			
-			
-			
-			<div class="col-md-6">
+           
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -172,11 +165,7 @@
 
                 </div>
                 <!-- /.box -->
-            </div>
-			
-			
-			
-			<div class="col-md-6">
+
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -233,10 +222,7 @@
 
                 </div>
                 <!-- /.box -->
-            </div>
-			
-			
-			<div class="col-md-6">
+
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -354,10 +340,7 @@
                 </div>
                 <!-- /.box -->
 				
-				</div>
-			
-			
-				<div class="col-md-6">
+
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -393,9 +376,6 @@
 
                 </div>
                 <!-- /.box -->
-            </div>
-                
-                <div class="col-md-6">
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -430,10 +410,7 @@
 
                 </div>
                 <!-- /.box -->
-            </div>
-			
 
-			<div class="col-md-6">
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
