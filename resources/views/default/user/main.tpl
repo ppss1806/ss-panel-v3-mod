@@ -123,6 +123,13 @@
 						<i class="fa fa-search"></i> <span>观察窗</span>
 					</a>
 				</li>
+                {if $config["wecenter_url"]!=""}
+					<li>
+						<a href="{$config["wecenter_url"]}" target="_blank">
+							<i class="fa fa-question"></i>&nbsp;问答
+						</a>
+					</li>	
+					{/if}
 				<li>
                     <a href="/user/code">
                         <i class="fa fa-code"></i> <span>兑换码</span>
