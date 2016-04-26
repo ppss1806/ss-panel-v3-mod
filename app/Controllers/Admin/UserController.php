@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Models\User,App\Models\Ip;
 use App\Controllers\AdminController;
 use App\Utils\Hash,App\Utils\Radius,App\Utils\Da,App\Utils\QQWry;
+use App\Utils\Wecenter;
 
 class UserController extends AdminController
 {
@@ -81,7 +82,7 @@ class UserController extends AdminController
 		$passwd=$request->getParam('passwd');
 
 		Radius::ChangeUserName($email1,$email2,$passwd);
-
+		Wecenter::ChangeUserName($email1,$email2,$request->getParam('pass'),$user->user_name);
 
         if ($request->getParam('pass') != '') {
             $user->pass = Hash::passwordHash($request->getParam('pass'));

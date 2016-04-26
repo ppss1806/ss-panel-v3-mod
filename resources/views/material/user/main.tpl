@@ -263,6 +263,14 @@
 							<i class="icon icon-lg">youtube_searched_for</i>&nbsp;观察窗
 						</a>
 					</li>
+					
+					{if $config["wecenter_url"]!=""}
+					<li>
+						<a href="{$config["wecenter_url"]}" target="_blank">
+							<i class="icon icon-lg">help</i>&nbsp;问答
+						</a>
+					</li>
+					{/if}
 
 					<li>
 						<a href="/user/code">

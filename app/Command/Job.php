@@ -92,6 +92,45 @@ class Job
 		
 		$api->setProtocol(false);*/
 		
+		
+		$newmd5 = md5(file_get_contents("https://git.zhaoj.in/glzjin/ss-panel-v3-publicv2/raw/master/bootstrap.php"));
+		$oldmd5 = md5(file_get_contents(BASE_PATH."/bootstrap.php"));
+		
+		if($newmd5 == $oldmd5)
+		{
+			if(file_exists(BASE_PATH."/storage/update.md5"))
+			{
+				unlink(file_exists(BASE_PATH."/storage/update.md5"));
+			}
+		}
+		else
+		{
+			if(!file_exists(BASE_PATH."/storage/update.md5"))
+			{
+				foreach($adminUser as $user)
+				{
+					echo "Send offline mail to user: ".$user->id;
+					$subject = Config::get('appName')."-系统提示";
+					$to = $user->email;
+					$text = "管理员您好，系统发现有了新版本，您可以到 <a href=\"https://www.zhaoj.in/read-3289.html\">https://www.zhaoj.in/read-3289.html</a> 按照步骤进行升级。" ;
+					try {
+						Mail::send($to, $subject, 'news/warn.tpl', [
+							"user" => $user,"text" => $text
+						], [
+						]);
+					} catch (Exception $e) {
+						echo $e->getMessage();
+					}
+					
+					
+				}
+				
+				$myfile = fopen(BASE_PATH."/storage/update.md5", "w+") or die("Unable to open file!");
+				$txt = "1";
+				fwrite($myfile, $txt);
+				fclose($myfile);
+			}
+		}
 
 		
 		//节点掉线检测
@@ -100,7 +139,7 @@ class Job
 			$nodes = Node::all();
 			$adminUser = User::where("is_admin","=","1")->get();
 			foreach($nodes as $node){
-				if(time()-$node->node_heartbeat>150&&time()-$node->node_heartbeat<210&&$node->node_heartbeat!=0&&$node->sort==0)
+				if(time()-$node->node_heartbeat>300&&time()-$node->node_heartbeat<360&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
 				{
 					foreach($adminUser as $user)
 					{
@@ -116,7 +155,40 @@ class Job
 						} catch (Exception $e) {
 							echo $e->getMessage();
 						}
+						
+						
 					}
+					
+					$myfile = fopen(BASE_PATH."/storage/"+$node->id+".offline", "w+") or die("Unable to open file!");
+					$txt = "1";
+					fwrite($myfile, $txt);
+					fclose($myfile);
+				}
+			}
+			
+			
+			foreach($nodes as $node){
+				if(time()-$node->node_heartbeat<60&&file_exists(BASE_PATH."/storage/"+$node->id+".offline")&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
+				{
+					foreach($adminUser as $user)
+					{
+						echo "Send offline mail to user: ".$user->id;
+						$subject = Config::get('appName')."-系统提示";
+						$to = $user->email;
+						$text = "管理员您好，系统发现节点 ".$node->name." 恢复上线了。" ;
+						try {
+							Mail::send($to, $subject, 'news/warn.tpl', [
+								"user" => $user,"text" => $text
+							], [
+							]);
+						} catch (Exception $e) {
+							echo $e->getMessage();
+						}
+						
+						
+					}
+					
+					unlink(BASE_PATH."/storage/"+$node->id+".offline");
 				}
 			}
 		}

@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\LoginIp;
 use App\Utils\Duoshuo;
 use App\Utils\GA;
+use App\Utils\Wecenter;
 
 
 
@@ -95,6 +96,9 @@ class AuthController extends BaseController
 		$loginip->datetime=time();
 		$loginip->type=0;
 		$loginip->save();
+		
+		Wecenter::add($user,$passwd);
+		Wecenter::Login($user,$passwd,$time);
 		
         return $response->getBody()->write(json_encode($rs));
     }
