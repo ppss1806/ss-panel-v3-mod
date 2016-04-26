@@ -134,7 +134,7 @@ $System_Config['wecenter_db_password']='';
 #系统根域名 zhaoj.in 这样
 $System_Config['wecenter_system_main_domain']='';
 
-#访问路径
+#访问路径，不开启这个功能的话就清空这个设置项吧
 $System_Config['wecenter_url']='http://help.';
 
 #可从安装好的 wecenter 目录下的 system/config.inc.php 得到
