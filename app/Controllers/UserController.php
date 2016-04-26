@@ -80,7 +80,7 @@ class UserController extends BaseController
 		$Speedtest['Uspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("unicomupload","desc")->take(3);
 		$Speedtest['Cspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("cmccupload","desc")->take(3);*/
 		
-		$nodes=Node::where('sort', 0)->where("node_class","<=",$this->user->node_class)->get();
+		$nodes=Node::where('sort', 0)->where("node_class","<=",$this->user->class)->get();
 		$android_add="";
 		foreach($nodes as $node)
 		{
@@ -536,14 +536,14 @@ class UserController extends BaseController
 	public function GetPcConf($request, $response, $args){
         
         $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=gui-config.json');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("node_class","<=",$this->user->node_class)->get(),$this->user));
+        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("node_class","<=",$this->user->class)->get(),$this->user));
         return $newResponse;
     }
 	
 	public function GetIosConf($request, $response, $args){
         
         $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("node_class","<=",$this->user->node_class)->get(),$this->user));
+        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("node_class","<=",$this->user->class)->get(),$this->user));
         return $newResponse;
     }
 	
