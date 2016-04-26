@@ -131,7 +131,7 @@ $System_Config['wecenter_db_database']='';
 $System_Config['wecenter_db_user']='';
 $System_Config['wecenter_db_password']='';
 
-#系统主域名 ***.com 这样的
+#系统根域名 zhaoj.in 这样
 $System_Config['wecenter_system_main_domain']='';
 
 #访问路径
