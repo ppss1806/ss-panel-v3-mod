@@ -117,6 +117,8 @@ class UserController extends AdminController
 		$email1=$user->email;
 		
 		Radius::Delete($email1);
+		
+		Wecenter::Delete($email1);
 			
 		Da::delete($email1);
 			

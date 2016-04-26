@@ -784,6 +784,8 @@ class UserController extends BaseController
         }
 
 		Radius::Delete($email);
+		
+		Wecenter::Delete($email);
 
         Auth::logout();
         $user->delete();
