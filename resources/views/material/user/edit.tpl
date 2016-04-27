@@ -415,7 +415,7 @@
                 dataType: "json",
                 data: {
                     wechat: $("#wechat").val(),
-					imtype: $("#im_type").val()
+					imtype: $("#imtype").val()
                 },
                 success: function (data) {
                     if (data.ret) {
