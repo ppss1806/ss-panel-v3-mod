@@ -635,15 +635,15 @@ class UserController extends BaseController
             return $response->getBody()->write(json_encode($res));
         }
 		
-		$user1 = User::where('wechat',$wechat)->where('im_type',$type)->first();
+		$user1 = User::where('im_value',$wechat)->where('im_type',$type)->first();
         if ( $user1 != null) {
             $res['ret'] = 0;
             $res['msg'] = "此联络方式已经被注册了";
             return $response->getBody()->write(json_encode($res));
         }
         
-		$type->im_type = $type;
-        $user->wechat = filter_var($wechat, FILTER_SANITIZE_STRING);
+		$user->im_type = $type;
+        $user->im_value = filter_var($wechat, FILTER_SANITIZE_STRING);
         $user->save();
 
         $res['ret'] = 1;
