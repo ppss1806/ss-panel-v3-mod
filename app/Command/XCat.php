@@ -103,7 +103,7 @@ class XCat
 			$user->expire_in=date("Y-m-d H:i:s",time()+Config::get('user_expire_in_default')*86400);
 			$user->reg_date=date("Y-m-d H:i:s");
 			$user->money=0;
-			$user->im_type="";
+			$user->im_type=1;
 			$user->im_value="";
 			$user->class=0;
 			$user->plan='A';
