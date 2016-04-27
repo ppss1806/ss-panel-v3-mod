@@ -87,9 +87,9 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header">
-                        <i class="fa fa-weixin"></i>
+                        <i class="fa fa-plus-square"></i>
 
-                        <h3 class="box-title">微信号修改</h3>
+                        <h3 class="box-title">联络方式修改</h3>
                     </div>
                     <!-- /.box-header --><!-- form start -->
 
@@ -103,14 +103,35 @@
 
                                 <p id="msg-successw-w"></p>
                             </div>
-							
-							<p>当前微信号：{$user->wechat}</p>
-
+							<p>当前联络方式：
+                            {if $user->im_type==1}
+										微信
+										{/if}
+										
+										{if $user->im_type==2}
+										QQ
+										{/if}
+										
+										{if $user->im_type==3}
+										Google+
+										{/if}
+										
+										{$user->im_value}</p>
+                                        <div class="form-group">
+                                        <label class="col-sm-3 control-label">选择您的联络方式</label>
+                                        <div class="col-sm-9">
+											<select class="form-control" id="imtype">
+												<option>选择您的联络方式</option>
+												<option value="1">微信</option>
+												<option value="2">QQ</option>
+												<option value="3">Google+</option>
+											</select>
+										</div>
+                                        </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">微信号</label>
-
+                            <label class="col-sm-3 control-label">联络方式账号</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" placeholder="新的微信号，请填写真实的微信号，填写虚假信息可能会导致账号被删除。" id="wechat">
+                                    <input type="text" class="form-control" placeholder="在这输入联络方式账号" id="wechat">
                                 </div>
                             </div>
 
@@ -578,7 +599,8 @@
                 url: "wechat",
                 dataType: "json",
                 data: {
-                    wechat: $("#wechat").val()
+                    wechat: $("#wechat").val(),
+					imtype: $("#imtype").val()
                 },
                 success: function (data) {
                     if (data.ret) {
