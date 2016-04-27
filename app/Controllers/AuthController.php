@@ -121,6 +121,7 @@ class AuthController extends BaseController
         $passwd = $request->getParam('passwd');
         $repasswd = $request->getParam('repasswd');
         $code = $request->getParam('code');
+		$imtype = $request->getParam('imtype');
 		$wechat = $request->getParam('wechat');
         // check code
         $c = InviteCode::where('code',$code)->first();
@@ -158,14 +159,14 @@ class AuthController extends BaseController
             return $response->getBody()->write(json_encode($res));
         }
 		
-		if($wechat=="")
+		if($imtype==""||$wechat=="")
 		{
 			$res['ret'] = 0;
-            $res['msg'] = "要填上你的微信哦";
+            $res['msg'] = "要填上你的联络方式哦";
             return $response->getBody()->write(json_encode($res));
 		}
 		
-		$user = User::where('wechat',$wechat)->first();
+		$user = User::where('im_value',$wechat)->where('im_type',$imtype)->first();
         if ( $user != null) {
             $res['ret'] = 0;
             $res['msg'] = "此微信号已经被注册了";
@@ -182,7 +183,8 @@ class AuthController extends BaseController
         $user->t = 0;
         $user->u = 0;
         $user->d = 0;
-		$user->wechat =  filter_var($wechat, FILTER_SANITIZE_STRING);
+		$user->im_type =  $imtype;
+		$user->im_value =  filter_var($wechat, FILTER_SANITIZE_STRING);
         $user->transfer_enable = Tools::toGB(Config::get('defaultTraffic'));
         $user->invite_num = Config::get('inviteNum');
         $user->ref_by = $c->user_id;
@@ -190,7 +192,7 @@ class AuthController extends BaseController
 		$user->reg_date=date("Y-m-d H:i:s");
 		$user->reg_ip=$_SERVER["REMOTE_ADDR"];
 		$user->money=0;
-		$user->node_class=0;
+		$user->class=0;
 		$user->plan='A';
 		$user->node_speedlimit=0;
 		$user->theme=Config::get('theme');

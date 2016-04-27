@@ -63,7 +63,22 @@
 										<div class="form-group form-group-label">
 											<div class="row">
 												<div class="col-md-10 col-md-push-1">
-													<label class="floating-label" for="wechat">微信</label>
+													<label class="floating-label" for="imtype">选择您的联络方式</label>
+													<select class="form-control" id="imtype">
+														<option></option>
+														<option value="1">微信</option>
+														<option value="2">QQ</option>
+														<option value="3">Google+</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										
+										<div class="form-group form-group-label">
+											<div class="row">
+												<div class="col-md-10 col-md-push-1">
+													<label class="floating-label" for="wechat">在这输入联络方式账号</label>
 													<input class="form-control" id="wechat" type="text">
 												</div>
 											</div>
@@ -111,7 +126,7 @@
 						
 						
 						<div aria-hidden="true" class="modal modal-va-middle fade" id="tos_modal" role="dialog" tabindex="-1">
-							<div class="modal-dialog modal-full">
+							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-heading">
 										<h2 class="modal-title">注册 TOS</h2>
@@ -150,6 +165,7 @@
                     passwd: $("#passwd").val(),
                     repasswd: $("#repasswd").val(),
 					wechat: $("#wechat").val(),
+					imtype: $("#imtype").val(),
                     code: $("#code").val(),
                     agree: $("#agree").val()
                 },

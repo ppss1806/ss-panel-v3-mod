@@ -624,23 +624,25 @@ class UserController extends BaseController
 	
 	public function updateWechat($request, $response, $args)
     {
+		$type = $request->getParam('imtype');
         $wechat = $request->getParam('wechat');
         
         $user = $this->user;
 		
-		if ( $wechat == "") {
+		if ( $wechat == ""||$type == "") {
             $res['ret'] = 0;
-            $res['msg'] = "请填好微信号";
+            $res['msg'] = "请填好";
             return $response->getBody()->write(json_encode($res));
         }
 		
-		$user1 = User::where('wechat',$wechat)->first();
+		$user1 = User::where('wechat',$wechat)->where('im_type',$type)->first();
         if ( $user1 != null) {
             $res['ret'] = 0;
-            $res['msg'] = "此微信号已经被注册了";
+            $res['msg'] = "此联络方式已经被注册了";
             return $response->getBody()->write(json_encode($res));
         }
         
+		$type->im_type = $type;
         $user->wechat = filter_var($wechat, FILTER_SANITIZE_STRING);
         $user->save();
 

@@ -53,10 +53,33 @@
 							<div class="card-main">
 								<div class="card-inner">
 									<div class="card-inner">
-										<p class="card-heading">微信号修改</p>
-										<p>当前微信号：{$user->wechat}</p>
+										<p class="card-heading">联络方式修改</p>
+										<p>当前联络方式：
+										{if $user->im_type==1}
+										微信
+										{/if}
+										
+										{if $user->im_type==2}
+										QQ
+										{/if}
+										
+										{if $user->im_type==3}
+										Google+
+										{/if}
+										
+										{$user->im_value}</p>
 										<div class="form-group form-group-label">
-											<label class="floating-label" for="wechat">微信号</label>
+											<label class="floating-label" for="imtype">选择您的联络方式</label>
+											<select class="form-control" id="imtype">
+												<option></option>
+												<option value="1">微信</option>
+												<option value="2">QQ</option>
+												<option value="3">Google+</option>
+											</select>
+										</div>
+											
+										<div class="form-group form-group-label">
+											<label class="floating-label" for="wechat">在这输入联络方式账号</label>
 											<input class="form-control" id="wechat" type="text">
 										</div>
 										
@@ -391,7 +414,8 @@
                 url: "wechat",
                 dataType: "json",
                 data: {
-                    wechat: $("#wechat").val()
+                    wechat: $("#wechat").val(),
+					imtype: $("#im_type").val()
                 },
                 success: function (data) {
                     if (data.ret) {

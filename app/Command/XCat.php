@@ -104,7 +104,7 @@ class XCat
 			$user->reg_date=date("Y-m-d H:i:s");
 			$user->money=0;
 			$user->wechat="";
-			$user->node_class=0;
+			$user->class=0;
 			$user->plan='A';
 			$user->node_speedlimit=0;
 			$user->theme=Config::get('theme');

@@ -97,6 +97,7 @@ class UserController extends AdminController
         $user->enable = $request->getParam('enable');
         $user->is_admin = $request->getParam('is_admin');
         $user->ref_by = $request->getParam('ref_by');
+		$user->remark = $request->getParam('remark');
 		$user->class = $request->getParam('class');
 		$user->class_expire = $request->getParam('class_expire');
 		$user->expire_in = $request->getParam('expire_in');

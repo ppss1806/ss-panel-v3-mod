@@ -27,6 +27,11 @@
 								</div>
 								
 								<div class="form-group form-group-label">
+									<label class="floating-label" for="email">备注(仅对管理员可见)</label>
+									<input class="form-control" id="remark" type="text" value="{$user->remark}">
+								</div>
+								
+								<div class="form-group form-group-label">
 									<label class="floating-label" for="pass">密码(不修改请留空)</label>
 									<input class="form-control" id="pass" type="password">
 								</div>
@@ -210,6 +215,7 @@
                     invite_num: $("#invite_num").val(),
 					node_speedlimit: $("#node_speedlimit").val(),
                     method: $("#method").val(),
+					remark: $("#remark").val(),
                     enable: enable,
                     is_admin: is_admin,
                     ref_by: $("#ref_by").val(),

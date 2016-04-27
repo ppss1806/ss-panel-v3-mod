@@ -104,6 +104,15 @@ Class Wecenter
 		}
 	}
 	
+	
+	static function Loginout()
+	{
+		if(Config::get('wecenter_db_user')!='')
+		{
+			Utils\Cookie::setwithdomain([Config::get('wecenter_cookie_prefix')."_user_login"=>"loginout"],time()-86400,Config::get('wecenter_system_main_domain'));
+		}
+	}
+	
 	public static function encode_hash($hash_data, $hash_key = null)
 	{
 		if (!$hash_data)
