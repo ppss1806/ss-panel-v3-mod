@@ -90,7 +90,9 @@ class Job
 		$api->setApiKey(Config::get("cloudxns_apikey"));//修改成自己API KEY
 		$api->setSecretKey(Config::get("cloudxns_apisecret"));//修改成自己的SECERET KEY
 		
-		$api->setProtocol(false);*/
+		$api->setProtocol(false);
+		
+		echo $api->domain->domainList();*/
 		
 		
 		$newmd5 = md5(file_get_contents("https://git.zhaoj.in/glzjin/ss-panel-v3-publicv2/raw/master/bootstrap.php"));
@@ -100,7 +102,7 @@ class Job
 		{
 			if(file_exists(BASE_PATH."/storage/update.md5"))
 			{
-				unlink(file_exists(BASE_PATH."/storage/update.md5"));
+				unlink(BASE_PATH."/storage/update.md5");
 			}
 		}
 		else
