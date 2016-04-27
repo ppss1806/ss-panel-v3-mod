@@ -46,6 +46,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+									<label class="col-sm-3 control-label">备注(仅对管理员可见)</label>
+                                    <div class="col-sm-9">
+									<input class="form-control" id="remark" type="text" value="{$user->remark}">
+                                    </div>
+								</div>
+                                    <div class="form-group">
                                         <label class="col-sm-3 control-label">密码</label>
 
                                         <div class="col-sm-9">
@@ -242,6 +248,7 @@
                     invite_num: $("#invite_num").val(),
 					node_speedlimit: $("#node_speedlimit").val(),
                     method: $("#method").val(),
+					remark: $("#remark").val(),
                     enable: $("#enable").val(),
                     is_admin: $("#is_admin").val(),
                     ref_by: $("#ref_by").val(),
