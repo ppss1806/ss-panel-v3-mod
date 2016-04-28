@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2016-04-27 00:54:16
+-- Generation Time: 2016-04-28 21:58:13
 -- 服务器版本： 5.5.48-log
 -- PHP Version: 5.6.20
 
@@ -44,6 +44,19 @@ CREATE TABLE IF NOT EXISTS `announcement` (
   `id` int(11) NOT NULL,
   `date` datetime NOT NULL,
   `content` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `blockip`
+--
+
+CREATE TABLE IF NOT EXISTS `blockip` (
+  `id` bigint(20) NOT NULL,
+  `nodeid` int(11) NOT NULL,
+  `ip` text NOT NULL,
+  `datetime` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -104,6 +117,25 @@ CREATE TABLE IF NOT EXISTS `login_ip` (
 CREATE TABLE IF NOT EXISTS `radius_ban` (
   `id` int(11) NOT NULL,
   `userid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `smartline`
+--
+
+CREATE TABLE IF NOT EXISTS `smartline` (
+  `id` bigint(20) NOT NULL,
+  `node_class` bigint(20) NOT NULL,
+  `domain_prefix` text NOT NULL,
+  `type` int(11) DEFAULT '0',
+  `t_node` int(11) DEFAULT NULL,
+  `u_node` int(11) DEFAULT NULL,
+  `c_node` int(11) DEFAULT NULL,
+  `t_id` bigint(20) NOT NULL,
+  `u_id` bigint(20) NOT NULL,
+  `c_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -223,6 +255,19 @@ CREATE TABLE IF NOT EXISTS `ss_user_admin` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `unblockip`
+--
+
+CREATE TABLE IF NOT EXISTS `unblockip` (
+  `id` bigint(20) NOT NULL,
+  `ip` text NOT NULL,
+  `datetime` bigint(20) NOT NULL,
+  `userid` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `user`
 --
 
@@ -255,7 +300,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `node_speedlimit` text NOT NULL,
   `node_connector` int(11) NOT NULL DEFAULT '0',
   `is_admin` int(2) NOT NULL DEFAULT '0',
-  `wechat` text NOT NULL,
+  `im_type` int(11) DEFAULT '1',
+  `im_value` text,
   `last_day_t` bigint(20) NOT NULL DEFAULT '0',
   `sendDailyMail` int(11) NOT NULL DEFAULT '1',
   `class` int(11) NOT NULL DEFAULT '0',
@@ -264,7 +310,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `theme` text NOT NULL,
   `ga_token` text NOT NULL,
   `ga_enable` int(11) NOT NULL DEFAULT '0',
-  `pac` longtext
+  `pac` longtext,
+  `remark` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -315,6 +362,12 @@ ALTER TABLE `announcement`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `blockip`
+--
+ALTER TABLE `blockip`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `code`
 --
 ALTER TABLE `code`
@@ -336,6 +389,12 @@ ALTER TABLE `login_ip`
 -- Indexes for table `radius_ban`
 --
 ALTER TABLE `radius_ban`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `smartline`
+--
+ALTER TABLE `smartline`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -382,6 +441,12 @@ ALTER TABLE `ss_user_admin`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `unblockip`
+--
+ALTER TABLE `unblockip`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -417,6 +482,11 @@ ALTER TABLE `alive_ip`
 ALTER TABLE `announcement`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `blockip`
+--
+ALTER TABLE `blockip`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `code`
 --
 ALTER TABLE `code`
@@ -436,6 +506,11 @@ ALTER TABLE `login_ip`
 --
 ALTER TABLE `radius_ban`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `smartline`
+--
+ALTER TABLE `smartline`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `speedtest`
 --
@@ -472,6 +547,11 @@ ALTER TABLE `ss_password_reset`
 ALTER TABLE `ss_user_admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `unblockip`
+--
+ALTER TABLE `unblockip`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
@@ -489,37 +569,84 @@ ALTER TABLE `user_traffic_log`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- phpMyAdmin SQL Dump
+-- version 4.4.15.5
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: 2016-04-28 21:59:55
+-- 服务器版本： 5.5.48-log
+-- PHP Version: 5.6.20
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `glzjin_ss2`
+--
 
+-- --------------------------------------------------------
 
-ALTER TABLE `user` ADD `remark` TEXT NULL AFTER `pac`; 
+--
+-- 表的结构 `ss_node`
+--
 
-ALTER TABLE `user` ADD `im_type` INT NULL DEFAULT '1' AFTER `is_admin`; 
+CREATE TABLE IF NOT EXISTS `ss_node` (
+  `id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `type` int(3) NOT NULL,
+  `server` varchar(128) NOT NULL,
+  `method` varchar(64) NOT NULL,
+  `info` varchar(128) NOT NULL,
+  `status` varchar(128) NOT NULL,
+  `sort` int(3) NOT NULL,
+  `custom_method` tinyint(1) NOT NULL DEFAULT '0',
+  `traffic_rate` float NOT NULL DEFAULT '1',
+  `node_class` int(11) NOT NULL DEFAULT '0',
+  `node_speedlimit` int(11) NOT NULL DEFAULT '0',
+  `node_connector` int(11) NOT NULL DEFAULT '0',
+  `node_bandwidth` bigint(20) NOT NULL DEFAULT '0',
+  `node_bandwidth_limit` bigint(20) NOT NULL DEFAULT '0',
+  `bandwidthlimit_resetday` int(11) NOT NULL DEFAULT '0',
+  `node_heartbeat` bigint(20) NOT NULL DEFAULT '0',
+  `node_ip` text
+) ENGINE=InnoDB AUTO_INCREMENT=178 DEFAULT CHARSET=utf8mb4;
 
-ALTER TABLE `user` CHANGE `wechat` `im_value` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
-
-
-CREATE TABLE `smartline` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `node_class` BIGINT NOT NULL , `domain_prefix` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+--
+-- 转存表中的数据 `ss_node`
+--
 
 INSERT INTO `ss_node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, `sort`, `custom_method`, `traffic_rate`, `node_class`, `node_speedlimit`, `node_connector`, `node_bandwidth`, `node_bandwidth_limit`, `bandwidthlimit_resetday`, `node_heartbeat`, `node_ip`) VALUES
-(1, '统一验证登陆', 0, 'zhaojin97.cn', 'radius', '统一登陆验证', '可用', 999, 0, 1, 0, 0, 0, 0, 0, 0, 0, ''),
-(2, 'VPN 统一流量结算', 0, 'zhaojin97.cn', 'radius', 'VPN 统一流量结算', '可用', 999, 0, 1, 0, 0, 0, 0, 0, 0, 0, NULL);
+(NULL, '统一验证登陆', 0, 'zhaojin97.cn', 'radius', '统一登陆验证', '可用', 999, 0, 1, 0, 0, 0, 0, 0, 0, 0, ''),
+(NULL, 'VPN 统一流量结算', 0, 'zhaojin97.cn', 'radius', 'VPN 统一流量结算', '可用', 999, 0, 1, 0, 0, 0, 0, 0, 0, 0, NULL),
+(NULL, '智能线路（速度） - Shadowsocks', 1, 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，注重速度。', '可用', 0, 1, 1, 0, 0, 0, 0, 0, 0, 1461851943, NULL),
+(NULL, '智能线路（延时） - Shadowsocks', 1, 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，降低延时。', '可用', 0, 1, 1, 0, 0, 0, 0, 0, 0, 1461851943, NULL);
 
-INSERT INTO `ss_node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, `sort`, `custom_method`, `traffic_rate`, `node_class`, `node_speedlimit`, `node_connector`, `node_bandwidth`, `node_bandwidth_limit`, `bandwidthlimit_resetday`, `node_heartbeat`, `node_ip`) VALUES ('null', '智能线路（速度） - Shadowsocks', '1', 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，注重速度。', '可用', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', NULL);
+--
+-- Indexes for dumped tables
+--
 
-INSERT INTO `ss_node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, `sort`, `custom_method`, `traffic_rate`, `node_class`, `node_speedlimit`, `node_connector`, `node_bandwidth`, `node_bandwidth_limit`, `bandwidthlimit_resetday`, `node_heartbeat`, `node_ip`) VALUES ('null', '智能线路（延时） - Shadowsocks', '1', 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，降低延时。', '可用', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', NULL);
+--
+-- Indexes for table `ss_node`
+--
+ALTER TABLE `ss_node`
+  ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `smartline` ADD `type` INT NULL DEFAULT '0' AFTER `domain_prefix`;
+--
+-- AUTO_INCREMENT for dumped tables
+--
 
-ALTER TABLE `smartline` ADD `t_node` INT NULL AFTER `type`, ADD `u_node` INT NULL AFTER `t_node`, ADD `c_node` INT NULL AFTER `u_node`;
-
-ALTER TABLE `smartline` ADD `t_id` BIGINT NOT NULL AFTER `c_node`, ADD `u_id` BIGINT NOT NULL AFTER `t_id`, ADD `c_id` BIGINT NOT NULL AFTER `u_id`;
-
-CREATE TABLE `blockip` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `nodeid` INT NOT NULL , `ip` TEXT NOT NULL , `datetime` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-
-CREATE TABLE `unblockip` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `ip` TEXT NOT NULL , `datetime` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB; 
-
-
-ALTER TABLE `unblockip` ADD `userid` BIGINT NOT NULL AFTER `datetime`;
+--
+-- AUTO_INCREMENT for table `ss_node`
+--
+ALTER TABLE `ss_node`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=178;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
