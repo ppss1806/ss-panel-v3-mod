@@ -132,7 +132,7 @@ class Job
 				$Nodes=Node::where("node_class","<=",$Class)->get();
 				foreach($Nodes as $Node)
 				{
-					$Speed=Speedtest::where("nodeid","=",$Node->id)->orderBy("datetime","desc")->take(1)->first();
+					$Speed=Speedtest::where("nodeid","=",$Node->id)->where("datetime",time()-Config::get('Speedtest_duration')*3600)->orderBy("datetime","desc")->take(1)->first();
 					if($Speed!=null)
 					{
 						$SpeedArray=explode(" ",$Speed->telecomeupload);
@@ -317,7 +317,7 @@ class Job
 				$Nodes=Node::where("node_class","<=",$Class)->get();
 				foreach($Nodes as $Node)
 				{
-					$Speed=Speedtest::where("nodeid","=",$Node->id)->orderBy("datetime","desc")->take(1)->first();
+					$Speed=Speedtest::where("nodeid","=",$Node->id)->where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy("datetime","desc")->take(1)->first();
 					if($Speed!=null)
 					{
 						$SpeedArray=explode(" ",$Speed->telecomping);

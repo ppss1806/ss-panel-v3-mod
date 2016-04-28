@@ -88,6 +88,17 @@ class UserController extends BaseController
 		$android_add="";
 		foreach($nodes as $node)
 		{
+			if($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))
+			{
+				if(Config::get('cloudxns_apikey')=="")
+				{
+					continue;
+				}
+				
+				$smt=Smartline::where("node_class",$this->user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
+				
+				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
+			}
 			if($android_add=="")
 			{
 				$ary['server'] = $node->server;

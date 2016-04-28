@@ -7,6 +7,7 @@ namespace App\Controllers;
 
 use App\Models\Link;
 use App\Models\User;
+use App\Models\Smartline;
 use App\Utils\Tools;
 use App\Services\Config;
 
@@ -173,6 +174,16 @@ class LinkController extends BaseController
 		$temparray=array();
 		foreach($nodes as $node)
 		{
+			if($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))
+			{
+				if(Config::get('cloudxns_apikey')=="")
+				{
+					continue;
+				}
+				$smt=Smartline::where("node_class",$user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
+				
+				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
+			}
 			array_push($temparray,array("remarks"=>$node->name,
 										"server"=>$node->server,
 										"server_port"=>$user->port,
@@ -197,6 +208,16 @@ class LinkController extends BaseController
 		$proxy_group="";
 		foreach($nodes as $node)
 		{
+			if($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))
+			{
+				if(Config::get('cloudxns_apikey')=="")
+				{
+					continue;
+				}
+				$smt=Smartline::where("node_class",$user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
+				
+				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
+			}
 			$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/ss.module'."\n";
 			$proxy_name.=",".$node->name;
 		}

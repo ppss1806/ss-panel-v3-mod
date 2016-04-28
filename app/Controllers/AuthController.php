@@ -78,7 +78,7 @@ class AuthController extends BaseController
 			
 			if (!$rcode) {
 				$res['ret'] = 0;
-				$res['msg'] = "403 两步验证码错误";
+				$res['msg'] = "403 两步验证码错误，如果您是丢失了生成器或者错误地设置了这个选项，您可以尝试重置密码，即可取消这个选项。";
 				return $response->getBody()->write(json_encode($res));
 			}
 		}

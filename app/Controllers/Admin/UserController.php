@@ -82,10 +82,11 @@ class UserController extends AdminController
 		$passwd=$request->getParam('passwd');
 
 		Radius::ChangeUserName($email1,$email2,$passwd);
-		Wecenter::ChangeUserName($email1,$email2,$request->getParam('pass'),$user->user_name);
+		
 
         if ($request->getParam('pass') != '') {
             $user->pass = Hash::passwordHash($request->getParam('pass'));
+			Wecenter::ChangeUserName($email1,$email2,$request->getParam('pass'),$user->user_name);
         }
         $user->port =  $request->getParam('port');
         $user->passwd = $request->getParam('passwd');
