@@ -56,6 +56,11 @@ class Tools
     {
         return self::genRandomChar(64);
     }
+	
+	public static function is_ip($a){  
+		$b = preg_match("/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/",$a);
+		return $b;
+    } 
 
 
     // Unix time to Date Time

@@ -41,6 +41,9 @@
 									<div class="card-inner margin-bottom-no">
 										<div class="tile-wrap">
 											{foreach $node_prefix as $prefix => $nodes}
+												{$load="暂无数据"}
+												{$uptime="暂无数据"}
+												{$speedtest="暂无数据"}
 												
 													<div class="tile tile-collapse">
 														<div data-target="#heading{$node_order->$prefix}" data-toggle="tile">
@@ -136,7 +139,7 @@
 															</div>
 															
 																
-																
+															{if $prefix!="智能线路（速度）"&& $prefix!="智能线路（延时）"}	
 															<p>{$speedtest}</p>
 															<p><i class="icon icon-lg">cloud_down</i>负载：{$load} </p><p><i class="icon icon-lg">trending_up</i>Uptime：{$uptime}</p>
 															<div class="tile-footer">
@@ -144,11 +147,10 @@
 																	<a class="btn btn-flat waves-attach" data-toggle="tile" href="#heading{$node_order->$prefix}"><span class="icon">close</span>&nbsp;关闭</a>
 																</div>
 															</div>
+															{/if}
 														</div>
 												</div>
-												{$load="暂无数据"}
-												{$uptime="暂无数据"}
-												{$speedtest="暂无数据"}
+												
 											{/foreach}
 										</div>
 									</div>

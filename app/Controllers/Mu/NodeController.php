@@ -5,7 +5,7 @@ namespace App\Controllers\Mu;
 
 use App\Controllers\BaseController;
 use App\Models\NodeOnlineLog;
-use App\Models\NodeInfo;
+use App\Models\NodeInfoLog;
 
 class NodeController extends BaseController
 {
@@ -13,7 +13,6 @@ class NodeController extends BaseController
     public function onlineUserLog($request, $response, $args){
         $node_id = $args['id'];
         $count = $request->getParam('count');
-		
         $log = new NodeOnlineLog();
         $log->node_id = $node_id;
         $log->online_user = $count;
@@ -37,7 +36,7 @@ class NodeController extends BaseController
         $node_id = $args['id'];
         $load = $request->getParam('load');
         $uptime = $request->getParam('uptime');
-        $log = new NodeInfo();
+        $log = new NodeInfoLog();
         $log->node_id = $node_id;
         $log->load = $load;
         $log->uptime = $uptime;

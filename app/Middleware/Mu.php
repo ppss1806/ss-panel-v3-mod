@@ -34,17 +34,15 @@ class Mu
 		}
 		
 		$node = Node::where("node_ip","=",$_SERVER["REMOTE_ADDR"])->first();
-		if($node==null)
+		/*if($node==null)
 		{
 			$res['ret'] = 0;
             $res['msg'] = "source is  invalid";
             $response->getBody()->write(json_encode($res));
             return $response;
 
-		}
+		}*/
 
-		
-		
 		
 		
         if ($auth==false) {

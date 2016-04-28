@@ -76,6 +76,7 @@ $app->group('/user', function () {
 	$this->post('/pacset', 'App\Controllers\UserController:PacSet');
 	$this->get('/getpcconf', 'App\Controllers\UserController:GetPcConf');
 	$this->get('/getiosconf', 'App\Controllers\UserController:GetIosConf');
+	$this->post('/unblock', 'App\Controllers\UserController:Unblock');
 })->add(new Auth());
 
 // Auth
@@ -120,7 +121,8 @@ $app->group('/admin', function () {
 	
 	// IP Mange
     $this->get('/alive', 'App\Controllers\Admin\IpController:index');
-	
+	$this->get('/block', 'App\Controllers\Admin\IpController:block');
+	$this->get('/unblock', 'App\Controllers\Admin\IpController:unblock');
 	$this->get('/login', 'App\Controllers\Admin\IpController:index1');
 	
 	// Code Mange

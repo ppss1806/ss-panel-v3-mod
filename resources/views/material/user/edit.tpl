@@ -178,6 +178,23 @@
 							</div>
 						</div>
 						
+						<div class="card margin-bottom-no">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="card-inner">
+										<p class="card-heading">IP解封</p>
+										<p>当前状态：{$Block}</p>
+										
+									</div>
+									<div class="card-action">
+										<div class="card-action-btn pull-left">
+											<button class="btn btn-flat waves-attach" id="unblock" ><span class="icon">check</span>&nbsp;解封</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 					</div>
 					
 					
@@ -416,6 +433,33 @@
                 data: {
                     wechat: $("#wechat").val(),
 					imtype: $("#imtype").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#result").modal();
+						$("#msg").html(data.msg);
+                    } else {
+                        $("#result").modal();
+						$("#msg").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    $("#result").modal();
+					$("#msg").html(data.msg+"     出现了一些错误。");
+                }
+            })
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#unblock").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "unblock",
+                dataType: "json",
+                data: {
                 },
                 success: function (data) {
                     if (data.ret) {

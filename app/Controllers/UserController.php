@@ -11,9 +11,13 @@ use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Da;
 use App\Models\User;
 use App\Models\Code;
 use App\Models\Ip;
+use App\Models\Smartline;
 use App\Models\LoginIp;
+use App\Models\BlockIp;
+use App\Models\UnblockIp;
 use App\Utils\QQWry;
 use App\Utils\GA;
+
 
 
 
@@ -120,8 +124,6 @@ class UserController extends BaseController
 	
 	public function lookingglass($request, $response, $args)
     {
-		
-		
 		
 		$Speedtest=Speedtest::where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy('datetime','desc')->get();
 		
@@ -297,6 +299,57 @@ class UserController extends BaseController
 		$node_bandwidth=Array();
 		
 		foreach ($nodes as $node) {
+			if($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))
+			{
+				if(Config::get('cloudxns_apikey')=="")
+				{
+					continue;
+				}
+				$temp=explode(" - ",$node->name);
+				if(!isset($node_prefix[$temp[0]]))
+				{
+					$node_prefix[$temp[0]]=array();
+					$node_order[$temp[0]]=$a;
+					$node_alive[$temp[0]]=0;
+					$node_method[$temp[0]]=$temp[1];
+					$a++;
+				}
+
+				
+				$node_prealive[$node->id]="混合";
+				if(time()-$node->node_heartbeat>90)
+				{
+					$node_heartbeat[$temp[0]]="离线";
+				}
+				else
+				{
+					$node_heartbeat[$temp[0]]="在线";
+				}
+				
+
+				$node_bandwidth[$temp[0]]="混合";
+				
+
+
+				$node_alive[$temp[0]]="混合";
+
+
+				
+				if(strpos($node_method[$temp[0]],$temp[1])===FALSE)
+				{
+					$node_method[$temp[0]]=$node_method[$temp[0]]." ".$temp[1];
+				}
+		
+				
+				$smt=Smartline::where("node_class",$this->user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
+				
+				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
+				
+				array_push($node_prefix[$temp[0]],$node);
+				
+				continue;
+			}
+			
 			if($user->class>=$node->node_class)
 			{
 				$temp=explode(" - ",$node->name);
@@ -367,7 +420,7 @@ class UserController extends BaseController
         $node = Node::find($id);
 
         if ($node == null) {
-
+			return null;
         }
 
 
@@ -377,6 +430,14 @@ class UserController extends BaseController
 				if($user->class>=$node->node_class)
 				{
 					$ary['server'] = $node->server;
+					
+					
+					if(($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))&&Config::get('cloudxns_apikey')!="")
+					{
+						$smt=Smartline::where("node_class",$this->user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
+						$ary['server']=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
+					}
+					
 					$ary['server_port'] = $this->user->port;
 					$ary['password'] = $this->user->passwd;
 					$ary['method'] = $node->method;
@@ -556,7 +617,20 @@ class UserController extends BaseController
     public function edit($request, $response, $args)
     {
 		$themes=Tools::getDir(BASE_PATH."/resources/views");
-        return $this->view()->assign('user',$this->user)->assign('themes',$themes)->display('user/edit.tpl');
+		
+		$BIP = BlockIp::where("ip",$_SERVER["REMOTE_ADDR"])->first();
+		if($BIP == NULL)
+		{
+			$Block = "IP: ".$_SERVER["REMOTE_ADDR"]." 没有被封";
+			$isBlock = 0;
+		}
+		else
+		{
+			$Block = "IP: ".$_SERVER["REMOTE_ADDR"]." 已被封";
+			$isBlock = 1;
+		}
+		
+        return $this->view()->assign('user',$this->user)->assign('themes',$themes)->assign('isBlock',$isBlock)->assign('Block',$Block)->display('user/edit.tpl');
     }
 
 
@@ -618,7 +692,30 @@ class UserController extends BaseController
         $user->save();
 
         $res['ret'] = 1;
-        $res['msg'] = "ok";
+        $res['msg'] = "修改成功";
+        return $this->echoJson($response, $res);
+    }
+	
+	public function Unblock($request, $response, $args)
+    {
+        $user = $this->user;
+		$BIP = BlockIp::where("ip",$_SERVER["REMOTE_ADDR"])->first();
+        if ($BIP == NULL) {
+            $res['ret'] = 0;
+            $res['msg'] = "没有被封";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+        $BIP->delete();
+		
+		$UIP = new UnblockIp();
+		$UIP->userid = $user->id;
+		$UIP->ip = $_SERVER["REMOTE_ADDR"];
+		$UIP->datetime = time();
+
+		$UIP->save();
+        $res['ret'] = 1;
+        $res['msg'] = "解封 "+$_SERVER["REMOTE_ADDR"]+" 成功";
         return $this->echoJson($response, $res);
     }
 	
@@ -647,7 +744,7 @@ class UserController extends BaseController
         $user->save();
 
         $res['ret'] = 1;
-        $res['msg'] = "ok";
+        $res['msg'] = "修改成功";
         return $this->echoJson($response, $res);
     }
 	
