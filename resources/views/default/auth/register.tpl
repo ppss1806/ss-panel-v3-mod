@@ -6,7 +6,7 @@
     </div>
 
     <div class="register-box-body">
-        <p class="login-box-msg">和我签订契约，成为魔法少女吧。</p>
+        <p class="login-box-msg">来，注册个账号</p>
 
         <div class="form-group has-feedback">
             <input type="text" id="name" class="form-control" placeholder="昵称"/>
@@ -26,8 +26,17 @@
         </div>
 		
 		<div class="form-group has-feedback">
-            <input type="text" id="wechat" class="form-control" placeholder="微信号"/>
-            <span class="fa fa-weixin fa-2x form-control-feedback"></span>
+            	<select class="form-control" id="imtype">
+				<option>选择您的联络方式</option>
+				<option value="1">微信</option>
+				<option value="2">QQ</option>
+				<option value="3">Google+</option>
+				</select>
+        </div>
+        
+        <div class="form-group has-feedback">
+            <input type="text" id="wechat" class="form-control" placeholder="在这输入联络方式账号"/>
+            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
         </div>
 		
         <div class="form-group has-feedback">
@@ -91,6 +100,7 @@
                     passwd: $("#passwd").val(),
                     repasswd: $("#repasswd").val(),
 					wechat: $("#wechat").val(),
+					imtype: $("#imtype").val(),
                     code: $("#code").val(),
                     agree: $("#agree").val()
                 },
