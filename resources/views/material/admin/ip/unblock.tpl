@@ -11,7 +11,7 @@
 	<main class="content">
 		<div class="content-header ui-content-header">
 			<div class="container">
-				<h1 class="content-heading">½â·âIP¼ÇÂ¼</h1>
+				<h1 class="content-heading">è§£å°IPè®°å½•</h1>
 			</div>
 		</div>
 		<div class="container">
@@ -21,7 +21,7 @@
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
-								<p>ÕâÀïÊÇ×î½üµÄ½â·âIP¼ÇÂ¼¡£</p>
+								<p>è¿™é‡Œæ˜¯æœ€è¿‘çš„è§£å°IPè®°å½•ã€‚</p>
 							</div>
 						</div>
 					</div>
@@ -32,11 +32,11 @@
 						<table class="table">
 							<tr>
 								<th>ID</th>
-								<th>ÓÃ»§ID</th>
-								<th>ÓÃ»§Ãû</th>
+								<th>ç”¨æˆ·ID</th>
+								<th>ç”¨æˆ·å</th>
 								<th>IP</th>
-								<th>¹éÊôµØ</th>
-								<th>Ê±¼ä</th>
+								<th>å½’å±žåœ°</th>
+								<th>æ—¶é—´</th>
 							</tr>
 							{foreach $logs as $log}
 								<tr>
