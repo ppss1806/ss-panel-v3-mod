@@ -288,6 +288,39 @@
 
                 </div>
                 <!-- /.box -->
+                                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-fire"></i>
+
+                        <h3 class="box-title">IP解封</h3>
+                    </div>
+                    <!-- /.box-header --><!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-horizontal">
+							<div class="col-sm-12">
+                               当前状态：{$Block}
+                            </div>
+                            
+							
+							<div id="msg-successblo" class="alert alert-info alert-dismissable" style="display:none">
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-info"></i> Ok!</h4>
+
+                                <p id="msg-successblo-w"></p>
+                            </div>
+                           
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                         <button type="submit" id="unblock" class="btn btn-primary">解封</button>
+                    </div>
+
+                </div>
             </div>
 			
 			
@@ -551,6 +584,33 @@
     })
 </script>
 
+
+<script>
+    $(document).ready(function () {
+        $("#unblock").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "unblock",
+                dataType: "json",
+                data: {
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#msg-error").hide();
+                        $("#msg-successblo").show();
+                        $("#msg-successblo-w").html(data.msg);
+                    } else {
+                        $("#msg-error").show();
+                        $("#msg-error-p").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+    })
+</script>
 
 <script>
     $(document).ready(function () {
