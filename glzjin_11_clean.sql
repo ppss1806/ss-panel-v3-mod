@@ -1,4 +1,16 @@
-CREATE TABLE `smartline` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `node_class` BIGINT NOT NULL , `domain_prefix` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+DROP TABLE invite_code;
+
+ALTER TABLE `user`
+  DROP `node_class`,
+  DROP `node_speed`,
+  DROP `node_period`;
+  
+DROP TABLE ss_reset_pwd;
+
+ALTER TABLE `ss_node`
+  DROP `offset`,
+  DROP `node_speed_sum`,
+  DROP `node_ping`;CREATE TABLE `smartline` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `node_class` BIGINT NOT NULL , `domain_prefix` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 
 INSERT INTO `ss_node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, `sort`, `custom_method`, `traffic_rate`, `node_class`, `node_speedlimit`, `node_connector`, `node_bandwidth`, `node_bandwidth_limit`, `bandwidthlimit_resetday`, `node_heartbeat`, `node_ip`) VALUES (NULL, '智能线路（速度） - Shadowsocks', '1', 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，注重速度。', '可用', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', NULL);
