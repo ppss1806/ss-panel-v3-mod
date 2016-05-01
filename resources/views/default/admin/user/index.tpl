@@ -19,9 +19,8 @@
                         {$users->render()}
                         <table class="table table-hover">
                             <tr>
-								<th>操作</th>
                                 <th>ID</th>
-								<th>用户名(备注)</th> 
+								<th>用户名</th> 
 								<th>邮箱</th>
                                 <th>端口</th>
                                 <th>状态</th>
@@ -31,22 +30,15 @@
                                 <th>最后在线时间</th>
                                 <th>最后签到时间</th>
 								<th>在线 IP 数</th>
-                                <th>联络方式</th>
+								<th>微信号</th>
 								<th>注册时间</th>
                                 <th>邀请者</th>
+                                <th>操作</th>
                             </tr>
                             {foreach $users as $user}
                             <tr>
-                                <td>
-                                    <a class="btn btn-info btn-sm" href="/admin/user/{$user->id}/edit">编辑</a>
-                                    <a class="btn btn-danger btn-sm" id="delete" value="{$user->id}" href="/admin/user/{$user->id}/delete">删除</a>
-                                </td>
                                 <td>#{$user->id}</td>
-								<td>{$user->user_name}
-                                {if $user->remark!=""}
-									({$user->remark})
-								{/if}
-								</td>
+								<td>{$user->user_name}</td>
                                 <td>{$user->email}</td>
                                 <td>{$user->port}</td>
                                 <td>{$user->enable}</td>
@@ -56,23 +48,13 @@
                                 <td>{$user->lastSsTime()}</td>
                                 <td>{$user->lastCheckInTime()}</td>
 								<td><div data-trigger="hover" data-toggle="ippopover" data-placement="left" data-content="{foreach $userip[$user->id] as $singleip => $location}{$singleip} {$location}<br>{/foreach}">{$useripcount[$user->id]}</div></td>
-								<th><th>
-								{if $user->im_type==1}
-								微信
-								{/if}
-								
-								{if $user->im_type==2}
-								QQ
-								{/if}
-								
-								{if $user->im_type==3}
-								Google+
-								{/if}
-								
-								{$user->im_value}</th></th>
+								<th>{$user->wechat}</th>
 								<th><div data-trigger="hover" data-toggle="regpopover" data-placement="left" data-content="注册IP：{$user->reg_ip}　{$regloc[$user->id]}">{$user->reg_date}</div></td></th>
                                 <th>{$user->ref_by}</th>
-
+                                <td>
+                                    <a class="btn btn-info btn-sm" href="/admin/user/{$user->id}/edit">编辑</a>
+                                    <a class="btn btn-danger btn-sm" id="delete" value="{$user->id}" href="/admin/user/{$user->id}/delete">删除</a>
+                                </td>
                             </tr>
                             {/foreach}
                         </table>

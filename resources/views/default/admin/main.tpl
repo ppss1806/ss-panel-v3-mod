@@ -142,18 +142,6 @@
                     </a>
                 </li>
 				
-                <li>
-                    <a href="/admin/block">
-                        <i class="fa fa-lock"></i> <span>节点被封IP</span>
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="/admin/unblock">
-                        <i class="fa fa-lock"></i> <span>解封IP记录</span>
-                    </a>
-                </li>
-                
 				<li>
                     <a href="/admin/login">
                         <i class="fa fa-lock"></i> <span>登陆记录</span>

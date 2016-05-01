@@ -17,7 +17,6 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="col-lg-6 col-lg-push-3 col-sm-10 col-sm-push-1">
 						<section class="content-inner margin-top-no">
 
 
@@ -89,7 +88,6 @@
 		
 							
 						</section>
-			</div>
 			
 			
 			

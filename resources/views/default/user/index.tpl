@@ -13,8 +13,8 @@
     <!-- Main content -->
     <section class="content">
         <!-- START PROGRESS BARS -->
-
-		<div class="row">
+        <div class="row">
+		
 		
 			<div class="col-md-6">
                 <div class="box box-primary">
@@ -43,7 +43,11 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
-
+            </div>
+            <!-- /.col (right) -->
+			
+			
+			<div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa fa-lock" aria-hidden="true"></i>
@@ -75,6 +79,11 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
+            </div>
+            <!-- /.col (right) -->
+			
+			
+			<div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa fa-lock" aria-hidden="true"></i>
@@ -106,9 +115,12 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
-                 </div>
-                <div class="col-md-6">
-
+            </div>
+            <!-- /.col (right) -->
+		
+		
+		
+            <div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa fa-bullhorn"></i>
@@ -125,7 +137,10 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
-
+            </div>
+            <!-- /.col (right) -->
+			
+			<div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa fa-clock-o"></i>
@@ -156,7 +171,11 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
+            </div>
+            <!-- /.col (left) -->
+			
 
+            <div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa fa-exchange"></i>
@@ -192,25 +211,10 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
+            </div>
+            <!-- /.col (left) -->
 
-				<div class="box box-primary">
-                    <div class="box-header">
-                        <i class="fa fa-pencil"></i>
-
-                        <h3 class="box-title">All-in-One</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <p>这里为您提供了自动化地配置文件生成，包含了所有 Shadowsocks 服务器的信息，方便您在诸多的服务器中快速添加，快速切换。</p>
-										<p><a href="/downloads/client/ShadowsocksR-win.7z">Windows下载这个</a>，解压，然后下载<a href="/user/getpcconf">这个</a>，放到程序目录下，运行程序，选择一个合适的服务器，更新一下PAC为绕过国内IP，然后开启系统代理即可上网。</p>
-										<p><a href="/downloads/client/ShadowsocksX.dmg">Mac OS X下载这个</a>，安装，然后下载<a href="/user/getpcconf">这个</a>，放到程序目录下，运行程序，选择一个合适的服务器，更新一下PAC，然后开启系统代理即可上网。</p>
-										<p>iOS 下载<a href="/user/getiosconf">这个</a>，导入到 Surge 中，然后就可以随意切换服务器上网了。</p>
-										<p><a href="/downloads/client/shadowsocks.apk">Android下载这个</a>，安装，然后在手机上默认浏览器中点击<a id="android_add">这个</a>，然后一直点击确定，批量添加完服务器，然后路由选择绕过大陆，右上角开启就可以上网了。(此方法还在测试中，可能会出现问题)</p>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-
+            <div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa fa-pencil"></i>
@@ -234,7 +238,10 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
+            </div>
+            <!-- /.col (right) -->
 
+            <div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa  fa-paper-plane"></i>
@@ -259,10 +266,11 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
-
+            </div>
+            <!-- /.col (right) -->
         
 			{if $duoshuo_shortname!=""}
-
+			<div class="col-md-6">
 							<div class="box box-primary">
 								<div class="box-header">
 									<i class="fa  fa-comment"></i>
@@ -304,13 +312,14 @@
             </div>
             <!-- /.col (right) -->
 			{/if}
-</div>
+
 </div>
 
 
         <!-- /.row --><!-- END PROGRESS BARS -->
     </section>
     <!-- /.content -->
+</div><!-- /.content-wrapper -->
 
 <script>
     $(document).ready(function () {
@@ -329,12 +338,6 @@
             })
         })
     })
-		$("#android_add").click(function(){
-		var links = new Array({$android_add});
-		for(var i=0; i<links.length; i++){
-			window.open (links[i]);
-		}
-	});
 </script>
 
 
