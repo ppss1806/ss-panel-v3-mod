@@ -128,7 +128,12 @@ class Job
 					$Unicom_speed=0;
 					$Cmcc_speed=0;
 					
-					$Nodes=Node::where("node_class","<=",$Class)->where("node_group","=",$Group)->get();
+					$Nodes=Node::where("node_class","<=",$Class)->where(
+						function ($query) {
+							$query->where("node_group","=",$Group)
+								->orWhere("node_group","=",0);
+						}
+					)->get();
 					foreach($Nodes as $Node)
 					{
 						$Speed=Speedtest::where("nodeid","=",$Node->id)->where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy("datetime","desc")->take(1)->first();
@@ -324,7 +329,12 @@ class Job
 					$Unicom_ping=0;
 					$Cmcc_ping=0;
 					
-					$Nodes=Node::where("node_class","<=",$Class)->where("node_group","=",$Group)->get();
+					$Nodes=Node::where("node_class","<=",$Class)->where(
+						function ($query) {
+							$query->where("node_group","=",$Group)
+								->orWhere("node_group","=",0);
+						}
+					)->get();
 					foreach($Nodes as $Node)
 					{
 						$Speed=Speedtest::where("nodeid","=",$Node->id)->where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy("datetime","desc")->take(1)->first();

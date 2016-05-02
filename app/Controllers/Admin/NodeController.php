@@ -72,7 +72,7 @@ class NodeController extends AdminController
         $node = Node::find($id);
 
         $node->name =  $request->getParam('name');
-		$node->node_group =  $request->getParam('node_group');
+		$node->node_group =  $request->getParam('group');
         $node->server =  $request->getParam('server');
         $node->method =  $request->getParam('method');
         $node->custom_method =  $request->getParam('custom_method');

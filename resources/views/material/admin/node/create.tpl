@@ -88,7 +88,7 @@
 								
 								
 								<div class="form-group form-group-label">
-									<label class="floating-label" for="group">节点群组（分组为数字）</label>
+									<label class="floating-label" for="group">节点群组（分组为数字，不分组请填0）</label>
 									<input class="form-control" id="group" type="text" value="0">
 								</div>
 								
