@@ -109,23 +109,25 @@ $System_Config['login_warn']='true';
 $System_Config['min_port']='10000';
 $System_Config['max_port']='65535';
 
-
+#两种方式相对于ss端口的偏移
 $System_Config['pacp_offset']='-20000';
 $System_Config['pacpp_offset']='-20000';
 
 #测速周期/h
-
 $System_Config['Speedtest_duration']='6';
 
 
 #Cloudxns
-$System_Config['cloudxns_apikey']='';#自己去 cloudxns.net 申请
+$System_Config['cloudxns_apikey']='';#自己去 cloudxns.net 申请,不使用智能线路功能的话请清空这里
 $System_Config['cloudxns_apisecret']='';
 $System_Config['cloudxns_domain']='';#你的域名
 $System_Config['cloudxns_prefix']='hello'; #防抓取前缀，自定义
 $System_Config['cloudxns_ping_nodeid']='';#导入了sql之后，看到那两个智能线路的节点 id ,填到这。不使用的话导入之后也要填。
 $System_Config['cloudxns_speed_nodeid']='';#同上
 
+
+#随机分组，注册时随机分配到的分组，多个分组请用英文半角逗号分隔。
+$System_Config['ramdom_group']='0';
 
 #Wecenter 数据库信息
 $System_Config['wecenter_db_host']='localhost';

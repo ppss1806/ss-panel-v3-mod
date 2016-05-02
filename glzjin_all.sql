@@ -628,3 +628,10 @@ INSERT INTO `ss_node` (`id`, `name`, `type`, `server`, `method`, `info`, `status
 (NULL, '智能线路（速度） - Shadowsocks', 1, 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，注重速度。', '可用', 0, 1, 1, 0, 0, 0, 0, 0, 0, 1461851943, NULL),
 (NULL, '智能线路（延时） - Shadowsocks', 1, 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，降低延时。', '可用', 0, 1, 1, 0, 0, 0, 0, 0, 0, 1461851943, NULL);
 
+
+ALTER TABLE `user` ADD `node_group` INT NOT NULL DEFAULT '0' AFTER `remark`;
+ALTER TABLE `ss_node` ADD `node_group` INT NOT NULL DEFAULT '0' AFTER `node_ip`;
+
+
+ALTER TABLE `smartline` ADD `node_group` INT NOT NULL DEFAULT '0' AFTER `c_id`;
+

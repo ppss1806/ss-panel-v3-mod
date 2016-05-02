@@ -88,6 +88,12 @@
 								
 								
 								<div class="form-group form-group-label">
+									<label class="floating-label" for="group">节点群组（分组为数字）</label>
+									<input class="form-control" id="group" type="text" value="0">
+								</div>
+								
+								
+								<div class="form-group form-group-label">
 									<label class="floating-label" for="node_bandwidth_limit">节点流量上限（不使用的话请填0）（GB）</label>
 									<input class="form-control" id="node_bandwidth_limit" type="text" value="0">
 								</div>
@@ -185,6 +191,7 @@
                     rate: $("#rate").val(),
                     info: $("#info").val(),
                     type: type,
+					group: $("#group").val(),
                     status: $("#status").val(),
 					node_speedlimit: $("#node_speedlimit").val(),
                     sort: $("#sort").val(),

@@ -18,7 +18,7 @@ class UserController extends BaseController
 		$node->save();
 		
 		
-        $users = User::where("class",">=",$node->node_class)->where("expire_in",">",date("Y-m-d H:i:s"))->get();
+        $users = User::where("class",">=",$node->node_class)->where("node_group","=",$node->node_group)->where("expire_in",">",date("Y-m-d H:i:s"))->get();
 		
 		if($node->node_bandwidth_limit!=0)
 		{

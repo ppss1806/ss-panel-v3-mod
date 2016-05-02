@@ -84,7 +84,7 @@ class UserController extends BaseController
 		$Speedtest['Uspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("unicomupload","desc")->take(3);
 		$Speedtest['Cspeed']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("cmccupload","desc")->take(3);*/
 		
-		$nodes=Node::where('sort', 0)->where("node_class","<=",$this->user->class)->get();
+		$nodes=Node::where('sort', 0)->where("node_group","=",$this->user->node_group)->where("node_class","<=",$this->user->class)->get();
 		$android_add="";
 		foreach($nodes as $node)
 		{
@@ -129,7 +129,9 @@ class UserController extends BaseController
 			}
 		}
 		
-        return $this->view()->assign('anns',$Anns)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+		$ios_token = LinkController::GenerateIosCode("smart",0,$this->user->id,0,"smart");
+		
+        return $this->view()->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
 	
 	
@@ -299,7 +301,7 @@ class UserController extends BaseController
     public function node()
     {
         $user = Auth::getUser();
-        $nodes = Node::where('type', 1)->orderBy('name')->get();
+        $nodes = Node::where('type', 1)->where("node_class","<=",$this->user->class)->where("node_group","=",$this->user->node_group)->orderBy('name')->get();
 		$node_prefix=Array();
 		$node_method=Array();
 		$a=0;
@@ -352,7 +354,7 @@ class UserController extends BaseController
 				}
 		
 				
-				$smt=Smartline::where("node_class",$this->user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
+				$smt=Smartline::where("node_class",$this->user->class)->where("node_group","=",$this->user->node_group)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
 				
 				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
 				
@@ -361,7 +363,7 @@ class UserController extends BaseController
 				continue;
 			}
 			
-			if($user->class>=$node->node_class)
+			if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 			{
 				$temp=explode(" - ",$node->name);
 				if(!isset($node_prefix[$temp[0]]))
@@ -438,14 +440,14 @@ class UserController extends BaseController
 		switch ($node->sort) { 
 
 			case 0: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 					$ary['server'] = $node->server;
 					
 					
 					if(($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))&&Config::get('cloudxns_apikey')!="")
 					{
-						$smt=Smartline::where("node_class",$this->user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
+						$smt=Smartline::where("node_class",$this->user->class)->where("node_group","=",$this->user->node_group)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
 						$ary['server']=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
 					}
 					
@@ -472,7 +474,7 @@ class UserController extends BaseController
 			break; 
 
 			case 1: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 						
 					$email=$this->user->email;
@@ -484,7 +486,7 @@ class UserController extends BaseController
 			break; 
 
 			case 2: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
@@ -498,7 +500,7 @@ class UserController extends BaseController
 
 
 			case 3: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 
 					$email=$this->user->email;
@@ -514,7 +516,7 @@ class UserController extends BaseController
 			break; 
 
 			case 4: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
@@ -527,7 +529,7 @@ class UserController extends BaseController
 			break; 
 
 			case 5: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
@@ -541,7 +543,7 @@ class UserController extends BaseController
 			break; 
 
 			case 6: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
@@ -560,7 +562,7 @@ class UserController extends BaseController
 			break; 
 
 			case 7: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
@@ -575,7 +577,7 @@ class UserController extends BaseController
 			break; 
 
 			case 8: 
-				if($user->class>=$node->node_class)
+				if($user->class>=$node->node_class&&$user->node_group==$node->node_group)
 				{
 					$email=$this->user->email;
 					$email=Radius::GetUserName($email);
@@ -608,14 +610,14 @@ class UserController extends BaseController
 	public function GetPcConf($request, $response, $args){
         
         $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=gui-config.json');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("node_class","<=",$this->user->class)->get(),$this->user));
+        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where("node_group","=",$this->user->node_group)->where("node_class","<=",$this->user->class)->get(),$this->user));
         return $newResponse;
     }
 	
 	public function GetIosConf($request, $response, $args){
         
         $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("node_class","<=",$this->user->class)->get(),$this->user));
+        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where("node_group","=",$this->user->node_group)->where("node_class","<=",$this->user->class)->get(),$this->user));
         return $newResponse;
     }
 	

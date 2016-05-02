@@ -7,6 +7,7 @@ namespace App\Controllers;
 
 use App\Models\Link;
 use App\Models\User;
+use App\Models\Node;
 use App\Models\Smartline;
 use App\Utils\Tools;
 use App\Services\Config;
@@ -68,7 +69,7 @@ class LinkController extends BaseController
 	
 	public static function GenerateSurgeCode($address,$port,$userid,$geo,$method)
     {
-        $Elink = Link::where("type","=",6)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
+        $Elink = Link::where("type","=",0)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
 		if($Elink != null)
 		{
 			return $Elink->token;
@@ -87,7 +88,26 @@ class LinkController extends BaseController
 		return $NLink->token;
     }
 	
-	
+	public static function GenerateIosCode($address,$port,$userid,$geo,$method)
+    {
+        $Elink = Link::where("type","=",-1)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
+		if($Elink != null)
+		{
+			return $Elink->token;
+		}
+		$NLink = new Link();
+		$NLink->type = -1;
+		$NLink->address = $address;
+		$NLink->port = $port;
+		$NLink->ios = 1;
+		$NLink->geo = $geo;
+		$NLink->method = $method;
+		$NLink->userid = $userid;
+		$NLink->token = Tools::genRandomChar(8);
+		$NLink->save();
+		
+		return $NLink->token;
+    }
 	
 	public static function GetContent($request, $response, $args){
         $token = $args['token'];
@@ -101,6 +121,11 @@ class LinkController extends BaseController
 		
 		switch($Elink->type)
 		{
+			case -1:
+				$user=User::where("id",$Elink->userid)->first();
+				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
+				$newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where("node_group","=",$user->node_group)->where("node_class","<=",$user->class)->get(),$user));
+				return $newResponse;
 			case 3:
 				$type = "PROXY";
 				break;

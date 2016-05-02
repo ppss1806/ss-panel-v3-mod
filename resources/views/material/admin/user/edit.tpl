@@ -117,8 +117,13 @@
 						<div class="card-main">
 							<div class="card-inner">
 								<div class="form-group form-group-label">
-									<label class="floating-label" for="class">用户级别（用户只能访问到小于等于这个数字的节点）</label>
+									<label class="floating-label" for="class">用户级别（用户只能访问到等ji小于等于这个数字的节点）</label>
 									<input class="form-control" id="class" type="text" value="{$user->class}">
+								</div>
+								
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="group">用户群组（用户只能访问到组别等于这个数字的节点）</label>
+									<input class="form-control" id="group" type="text" value="{$user->node_group}">
 								</div>
 								
 								<div class="form-group form-group-label">
@@ -210,6 +215,7 @@
                     email: $("#email").val(),
                     pass: $("#pass").val(),
                     port: $("#port").val(),
+					group: $("#group").val(),
                     passwd: $("#passwd").val(),
                     transfer_enable: $("#transfer_enable").val(),
                     invite_num: $("#invite_num").val(),

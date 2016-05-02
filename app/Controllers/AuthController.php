@@ -197,6 +197,11 @@ class AuthController extends BaseController
 		$user->node_speedlimit=0;
 		$user->theme=Config::get('theme');
 		
+		$group=Config::get('ramdom_group');
+		$Garray=explode(",",$group);
+		
+		$user->node_group=$group[rand(0,count($group)-1)];
+		
 		$ga = new GA();
 		$secret = $ga->createSecret();
 		
