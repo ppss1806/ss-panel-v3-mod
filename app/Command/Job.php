@@ -73,7 +73,7 @@ class Job
     {
 		$nodes = Node::all();
         foreach($nodes as $node){
-			if(strpos($node->name,"Shadowsocks")!=FALSE)
+			if($node->sort==0)
 			{
 				if(date("d")==$node->bandwidthlimit_resetday)
 				{
@@ -82,6 +82,41 @@ class Job
 				}
 			}
 		}
+		
+		#https://github.com/shuax/QQWryUpdate/blob/master/update.php
+		
+		$copywrite = file_get_contents("http://update.cz88.net/ip/copywrite.rar");
+		
+		$adminUser = User::where("is_admin","=","1")->get();
+		
+		$newmd5 = md5($copywrite);
+		$oldmd5 = file_get_contents(BASE_PATH."/storage/qqwry.md5");
+		
+		if($newmd5 != $oldmd5)
+		{
+			file_put_contents(BASE_PATH."/storage/qqwry.md5",$newmd5);
+			$qqwry = file_get_contents("http://update.cz88.net/ip/qqwry.rar");
+			$key = unpack("V6", $copywrite)[6];
+			for($i=0; $i<0x200; $i++)
+			{
+				$key *= 0x805;
+				$key ++;
+				$key = $key & 0xFF;
+				$qqwry[$i] = chr( ord($qqwry[$i]) ^ $key );
+			}
+			$qqwry = gzuncompress($qqwry);
+			$fp = fopen(BASE_PATH."/app/Utils/qqwry.dat", "wb");
+			if($fp)
+			{
+				fwrite($fp, $qqwry);
+				fclose($fp);
+			}
+		}
+		
+		
+		
+		
+		
 	}
 	
 	public static function CheckJob()
@@ -521,6 +556,7 @@ class Job
 			
 		}
 		
+		$adminUser = User::where("is_admin","=","1")->get();
 		
 		$newmd5 = md5(file_get_contents("https://github.com/glzjin/ss-panel-v3-mod/raw/master/bootstrap.php"));
 		$oldmd5 = md5(file_get_contents(BASE_PATH."/bootstrap.php"));
@@ -566,7 +602,7 @@ class Job
 		if(Config::get("node_offline_warn")=="true")
 		{
 			$nodes = Node::all();
-			$adminUser = User::where("is_admin","=","1")->get();
+			
 			foreach($nodes as $node){
 				if(time()-$node->node_heartbeat>300&&time()-$node->node_heartbeat<360&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
 				{
