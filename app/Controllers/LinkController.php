@@ -248,7 +248,7 @@ class LinkController extends BaseController
 				
 				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
 			}
-			$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/ss.module'."\n";
+			$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
 			$proxy_name.=",".$node->name;
 		}
 		
@@ -267,11 +267,10 @@ loglevel = notify
 
 [Proxy]
 DIRECT = direct
-
 '.$proxy_group.'
 
 [Proxy Group]
-Proxy = select,DIRECT'.$proxy_name.'
+Proxy = select,DIRECT,'.$proxy_name.'
 
 
 [Rule]
@@ -631,7 +630,7 @@ dns-server = 119.29.29.29, 223.5.5.5, 114.114.114.114
 loglevel = notify
 
 [Proxy]
-Proxy = custom,'.$server.','.$port.','.$method.','.$passwd.','.Config::get('baseUrl').'/downloads/ss.module
+Proxy = custom,'.$server.','.$port.','.$method.','.$passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module
 
 [Rule]
 DOMAIN-KEYWORD,adsmogo,REJECT
@@ -884,7 +883,7 @@ loglevel = notify
 
 [Proxy]
 
-Proxy = custom,'.$server.','.$port.','.$method.','.$passwd.','.Config::get('baseUrl').'/downloads/ss.module
+Proxy = custom,'.$server.','.$port.','.$method.','.$passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module
 
 
 
