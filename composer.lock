@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.18.1",
+            "version": "3.18.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ed9bfdfd19b1e50a13f7ac772fd3d09a00ed8ed1"
+                "reference": "24b2a39b167bfe06045c714db5ae9b5b6bdf255d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed9bfdfd19b1e50a13f7ac772fd3d09a00ed8ed1",
-                "reference": "ed9bfdfd19b1e50a13f7ac772fd3d09a00ed8ed1",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/24b2a39b167bfe06045c714db5ae9b5b6bdf255d",
+                "reference": "24b2a39b167bfe06045c714db5ae9b5b6bdf255d",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-04-21 21:16:40"
+            "time": "2016-05-03 23:17:30"
         },
         {
             "name": "cloudxns/cloud-xns-api-sdk-php",
@@ -734,7 +734,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.2.28",
+            "version": "v5.2.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -777,7 +777,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.2.28",
+            "version": "v5.2.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -819,16 +819,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v5.2.28",
+            "version": "v5.2.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "1ea9f36cef011a80b1623ea3566d57017e7913bc"
+                "reference": "becc003759a0b028a237a8c5d2aeb550077d42fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/1ea9f36cef011a80b1623ea3566d57017e7913bc",
-                "reference": "1ea9f36cef011a80b1623ea3566d57017e7913bc",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/becc003759a0b028a237a8c5d2aeb550077d42fd",
+                "reference": "becc003759a0b028a237a8c5d2aeb550077d42fd",
                 "shasum": ""
             },
             "require": {
@@ -875,11 +875,11 @@
                 "orm",
                 "sql"
             ],
-            "time": "2016-04-01 18:17:22"
+            "time": "2016-04-27 12:59:09"
         },
         {
             "name": "illuminate/pagination",
-            "version": "v5.2.28",
+            "version": "v5.2.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
@@ -923,16 +923,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v5.2.28",
+            "version": "v5.2.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "e4aa03c5f26db752e838354a7d71b85e6138f4ec"
+                "reference": "cb5b004610baabe6b4bf532e6e4ff9eaca5eb25b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/e4aa03c5f26db752e838354a7d71b85e6138f4ec",
-                "reference": "e4aa03c5f26db752e838354a7d71b85e6138f4ec",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/cb5b004610baabe6b4bf532e6e4ff9eaca5eb25b",
+                "reference": "cb5b004610baabe6b4bf532e6e4ff9eaca5eb25b",
                 "shasum": ""
             },
             "require": {
@@ -975,7 +975,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "http://laravel.com",
-            "time": "2016-03-30 18:18:45"
+            "time": "2016-04-21 13:28:36"
         },
         {
             "name": "mailgun/mailgun-php",
@@ -1418,16 +1418,16 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.4.0",
+            "version": "v2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "f942da7b505d1a294284ab343d05df42d02ad6d9"
+                "reference": "8025426794f1944de806618671d4fa476dc7626f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/f942da7b505d1a294284ab343d05df42d02ad6d9",
-                "reference": "f942da7b505d1a294284ab343d05df42d02ad6d9",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/8025426794f1944de806618671d4fa476dc7626f",
+                "reference": "8025426794f1944de806618671d4fa476dc7626f",
                 "shasum": ""
             },
             "require": {
@@ -1458,7 +1458,7 @@
                 }
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
-            "time": "2016-03-31 13:10:33"
+            "time": "2016-05-03 17:50:52"
         },
         {
             "name": "slim/csrf",
@@ -1683,16 +1683,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.8.4",
+            "version": "v2.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "47d2d8cade9b1c3987573d2943bb9352536cdb87"
+                "reference": "81c4c51f7fd6d0d40961bd53dd60cade32db6ed6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/47d2d8cade9b1c3987573d2943bb9352536cdb87",
-                "reference": "47d2d8cade9b1c3987573d2943bb9352536cdb87",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/81c4c51f7fd6d0d40961bd53dd60cade32db6ed6",
+                "reference": "81c4c51f7fd6d0d40961bd53dd60cade32db6ed6",
                 "shasum": ""
             },
             "require": {
@@ -1739,7 +1739,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-07 14:04:32"
+            "time": "2016-04-05 16:36:54"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1802,7 +1802,7 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",

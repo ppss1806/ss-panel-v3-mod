@@ -18,7 +18,7 @@
 	<main class="content">
 		<div class="content-header ui-content-header">
 			<div class="container">
-				<h1 class="content-heading">兑换码</h1>
+				<h1 class="content-heading">充值码</h1>
 			</div>
 		</div>
 		<div class="container">
@@ -32,15 +32,16 @@
 							<div class="card-main">
 								<div class="card-inner">
 									<div class="card-inner">
-										<p class="card-heading">兑换码</p>
+										<p class="card-heading">充值码</p>
+										<p>当前余额：{$user->money} 元</p>
 										<div class="form-group form-group-label">
-											<label class="floating-label" for="code">兑换码</label>
+											<label class="floating-label" for="code">充值码</label>
 											<input class="form-control" id="code" type="text">
 										</div>
 									</div>
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
-											<button class="btn btn-flat waves-attach" id="code-update" ><span class="icon">check</span>&nbsp;兑换</button>
+											<button class="btn btn-flat waves-attach" id="code-update" ><span class="icon">check</span>&nbsp;充值</button>
 										</div>
 									</div>
 								</div>
@@ -69,6 +70,9 @@
 														<tr>
 															<td>#{$code->id}</td>
 															<td>{$code->code}</td>
+															{if $code->type==-1}
+															<td>金额充值</td>
+															{/if}
 															{if $code->type==10001}
 															<td>流量充值</td>
 															{/if}
@@ -78,8 +82,11 @@
 															{if $code->type>=1&&$code->type<=10000}
 															<td>等级续期 - 等级{$code->type}</td>
 															{/if}
+															{if $code->type==-1}
+															<td>充值 {$code->number} 元</td>
+															{/if}
 															{if $code->type==10001}
-															<td>充值了 {$code->number} GB 流量</td>
+															<td>充值 {$code->number} GB 流量</td>
 															{/if}
 															{if $code->type==10002}
 															<td>延长账户有效期 {$code->number} 天</td>

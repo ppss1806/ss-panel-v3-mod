@@ -34,7 +34,7 @@ class CodeController extends AdminController
             $char = Tools::genRandomChar(32);
             $code = new Code();
             $code->code = time() . $char;
-            $code->type = $type;
+            $code->type = -1;
 			$code->number = $number;
 			$code->userid=0;
 			$code->usedatetime="1989:06:04 02:30:00";
@@ -44,7 +44,7 @@ class CodeController extends AdminController
 		
 		
         $rs['ret'] = 1;
-        $rs['msg'] = "兑换码添加成功";
+        $rs['msg'] = "充值码添加成功";
         return $response->getBody()->write(json_encode($rs));
     }
 }

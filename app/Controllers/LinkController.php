@@ -248,7 +248,7 @@ class LinkController extends BaseController
 				
 				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
 			}
-			$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/ss.module'."\n";
+			$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
 			$proxy_name.=",".$node->name;
 		}
 		
@@ -267,7 +267,6 @@ loglevel = notify
 
 [Proxy]
 DIRECT = direct
-
 '.$proxy_group.'
 
 [Proxy Group]
@@ -631,7 +630,7 @@ dns-server = 119.29.29.29, 223.5.5.5, 114.114.114.114
 loglevel = notify
 
 [Proxy]
-Proxy = custom,'.$server.','.$port.','.$method.','.$passwd.','.Config::get('baseUrl').'/downloads/ss.module
+Proxy = custom,'.$server.','.$port.','.$method.','.$passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module
 
 [Rule]
 DOMAIN-KEYWORD,adsmogo,REJECT
@@ -884,7 +883,7 @@ loglevel = notify
 
 [Proxy]
 
-Proxy = custom,'.$server.','.$port.','.$method.','.$passwd.','.Config::get('baseUrl').'/downloads/ss.module
+Proxy = custom,'.$server.','.$port.','.$method.','.$passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module
 
 
 
@@ -1310,7 +1309,7 @@ FINAL,Proxy';
 	/** 
 	 * This is a php implementation of autoproxy2pac 
 	 */  
-	function reg_encode($str) {  
+	private static function reg_encode($str) {  
 	  $tmp_str = $str;  
 	  $tmp_str = str_replace('/', "\\/", $tmp_str);  
 	  $tmp_str = str_replace('.', "\\.", $tmp_str);  
@@ -1325,7 +1324,7 @@ FINAL,Proxy';
 	  return $tmp_str;  
 	}  
 	  
-	function get_pac($proxy_type, $proxy_host, $proxy_port, $proxy_google,$defined) {  
+	private static function get_pac($proxy_type, $proxy_host, $proxy_port, $proxy_google,$defined) {  
 	  $rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$defined;  
 	  $gfwlist = explode("\n", $rulelist);  
 	  if ($proxy_google == "true") {  

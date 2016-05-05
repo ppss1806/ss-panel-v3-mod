@@ -21,7 +21,7 @@
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
-								<p>这里是最近的节点被封IP。</p>
+								<p>这里是最近的节点上捕捉到的进行非法行为的IP。</p>
 							</div>
 						</div>
 					</div>

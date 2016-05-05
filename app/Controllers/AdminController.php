@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\InviteCode, App\Models\Node, App\Models\TrafficLog;
+use App\Models\InviteCode, App\Models\Node, App\Models\TrafficLog, App\Models\Payback, App\Models\Coupon;
 use App\Utils\Tools;
 use App\Services\Analytics;
 
@@ -29,10 +29,17 @@ class AdminController extends UserController
         return $this->view()->display('admin/index.tpl');
     }
 
-    public function invite()
+    public function invite($request, $response, $args)
     {
-        $codes = InviteCode::where('user_id', '=', '0')->get();
-        return $this->view()->assign('codes', $codes)->display('admin/invite.tpl');
+		
+		$pageNum = 1;
+        if (isset($request->getQueryParams()["page"])) {
+            $pageNum = $request->getQueryParams()["page"];
+        }
+		$paybacks = Payback::orderBy("datetime","desc")->paginate(15, ['*'], 'page', $pageNum);
+		$paybacks->setPath('/admin/invite');
+		
+        return $this->view()->assign("paybacks",$paybacks)->display('admin/invite.tpl');
     }
 
     public function addInvite($request, $response, $args)
@@ -53,6 +60,38 @@ class AdminController extends UserController
         }
         $res['ret'] = 1;
         $res['msg'] = "邀请码添加成功";
+        return $response->getBody()->write(json_encode($res));
+    }
+	
+	
+	public function coupon($request, $response, $args)
+    {
+		
+		$pageNum = 1;
+        if (isset($request->getQueryParams()["page"])) {
+            $pageNum = $request->getQueryParams()["page"];
+        }
+		$coupons = Coupon::orderBy("expire","desc")->paginate(15, ['*'], 'page', $pageNum);
+		$coupons->setPath('/admin/coupon');
+		
+        return $this->view()->assign("coupons",$coupons)->display('admin/coupon.tpl');
+    }
+
+    public function addCoupon($request, $response, $args)
+    {
+        
+		$code = new Coupon();
+		$code->onetime=$request->getParam('onetime');
+		
+		$code->code=$request->getParam('prefix').Tools::genRandomChar(8);
+		$code->expire=time()+$request->getParam('expire')*3600;
+		$code->shop=$request->getParam('shop');
+		$code->credit=$request->getParam('credit');
+		
+		$code->save();
+		
+        $res['ret'] = 1;
+        $res['msg'] = "优惠码添加成功";
         return $response->getBody()->write(json_encode($res));
     }
 

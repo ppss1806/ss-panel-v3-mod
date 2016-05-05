@@ -907,52 +907,6 @@
         "homepage": "https://www.cloudxns.net/"
     },
     {
-        "name": "react/promise",
-        "version": "v2.4.0",
-        "version_normalized": "2.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/reactphp/promise.git",
-            "reference": "f942da7b505d1a294284ab343d05df42d02ad6d9"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/reactphp/promise/zipball/f942da7b505d1a294284ab343d05df42d02ad6d9",
-            "reference": "f942da7b505d1a294284ab343d05df42d02ad6d9",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0"
-        },
-        "time": "2016-03-31 13:10:33",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "React\\Promise\\": "src/"
-            },
-            "files": [
-                "src/functions_include.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jan Sorgalla",
-                "email": "jsorgalla@gmail.com"
-            }
-        ],
-        "description": "A lightweight implementation of CommonJS Promises/A for PHP"
-    },
-    {
         "name": "guzzlehttp/streams",
         "version": "3.0.0",
         "version_normalized": "3.0.0.0",
@@ -1248,116 +1202,6 @@
         ]
     },
     {
-        "name": "symfony/translation",
-        "version": "v3.0.4",
-        "version_normalized": "3.0.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/translation.git",
-            "reference": "f7a07af51ea067745a521dab1e3152044a2fb1f2"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/f7a07af51ea067745a521dab1e3152044a2fb1f2",
-            "reference": "f7a07af51ea067745a521dab1e3152044a2fb1f2",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.9",
-            "symfony/polyfill-mbstring": "~1.0"
-        },
-        "conflict": {
-            "symfony/config": "<2.8"
-        },
-        "require-dev": {
-            "psr/log": "~1.0",
-            "symfony/config": "~2.8|~3.0",
-            "symfony/intl": "~2.8|~3.0",
-            "symfony/yaml": "~2.8|~3.0"
-        },
-        "suggest": {
-            "psr/log": "To use logging capability in translator",
-            "symfony/config": "",
-            "symfony/yaml": ""
-        },
-        "time": "2016-03-25 01:41:20",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Translation\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Translation Component",
-        "homepage": "https://symfony.com"
-    },
-    {
-        "name": "illuminate/contracts",
-        "version": "v5.2.28",
-        "version_normalized": "5.2.28.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/illuminate/contracts.git",
-            "reference": "411b851962c211078ade7664a6976e77a78cd2a5"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/contracts/zipball/411b851962c211078ade7664a6976e77a78cd2a5",
-            "reference": "411b851962c211078ade7664a6976e77a78cd2a5",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.9"
-        },
-        "time": "2016-03-07 20:37:17",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.2-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Illuminate\\Contracts\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Taylor Otwell",
-                "email": "taylorotwell@gmail.com"
-            }
-        ],
-        "description": "The Illuminate Contracts package.",
-        "homepage": "http://laravel.com"
-    },
-    {
         "name": "paragonie/random_compat",
         "version": "v1.4.1",
         "version_normalized": "1.4.1.0",
@@ -1405,171 +1249,6 @@
             "csprng",
             "pseudorandom",
             "random"
-        ]
-    },
-    {
-        "name": "illuminate/support",
-        "version": "v5.2.28",
-        "version_normalized": "5.2.28.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/illuminate/support.git",
-            "reference": "e4aa03c5f26db752e838354a7d71b85e6138f4ec"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/support/zipball/e4aa03c5f26db752e838354a7d71b85e6138f4ec",
-            "reference": "e4aa03c5f26db752e838354a7d71b85e6138f4ec",
-            "shasum": ""
-        },
-        "require": {
-            "doctrine/inflector": "~1.0",
-            "ext-mbstring": "*",
-            "illuminate/contracts": "5.2.*",
-            "paragonie/random_compat": "~1.4",
-            "php": ">=5.5.9"
-        },
-        "suggest": {
-            "illuminate/filesystem": "Required to use the composer class (5.2.*).",
-            "jeremeamia/superclosure": "Required to be able to serialize closures (~2.2).",
-            "symfony/polyfill-php56": "Required to use the hash_equals function on PHP 5.5 (~1.0).",
-            "symfony/process": "Required to use the composer class (2.8.*|3.0.*).",
-            "symfony/var-dumper": "Improves the dd function (2.8.*|3.0.*)."
-        },
-        "time": "2016-03-30 18:18:45",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.2-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Illuminate\\Support\\": ""
-            },
-            "files": [
-                "helpers.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Taylor Otwell",
-                "email": "taylorotwell@gmail.com"
-            }
-        ],
-        "description": "The Illuminate Support package.",
-        "homepage": "http://laravel.com"
-    },
-    {
-        "name": "illuminate/container",
-        "version": "v5.2.28",
-        "version_normalized": "5.2.28.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/illuminate/container.git",
-            "reference": "1e156f8017490f5583ab161030bf839c77c95e54"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/container/zipball/1e156f8017490f5583ab161030bf839c77c95e54",
-            "reference": "1e156f8017490f5583ab161030bf839c77c95e54",
-            "shasum": ""
-        },
-        "require": {
-            "illuminate/contracts": "5.2.*",
-            "php": ">=5.5.9"
-        },
-        "time": "2016-03-16 17:19:17",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.2-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Illuminate\\Container\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Taylor Otwell",
-                "email": "taylorotwell@gmail.com"
-            }
-        ],
-        "description": "The Illuminate Container package.",
-        "homepage": "http://laravel.com"
-    },
-    {
-        "name": "illuminate/database",
-        "version": "v5.2.28",
-        "version_normalized": "5.2.28.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/illuminate/database.git",
-            "reference": "1ea9f36cef011a80b1623ea3566d57017e7913bc"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/database/zipball/1ea9f36cef011a80b1623ea3566d57017e7913bc",
-            "reference": "1ea9f36cef011a80b1623ea3566d57017e7913bc",
-            "shasum": ""
-        },
-        "require": {
-            "illuminate/container": "5.2.*",
-            "illuminate/contracts": "5.2.*",
-            "illuminate/support": "5.2.*",
-            "nesbot/carbon": "~1.20",
-            "php": ">=5.5.9"
-        },
-        "suggest": {
-            "doctrine/dbal": "Required to rename columns and drop SQLite columns (~2.4).",
-            "fzaninotto/faker": "Required to use the eloquent factory builder (~1.4).",
-            "illuminate/console": "Required to use the database commands (5.2.*).",
-            "illuminate/events": "Required to use the observers with Eloquent (5.2.*).",
-            "illuminate/filesystem": "Required to use the migrations (5.2.*).",
-            "illuminate/pagination": "Required to paginate the result set (5.2.*)."
-        },
-        "time": "2016-04-01 18:17:22",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.2-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Illuminate\\Database\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Taylor Otwell",
-                "email": "taylorotwell@gmail.com"
-            }
-        ],
-        "description": "The Illuminate Database package.",
-        "homepage": "http://laravel.com",
-        "keywords": [
-            "database",
-            "laravel",
-            "orm",
-            "sql"
         ]
     },
     {
@@ -1623,52 +1302,6 @@
             "twig",
             "view"
         ]
-    },
-    {
-        "name": "illuminate/pagination",
-        "version": "v5.2.28",
-        "version_normalized": "5.2.28.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/illuminate/pagination.git",
-            "reference": "4f98bbdc05a0ab11e29f33f9962062f0c1320ca5"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/pagination/zipball/4f98bbdc05a0ab11e29f33f9962062f0c1320ca5",
-            "reference": "4f98bbdc05a0ab11e29f33f9962062f0c1320ca5",
-            "shasum": ""
-        },
-        "require": {
-            "illuminate/contracts": "5.2.*",
-            "illuminate/support": "5.2.*",
-            "php": ">=5.5.9"
-        },
-        "time": "2016-03-15 19:15:44",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.2-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Illuminate\\Pagination\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Taylor Otwell",
-                "email": "taylorotwell@gmail.com"
-            }
-        ],
-        "description": "The Illuminate Pagination package.",
-        "homepage": "http://laravel.com"
     },
     {
         "name": "vlucas/phpdotenv",
@@ -1836,150 +1469,6 @@
         ]
     },
     {
-        "name": "aws/aws-sdk-php",
-        "version": "3.18.1",
-        "version_normalized": "3.18.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/aws/aws-sdk-php.git",
-            "reference": "ed9bfdfd19b1e50a13f7ac772fd3d09a00ed8ed1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed9bfdfd19b1e50a13f7ac772fd3d09a00ed8ed1",
-            "reference": "ed9bfdfd19b1e50a13f7ac772fd3d09a00ed8ed1",
-            "shasum": ""
-        },
-        "require": {
-            "guzzlehttp/guzzle": "~5.3|~6.0.1|~6.1",
-            "guzzlehttp/promises": "~1.0",
-            "guzzlehttp/psr7": "~1.0",
-            "mtdowling/jmespath.php": "~2.2",
-            "php": ">=5.5"
-        },
-        "require-dev": {
-            "andrewsville/php-token-reflection": "^1.4",
-            "aws/aws-php-sns-message-validator": "~1.0",
-            "behat/behat": "~3.0",
-            "doctrine/cache": "~1.4",
-            "ext-dom": "*",
-            "ext-json": "*",
-            "ext-openssl": "*",
-            "ext-pcre": "*",
-            "ext-simplexml": "*",
-            "ext-spl": "*",
-            "nette/neon": "^2.3",
-            "phpunit/phpunit": "~4.0|~5.0",
-            "psr/cache": "^1.0"
-        },
-        "suggest": {
-            "aws/aws-php-sns-message-validator": "To validate incoming SNS notifications",
-            "doctrine/cache": "To use the DoctrineCacheAdapter",
-            "ext-curl": "To send requests using cURL",
-            "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages"
-        },
-        "time": "2016-04-21 21:16:40",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Aws\\": "src/"
-            },
-            "files": [
-                "src/functions.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "Amazon Web Services",
-                "homepage": "http://aws.amazon.com"
-            }
-        ],
-        "description": "AWS SDK for PHP - Use Amazon Web Services in your PHP project",
-        "homepage": "http://aws.amazon.com/sdkforphp",
-        "keywords": [
-            "amazon",
-            "aws",
-            "cloud",
-            "dynamodb",
-            "ec2",
-            "glacier",
-            "s3",
-            "sdk"
-        ]
-    },
-    {
-        "name": "symfony/event-dispatcher",
-        "version": "v2.8.4",
-        "version_normalized": "2.8.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/event-dispatcher.git",
-            "reference": "47d2d8cade9b1c3987573d2943bb9352536cdb87"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/47d2d8cade9b1c3987573d2943bb9352536cdb87",
-            "reference": "47d2d8cade9b1c3987573d2943bb9352536cdb87",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.9"
-        },
-        "require-dev": {
-            "psr/log": "~1.0",
-            "symfony/config": "~2.0,>=2.0.5|~3.0.0",
-            "symfony/dependency-injection": "~2.6|~3.0.0",
-            "symfony/expression-language": "~2.6|~3.0.0",
-            "symfony/stopwatch": "~2.3|~3.0.0"
-        },
-        "suggest": {
-            "symfony/dependency-injection": "",
-            "symfony/http-kernel": ""
-        },
-        "time": "2016-03-07 14:04:32",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.8-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\EventDispatcher\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony EventDispatcher Component",
-        "homepage": "https://symfony.com"
-    },
-    {
         "name": "filp/whoops",
         "version": "2.1.2",
         "version_normalized": "2.1.2.0",
@@ -2093,5 +1582,516 @@
             "slim",
             "whoops"
         ]
+    },
+    {
+        "name": "symfony/translation",
+        "version": "v3.0.5",
+        "version_normalized": "3.0.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/translation.git",
+            "reference": "f7a07af51ea067745a521dab1e3152044a2fb1f2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/f7a07af51ea067745a521dab1e3152044a2fb1f2",
+            "reference": "f7a07af51ea067745a521dab1e3152044a2fb1f2",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9",
+            "symfony/polyfill-mbstring": "~1.0"
+        },
+        "conflict": {
+            "symfony/config": "<2.8"
+        },
+        "require-dev": {
+            "psr/log": "~1.0",
+            "symfony/config": "~2.8|~3.0",
+            "symfony/intl": "~2.8|~3.0",
+            "symfony/yaml": "~2.8|~3.0"
+        },
+        "suggest": {
+            "psr/log": "To use logging capability in translator",
+            "symfony/config": "",
+            "symfony/yaml": ""
+        },
+        "time": "2016-03-25 01:41:20",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Translation\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Translation Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "illuminate/contracts",
+        "version": "v5.2.31",
+        "version_normalized": "5.2.31.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/contracts.git",
+            "reference": "411b851962c211078ade7664a6976e77a78cd2a5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/contracts/zipball/411b851962c211078ade7664a6976e77a78cd2a5",
+            "reference": "411b851962c211078ade7664a6976e77a78cd2a5",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "time": "2016-03-07 20:37:17",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Illuminate\\Contracts\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylorotwell@gmail.com"
+            }
+        ],
+        "description": "The Illuminate Contracts package.",
+        "homepage": "http://laravel.com"
+    },
+    {
+        "name": "illuminate/support",
+        "version": "v5.2.31",
+        "version_normalized": "5.2.31.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/support.git",
+            "reference": "cb5b004610baabe6b4bf532e6e4ff9eaca5eb25b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/support/zipball/cb5b004610baabe6b4bf532e6e4ff9eaca5eb25b",
+            "reference": "cb5b004610baabe6b4bf532e6e4ff9eaca5eb25b",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/inflector": "~1.0",
+            "ext-mbstring": "*",
+            "illuminate/contracts": "5.2.*",
+            "paragonie/random_compat": "~1.4",
+            "php": ">=5.5.9"
+        },
+        "suggest": {
+            "illuminate/filesystem": "Required to use the composer class (5.2.*).",
+            "jeremeamia/superclosure": "Required to be able to serialize closures (~2.2).",
+            "symfony/polyfill-php56": "Required to use the hash_equals function on PHP 5.5 (~1.0).",
+            "symfony/process": "Required to use the composer class (2.8.*|3.0.*).",
+            "symfony/var-dumper": "Improves the dd function (2.8.*|3.0.*)."
+        },
+        "time": "2016-04-21 13:28:36",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Illuminate\\Support\\": ""
+            },
+            "files": [
+                "helpers.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylorotwell@gmail.com"
+            }
+        ],
+        "description": "The Illuminate Support package.",
+        "homepage": "http://laravel.com"
+    },
+    {
+        "name": "illuminate/container",
+        "version": "v5.2.31",
+        "version_normalized": "5.2.31.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/container.git",
+            "reference": "1e156f8017490f5583ab161030bf839c77c95e54"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/container/zipball/1e156f8017490f5583ab161030bf839c77c95e54",
+            "reference": "1e156f8017490f5583ab161030bf839c77c95e54",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/contracts": "5.2.*",
+            "php": ">=5.5.9"
+        },
+        "time": "2016-03-16 17:19:17",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Illuminate\\Container\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylorotwell@gmail.com"
+            }
+        ],
+        "description": "The Illuminate Container package.",
+        "homepage": "http://laravel.com"
+    },
+    {
+        "name": "illuminate/database",
+        "version": "v5.2.31",
+        "version_normalized": "5.2.31.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/database.git",
+            "reference": "becc003759a0b028a237a8c5d2aeb550077d42fd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/database/zipball/becc003759a0b028a237a8c5d2aeb550077d42fd",
+            "reference": "becc003759a0b028a237a8c5d2aeb550077d42fd",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/container": "5.2.*",
+            "illuminate/contracts": "5.2.*",
+            "illuminate/support": "5.2.*",
+            "nesbot/carbon": "~1.20",
+            "php": ">=5.5.9"
+        },
+        "suggest": {
+            "doctrine/dbal": "Required to rename columns and drop SQLite columns (~2.4).",
+            "fzaninotto/faker": "Required to use the eloquent factory builder (~1.4).",
+            "illuminate/console": "Required to use the database commands (5.2.*).",
+            "illuminate/events": "Required to use the observers with Eloquent (5.2.*).",
+            "illuminate/filesystem": "Required to use the migrations (5.2.*).",
+            "illuminate/pagination": "Required to paginate the result set (5.2.*)."
+        },
+        "time": "2016-04-27 12:59:09",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Illuminate\\Database\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylorotwell@gmail.com"
+            }
+        ],
+        "description": "The Illuminate Database package.",
+        "homepage": "http://laravel.com",
+        "keywords": [
+            "database",
+            "laravel",
+            "orm",
+            "sql"
+        ]
+    },
+    {
+        "name": "illuminate/pagination",
+        "version": "v5.2.31",
+        "version_normalized": "5.2.31.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/pagination.git",
+            "reference": "4f98bbdc05a0ab11e29f33f9962062f0c1320ca5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/pagination/zipball/4f98bbdc05a0ab11e29f33f9962062f0c1320ca5",
+            "reference": "4f98bbdc05a0ab11e29f33f9962062f0c1320ca5",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/contracts": "5.2.*",
+            "illuminate/support": "5.2.*",
+            "php": ">=5.5.9"
+        },
+        "time": "2016-03-15 19:15:44",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Illuminate\\Pagination\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylorotwell@gmail.com"
+            }
+        ],
+        "description": "The Illuminate Pagination package.",
+        "homepage": "http://laravel.com"
+    },
+    {
+        "name": "react/promise",
+        "version": "v2.4.1",
+        "version_normalized": "2.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/promise.git",
+            "reference": "8025426794f1944de806618671d4fa476dc7626f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/promise/zipball/8025426794f1944de806618671d4fa476dc7626f",
+            "reference": "8025426794f1944de806618671d4fa476dc7626f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2016-05-03 17:50:52",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "React\\Promise\\": "src/"
+            },
+            "files": [
+                "src/functions_include.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jan Sorgalla",
+                "email": "jsorgalla@gmail.com"
+            }
+        ],
+        "description": "A lightweight implementation of CommonJS Promises/A for PHP"
+    },
+    {
+        "name": "aws/aws-sdk-php",
+        "version": "3.18.5",
+        "version_normalized": "3.18.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/aws/aws-sdk-php.git",
+            "reference": "24b2a39b167bfe06045c714db5ae9b5b6bdf255d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/24b2a39b167bfe06045c714db5ae9b5b6bdf255d",
+            "reference": "24b2a39b167bfe06045c714db5ae9b5b6bdf255d",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/guzzle": "~5.3|~6.0.1|~6.1",
+            "guzzlehttp/promises": "~1.0",
+            "guzzlehttp/psr7": "~1.0",
+            "mtdowling/jmespath.php": "~2.2",
+            "php": ">=5.5"
+        },
+        "require-dev": {
+            "andrewsville/php-token-reflection": "^1.4",
+            "aws/aws-php-sns-message-validator": "~1.0",
+            "behat/behat": "~3.0",
+            "doctrine/cache": "~1.4",
+            "ext-dom": "*",
+            "ext-json": "*",
+            "ext-openssl": "*",
+            "ext-pcre": "*",
+            "ext-simplexml": "*",
+            "ext-spl": "*",
+            "nette/neon": "^2.3",
+            "phpunit/phpunit": "~4.0|~5.0",
+            "psr/cache": "^1.0"
+        },
+        "suggest": {
+            "aws/aws-php-sns-message-validator": "To validate incoming SNS notifications",
+            "doctrine/cache": "To use the DoctrineCacheAdapter",
+            "ext-curl": "To send requests using cURL",
+            "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages"
+        },
+        "time": "2016-05-03 23:17:30",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Aws\\": "src/"
+            },
+            "files": [
+                "src/functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Amazon Web Services",
+                "homepage": "http://aws.amazon.com"
+            }
+        ],
+        "description": "AWS SDK for PHP - Use Amazon Web Services in your PHP project",
+        "homepage": "http://aws.amazon.com/sdkforphp",
+        "keywords": [
+            "amazon",
+            "aws",
+            "cloud",
+            "dynamodb",
+            "ec2",
+            "glacier",
+            "s3",
+            "sdk"
+        ]
+    },
+    {
+        "name": "symfony/event-dispatcher",
+        "version": "v2.8.5",
+        "version_normalized": "2.8.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/event-dispatcher.git",
+            "reference": "81c4c51f7fd6d0d40961bd53dd60cade32db6ed6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/81c4c51f7fd6d0d40961bd53dd60cade32db6ed6",
+            "reference": "81c4c51f7fd6d0d40961bd53dd60cade32db6ed6",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.9"
+        },
+        "require-dev": {
+            "psr/log": "~1.0",
+            "symfony/config": "~2.0,>=2.0.5|~3.0.0",
+            "symfony/dependency-injection": "~2.6|~3.0.0",
+            "symfony/expression-language": "~2.6|~3.0.0",
+            "symfony/stopwatch": "~2.3|~3.0.0"
+        },
+        "suggest": {
+            "symfony/dependency-injection": "",
+            "symfony/http-kernel": ""
+        },
+        "time": "2016-04-05 16:36:54",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.8-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\EventDispatcher\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony EventDispatcher Component",
+        "homepage": "https://symfony.com"
     }
 ]

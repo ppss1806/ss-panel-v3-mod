@@ -202,7 +202,7 @@
                         window.setTimeout("location.href='/admin/node'", 5000);
                     } else {
                         $("#result").modal();
-                        $("#msg").html(data.msgl);
+                        $("#msg").html(data.msg);
                     }
                 },
                 error: function (jqXHR) {

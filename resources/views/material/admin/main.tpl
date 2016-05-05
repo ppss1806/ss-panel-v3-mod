@@ -224,9 +224,12 @@
 					<li><a href="/admin"><i class="icon icon-lg">business_center</i>&nbsp;管理中心</a></li>
 					<li><a href="/admin/node"><i class="icon icon-lg">router</i>&nbsp;节点管理</a></li>
 					<li><a href="/admin/announcement"><i class="icon icon-lg">announcement</i>&nbsp;公告管理</a></li>
-					<li><a href="/admin/code"><i class="icon icon-lg">code</i>&nbsp;兑换码管理</a></li>
+					<li><a href="/admin/code"><i class="icon icon-lg">code</i>&nbsp;充值码管理</a></li>
 					<li><a href="/admin/user"><i class="icon icon-lg">verified_user</i>&nbsp;用户管理</a></li>
-					<li><a href="/admin/invite"><i class="icon icon-lg">loyalty</i>&nbsp;邀请管理</a></li>
+					<li><a href="/admin/invite"><i class="icon icon-lg">loyalty</i>&nbsp;邀请与返利管理</a></li>
+					<li><a href="/admin/shop"><i class="icon icon-lg">shop</i>&nbsp;商品管理</a></li>
+					<li><a href="/admin/coupon"><i class="icon icon-lg">card_giftcard</i>&nbsp;优惠码管理</a></li>
+					<li><a href="/admin/bought"><i class="icon icon-lg">shopping_cart</i>&nbsp;购买记录</a></li>
 					<li><a href="/admin/trafficlog"><i class="icon icon-lg">traffic</i>&nbsp;流量记录</a></li>
 					<li><a href="/admin/alive"><i class="icon icon-lg">dialer_sip</i>&nbsp;在线IP</a></li>
 					<li><a href="/admin/block"><i class="icon icon-lg">dialer_sip</i>&nbsp;节点被封IP</a></li>

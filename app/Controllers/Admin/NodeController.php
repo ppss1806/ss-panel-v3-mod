@@ -9,7 +9,14 @@ use App\Controllers\AdminController;
 class NodeController extends AdminController
 {
     public function index($request, $response, $args){
-        $nodes = Node::all();
+		
+		$pageNum = 1;
+        if (isset($request->getQueryParams()["page"])) {
+            $pageNum = $request->getQueryParams()["page"];
+        }
+		$nodes = Node::paginate(15, ['*'], 'page', $pageNum);
+		$nodes->setPath('/admin/node');
+		
         return $this->view()->assign('nodes',$nodes)->display('admin/node/index.tpl');
     }
 

@@ -12,24 +12,13 @@
 	<main class="content">
 		<div class="content-header ui-content-header">
 			<div class="container">
-				<h1 class="content-heading">添加兑换码</h1>
+				<h1 class="content-heading">添加充值码</h1>
 			</div>
 		</div>
 		<div class="container">
 			<div class="col-lg-12 col-lg-push-0 col-sm-10 col-sm-push-1">
 				<section class="content-inner margin-top-no">
 					
-					<div class="card">
-						<div class="card-main">
-							<div class="card-inner">
-								<h4>注意!</h4>
-								<p>类型 10001=流量充值，数量则为要充值的流量大小(单位 GB)，10002=用户有效期充值，数量为要续的天数，1～10000=用户级别充值，类型就是你要充值的级别啦，数量就是要续的天数.</p>
-								
-								
-							</div>
-						</div>
-					</div>
-					
 					
 					
 					
@@ -37,18 +26,13 @@
 						<div class="card-main">
 							<div class="card-inner">
 								<div class="form-group form-group-label">
-									<label class="floating-label" for="amount">兑换码数目</label>
+									<label class="floating-label" for="amount">数目</label>
 									<input class="form-control" id="amount" type="text" >
 								</div>
 								
 								
 								<div class="form-group form-group-label">
-									<label class="floating-label" for="type">兑换码类型</label>
-									<input class="form-control" id="type" type="text" >
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="number">数量</label>
+									<label class="floating-label" for="number">金额</label>
 									<input class="form-control" id="number" type="text" >
 								</div>
 
@@ -108,7 +92,6 @@
                 dataType: "json",
                 data: {
                     amount: $("#amount").val(),
-                    type: $("#type").val(),
                     number: $("#number").val()
                 },
                 success: function (data) {

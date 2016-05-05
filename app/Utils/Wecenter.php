@@ -115,6 +115,8 @@ Class Wecenter
 	
 	public static function encode_hash($hash_data, $hash_key = null)
 	{
+		$hash_string="";
+		
 		if (!$hash_data)
 		{
 			return false;

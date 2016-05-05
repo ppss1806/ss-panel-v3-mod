@@ -28,32 +28,35 @@
 					</div>
 					
 					<div class="table-responsive">
-						
+						{$nodes->render()}
 						<table class="table ">
                             <tr>
+								<th>操作</th>
                                 <th>ID</th>
                                 <th>节点</th>
 								<th>IP</th>
                                 <th>加密</th>
                                 <th>描述</th>
                                 <th>类型</th>
-                                <th>操作</th>
+                                
                             </tr>
                             {foreach $nodes as $node}
                             <tr>
+								<td>
+                                    <a class="btn btn-brand" href="/admin/node/{$node->id}/edit">编辑</a>
+                                    <a class="btn btn-brand-accent" id="delete" value="{$node->id}" href="/admin/node/{$node->id}/delete">删除</a>
+                                </td>
                                 <td>#{$node->id}</td>
                                 <td>{$node->name}</td>
 								<td>{$node->node_ip}</td>
                                 <td>{$node->method}</td>
                                 <td>{$node->info}</td>
                                 <td>{$node->sort}</td>
-                                <td>
-                                    <a class="btn btn-brand" href="/admin/node/{$node->id}/edit">编辑</a>
-                                    <a class="btn btn-brand-accent" id="delete" value="{$node->id}" href="/admin/node/{$node->id}/delete">删除</a>
-                                </td>
+                                
                             </tr>
                             {/foreach}
                         </table>
+						{$nodes->render()}
 					</div>
 					
 					<div class="fbtn-container">

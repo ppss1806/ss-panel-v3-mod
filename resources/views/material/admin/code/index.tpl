@@ -14,7 +14,7 @@
 	<main class="content">
 		<div class="content-header ui-content-header">
 			<div class="container">
-				<h1 class="content-heading">兑换码管理</h1>
+				<h1 class="content-heading">充值码管理</h1>
 			</div>
 		</div>
 		<div class="container">
@@ -24,7 +24,7 @@
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
-								<p>系统中所有兑换码。</p>
+								<p>系统中所有充值码。</p>
 							</div>
 						</div>
 					</div>
@@ -46,6 +46,9 @@
                                 <tr>
                                     <td>#{$code->id}</td>
                                     <td>{$code->code}</td>
+									{if $code->type==-1}
+                                    <td>金额充值</td>
+									{/if}
                                     {if $code->type==10001}
                                     <td>流量充值</td>
 									{/if}
@@ -54,6 +57,9 @@
 									{/if}
 									{if $code->type>=1&&$code->type<=10000}
                                     <td>等级续期 - 等级{$code->type}</td>
+									{/if}
+									{if $code->type==-1}
+                                    <td>充值 {$code->number} 元</td>
 									{/if}
 									{if $code->type==10001}
                                     <td>充值 {$code->number} GB 流量</td>

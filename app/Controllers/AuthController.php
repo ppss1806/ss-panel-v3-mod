@@ -169,7 +169,7 @@ class AuthController extends BaseController
 		$user = User::where('im_value',$wechat)->where('im_type',$imtype)->first();
         if ( $user != null) {
             $res['ret'] = 0;
-            $res['msg'] = "此微信号已经被注册了";
+            $res['msg'] = "此联络方式已经被注册了";
             return $response->getBody()->write(json_encode($res));
         }
 

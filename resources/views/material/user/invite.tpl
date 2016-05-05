@@ -61,6 +61,8 @@
 										<p>邀请码暂时无法购买，请珍惜。</p>
 
 										<p>公共页面不定期发放邀请码，如果用完邀请码可以关注公共邀请。</p>
+										
+										<p>您每拉一位用户注册，当 Ta 充值时您就会获得他充值金额的 {$config["code_payback"]} % 的提成。</p>
 									</div>
 									
 								</div>
@@ -76,13 +78,15 @@
 										<p class="card-heading">邀请</p>
 										<p>当前您可以生成<code>{$user->invite_num}</code>个邀请码。 </p>
 									</div>
+									{if $user->invite_num }
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
-											{if $user->invite_num }
+											
 												<button id="invite" class="btn btn-flat waves-attach">生成我的邀请码</button>
-											{/if}
+											
 										</div>
 									</div>
+									{/if}
 								</div>
 							</div>
 						</div>
@@ -91,10 +95,12 @@
 					<div class="col-lg-12 col-md-12">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
-								<div class="card-inner">
+								
 									<div class="card-inner">
+									
 										<div class="card-table">
 											<div class="table-responsive">
+											{$codes->render()}
 												<table class="table">
 													<thead>
 													<tr>
@@ -114,14 +120,16 @@
 													{/foreach}
 													</tbody>
 												</table>
+											{$codes->render()}
 											</div>
 										</div>
-									</div>
 									
 								</div>
 							</div>
 						</div>
 					</div>
+					
+					
 					
 					{include file='dialog.tpl'}
 				</div>
