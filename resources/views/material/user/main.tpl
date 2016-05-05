@@ -279,6 +279,8 @@
 					</li>
 					
 					<li><a href="/user/bought"><i class="icon icon-lg">shopping_cart</i>&nbsp;购买记录</a></li>
+					
+					
 
 
 					<li>
@@ -286,6 +288,8 @@
 							<i class="icon icon-lg">code</i>&nbsp;充值码
 						</a>
 					</li>
+					
+					<li><a href="/user/ticket"><i class="icon icon-lg">question_answer</i>&nbsp;工单</a></li>
 
 
 					<li>

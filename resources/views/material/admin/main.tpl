@@ -235,6 +235,7 @@
 					<li><a href="/admin/block"><i class="icon icon-lg">dialer_sip</i>&nbsp;节点被封IP</a></li>
 					<li><a href="/admin/unblock"><i class="icon icon-lg">dialer_sip</i>&nbsp;解封IP记录</a></li>
 					<li><a href="/admin/login"><i class="icon icon-lg">text_fields</i>&nbsp;登陆记录</a></li>
+					<li><a href="/admin/ticket"><i class="icon icon-lg">question_answer</i>&nbsp;工单</a></li>
 					<li><a href="/user"><i class="icon icon-lg">person</i>&nbsp;用户中心</a></li>
 					<li><a href="/user/logout"><i class="icon icon-lg">call_missed_outgoing</i>&nbsp;退出</a></li>
 				</ul>

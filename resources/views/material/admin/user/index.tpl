@@ -49,7 +49,7 @@
                             <tr>
 								<td>
                                     <a class="btn btn-brand" href="/admin/user/{$user->id}/edit">编辑</a>
-                                    <a class="btn btn-brand-accent" id="delete" value="{$user->id}" href="/admin/user/{$user->id}/delete">删除</a>
+                                    <a class="btn btn-brand-accent" href="javascript:void(0);" onClick="delete_modal_show('{$user->id}')">删除</a>
                                 </td>
                                 <td>#{$user->id}</td>
 								<td>{$user->user_name}
@@ -89,6 +89,23 @@
                         </table>
                         {$users->render()}
 					</div>
+					
+					<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-heading">
+									<a class="modal-close" data-dismiss="modal">×</a>
+									<h2 class="modal-title">确认要删除？</h2>
+								</div>
+								<div class="modal-inner">
+									<p>请您确认。</p>
+								</div>
+								<div class="modal-footer">
+									<p class="text-right"><button class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal" type="button">取消</button><button class="btn btn-flat btn-brand-accent waves-attach" data-dismiss="modal" id="delete_input" type="button">确定</button></p>
+								</div>
+							</div>
+						</div>
+					</div>
 
 							
 			</div>
@@ -106,7 +123,18 @@
 {include file='admin/footer.tpl'}
 
 
+<script>
+function delete_modal_show(id) {
+	deleteid=id;
+	$("#delete_modal").modal();
+}
 
+
+$("#delete_input").click(function () {
+	window.setTimeout("location.href='/admin/user/"+deleteid+"/delete'", 1000);
+});
+	
+</script>
 
 
 

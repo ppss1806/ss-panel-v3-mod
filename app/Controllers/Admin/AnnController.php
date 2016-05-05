@@ -25,6 +25,7 @@ class AnnController extends AdminController
         $ann = new Ann();
         $ann->date =  date("Y-m-d H:i:s");
 		$ann->content =  $request->getParam('content');
+		$ann->markdown =  $request->getParam('markdown');
         
         if(!$ann->save()){
             $rs['ret'] = 0;
@@ -50,6 +51,8 @@ class AnnController extends AdminController
         $ann = Ann::find($id);
 
 		$ann->content =  $request->getParam('content');
+		$ann->markdown =  $request->getParam('markdown');
+		
         if(!$ann->save()){
             $rs['ret'] = 0;
             $rs['msg'] = "修改失败";

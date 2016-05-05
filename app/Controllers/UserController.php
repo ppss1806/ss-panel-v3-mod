@@ -3,9 +3,11 @@
 namespace App\Controllers;
 
 use App\Services\Auth;
-use App\Models\Node,App\Models\TrafficLog,App\Models\InviteCode,App\Models\CheckInLog,App\Models\Ann,App\Models\Speedtest,App\Models\Shop,App\Models\Coupon,App\Models\Bought;
+use App\Models\Node,App\Models\TrafficLog,App\Models\InviteCode,App\Models\CheckInLog,App\Models\Ann,App\Models\Speedtest,App\Models\Shop,App\Models\Coupon,App\Models\Bought,App\Models\Ticket;
 use App\Services\Config;
 use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Da;
+
+use voku\helper\AntiXSS;
 
 use App\Models\User;
 use App\Models\Code;
@@ -17,6 +19,7 @@ use App\Models\UnblockIp;
 use App\Models\Payback;
 use App\Utils\QQWry;
 use App\Utils\GA;
+use App\Services\Mail;
 
 
 
@@ -963,6 +966,167 @@ class UserController extends BaseController
 		}
         $newResponse = $response->withStatus(302)->withHeader('Location', '/user/bought');
         return $newResponse;
+    }
+	
+	
+	public function ticket($request, $response, $args){
+        $pageNum = 1;
+        if (isset($request->getQueryParams()["page"])) {
+            $pageNum = $request->getQueryParams()["page"];
+        }
+		$tickets = Ticket::where("userid",$this->user->id)->where("rootid",0)->orderBy("datetime","desc")->paginate(15, ['*'], 'page', $pageNum);
+		$tickets->setPath('/user/ticket');
+		
+        return $this->view()->assign('tickets',$tickets)->display('user/ticket.tpl');
+    }
+	
+	public function ticket_create($request, $response, $args){
+		
+        return $this->view()->display('user/ticket_create.tpl');
+    }
+	
+	public function ticket_add($request, $response, $args){
+        $title = $request->getParam('title');
+		$content = $request->getParam('content');
+		
+		if($title==""||$content=="")
+		{
+			$res['ret'] = 0;
+			$res['msg'] = "请填全";
+			return $this->echoJson($response, $res);
+		}
+		
+        
+        $ticket=new Ticket();
+		
+		$antiXss = new AntiXSS();
+		
+		$ticket->title=$antiXss->xss_clean($title);
+		$ticket->content=$antiXss->xss_clean($content);
+		$ticket->rootid=0;
+		$ticket->userid=$this->user->id;
+		$ticket->datetime=time();
+		$ticket->save();
+		
+		$adminUser = User::where("is_admin","=","1")->get();
+		foreach($adminUser as $user)
+		{
+			$subject = Config::get('appName')."-新工单被开启";
+			$to = $user->email;
+			$text = "管理员您好，有人开启了新的工单，请您及时处理。。" ;
+			try {
+				Mail::send($to, $subject, 'news/warn.tpl', [
+					"user" => $user,"text" => $text
+				], [
+				]);
+			} catch (Exception $e) {
+				echo $e->getMessage();
+			}
+		}
+
+        $res['ret'] = 1;
+        $res['msg'] = "提交成功";
+        return $this->echoJson($response, $res);
+    }
+	
+	public function ticket_update($request, $response, $args){
+        $id = $args['id'];
+		$content = $request->getParam('content');
+		$status = $request->getParam('status');
+		
+		if($content==""||$status=="")
+		{
+			$res['ret'] = 0;
+			$res['msg'] = "请填全";
+			return $this->echoJson($response, $res);
+		}
+		
+        
+        $ticket_main=Ticket::where("id","=",$id)->where("rootid","=",0)->first();
+		if($ticket_main->userid!=$this->user->id)
+		{
+			$newResponse = $response->withStatus(302)->withHeader('Location', '/user/ticket');
+			return $newResponse;
+		}
+		
+		if($status==1&&$ticket_main->status!=$status)
+		{
+			$adminUser = User::where("is_admin","=","1")->get();
+			foreach($adminUser as $user)
+			{
+				$subject = Config::get('appName')."-工单被重新开启";
+				$to = $user->email;
+				$text = "管理员您好，有人重新开启了<a href=\"".Config::get('baseUrl')."/admin/ticket/".$ticket_main->id."/view\">工单</a>，请您及时处理。" ;
+				try {
+					Mail::send($to, $subject, 'news/warn.tpl', [
+						"user" => $user,"text" => $text
+					], [
+					]);
+				} catch (Exception $e) {
+					echo $e->getMessage();
+				}
+			}
+		}
+		else
+		{
+			$adminUser = User::where("is_admin","=","1")->get();
+			foreach($adminUser as $user)
+			{
+				$subject = Config::get('appName')."-工单被回复";
+				$to = $user->email;
+				$text = "管理员您好，有人回复了<a href=\"".Config::get('baseUrl')."/admin/ticket/".$ticket_main->id."/view\">工单</a>，请您及时处理。" ;
+				try {
+					Mail::send($to, $subject, 'news/warn.tpl', [
+						"user" => $user,"text" => $text
+					], [
+					]);
+				} catch (Exception $e) {
+					echo $e->getMessage();
+				}
+			}
+		}
+		
+		$antiXss = new AntiXSS();
+		
+		$ticket=new Ticket();
+		$ticket->title=$antiXss->xss_clean($ticket_main->title);
+		$ticket->content=$antiXss->xss_clean($content);
+		$ticket->rootid=$ticket_main->id;
+		$ticket->userid=$this->user->id;
+		$ticket->datetime=time();
+		$ticket_main->status=$status;
+		
+		$ticket_main->save();
+		$ticket->save();
+		
+		
+		
+
+        $res['ret'] = 1;
+        $res['msg'] = "提交成功";
+        return $this->echoJson($response, $res);
+    }
+	
+	public function ticket_view($request, $response, $args){
+		$id = $args['id'];
+		$ticket_main=Ticket::where("id","=",$id)->where("rootid","=",0)->first();
+		if($ticket_main->userid!=$this->user->id)
+		{
+			$newResponse = $response->withStatus(302)->withHeader('Location', '/user/ticket');
+			return $newResponse;
+		}
+		
+		$pageNum = 1;
+        if (isset($request->getQueryParams()["page"])) {
+            $pageNum = $request->getQueryParams()["page"];
+        }
+		
+		
+		$ticketset=Ticket::where("id",$id)->orWhere("rootid","=",$id)->orderBy("datetime","desc")->paginate(5, ['*'], 'page', $pageNum);
+		$ticketset->setPath('/user/ticket/'.$id."/view");
+		
+		
+		return $this->view()->assign('ticketset',$ticketset)->assign("id",$id)->display('user/ticket_view.tpl');
     }
 	
 	public function updateWechat($request, $response, $args)

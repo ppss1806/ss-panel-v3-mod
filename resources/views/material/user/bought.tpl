@@ -42,7 +42,7 @@
                             {foreach $shops as $shop}
                             <tr>
 								<td>
-                                    <a class="btn btn-brand" {if $shop->renew==0}disabled{/if} href="/user/bought/{$shop->id}/delete">退订</a>
+                                    <a class="btn btn-brand" {if $shop->renew==0}disabled{/if} href="javascript:void(0);" onClick="delete_modal_show('{$shop->id}')">退订</a>
                                 </td>
                                 <td>#{$shop->id}</td>
                                 <td>{$shop->shop()->name}</td>
@@ -60,10 +60,21 @@
 						{$shops->render()}
 					</div>
 					
-					<div class="fbtn-container">
-						<div class="fbtn-inner">
-							<a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-circle waves-light" href="/admin/shop/create">+</a>
-							
+					
+					<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-heading">
+									<a class="modal-close" data-dismiss="modal">×</a>
+									<h2 class="modal-title">确认要退订？</h2>
+								</div>
+								<div class="modal-inner">
+									<p>请您确认。</p>
+								</div>
+								<div class="modal-footer">
+									<p class="text-right"><button class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal" type="button">取消</button><button class="btn btn-flat btn-brand-accent waves-attach" data-dismiss="modal" id="delete_input" type="button">确定</button></p>
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -84,6 +95,19 @@
 
 
 
+
+<script>
+function delete_modal_show(id) {
+	deleteid=id;
+	$("#delete_modal").modal();
+}
+
+
+$("#delete_input").click(function () {
+	window.setTimeout("location.href='/user/bought/"+deleteid+"/delete'", 1000);
+});
+	
+</script>
 
 
 

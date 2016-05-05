@@ -136,6 +136,7 @@ Class Wecenter
 		}
 
 		// 加密过程
+		$tmp_str = "";
 		for ($i = 1; $i <= strlen($hash_string); $i ++)
 		{
 			$char = substr($hash_string, $i - 1, 1);

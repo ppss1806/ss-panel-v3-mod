@@ -31,20 +31,22 @@
 						{$logs->render()}
                         <table class="table">
                             <tr>
+								<th>操作</th>
                                 <th>ID</th>
                                 <th>日期</th>
                                 <th>内容</th>
-								<th>操作</th>
+								
                             </tr>
                             {foreach $logs as $log}
                                 <tr>
+									<td>
+										<a class="btn btn-brand" href="/admin/announcement/{$log->id}/edit">编辑</a>
+										<a class="btn btn-brand-accent" id="delete" value="{$log->id}" href="javascript:void(0);" onClick="delete_modal_show('{$log->id}')">删除</a>
+									</td>
                                     <td>#{$log->id}</td>
                                     <td>{$log->date}</td>
                                     <td>{$log->content}</td>
-									<td>
-										<a class="btn btn-brand" href="/admin/announcement/{$log->id}/edit">编辑</a>
-										<a class="btn btn-brand-accent" id="delete" value="{$log->id}" href="/admin/announcement/{$log->id}/delete">删除</a>
-									</td>
+									
                                 </tr>
                             {/foreach}
                         </table>
@@ -55,6 +57,23 @@
 						<div class="fbtn-inner">
 							<a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-circle waves-light" href="/admin/announcement/create">+</a>
 							
+						</div>
+					</div>
+					
+					<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-heading">
+									<a class="modal-close" data-dismiss="modal">×</a>
+									<h2 class="modal-title">确认要删除？</h2>
+								</div>
+								<div class="modal-inner">
+									<p>请您确认。</p>
+								</div>
+								<div class="modal-footer">
+									<p class="text-right"><button class="btn btn-flat btn-brand-accent waves-attach waves-effect" data-dismiss="modal" type="button">取消</button><button class="btn btn-flat btn-brand-accent waves-attach" data-dismiss="modal" id="delete_input" type="button">确定</button></p>
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -75,6 +94,19 @@
 
 
 
+
+<script>
+function delete_modal_show(id) {
+	deleteid=id;
+	$("#delete_modal").modal();
+}
+
+
+$("#delete_input").click(function () {
+	window.setTimeout("location.href='/admin/announcement/"+deleteid+"/delete'", 1000);
+});
+	
+</script>
 
 
 

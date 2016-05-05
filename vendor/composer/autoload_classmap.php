@@ -6,12 +6,25 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ArithmeticError' => $vendorDir . '/symfony/polyfill/src/Php70/Resources/stubs/ArithmeticError.php',
+    'AssertionError' => $vendorDir . '/symfony/polyfill/src/Php70/Resources/stubs/AssertionError.php',
+    'CallbackFilterIterator' => $vendorDir . '/symfony/polyfill/src/Php54/Resources/stubs/CallbackFilterIterator.php',
+    'Collator' => $vendorDir . '/symfony/intl/Resources/stubs/Collator.php',
+    'DivisionByZeroError' => $vendorDir . '/symfony/polyfill/src/Php70/Resources/stubs/DivisionByZeroError.php',
     'EasyPeasyICS' => $vendorDir . '/phpmailer/phpmailer/extras/EasyPeasyICS.php',
+    'Error' => $vendorDir . '/symfony/polyfill/src/Php70/Resources/stubs/Error.php',
+    'IntlDateFormatter' => $vendorDir . '/symfony/intl/Resources/stubs/IntlDateFormatter.php',
+    'Locale' => $vendorDir . '/symfony/intl/Resources/stubs/Locale.php',
+    'Normalizer' => $vendorDir . '/symfony/polyfill/src/Intl/Normalizer/Resources/stubs/Normalizer.php',
+    'NumberFormatter' => $vendorDir . '/symfony/intl/Resources/stubs/NumberFormatter.php',
     'PHPMailer' => $vendorDir . '/phpmailer/phpmailer/class.phpmailer.php',
     'PHPMailerOAuth' => $vendorDir . '/phpmailer/phpmailer/class.phpmaileroauth.php',
     'PHPMailerOAuthGoogle' => $vendorDir . '/phpmailer/phpmailer/class.phpmaileroauthgoogle.php',
     'POP3' => $vendorDir . '/phpmailer/phpmailer/class.pop3.php',
+    'ParseError' => $vendorDir . '/symfony/polyfill/src/Php70/Resources/stubs/ParseError.php',
+    'RecursiveCallbackFilterIterator' => $vendorDir . '/symfony/polyfill/src/Php54/Resources/stubs/RecursiveCallbackFilterIterator.php',
     'SMTP' => $vendorDir . '/phpmailer/phpmailer/class.smtp.php',
+    'SessionHandlerInterface' => $vendorDir . '/symfony/polyfill/src/Php54/Resources/stubs/SessionHandlerInterface.php',
     'Smarty' => $vendorDir . '/smarty/smarty/libs/Smarty.class.php',
     'SmartyBC' => $vendorDir . '/smarty/smarty/libs/SmartyBC.class.php',
     'SmartyCompilerException' => $vendorDir . '/smarty/smarty/libs/sysplugins/smartycompilerexception.php',
@@ -178,6 +191,7 @@ return array(
     'TPC_yyToken' => $vendorDir . '/smarty/smarty/libs/sysplugins/smarty_internal_configfileparser.php',
     'TP_yyStackEntry' => $vendorDir . '/smarty/smarty/libs/sysplugins/smarty_internal_templateparser.php',
     'TP_yyToken' => $vendorDir . '/smarty/smarty/libs/sysplugins/smarty_internal_templateparser.php',
+    'TypeError' => $vendorDir . '/symfony/polyfill/src/Php70/Resources/stubs/TypeError.php',
     'ntlm_sasl_client_class' => $vendorDir . '/phpmailer/phpmailer/extras/ntlm_sasl_client.php',
     'phpmailerException' => $vendorDir . '/phpmailer/phpmailer/class.phpmailer.php',
 );

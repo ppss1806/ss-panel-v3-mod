@@ -7,6 +7,7 @@ use App\Services\Config;
 use App\Utils\Check;
 use App\Utils\Tools;
 use App\Utils\Radius;
+use voku\helper\AntiXSS;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -175,7 +176,11 @@ class AuthController extends BaseController
 
         // do reg user
         $user = new User();
-        $user->user_name = $name;
+		
+		$antiXss = new AntiXSS();
+		
+		
+        $user->user_name = $antiXss->xss_clean($name);
         $user->email = $email;
         $user->pass = Hash::passwordHash($passwd);
         $user->passwd = Tools::genRandomChar(6);
@@ -184,7 +189,7 @@ class AuthController extends BaseController
         $user->u = 0;
         $user->d = 0;
 		$user->im_type =  $imtype;
-		$user->im_value =  filter_var($wechat, FILTER_SANITIZE_STRING);
+		$user->im_value =  $antiXss->xss_clean($wechat);
         $user->transfer_enable = Tools::toGB(Config::get('defaultTraffic'));
         $user->invite_num = Config::get('inviteNum');
         $user->ref_by = $c->user_id;

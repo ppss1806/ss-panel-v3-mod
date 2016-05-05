@@ -24,7 +24,10 @@
 							<div class="card-inner">
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="content">内容</label>
-									<input class="form-control" id="content" type="text" >
+									<link rel="stylesheet" href="/theme/material/editor/css/editormd.min.css" />
+									<div id="editormd">
+										<textarea style="display:none;" id="content"></textarea>
+									</div>
 								</div>
 								
 								
@@ -71,7 +74,7 @@
 
 {include file='admin/footer.tpl'}
 
-
+<script src="/theme/material/editor/editormd.min.js"></script>
 <script>
     $(document).ready(function () {
         function submit() {
@@ -80,7 +83,8 @@
                 url: "/admin/announcement",
                 dataType: "json",
                 data: {
-                    content: $("#content").val()
+                    content: editor.getHTML(),
+					markdown: editor.getMarkdown()
                 },
                 success: function (data) {
                     if (data.ret) {
@@ -99,14 +103,25 @@
                 }
             });
         }
-
-        $("html").keydown(function (event) {
-            if (event.keyCode == 13) {
-                login();
-            }
-        });
+		
         $("#submit").click(function () {
             submit();
         });
-    })
+    });
+	
+    $(function() {
+        editor = editormd("editormd", {
+            path : "/theme/material/editor/lib/", // Autoload modules mode, codemirror, marked... dependents libs path
+			height: 720,
+			saveHTMLToTextarea : true
+        });
+
+        /*
+        // or
+        var editor = editormd({
+            id   : "editormd",
+            path : "../lib/"
+        });
+        */
+    });
 </script>

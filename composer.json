@@ -15,7 +15,8 @@
     "aws/aws-sdk-php": "3.*",
     "gregwar/captcha": "1.*",
     "cloudxns/cloud-xns-api-sdk-php": "*",
-    "guzzlehttp/guzzle": " ~5.0"
+    "guzzlehttp/guzzle": " ~5.0",
+    "voku/anti-xss": "^1.2"
   },
   "autoload": {
     "classmap": [

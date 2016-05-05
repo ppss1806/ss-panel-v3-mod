@@ -59,6 +59,12 @@ $app->group('/user', function () {
 	$this->post('/coupon_check', 'App\Controllers\UserController:CouponCheck');
 	$this->post('/buy', 'App\Controllers\UserController:buy');
 	
+	$this->get('/ticket', 'App\Controllers\UserController:ticket');
+	$this->get('/ticket/create', 'App\Controllers\UserController:ticket_create');
+	$this->post('/ticket', 'App\Controllers\UserController:ticket_add');
+	$this->get('/ticket/{id}/view', 'App\Controllers\UserController:ticket_view');
+	$this->put('/ticket/{id}', 'App\Controllers\UserController:ticket_update');
+	
     $this->post('/invite', 'App\Controllers\UserController:doInvite');
     $this->get('/edit', 'App\Controllers\UserController:edit');
     $this->post('/password', 'App\Controllers\UserController:updatePassword');
@@ -84,6 +90,7 @@ $app->group('/user', function () {
 	$this->post('/unblock', 'App\Controllers\UserController:Unblock');
 	$this->get('/bought', 'App\Controllers\UserController:bought');
 	$this->get('/bought/{id}/delete', 'App\Controllers\UserController:deleteBoughtGet');
+	
 })->add(new Auth());
 
 // Auth
@@ -116,6 +123,11 @@ $app->group('/admin', function () {
     $this->put('/node/{id}', 'App\Controllers\Admin\NodeController:update');
     $this->delete('/node/{id}', 'App\Controllers\Admin\NodeController:delete');
     $this->get('/node/{id}/delete', 'App\Controllers\Admin\NodeController:deleteGet');
+	
+	
+	$this->get('/ticket', 'App\Controllers\Admin\TicketController:index');
+	$this->get('/ticket/{id}/view', 'App\Controllers\Admin\TicketController:show');
+	$this->put('/ticket/{id}', 'App\Controllers\Admin\TicketController:update');
 	
 	
 	// Shop Mange
