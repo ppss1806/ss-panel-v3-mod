@@ -270,7 +270,7 @@ DIRECT = direct
 '.$proxy_group.'
 
 [Proxy Group]
-Proxy = select,DIRECT,'.$proxy_name.'
+Proxy = select,DIRECT'.$proxy_name.'
 
 
 [Rule]
