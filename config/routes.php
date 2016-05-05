@@ -54,6 +54,11 @@ $app->group('/user', function () {
     $this->get('/node/{id}', 'App\Controllers\UserController:nodeInfo');
     $this->get('/profile', 'App\Controllers\UserController:profile');
     $this->get('/invite', 'App\Controllers\UserController:invite');
+	
+	$this->get('/shop', 'App\Controllers\UserController:shop');
+	$this->post('/coupon_check', 'App\Controllers\UserController:CouponCheck');
+	$this->post('/buy', 'App\Controllers\UserController:buy');
+	
     $this->post('/invite', 'App\Controllers\UserController:doInvite');
     $this->get('/edit', 'App\Controllers\UserController:edit');
     $this->post('/password', 'App\Controllers\UserController:updatePassword');
@@ -77,6 +82,8 @@ $app->group('/user', function () {
 	$this->get('/getpcconf', 'App\Controllers\UserController:GetPcConf');
 	$this->get('/getiosconf', 'App\Controllers\UserController:GetIosConf');
 	$this->post('/unblock', 'App\Controllers\UserController:Unblock');
+	$this->get('/bought', 'App\Controllers\UserController:bought');
+	$this->get('/bought/{id}/delete', 'App\Controllers\UserController:deleteBoughtGet');
 })->add(new Auth());
 
 // Auth
@@ -110,6 +117,19 @@ $app->group('/admin', function () {
     $this->delete('/node/{id}', 'App\Controllers\Admin\NodeController:delete');
     $this->get('/node/{id}/delete', 'App\Controllers\Admin\NodeController:deleteGet');
 	
+	
+	// Shop Mange
+    $this->get('/shop', 'App\Controllers\Admin\ShopController:index');
+	
+	$this->get('/bought', 'App\Controllers\Admin\ShopController:bought');
+	$this->get('/bought/{id}/delete', 'App\Controllers\Admin\ShopController:deleteBoughtGet');
+	
+    $this->get('/shop/create', 'App\Controllers\Admin\ShopController:create');
+    $this->post('/shop', 'App\Controllers\Admin\ShopController:add');
+    $this->get('/shop/{id}/edit', 'App\Controllers\Admin\ShopController:edit');
+    $this->put('/shop/{id}', 'App\Controllers\Admin\ShopController:update');
+    $this->get('/shop/{id}/delete', 'App\Controllers\Admin\ShopController:deleteGet');
+	
 	// Ann Mange
     $this->get('/announcement', 'App\Controllers\Admin\AnnController:index');
     $this->get('/announcement/create', 'App\Controllers\Admin\AnnController:create');
@@ -136,6 +156,10 @@ $app->group('/admin', function () {
     $this->put('/user/{id}', 'App\Controllers\Admin\UserController:update');
     $this->delete('/user/{id}', 'App\Controllers\Admin\UserController:delete');
     $this->get('/user/{id}/delete', 'App\Controllers\Admin\UserController:deleteGet');
+	
+	
+	$this->get('/coupon', 'App\Controllers\AdminController:coupon');
+    $this->post('/coupon', 'App\Controllers\AdminController:addCoupon');
 
     $this->get('/profile', 'App\Controllers\AdminController:profile');
     $this->get('/invite', 'App\Controllers\AdminController:invite');
