@@ -484,7 +484,7 @@ class UserController extends BaseController
 					
 					if(($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))&&Config::get('cloudxns_apikey')!="")
 					{
-						$smt=Smartline::where("node_class",$this->user->class)->where("node_group","=",$this->user->node_group)->orWhere("node_group","=",0)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
+						$smt=Smartline::where("node_class",$this->user->class)->where("node_group","=",$this->user->node_group)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
 						$ary['server']=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
 					}
 					
