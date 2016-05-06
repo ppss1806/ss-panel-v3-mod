@@ -639,7 +639,7 @@ class Job
 					echo "Send offline mail to user: ".$user->id;
 					$subject = Config::get('appName')."-系统提示";
 					$to = $user->email;
-					$text = "管理员您好，系统发现有了新版本，您可以到 <a href=\"https://www.zhaoj.in/read-3289.html\">https://www.zhaoj.in/read-3289.html</a> 按照步骤进行升级。" ;
+					$text = "管理员您好，系统发现有了新版本，您可以到 <a href=\"https://github.com/glzjin/ss-panel-v3-mod/issues\">https://github.com/glzjin/ss-panel-v3-mod/issues</a> 按照步骤进行升级。" ;
 					try {
 						Mail::send($to, $subject, 'news/warn.tpl', [
 							"user" => $user,"text" => $text
