@@ -16,6 +16,7 @@ use App\Utils\GA;
 class User extends Model
 
 {
+	protected $connection = "default";
     protected $table = "user";
 
     public $isLogin;

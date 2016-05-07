@@ -6,6 +6,7 @@ namespace App\Models;
 class Bought extends Model
 
 {
+	protected $connection = "default";
     protected $table = "bought";
 
 	public function renew_date()

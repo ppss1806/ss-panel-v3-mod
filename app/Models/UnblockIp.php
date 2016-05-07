@@ -7,6 +7,7 @@ use App\Utils\Tools;
 
 class UnblockIp extends Model
 {
+	protected $connection = "default";
     protected $table = "unblockip";
 
     public function user()

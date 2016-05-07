@@ -32,7 +32,16 @@ class Boot
     public static function bootDb(){
         // Init Eloquent ORM Connection
         $capsule = new Capsule;
-        $capsule->addConnection(Config::getDbConfig());
+        $capsule->addConnection(Config::getDbConfig(),'default');
+		if(Config::get('radius_db_user')!='')
+		{
+			$capsule->addConnection(Config::getRadiusDbConfig(),'radius');
+		}
+		
+		if(Config::get('wecenter_db_user')!='')
+		{
+			$capsule->addConnection(Config::getWecenterDbConfig(),'wencenter');
+		}
         $capsule->bootEloquent();
     }
 }

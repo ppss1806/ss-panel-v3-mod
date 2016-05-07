@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Models\User;
+use App\Models\WecenterUser;
 use App\Services\Config;
 use App\Utils;
 
@@ -17,23 +18,24 @@ Class Wecenter
     {
         if(Config::get('wecenter_db_user')!='')
 		{
-			$dsn = "mysql:host=".Config::get('wecenter_db_host').";dbname=".Config::get('wecenter_db_database');  
-			$db = new \PDO($dsn, Config::get('wecenter_db_user'), Config::get('wecenter_db_password'));
 			$email=$user->email;
-			$stmt = $db->prepare("SELECT * FROM `aws_users` where `email`=:email");
-			$stmt->execute(array(':email'=>$email));
+			$exists=WecenterUser::where("email",$email)->first();
 			
-			if($stmt->rowCount()==0)
+			if($exists==NULL)
 			{
-				$sql = "INSERT INTO `aws_users` (`uid`, `user_name`, `email`, `mobile`, `password`, `salt`, `avatar_file`, `sex`, `birthday`, `province`, `city`, `job_id`, `reg_time`, `reg_ip`, `last_login`, `last_ip`, `online_time`, `last_active`, `notification_unread`, `inbox_unread`, `inbox_recv`, `fans_count`, `friend_count`, `invite_count`, `article_count`, `question_count`, `answer_count`, `topic_focus_count`, `invitation_available`, `group_id`, `reputation_group`, `forbidden`, `valid_email`, `is_first_login`, `agree_count`, `thanks_count`, `views_count`, `reputation`, `reputation_update_time`, `weibo_visit`, `integral`, `draft_count`, `common_email`, `url_token`, `url_token_update`, `verified`, `default_timezone`, `email_settings`, `weixin_settings`, `recent_topics`) VALUES (NULL, :username, :email, NULL, :password, :salt, NULL, NULL, NULL, NULL, NULL, '0', NULL, NULL, '0', NULL, '0', NULL, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0', '1', '0', '0', '0', '0', '0', '1', '0', NULL, NULL, NULL, '0', NULL, NULL, '', '', NULL)";
-				$stmt = $db->prepare($sql);
-				$stmt->execute(array(':password'=>md5(md5($pwd).Config::get('salt')),':email'=>addslashes($email),':salt'=>Config::get('salt'),':username'=>$user->user_name));
+				$exists=new WecenterUser();
+				$exists->password=md5(md5($pwd).Config::get('salt'));
+				$exists->user_name=$username;
+				$exists->email=$email;
+				$exists->salt=Config::get('salt');
+				$exists->group_id=5;
+				$exists->save();
 			}
 			else
 			{
-				$sql = "UPDATE `aws_users` SET `password` = :password,`salt`=:salt WHERE `email` = :email;";
-				$stmt = $db->prepare($sql);
-				$stmt->execute(array(':password'=>md5(md5($pwd).Config::get('salt')),':email'=>addslashes($email),':salt'=>Config::get('salt')));
+				$exists->password=md5(md5($pwd).Config::get('salt'));
+				$exists->salt=Config::get('salt');
+				$exists->save();
 			}
 		}
     }
@@ -43,18 +45,7 @@ Class Wecenter
 	{
 		if(Config::get('wecenter_db_user')!='')
 		{
-			$dsn = "mysql:host=".Config::get('wecenter_db_host').";dbname=".Config::get('wecenter_db_database');  
-			$db = new \PDO($dsn, Config::get('wecenter_db_user'), Config::get('wecenter_db_password'));
-			
-			$stmt = $db->prepare("SELECT * FROM `aws_users` where `email`=:email");
-			$stmt->execute(array(':email'=>$email));
-		
-			if($stmt->rowCount()>0)
-			{
-				$sql = "DELETE FROM `aws_users` WHERE `email` = :email ";
-				$stmt = $db->prepare($sql);
-				$stmt->execute(array(':email'=>$email));
-			}
+			WecenterUser::where("email",$email)->delete();
 		}
 	}
 	
@@ -62,23 +53,26 @@ Class Wecenter
 	{
 		if(Config::get('wecenter_db_user')!='')
 		{
-			$dsn = "mysql:host=".Config::get('wecenter_db_host').";dbname=".Config::get('wecenter_db_database');  
-			$db = new \PDO($dsn, Config::get('wecenter_db_user'), Config::get('wecenter_db_password'));
-			$stmt = $db->prepare("SELECT * FROM `aws_users` where `email`=:email");
-			$stmt->execute(array(':email'=>$email1));
+			$email=$user->email;
+			$exists=WecenterUser::where("email",$email1)->first();
 			
-			if($stmt->rowCount()>0)
+			if($exists!=NULL)
 			{
-				$sql = "UPDATE `aws_users` SET `password` = :password,`salt`=:salt,`email`=:email2,`user_name`=:username WHERE `email` = :email;";
-				$stmt = $db->prepare($sql);
-				$stmt->execute(array(':password'=>md5(md5($pwd).Config::get('salt')),':email'=>addslashes($email),':salt'=>Config::get('salt'),'username'=>$username,'email2'=>$email2));
-				
+				$exists->password=md5(md5($pwd).Config::get('salt'));
+				$exists->user_name=$username;
+				$exists->email=$email2;
+				$exists->salt=Config::get('salt');
+				$exists->save();
 			}
 			else
 			{
-				$sql = "INSERT INTO `aws_users` (`uid`, `user_name`, `email`, `mobile`, `password`, `salt`, `avatar_file`, `sex`, `birthday`, `province`, `city`, `job_id`, `reg_time`, `reg_ip`, `last_login`, `last_ip`, `online_time`, `last_active`, `notification_unread`, `inbox_unread`, `inbox_recv`, `fans_count`, `friend_count`, `invite_count`, `article_count`, `question_count`, `answer_count`, `topic_focus_count`, `invitation_available`, `group_id`, `reputation_group`, `forbidden`, `valid_email`, `is_first_login`, `agree_count`, `thanks_count`, `views_count`, `reputation`, `reputation_update_time`, `weibo_visit`, `integral`, `draft_count`, `common_email`, `url_token`, `url_token_update`, `verified`, `default_timezone`, `email_settings`, `weixin_settings`, `recent_topics`) VALUES (NULL, :username, :email, NULL, :password, :salt, NULL, NULL, NULL, NULL, NULL, '0', NULL, NULL, '0', NULL, '0', NULL, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0', '1', '0', '0', '0', '0', '0', '1', '0', NULL, NULL, NULL, '0', NULL, NULL, '', '', NULL)";
-				$stmt = $db->prepare($sql);
-				$stmt->execute(array(':password'=>md5(md5($pwd).Config::get('salt')),':email'=>addslashes($email2),':salt'=>Config::get('salt'),':username'=>$username));
+				$exists=new WecenterUser();
+				$exists->password=md5(md5($pwd).Config::get('salt'));
+				$exists->user_name=$username;
+				$exists->email=$email2;
+				$exists->salt=Config::get('salt');
+				$exists->group_id=5;
+				$exists->save();
 			}
 		}
 	}

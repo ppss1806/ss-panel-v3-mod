@@ -36,4 +36,28 @@ class Config
             'prefix'    => self::get('db_prefix')
         ];
     }
+	
+	public static function getRadiusDbConfig(){
+        return [
+            'driver'    => self::get('db_driver'),
+            'host'      => self::get('radius_db_host'),
+            'database'  => self::get('radius_db_database'),
+            'username'  => self::get('radius_db_user'),
+            'password'  => self::get('radius_db_password'),
+            'charset'   => self::get('db_charset'),
+            'collation' => self::get('db_collation')
+        ];
+    }
+	
+	public static function getWecenterDbConfig(){
+        return [
+            'driver'    => self::get('db_driver'),
+            'host'      => self::get('wecenter_db_host'),
+            'database'  => self::get('wecenter_db_database'),
+            'username'  => self::get('wecenter_db_user'),
+            'password'  => self::get('wecenter_db_password'),
+            'charset'   => self::get('db_charset'),
+            'collation' => self::get('db_collation')
+        ];
+    }
 }

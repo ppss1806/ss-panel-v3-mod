@@ -11,6 +11,7 @@ use App\Utils\Tools;
 class Node extends Model
 
 {
+	protected $connection = "default";
     protected $table = "ss_node";
 	
 	public function getLastNodeInfoLog()

@@ -6,6 +6,7 @@ namespace App\Models;
 class Shop extends Model
 
 {
+	protected $connection = "default";
     protected $table = "shop";
 
 	public function content()

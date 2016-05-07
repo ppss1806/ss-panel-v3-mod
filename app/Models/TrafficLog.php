@@ -7,6 +7,7 @@ use App\Utils\Tools;
 
 class TrafficLog extends Model
 {
+	protected $connection = "default";
     protected $table = "user_traffic_log";
 
     public function node()

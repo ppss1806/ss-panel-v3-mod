@@ -335,7 +335,7 @@ class UserController extends BaseController
         $user = Auth::getUser();
         $nodes = Node::where(
 			function ($query) {
-				$query->where("node_group","=",$this->user->node_group)
+				$query->Where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
 			}
 		)->where('type', 1)->where("node_class","<=",$this->user->class)->orderBy('name')->get();
@@ -400,7 +400,7 @@ class UserController extends BaseController
 				continue;
 			}
 			
-			if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$user->node_group==0))
+			if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0))
 			{
 				$temp=explode(" - ",$node->name);
 				if(!isset($node_prefix[$temp[0]]))

@@ -11,6 +11,7 @@ use App\Utils\Tools;
 class Ip extends Model
 
 {
+	protected $connection = "default";
     protected $table = "alive_ip";
 	
 	public function user()

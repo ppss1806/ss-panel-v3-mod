@@ -9,6 +9,7 @@ namespace App\Models;
 class Ticket extends Model
 
 {
+	protected $connection = "default";
     protected $table = "ticket";
 
 	public function datetime()
