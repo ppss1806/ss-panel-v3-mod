@@ -30,7 +30,7 @@ class Shop extends Model
 				default:
 			}
 			
-			if(i<count($content)&&$key!="class_expire")
+			if($i<count($content)&&$key!="class_expire")
 			{
 				$content_text .= ",";
 			}
