@@ -116,11 +116,19 @@ class ShopController extends AdminController
 
 
     public function deleteGet($request, $response, $args){
-        $id = $args['id'];
+        $id = $request->getParam('id');
         $shop = Shop::find($id);
-        $shop->delete();
-        $newResponse = $response->withStatus(302)->withHeader('Location', '/admin/shop');
-        return $newResponse;
+        if(!$shop->delete()){
+            $rs['ret'] = 0;
+            $rs['msg'] = "删除失败";
+            return $response->getBody()->write(json_encode($rs));
+        }
+		
+		$shop = Bought::where("shopid",$id)->delete();
+		
+        $rs['ret'] = 1;
+        $rs['msg'] = "删除成功";
+        return $response->getBody()->write(json_encode($rs));
     }
 	
 	public function bought($request, $response, $args){
@@ -135,11 +143,16 @@ class ShopController extends AdminController
     }
 	
 	public function deleteBoughtGet($request, $response, $args){
-        $id = $args['id'];
+        $id = $request->getParam('id');
         $shop = Bought::find($id);
         $shop->renew=0;
-		$shop->save();
-        $newResponse = $response->withStatus(302)->withHeader('Location', '/admin/bought');
-        return $newResponse;
+		if(!$shop->save()){
+            $rs['ret'] = 0;
+            $rs['msg'] = "退订失败";
+            return $response->getBody()->write(json_encode($rs));
+        }
+        $rs['ret'] = 1;
+        $rs['msg'] = "退订成功";
+		return $response->getBody()->write(json_encode($rs));
     }
 }

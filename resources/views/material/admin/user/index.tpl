@@ -106,6 +106,8 @@
 							</div>
 						</div>
 					</div>
+					
+					{include file='dialog.tpl'}
 
 							
 			</div>
@@ -130,10 +132,37 @@ function delete_modal_show(id) {
 }
 
 
-$("#delete_input").click(function () {
-	window.setTimeout("location.href='/admin/user/"+deleteid+"/delete'", 1000);
-});
-	
+$(document).ready(function(){
+	function delete_id(){
+		$.ajax({
+			type:"DELETE",
+			url:"/admin/user",
+			dataType:"json",
+			data:{
+				id: deleteid
+			},
+			success:function(data){
+				if(data.ret){
+					$("#result").modal();
+					$("#msg").html(data.msg+"  五秒后跳转。");
+					window.setTimeout("location.href='/admin/user'", 5000);
+				}else{
+					$("#result").modal();
+					$("#msg").html(data.msg);
+				}
+			},
+			error:function(jqXHR){
+				$("#result").modal();
+				$("#msg").html(data.msg+"  发生错误了。");
+			}
+		});
+	}
+	$("#delete_input").click(function(){
+		delete_id();
+	});
+})
+
+
 </script>
 
 

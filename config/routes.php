@@ -89,7 +89,7 @@ $app->group('/user', function () {
 	$this->get('/getiosconf', 'App\Controllers\UserController:GetIosConf');
 	$this->post('/unblock', 'App\Controllers\UserController:Unblock');
 	$this->get('/bought', 'App\Controllers\UserController:bought');
-	$this->get('/bought/{id}/delete', 'App\Controllers\UserController:deleteBoughtGet');
+	$this->delete('/bought', 'App\Controllers\UserController:deleteBoughtGet');
 	
 })->add(new Auth());
 
@@ -121,8 +121,7 @@ $app->group('/admin', function () {
     $this->post('/node', 'App\Controllers\Admin\NodeController:add');
     $this->get('/node/{id}/edit', 'App\Controllers\Admin\NodeController:edit');
     $this->put('/node/{id}', 'App\Controllers\Admin\NodeController:update');
-    $this->delete('/node/{id}', 'App\Controllers\Admin\NodeController:delete');
-    $this->get('/node/{id}/delete', 'App\Controllers\Admin\NodeController:deleteGet');
+    $this->delete('/node', 'App\Controllers\Admin\NodeController:delete');
 	
 	
 	$this->get('/ticket', 'App\Controllers\Admin\TicketController:index');
@@ -134,13 +133,13 @@ $app->group('/admin', function () {
     $this->get('/shop', 'App\Controllers\Admin\ShopController:index');
 	
 	$this->get('/bought', 'App\Controllers\Admin\ShopController:bought');
-	$this->get('/bought/{id}/delete', 'App\Controllers\Admin\ShopController:deleteBoughtGet');
+	$this->delete('/bought', 'App\Controllers\Admin\ShopController:deleteBoughtGet');
 	
     $this->get('/shop/create', 'App\Controllers\Admin\ShopController:create');
     $this->post('/shop', 'App\Controllers\Admin\ShopController:add');
     $this->get('/shop/{id}/edit', 'App\Controllers\Admin\ShopController:edit');
     $this->put('/shop/{id}', 'App\Controllers\Admin\ShopController:update');
-    $this->get('/shop/{id}/delete', 'App\Controllers\Admin\ShopController:deleteGet');
+    $this->delete('/shop', 'App\Controllers\Admin\ShopController:deleteGet');
 	
 	// Ann Mange
     $this->get('/announcement', 'App\Controllers\Admin\AnnController:index');
@@ -148,8 +147,7 @@ $app->group('/admin', function () {
     $this->post('/announcement', 'App\Controllers\Admin\AnnController:add');
     $this->get('/announcement/{id}/edit', 'App\Controllers\Admin\AnnController:edit');
     $this->put('/announcement/{id}', 'App\Controllers\Admin\AnnController:update');
-    $this->delete('/announcement/{id}', 'App\Controllers\Admin\AnnController:delete');
-    $this->get('/announcement/{id}/delete', 'App\Controllers\Admin\AnnController:deleteGet');
+    $this->delete('/announcement', 'App\Controllers\Admin\AnnController:delete');
 	
 	// IP Mange
     $this->get('/alive', 'App\Controllers\Admin\IpController:index');
@@ -166,8 +164,7 @@ $app->group('/admin', function () {
     $this->get('/user', 'App\Controllers\Admin\UserController:index');
     $this->get('/user/{id}/edit', 'App\Controllers\Admin\UserController:edit');
     $this->put('/user/{id}', 'App\Controllers\Admin\UserController:update');
-    $this->delete('/user/{id}', 'App\Controllers\Admin\UserController:delete');
-    $this->get('/user/{id}/delete', 'App\Controllers\Admin\UserController:deleteGet');
+    $this->delete('/user', 'App\Controllers\Admin\UserController:delete');
 	
 	
 	$this->get('/coupon', 'App\Controllers\AdminController:coupon');

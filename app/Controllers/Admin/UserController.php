@@ -114,7 +114,7 @@ class UserController extends AdminController
     }
 
     public function delete($request, $response, $args){
-        $id = $args['id'];
+        $id = $request->getParam('id');
         $user = User::find($id);
 
 		$email1=$user->email;
@@ -133,21 +133,6 @@ class UserController extends AdminController
         $rs['ret'] = 1;
         $rs['msg'] = "删除成功";
         return $response->getBody()->write(json_encode($rs));
-    }
-
-    public function deleteGet($request, $response, $args){
-        $id = $args['id'];
-        $user = User::find($id);
-
-		$email1=$user->email;
-		Radius::Delete($email1);
-			
-			
-		Da::delete($email1);
-			
-        $user->delete();
-        $newResponse = $response->withStatus(302)->withHeader('Location', '/admin/user');
-        return $newResponse;
     }
 	
 	

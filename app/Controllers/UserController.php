@@ -957,15 +957,21 @@ class UserController extends BaseController
     }
 	
 	public function deleteBoughtGet($request, $response, $args){
-        $id = $args['id'];
+        $id = $request->getParam('id');
         $shop = Bought::find($id);
 		if($this->user->id==$shop->userid)
 		{
 			$shop->renew=0;
-			$shop->save();
 		}
-        $newResponse = $response->withStatus(302)->withHeader('Location', '/user/bought');
-        return $newResponse;
+		
+        if(!$shop->save()){
+            $rs['ret'] = 0;
+            $rs['msg'] = "退订失败";
+            return $response->getBody()->write(json_encode($rs));
+        }
+        $rs['ret'] = 1;
+        $rs['msg'] = "退订成功";
+		return $response->getBody()->write(json_encode($rs));
     }
 	
 	
@@ -988,6 +994,15 @@ class UserController extends BaseController
 	public function ticket_add($request, $response, $args){
         $title = $request->getParam('title');
 		$content = $request->getParam('content');
+		
+		
+		if(strpos("admin",$content)!=-1||strpos("user",$content)!=-1)
+		{
+			$res['ret'] = 0;
+			$res['msg'] = "请求中有不正当的词语。";
+			return $this->echoJson($response, $res);
+		}
+		
 		
 		if($title==""||$content=="")
 		{

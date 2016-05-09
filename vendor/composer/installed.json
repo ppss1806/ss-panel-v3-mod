@@ -575,57 +575,6 @@
         ]
     },
     {
-        "name": "slim/csrf",
-        "version": "0.5.0",
-        "version_normalized": "0.5.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/slimphp/Slim-Csrf.git",
-            "reference": "fd713fe28c73c70edcdda95afcf5ad30b21d2d9b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/slimphp/Slim-Csrf/zipball/fd713fe28c73c70edcdda95afcf5ad30b21d2d9b",
-            "reference": "fd713fe28c73c70edcdda95afcf5ad30b21d2d9b",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.0",
-            "psr/http-message": "^1.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.0",
-            "slim/slim": "3.x-dev"
-        },
-        "time": "2015-11-09 10:34:12",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Slim\\Csrf\\": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Josh Lockhart",
-                "email": "hello@joshlockhart.com",
-                "homepage": "http://joshlockhart.com"
-            }
-        ],
-        "description": "Slim Framework 3 CSRF protection middleware",
-        "homepage": "http://slimframework.com",
-        "keywords": [
-            "csrf",
-            "framework",
-            "middleware",
-            "slim"
-        ]
-    },
-    {
         "name": "pimple/pimple",
         "version": "v3.0.2",
         "version_normalized": "3.0.2.0",
@@ -1890,88 +1839,6 @@
         "description": "A lightweight implementation of CommonJS Promises/A for PHP"
     },
     {
-        "name": "aws/aws-sdk-php",
-        "version": "3.18.5",
-        "version_normalized": "3.18.5.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/aws/aws-sdk-php.git",
-            "reference": "24b2a39b167bfe06045c714db5ae9b5b6bdf255d"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/24b2a39b167bfe06045c714db5ae9b5b6bdf255d",
-            "reference": "24b2a39b167bfe06045c714db5ae9b5b6bdf255d",
-            "shasum": ""
-        },
-        "require": {
-            "guzzlehttp/guzzle": "~5.3|~6.0.1|~6.1",
-            "guzzlehttp/promises": "~1.0",
-            "guzzlehttp/psr7": "~1.0",
-            "mtdowling/jmespath.php": "~2.2",
-            "php": ">=5.5"
-        },
-        "require-dev": {
-            "andrewsville/php-token-reflection": "^1.4",
-            "aws/aws-php-sns-message-validator": "~1.0",
-            "behat/behat": "~3.0",
-            "doctrine/cache": "~1.4",
-            "ext-dom": "*",
-            "ext-json": "*",
-            "ext-openssl": "*",
-            "ext-pcre": "*",
-            "ext-simplexml": "*",
-            "ext-spl": "*",
-            "nette/neon": "^2.3",
-            "phpunit/phpunit": "~4.0|~5.0",
-            "psr/cache": "^1.0"
-        },
-        "suggest": {
-            "aws/aws-php-sns-message-validator": "To validate incoming SNS notifications",
-            "doctrine/cache": "To use the DoctrineCacheAdapter",
-            "ext-curl": "To send requests using cURL",
-            "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages"
-        },
-        "time": "2016-05-03 23:17:30",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Aws\\": "src/"
-            },
-            "files": [
-                "src/functions.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "Amazon Web Services",
-                "homepage": "http://aws.amazon.com"
-            }
-        ],
-        "description": "AWS SDK for PHP - Use Amazon Web Services in your PHP project",
-        "homepage": "http://aws.amazon.com/sdkforphp",
-        "keywords": [
-            "amazon",
-            "aws",
-            "cloud",
-            "dynamodb",
-            "ec2",
-            "glacier",
-            "s3",
-            "sdk"
-        ]
-    },
-    {
         "name": "symfony/event-dispatcher",
         "version": "v2.8.5",
         "version_normalized": "2.8.5.0",
@@ -2372,6 +2239,140 @@
             "clean",
             "security",
             "xss"
+        ]
+    },
+    {
+        "name": "aws/aws-sdk-php",
+        "version": "3.18.6",
+        "version_normalized": "3.18.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/aws/aws-sdk-php.git",
+            "reference": "e22ee28280547dccfef2646a67a9e8fa05c811cf"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e22ee28280547dccfef2646a67a9e8fa05c811cf",
+            "reference": "e22ee28280547dccfef2646a67a9e8fa05c811cf",
+            "shasum": ""
+        },
+        "require": {
+            "guzzlehttp/guzzle": "~5.3|~6.0.1|~6.1",
+            "guzzlehttp/promises": "~1.0",
+            "guzzlehttp/psr7": "~1.0",
+            "mtdowling/jmespath.php": "~2.2",
+            "php": ">=5.5"
+        },
+        "require-dev": {
+            "andrewsville/php-token-reflection": "^1.4",
+            "aws/aws-php-sns-message-validator": "~1.0",
+            "behat/behat": "~3.0",
+            "doctrine/cache": "~1.4",
+            "ext-dom": "*",
+            "ext-json": "*",
+            "ext-openssl": "*",
+            "ext-pcre": "*",
+            "ext-simplexml": "*",
+            "ext-spl": "*",
+            "nette/neon": "^2.3",
+            "phpunit/phpunit": "~4.0|~5.0",
+            "psr/cache": "^1.0"
+        },
+        "suggest": {
+            "aws/aws-php-sns-message-validator": "To validate incoming SNS notifications",
+            "doctrine/cache": "To use the DoctrineCacheAdapter",
+            "ext-curl": "To send requests using cURL",
+            "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages"
+        },
+        "time": "2016-05-05 19:57:48",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Aws\\": "src/"
+            },
+            "files": [
+                "src/functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Amazon Web Services",
+                "homepage": "http://aws.amazon.com"
+            }
+        ],
+        "description": "AWS SDK for PHP - Use Amazon Web Services in your PHP project",
+        "homepage": "http://aws.amazon.com/sdkforphp",
+        "keywords": [
+            "amazon",
+            "aws",
+            "cloud",
+            "dynamodb",
+            "ec2",
+            "glacier",
+            "s3",
+            "sdk"
+        ]
+    },
+    {
+        "name": "slim/csrf",
+        "version": "0.6.0",
+        "version_normalized": "0.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/slimphp/Slim-Csrf.git",
+            "reference": "f56bccc1c3a9c76e5fcf7c6d56698a32f9e7e9d8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/slimphp/Slim-Csrf/zipball/f56bccc1c3a9c76e5fcf7c6d56698a32f9e7e9d8",
+            "reference": "f56bccc1c3a9c76e5fcf7c6d56698a32f9e7e9d8",
+            "shasum": ""
+        },
+        "require": {
+            "paragonie/random_compat": "^1.1",
+            "php": ">=5.5.0",
+            "psr/http-message": "^1.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.0",
+            "slim/slim": "~3.0"
+        },
+        "time": "2015-12-22 10:13:02",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Slim\\Csrf\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Josh Lockhart",
+                "email": "hello@joshlockhart.com",
+                "homepage": "http://joshlockhart.com"
+            }
+        ],
+        "description": "Slim Framework 3 CSRF protection middleware",
+        "homepage": "http://slimframework.com",
+        "keywords": [
+            "csrf",
+            "framework",
+            "middleware",
+            "slim"
         ]
     }
 ]

@@ -77,6 +77,8 @@
 							</div>
 						</div>
 					</div>
+					
+					{include file='dialog.tpl'}
 
 							
 			</div>
@@ -102,10 +104,35 @@ function delete_modal_show(id) {
 	$("#delete_modal").modal();
 }
 
-
-$("#delete_input").click(function () {
-	window.setTimeout("location.href='/user/bought/"+deleteid+"/delete'", 1000);
-});
+$(document).ready(function(){
+	function delete_id(){
+		$.ajax({
+			type:"DELETE",
+			url:"/user/bought",
+			dataType:"json",
+			data:{
+				id: deleteid
+			},
+			success:function(data){
+				if(data.ret){
+					$("#result").modal();
+					$("#msg").html(data.msg+"  五秒后跳转。");
+					window.setTimeout("location.href='/user/bought'", 5000);
+				}else{
+					$("#result").modal();
+					$("#msg").html(data.msg);
+				}
+			},
+			error:function(jqXHR){
+				$("#result").modal();
+				$("#msg").html(data.msg+"  发生错误了。");
+			}
+		});
+	}
+	$("#delete_input").click(function(){
+		delete_id();
+	});
+})
 	
 </script>
 

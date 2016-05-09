@@ -65,7 +65,7 @@ class AnnController extends AdminController
 
 
     public function delete($request, $response, $args){
-        $id = $args['id'];
+        $id = $request->getParam('id');
         $ann = Ann::find($id);
         if(!$ann->delete()){
             $rs['ret'] = 0;
@@ -77,11 +77,4 @@ class AnnController extends AdminController
         return $response->getBody()->write(json_encode($rs));
     }
 
-    public function deleteGet($request, $response, $args){
-        $id = $args['id'];
-        $ann = Ann::find($id);
-        $ann->delete();
-        $newResponse = $response->withStatus(302)->withHeader('Location', '/admin/announcement');
-        return $newResponse;
-    }
 }

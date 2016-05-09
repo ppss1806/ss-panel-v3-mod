@@ -120,12 +120,13 @@ class NodeController extends AdminController
 
 
     public function delete($request, $response, $args){
-        $id = $args['id'];
+        $id = $request->getParam('id');
         $node = Node::find($id);
 		if($node->sort==1)
 		{
 			Radius::DelNas($node->node_ip);
 		}
+		
         if(!$node->delete()){
             $rs['ret'] = 0;
             $rs['msg'] = "删除失败";
@@ -136,15 +137,4 @@ class NodeController extends AdminController
         return $response->getBody()->write(json_encode($rs));
     }
 
-    public function deleteGet($request, $response, $args){
-        $id = $args['id'];
-        $node = Node::find($id);
-		if($node->sort==1)
-		{
-			Radius::DelNas($node->node_ip);
-		}
-        $node->delete();
-        $newResponse = $response->withStatus(302)->withHeader('Location', '/admin/node');
-        return $newResponse;
-    }
 }
