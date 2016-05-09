@@ -53,10 +53,10 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">客户端下载</p>
-										<p><a href="{$global_url}/client/ShadowsocksR-win.7z"><i class="icon icon-lg">desktop_windows</i>&nbsp;Windows</a></p>
-										<p><a href="{$global_url}/client/ShadowsocksX.dmg"><i class="icon icon-lg">laptop_mac</i>&nbsp;Mac OS X</a></p>
+										<p><a href="/client/ShadowsocksR-win.7z"><i class="icon icon-lg">desktop_windows</i>&nbsp;Windows</a></p>
+										<p><a href="/client/ShadowsocksX.dmg"><i class="icon icon-lg">laptop_mac</i>&nbsp;Mac OS X</a></p>
 										<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation"><i class="icon icon-lg">laptop_windows</i>&nbsp;Linux</a></p>
-										<p><a href="{$global_url}/client/shadowsocks.apk"><i class="icon icon-lg">android</i>&nbsp;Android</a></p>
+										<p><a href="/client/shadowsocks.apk"><i class="icon icon-lg">android</i>&nbsp;Android</a></p>
 									</div>
 									
 								</div>
