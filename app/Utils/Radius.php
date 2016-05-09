@@ -5,7 +5,6 @@ namespace App\Utils;
 use App\Models\User;
 use App\Models\RadiusRadCheck;
 use App\Models\RadiusRadUserGroup;
-use App\Models\RadiusUserInfo;
 use App\Models\RadiusNas;
 use App\Services\Config;
 
@@ -42,9 +41,6 @@ Class Radius
 				$newRad->priority="0";
 				$newRad->save();
 				
-				$newRad=new RadiusUserInfo();
-				$newRad->username=$email;
-				$newRad->save();
 			}
 			else
 			{
@@ -70,7 +66,6 @@ Class Radius
 			{
 				RadiusRadCheck::where("username",$email)->delete();
 				RadiusRadUserGroup::where("username",$email)->delete();
-				RadiusUserInfo::where("username",$email)->delete();
 			}
 		}
 	}
@@ -96,9 +91,6 @@ Class Radius
 				$exists->username=$email2;
 				$exists->save();
 				
-				$exists=RadiusUserInfo::where("username",$email1)->first();
-				$exists->username=$email2;
-				$exists->save();
 				
 			}
 			else
@@ -116,9 +108,6 @@ Class Radius
 				$newRad->priority="0";
 				$newRad->save();
 				
-				$newRad=new RadiusUserInfo();
-				$newRad->username=$email2;
-				$newRad->save();
 			}
 		}
 	}

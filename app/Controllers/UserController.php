@@ -958,7 +958,15 @@ class UserController extends BaseController
 	
 	public function deleteBoughtGet($request, $response, $args){
         $id = $request->getParam('id');
-        $shop = Bought::find($id);
+        $shop = Bought::where("id",$id)->where("userid",$this->user->id)->get;
+		
+		if($shop==null)
+		{
+			$rs['ret'] = 0;
+            $rs['msg'] = "退订失败";
+            return $response->getBody()->write(json_encode($rs));
+		}
+		
 		if($this->user->id==$shop->userid)
 		{
 			$shop->renew=0;
