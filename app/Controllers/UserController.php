@@ -800,7 +800,7 @@ class UserController extends BaseController
         if (isset($request->getQueryParams()["page"])) {
             $pageNum = $request->getQueryParams()["page"];
         }
-		$shops = Shop::paginate(15, ['*'], 'page', $pageNum);
+		$shops = Shop::where("status",1)->paginate(15, ['*'], 'page', $pageNum);
 		$shops->setPath('/user/shop');
 		
         return $this->view()->assign('shops',$shops)->display('user/shop.tpl');
@@ -811,7 +811,7 @@ class UserController extends BaseController
         $coupon = $request->getParam('coupon');
         $shop = $request->getParam('shop');
 		
-		$shop=Shop::where("id",$shop)->first();
+		$shop=Shop::where("id",$shop)->where("status",1)->first();
 		
 		if($shop==null)
 		{
@@ -861,7 +861,7 @@ class UserController extends BaseController
 		
 		$autorenew = $request->getParam('autorenew');
 		
-		$shop=Shop::where("id",$shop)->first();
+		$shop=Shop::where("id",$shop)->where("status",1)->first();
 		
 		if($shop==null)
 		{

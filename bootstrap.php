@@ -11,7 +11,7 @@ use App\Services\Boot;
 
 //  BASE_PATH
 define('BASE_PATH', __DIR__);
-define('VERSION', '<a href="https://www.zhaoj.in">Glzjin</a> mod-201605091400');
+define('VERSION', '<a href="https://www.zhaoj.in">Glzjin</a> mod-201605091430');
 
 // Vendor Autoload
 require BASE_PATH.'/vendor/autoload.php';

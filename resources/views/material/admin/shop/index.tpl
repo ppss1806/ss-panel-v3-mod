@@ -36,6 +36,7 @@
                                 <th>名称</th>
 								<th>价格</th>
 								<th>内容</th>
+								<th>状态</th>
                                 <th>自动续费天数</th>
                                 
                             </tr>
@@ -43,12 +44,18 @@
                             <tr>
 								<td>
                                     <a class="btn btn-brand" href="/admin/shop/{$shop->id}/edit">编辑</a>
-                                    <a class="btn btn-brand-accent" id="delete" href="javascript:void(0);" onClick="delete_modal_show('{$shop->id}')">删除</a>
+                                    <a class="btn btn-brand-accent" id="delete"  {if $shop->status==0}disabled{else} href="javascript:void(0);" onClick="delete_modal_show('{$shop->id}')"{/if}>下架</a>
                                 </td>
                                 <td>#{$shop->id}</td>
                                 <td>{$shop->name}</td>
 								<td>{$shop->price} 元</td>
                                 <td>{$shop->content()}</td>
+								{if $shop->status==1}
+                                <td>上架</td>
+								{else}
+								<td>下架</td>
+								{/if}
+								
 								{if $shop->auto_renew==0}
                                 <td>不自动续费</td>
 								{else}
@@ -73,7 +80,7 @@
 							<div class="modal-content">
 								<div class="modal-heading">
 									<a class="modal-close" data-dismiss="modal">×</a>
-									<h2 class="modal-title">确认要删除？</h2>
+									<h2 class="modal-title">确认要下架？</h2>
 								</div>
 								<div class="modal-inner">
 									<p>请您确认。</p>
