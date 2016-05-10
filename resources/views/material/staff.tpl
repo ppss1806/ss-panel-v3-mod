@@ -36,7 +36,7 @@
 								<div class="card-main">
 									<div class="card-inner">
 										
-											<p><a herf="https://github.com/orvice/">orvice</a></p>
+											<p><a href="https://github.com/orvice/">orvice</a></p>
 									</div>
 								</div>
 							</div>
@@ -48,7 +48,7 @@
 								<div class="card-main">
 									<div class="card-inner">
 										
-											<p><a herf="https://www.zhaoj.in">glzjin</a></p>
+											<p><a href="https://www.zhaoj.in">glzjin</a></p>
 									</div>
 								</div>
 							</div>
@@ -58,8 +58,8 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner">
-											<p><a herf="https://github.com/Daemonite/">Daemonite</a></p>
-											<p><a herf="https://www.zhaoj.in">glzjin</a></p>
+											<p><a href="https://github.com/Daemonite/">Daemonite</a></p>
+											<p><a href="https://www.zhaoj.in">glzjin</a></p>
 									</div>
 								</div>
 							</div>
@@ -69,9 +69,9 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner">
-											<p><a herf="https://www.zhaoj.in">glzjin</a></p>
-											<p><a herf="http://mengyang.wang/">mengyang</a></p>
-											<p><a herf="http://tony.ecy.ren/">tony</a></p>
+											<p><a href="https://www.zhaoj.in">glzjin</a></p>
+											<p><a href="http://mengyang.wang/">mengyang</a></p>
+											<p><a href="http://tony.ecy.ren/">tony</a></p>
 									</div>
 								</div>
 							</div>
