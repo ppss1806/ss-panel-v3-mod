@@ -32,5 +32,10 @@ class HomeController extends BaseController
     {
         return $this->view()->display('tos.tpl');
     }
+	
+	public function staff()
+    {
+        return $this->view()->display('staff.tpl');
+    }
 
 }

@@ -164,7 +164,7 @@ $(document).ready(function(){
 				if(data.ret){
 					$("#result").modal();
 					$("#msg").html(data.msg+"  五秒后跳转。");
-					window.setTimeout("location.href='/admin/user'", 5000);
+					window.setTimeout("location.href=window.location.href", 5000);
 				}else{
 					$("#result").modal();
 					$("#msg").html(data.msg);

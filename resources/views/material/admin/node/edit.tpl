@@ -18,7 +18,7 @@
 		<div class="container">
 			<div class="col-lg-12 col-lg-push-0 col-sm-10 col-sm-push-1">
 				<section class="content-inner margin-top-no">
-					</form>
+					<form id="main_form">
 						<div class="card">
 							<div class="card-main">
 								<div class="card-inner">
@@ -179,6 +179,7 @@
 		  node_bandwidth_limit: {required: true},
 		  bandwidthlimit_resetday: {required: true}
 		},
+{/literal}
 
 		submitHandler: function() {
 			if(document.getElementById('custom_method').checked)
@@ -240,4 +241,4 @@
 	});
 
 </script>
-{/literal}
+

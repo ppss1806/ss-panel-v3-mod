@@ -1,7 +1,6 @@
 	<footer class="ui-footer">
 		<div class="container">
-			&copy; {$config["appName"]}  Powered by <a class="orange-text text-lighten-3" href="https://github.com/orvice/ss-panel">ss-panel</a> {$config["version"]}
-		 Theme by <a class="orange-text text-lighten-3" href="https://github.com/Daemonite/material">Material</a> Created by <a class="orange-text text-lighten-3" href="https://www.zhaoj.in">Glzjin</a>
+			&copy; {$config["appName"]}  <a href="/staff">STAFF</a>
 		</div>
 	</footer>
 

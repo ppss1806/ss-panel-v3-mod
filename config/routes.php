@@ -30,12 +30,17 @@ if (defined("DEBUG")) {
 
 // Make a Slim App
 // $app = new App($c);
-$app = new App([
-    'settings' => [
-        'debug' => $debug,
+
+$configuration = [
+	'settings' => [
+		'debug' => $debug,
         'whoops.editor' => 'sublime'
-    ]
-]);
+	]
+];
+
+$container = new Container($configuration);
+
+$app = new App($container);
 $app->add(new WhoopsMiddleware);
 
 
@@ -43,6 +48,7 @@ $app->add(new WhoopsMiddleware);
 $app->get('/', 'App\Controllers\HomeController:index');
 $app->get('/code', 'App\Controllers\HomeController:code');
 $app->get('/tos', 'App\Controllers\HomeController:tos');
+$app->get('/staff', 'App\Controllers\HomeController:staff');
 
 // User Center
 $app->group('/user', function () {
@@ -203,6 +209,9 @@ $app->group('/res', function () {
 $app->group('/link', function () {
     $this->get('/{token}', 'App\Controllers\LinkController:GetContent');
 });
+
+
+
 
 
 // Run Slim Routes for App
