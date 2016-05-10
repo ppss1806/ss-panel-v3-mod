@@ -205,7 +205,7 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-right">
 						<li>
-							<a class="padding-right-lg waves-attach" href="/auth/login"><span class="icon icon-lg margin-right">account_box</span>登陆</a>
+							<a class="padding-right-lg waves-attach" href="/auth/login"><span class="icon icon-lg margin-right">account_box</span>登录</a>
 						</li>
 						<li>
 							<a class="padding-right-lg waves-attach" href="/auth/register"><span class="icon icon-lg margin-right">pregnant_woman</span>注册</a>
@@ -234,7 +234,7 @@
 					<li><a href="/admin/alive"><i class="icon icon-lg">dialer_sip</i>&nbsp;在线IP</a></li>
 					<li><a href="/admin/block"><i class="icon icon-lg">dialer_sip</i>&nbsp;节点被封IP</a></li>
 					<li><a href="/admin/unblock"><i class="icon icon-lg">dialer_sip</i>&nbsp;解封IP记录</a></li>
-					<li><a href="/admin/login"><i class="icon icon-lg">text_fields</i>&nbsp;登陆记录</a></li>
+					<li><a href="/admin/login"><i class="icon icon-lg">text_fields</i>&nbsp;登录记录</a></li>
 					<li><a href="/admin/ticket"><i class="icon icon-lg">question_answer</i>&nbsp;工单</a></li>
 					<li><a href="/user"><i class="icon icon-lg">person</i>&nbsp;用户中心</a></li>
 					<li><a href="/user/logout"><i class="icon icon-lg">call_missed_outgoing</i>&nbsp;退出</a></li>

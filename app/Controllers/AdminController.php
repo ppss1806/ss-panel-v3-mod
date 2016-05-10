@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\InviteCode, App\Models\Node, App\Models\TrafficLog, App\Models\Payback, App\Models\Coupon;
+use App\Models\InviteCode, App\Models\Node, App\Models\TrafficLog, App\Models\Payback, App\Models\Coupon, App\Models\User;
 use App\Utils\Tools;
 use App\Services\Analytics;
 
@@ -46,7 +46,16 @@ class AdminController extends UserController
     {
         $n = $request->getParam('num');
         $prefix = $request->getParam('prefix');
-        $uid = $request->getParam('uid');
+		if($request->getParam('uid')!=0)
+		{
+			$user=User::where("email","=",$request->getParam('uid'))->orWhere("id","=",$request->getParam('uid'))->first();
+			$uid = $user->id;
+        }
+		else
+		{
+			$uid=0;
+		}
+		
         if ($n < 1) {
             $res['ret'] = 0;
             return $response->getBody()->write(json_encode($res));

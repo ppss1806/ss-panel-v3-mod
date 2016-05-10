@@ -11,7 +11,7 @@
 	<main class="content">
 		<div class="content-header ui-content-header">
 			<div class="container">
-				<h1 class="content-heading">最近登陆记录</h1>
+				<h1 class="content-heading">最近登录记录</h1>
 			</div>
 		</div>
 		<div class="container">
@@ -21,7 +21,7 @@
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
-								<p>这里是最近的登陆记录。</p>
+								<p>这里是最近的登录记录。</p>
 							</div>
 						</div>
 					</div>

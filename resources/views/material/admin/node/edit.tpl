@@ -18,116 +18,128 @@
 		<div class="container">
 			<div class="col-lg-12 col-lg-push-0 col-sm-10 col-sm-push-1">
 				<section class="content-inner margin-top-no">
-					
-					<div class="card">
-						<div class="card-main">
-							<div class="card-inner">
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="name">节点名称</label>
-									<input class="form-control" id="name" type="text" value="{$node->name}">
-								</div>
-								
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="server">节点地址</label>
-									<input class="form-control" id="server" type="text" value="{$node->server}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="method">加密方式</label>
-									<input class="form-control" id="method" type="text" value="{$node->method}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="rate">流量比例</label>
-									<input class="form-control" id="rate" type="text" value="{$node->traffic_rate}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<div class="checkbox switch">
-										<label for="custom_method">
-											<input {if $node->custom_method==1}checked{/if} class="access-hide" id="custom_method" type="checkbox"><span class="switch-toggle"></span>自定义加密
-										</label>
+					</form>
+						<div class="card">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="name">节点名称</label>
+										<input class="form-control" id="name" name="name" type="text" value="{$node->name}">
 									</div>
+									
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="server">节点地址</label>
+										<input class="form-control" id="server" name="server" type="text" value="{$node->server}">
+									</div>
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="method">加密方式</label>
+										<input class="form-control" id="method" name="method" type="text" value="{$node->method}">
+									</div>
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="rate">流量比例</label>
+										<input class="form-control" id="rate" name="rate" type="text" value="{$node->traffic_rate}">
+									</div>
+									
+									<div class="form-group form-group-label">
+										<div class="checkbox switch">
+											<label for="custom_method">
+												<input {if $node->custom_method==1}checked{/if} class="access-hide" id="custom_method" name="custom_method" type="checkbox"><span class="switch-toggle"></span>自定义加密
+											</label>
+										</div>
+									</div>
+									
+									
 								</div>
-								
-								
 							</div>
 						</div>
-					</div>
 
-					<div class="card">
-						<div class="card-main">
-							<div class="card-inner">
-								<div class="form-group form-group-label">
-									<div class="checkbox switch">
-										<label for="type">
-											<input {if $node->type==1}checked{/if} class="access-hide" id="type" type="checkbox"><span class="switch-toggle"></span>是否显示
-										</label>
+						<div class="card">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="form-group form-group-label">
+										<div class="checkbox switch">
+											<label for="type">
+												<input {if $node->type==1}checked{/if} class="access-hide" id="type" name="type" type="checkbox"><span class="switch-toggle"></span>是否显示
+											</label>
+										</div>
+									</div>
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="status">节点状态</label>
+										<input class="form-control" id="status" name="status" type="text" value="{$node->status}">
+									</div>
+									
+									<div class="form-group form-group-label">
+										<div class="form-group form-group-label">
+												<label class="floating-label" for="sort">节点类型</label>
+												<select id="sort" class="form-control" name="sort">
+													<option value="0" {if $node->sort==0}selected{/if}>Shadowsocks</option>
+													<option value="1" {if $node->sort==1}selected{/if}>VPN/Radius基础</option>
+													<option value="2" {if $node->sort==2}selected{/if}>SSH</option>
+													<option value="3" {if $node->sort==3}selected{/if}>PAC</option>
+													<option value="4" {if $node->sort==4}selected{/if}>APN文件外链</option>
+													<option value="5" {if $node->sort==5}selected{/if}>Anyconnect</option>
+													<option value="6" {if $node->sort==6}selected{/if}>APN</option>
+													<option value="7" {if $node->sort==7}selected{/if}>PAC PLUS(Socks 代理生成 PAC文件)</option>
+													<option value="7" {if $node->sort==8}selected{/if}>PAC PLUS PLUS(HTTPS 代理生成 PAC文件)</option>
+												</select>
+											</div>
+									</div>
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="info">节点描述</label>
+										<input class="form-control" id="info" name="info" type="text" value="{$node->info}">
+									</div>
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="class">节点类别（不分类请填0，分类为数字）</label>
+										<input class="form-control" id="class" name="class" type="text" value="{$node->node_class}">
+									</div>
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="group">节点群组（分组为数字，不分组请填0）</label>
+										<input class="form-control" id="group" name="group" type="text" value="{$node->node_group}">
+									</div>
+									
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="node_bandwidth_limit">节点流量上限（不使用的话请填0）（GB）</label>
+										<input class="form-control" id="node_bandwidth_limit" name="node_bandwidth_limit" type="text" value="{$node->node_bandwidth_limit/1024/1024/1024}">
+									</div>
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="bandwidthlimit_resetday">节点流量上限清空日</label>
+										<input class="form-control" id="bandwidthlimit_resetday" name="bandwidthlimit_resetday" type="text" value="{$node->bandwidthlimit_resetday}">
+									</div>
+									
+									<div class="form-group form-group-label">
+										<label class="floating-label" for="node_speedlimit">节点限速(对于每个用户端口)（Mbps）</label>
+										<input class="form-control" id="node_speedlimit" name="node_speedlimit" type="text" value="{$node->node_speedlimit}">
 									</div>
 								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="status">节点状态</label>
-									<input class="form-control" id="status" type="text" value="{$node->status}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="sort">类型（SS=0,VPN=1.....请看 zhaojin97.cn）</label>
-									<input class="form-control" id="sort" type="text" value="{$node->sort}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="info">节点描述</label>
-									<input class="form-control" id="info" type="text" value="{$node->info}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="class">节点类别（不分类请填0，分类为数字）</label>
-									<input class="form-control" id="class" type="text" value="{$node->node_class}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="group">节点群组（分组为数字，不分组请填0）</label>
-									<input class="form-control" id="group" type="text" value="{$node->node_group}">
-								</div>
-								
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="node_bandwidth_limit">节点流量上限（不使用的话请填0）（GB）</label>
-									<input class="form-control" id="node_bandwidth_limit" type="text" value="{$node->node_bandwidth_limit/1024/1024/1024}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="bandwidthlimit_resetday">节点流量上限清空日</label>
-									<input class="form-control" id="bandwidthlimit_resetday" type="text" value="{$node->bandwidthlimit_resetday}">
-								</div>
-								
-								<div class="form-group form-group-label">
-									<label class="floating-label" for="node_speedlimit">节点限速(对于每个用户端口)（Mbps）</label>
-									<input class="form-control" id="node_speedlimit" type="text" value="{$node->node_speedlimit}">
-								</div>
 							</div>
-						</div>
-					</div>	
-					
-					
-					
-					<div class="card">
-						<div class="card-main">
-							<div class="card-inner">
-								
-								<div class="form-group">
-									<div class="row">
-										<div class="col-md-10 col-md-push-1">
-											<button id="submit" type="submit" class="btn btn-block btn-brand waves-attach waves-light">修改</button>
+						</div>	
+						
+						
+						
+						<div class="card">
+							<div class="card-main">
+								<div class="card-inner">
+									
+									<div class="form-group">
+										<div class="row">
+											<div class="col-md-10 col-md-push-1">
+												<button id="submit" type="submit" class="btn btn-block btn-brand waves-attach waves-light">修改</button>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					
+					</form>	
 					{include file='dialog.tpl'}
 
 			</div>
@@ -150,11 +162,25 @@
 {include file='admin/footer.tpl'}
 
 
-
+{literal}
 <script>
-    $(document).ready(function () {
-        function submit() {
-			
+
+	$('#main_form').validate({
+		rules: {
+		  name: {required: true},
+		  server: {required: true},
+		  method: {required: true},
+		  rate: {required: true},
+		  info: {required: true},
+		  group: {required: true},
+		  status: {required: true},
+		  node_speedlimit: {required: true},
+		  sort: {required: true},
+		  node_bandwidth_limit: {required: true},
+		  bandwidthlimit_resetday: {required: true}
+		},
+
+		submitHandler: function() {
 			if(document.getElementById('custom_method').checked)
 			{
 				var custom_method=1;
@@ -174,9 +200,9 @@
 			}
 			
 			
-			
             $.ajax({
-                type: "PUT",
+
+				type: "PUT",
                 url: "/admin/node/{$node->id}",
                 dataType: "json",
                 data: {
@@ -207,24 +233,11 @@
                 },
                 error: function (jqXHR) {
                     $("#result").modal();
-                    $("#msg").html(data.msg+"  发生了错误。");
+                    $("#msg").html(data.msg+"  发生错误了。");
                 }
             });
-        }
+		}
+	});
 
-        $("html").keydown(function (event) {
-            if (event.keyCode == 13) {
-                login();
-            }
-        });
-        $("#submit").click(function () {
-            submit();
-        });
-        $("#ok-close").click(function () {
-            $("#msg-success").hide(100);
-        });
-        $("#error-close").click(function () {
-            $("#msg-error").hide(100);
-        });
-    })
 </script>
+{/literal}

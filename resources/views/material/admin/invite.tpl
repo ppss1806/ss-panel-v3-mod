@@ -39,7 +39,7 @@
 								</div>
 								
 								<div class="form-group form-group-label">
-									<label class="floating-label" for="uid">邀请码类别(0为公开，其他数字为对应用户的UID)</label>
+									<label class="floating-label" for="uid">邀请码类别(0为公开，其他数字为对应用户的UI，或者输入用户的完整邮箱)</label>
 									<input class="form-control" id="uid" type="text">
 								</div>
 								

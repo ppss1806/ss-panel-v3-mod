@@ -24,7 +24,26 @@
 						</div>
 					</div>
 					
+					
+					<div class="card">
+						<div class="card-main">
+							<div class="card-inner">
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="search"> 输入邮箱或部分文字进行模糊搜索 </label>
+									<input class="form-control" id="search" type="text">
+								</div>
+							</div>
+							<div class="card-action">
+								<div class="card-action-btn pull-left">
+									<a class="btn btn-flat waves-attach waves-light" id="search_button"><span class="icon">search</span>&nbsp;搜索</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					
 					<div class="table-responsive">
+						
 						{$users->render()}
                         <table class="table">
                             <tr>
@@ -157,8 +176,20 @@ $(document).ready(function(){
 			}
 		});
 	}
+	
+	function search(){
+		window.location="/admin/user/search/"+$("#search").val();
+	}
+	
 	$("#delete_input").click(function(){
 		delete_id();
+	});
+	
+	$("#search_button").click(function(){
+		if($("#search").val()!="")
+		{
+			search();
+		}
 	});
 })
 

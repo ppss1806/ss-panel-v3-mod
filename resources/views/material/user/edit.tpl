@@ -235,7 +235,7 @@
 										<p><i class="icon icon-lg" aria-hidden="true">android</i><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">&nbsp;Android</a></p>
 										<p><i class="icon icon-lg" aria-hidden="true">tablet_mac</i><a href="https://itunes.apple.com/cn/app/google-authenticator/id388497605?mt=8">&nbsp;iOS</a></p>
 										<p>在没有测试完成绑定成功之前请不要启用。</p>
-										<p>当前设置：{if $user->ga_enable==1} 登陆时要求验证 {else} 不要求 {/if}</p>
+										<p>当前设置：{if $user->ga_enable==1} 登录时要求验证 {else} 不要求 {/if}</p>
 										<p>当前服务器时间：{date("Y-m-d H:i:s")}</p>
 										<div class="form-group form-group-label">
 											<label class="floating-label" for="ga-enable">验证设置</label>

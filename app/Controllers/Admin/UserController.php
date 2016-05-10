@@ -14,7 +14,7 @@ class UserController extends AdminController
         if(isset($request->getQueryParams()["page"])){
             $pageNum = $request->getQueryParams()["page"];
         }
-        $users = User::paginate(60,['*'],'page',$pageNum);
+        $users = User::paginate(20,['*'],'page',$pageNum);
         $users->setPath('/admin/user');
 		
 		
@@ -55,6 +55,56 @@ class UserController extends AdminController
 		
         return $this->view()->assign('users',$users)->assign("regloc",$regloc)->assign("useripcount",$useripcount)->assign("userip",$userip)->display('admin/user/index.tpl');
     }
+	
+	public function search($request, $response, $args){
+        $pageNum = 1;
+		$text=$args["text"];
+        if(isset($request->getQueryParams()["page"])){
+            $pageNum = $request->getQueryParams()["page"];
+        }
+		
+		$users = User::where("email","LIKE","%".$text."%")->orWhere("user_name","LIKE","%".$text."%")->orWhere("im_value","LIKE","%".$text."%")->paginate(20,['*'],'page',$pageNum);
+        $users->setPath('/admin/user/search/'.$text);
+		
+		
+
+		//Ip::where("datetime","<",time()-90)->get()->delete();
+		$total = Ip::where("datetime",">=",time()-90)->orderBy('userid', 'desc')->get();
+		
+		
+		$userip=array();
+		$useripcount=array();
+		$regloc=array();
+		
+		$iplocation = new QQWry(); 
+		foreach($users as $user)
+		{
+			$useripcount[$user->id]=0;
+			$userip[$user->id]=array();
+			
+			$location=$iplocation->getlocation($user->reg_ip);
+			$regloc[$user->id]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+		}
+		
+		  
+		
+		foreach($total as $single)
+		{
+			if(isset($useripcount[$single->userid]))
+			{
+				if(!isset($userip[$single->userid][$single->ip]))
+				{
+					$useripcount[$single->userid]=$useripcount[$single->userid]+1;
+					$location=$iplocation->getlocation($single->ip);
+					$userip[$single->userid][$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+				}
+			}
+		}
+
+		
+        return $this->view()->assign('users',$users)->assign("regloc",$regloc)->assign("useripcount",$useripcount)->assign("userip",$userip)->display('admin/user/index.tpl');
+    }
+	
 
     public function edit($request, $response, $args){
         $id = $args['id'];

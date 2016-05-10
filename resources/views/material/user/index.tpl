@@ -85,7 +85,7 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">最近10次登陆IP</p>
+										<p class="card-heading">最近10次登录IP</p>
 										<p>请确认都为自己的IP，如有异常请及时修改密码。</p>
 										<div class="card-table">
 											<div class="table-responsive">
