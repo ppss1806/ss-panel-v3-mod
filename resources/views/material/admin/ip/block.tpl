@@ -26,6 +26,25 @@
 						</div>
 					</div>
 					
+					<div class="card">
+						<div class="card-main">
+							<div class="card-inner">
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="ip">要解封的IP</label>
+									<input class="form-control" id="ip" type="text">
+								</div>
+								
+								
+							</div>
+							
+							<div class="card-action">
+								<div class="card-action-btn pull-left">
+									<a class="btn btn-flat waves-attach" id="unblock" ><span class="icon">check</span>&nbsp;解封</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					
 					<div class="table-responsive">
 						{$logs->render()}
 						
@@ -51,6 +70,8 @@
 						</table>
                         {$logs->render()}
 					</div>
+					
+					{include file='dialog.tpl'}
 
 							
 			</div>
@@ -72,3 +93,28 @@
 
 
 {include file='admin/footer.tpl'}
+
+
+<script>
+    $("#unblock").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/admin/unblock",
+                dataType: "json",
+                data: {
+                    ip: $("#ip").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#result").modal();
+                        $("#msg").html(data.msg+"  五秒后跳转。");
+                        window.setTimeout("location.href='/admin/block'", 5000);
+                    }
+                    // window.location.reload();
+                },
+                error: function (jqXHR) {
+                    alert("发生错误：" + jqXHR.status);
+                }
+            })
+        })
+</script>

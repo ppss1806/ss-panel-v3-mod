@@ -40,15 +40,40 @@ $configuration = [
 
 $container = new Container($configuration);
 
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        return $response->withAddedHeader('Location', '/404');
+    };
+};
+
+$container['notAllowedHandler'] = function ($c) {
+    return function ($request, $response, $methods) use ($c) {
+        return $response->withAddedHeader('Location', '/405');
+    };
+};
+
+if($debug==false)
+{
+	$container['errorHandler'] = function ($c) {
+		return function ($request, $response, $exception) use ($c) {
+			return $response->withAddedHeader('Location', '/500');
+		};
+	};
+} 
+
 $app = new App($container);
 $app->add(new WhoopsMiddleware);
 
 
 // Home
 $app->get('/', 'App\Controllers\HomeController:index');
+$app->get('/404', 'App\Controllers\HomeController:page404');
+$app->get('/405', 'App\Controllers\HomeController:page405');
+$app->get('/500', 'App\Controllers\HomeController:page500');
 $app->get('/code', 'App\Controllers\HomeController:code');
 $app->get('/tos', 'App\Controllers\HomeController:tos');
 $app->get('/staff', 'App\Controllers\HomeController:staff');
+
 
 // User Center
 $app->group('/user', function () {
@@ -159,6 +184,7 @@ $app->group('/admin', function () {
     $this->get('/alive', 'App\Controllers\Admin\IpController:index');
 	$this->get('/block', 'App\Controllers\Admin\IpController:block');
 	$this->get('/unblock', 'App\Controllers\Admin\IpController:unblock');
+	$this->post('/unblock', 'App\Controllers\Admin\IpController:doUnblock');
 	$this->get('/login', 'App\Controllers\Admin\IpController:index1');
 	
 	// Code Mange

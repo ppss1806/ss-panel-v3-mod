@@ -10,6 +10,10 @@ use App\Models\Smartline;
 use App\Models\Shop;
 use App\Models\Bought;
 use App\Models\Coupon;
+use App\Models\Ip;
+use App\Models\NodeInfoLog;
+use App\Models\NodeOnlineLog;
+use App\Models\TrafficLog;
 use App\Services\Config;
 use App\Utils\Radius;
 use App\Utils\Tools;
@@ -86,6 +90,17 @@ class Job
 			}
 		}
 		
+		
+		if(date("d")==14)
+		{
+			Ip::truncate();
+			NodeInfoLog::truncate();
+			NodeOnlineLog::truncate();
+			TrafficLog::truncate();
+		}
+		
+		
+		
 		#https://github.com/shuax/QQWryUpdate/blob/master/update.php
 		
 		$copywrite = file_get_contents("http://update.cz88.net/ip/copywrite.rar");
@@ -118,9 +133,10 @@ class Job
 			
 		}
 		
+		for($i=0;$i<5;$i++)
 		{
 			$iplocation = new QQWry(); 
-			$location=$iplocation->getlocation();
+			$location=$iplocation->getlocation("8.8.8.8");
 			$Userlocation = $location['country'];
 			if(iconv('gbk', 'utf-8//IGNORE', $Userlocation)!="美国")
 			{
@@ -143,7 +159,10 @@ class Job
 				}
 		
 			}
-			
+			else
+			{
+				break;
+			}
 		}
 		
 		

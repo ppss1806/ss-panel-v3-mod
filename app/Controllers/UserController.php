@@ -721,6 +721,7 @@ class UserController extends BaseController
         $n = $this->user->invite_num;
         if ($n < 1) {
             $res['ret'] = 0;
+			$res['msg'] = "失败";
             return $response->getBody()->write(json_encode($res));
         }
         for ($i = 0; $i < $n; $i++) {
@@ -733,6 +734,7 @@ class UserController extends BaseController
         $this->user->invite_num = 0;
         $this->user->save();
         $res['ret'] = 1;
+		$res['msg'] = "生成成功。";
         return $this->echoJson($response, $res);
     }
 

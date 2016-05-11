@@ -14,7 +14,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 col-lg-push-0 col-sm-12 col-sm-push-0">
-						<h1 class="content-heading">{$config["appName"]}</h1>
+						<h1 class="content-heading">邀请码</h1>
 					</div>
 				</div>
 			</div>

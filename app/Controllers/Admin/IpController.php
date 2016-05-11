@@ -8,6 +8,7 @@ use App\Models\BlockIp;
 use App\Models\UnblockIp;
 use App\Controllers\AdminController;
 use App\Utils\QQWry;
+use App\Services\Auth;
 
 class IpController extends AdminController
 {
@@ -101,6 +102,21 @@ class IpController extends AdminController
 		
 		$logs->setPath('/admin/unblock');
         return $this->view()->assign("loc",$loc)->assign('logs',$logs)->display('admin/ip/unblock.tpl');
+    }
+	
+	public function doUnblock($request, $response, $args)
+    {
+        $ip = $request->getParam('ip');
+		
+		$unblock=new UnblockIp();
+		$unblock->ip=$ip;
+		$unblock->datetime=time();
+		$unblock->userid=Auth::getUser()->id;
+        $unblock->save();
+		
+        $res['ret'] = 1;
+		$res['msg'] = "生成成功。";
+        return $this->echoJson($response, $res);
     }
 
 }

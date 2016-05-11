@@ -17,7 +17,7 @@ class BaseController
     public $view;
 
     public $smarty;
-
+	
     public function construct__(){
 
     }

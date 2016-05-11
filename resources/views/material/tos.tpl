@@ -10,8 +10,8 @@
 		<div class="content-header ui-content-header">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-6 col-lg-push-3 col-sm-10 col-sm-push-1">
-						<h1 class="content-heading">{$config["appName"]}</h1>
+					<div class="col-lg-12 col-lg-push-0 col-sm-12 col-sm-push-0">
+						<h1 class="content-heading">TOS</h1>
 					</div>
 				</div>
 			</div>

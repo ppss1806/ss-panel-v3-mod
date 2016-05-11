@@ -132,4 +132,5 @@ class Tools
 		}
 		return $dirArray;
 	}
+	
 }
