@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
-	<meta name="theme-color" content="#f44336">
+	<meta name="theme-color" content="#ff9800">
 	<title>{$config["appName"]}</title>
 
 	
@@ -12,6 +12,7 @@
 	<!-- css -->
 	<link href="/theme/material/css/base.min.css" rel="stylesheet">
 	<link href="/theme/material/css/project.min.css" rel="stylesheet">
+	<link href="https://fonts.lug.ustc.edu.cn/icon?family=Material+Icons" rel="stylesheet">
 	
 
 	
@@ -164,22 +165,35 @@
 			word-wrap: break-word;
 		}
 		
-		.page-red .ui-content-header {
-			background-image: url(/theme/material/css/images/bg/red.jpg);
+		.progress-green .progress-bar {
+			background-color: #f0231b;
+		}
+		
+		.progress-green {
+			background-color: #000;
+		}
+		
+		.progress-green .progress-bar {
+			background-color: #ff0a00;
+		}
+		
+		.page-orange .ui-content-header {
+			background-image: url(/theme/material/css/images/bg/amber.jpg);
 		}
 		
 		.content-heading {
 			font-weight: 300;
 			color: #fff;
 		}
+				
 	</style>
 </head>
-<body class="page-red">
-	<header class="header header-red header-transparent header-waterfall ui-header">
+<body class="page-orange">
+	<header class="header header-orange header-transparent header-waterfall ui-header">
 		<ul class="nav nav-list pull-left">
 			<div>
 				<a data-toggle="menu" href="#ui_menu">
-					<span class="icon icon-lg">menu</span>
+					<span class="icon icon-lg text-white">menu</span>
 				</a>
 			</div>
 		</ul>
@@ -219,25 +233,86 @@
 	<nav aria-hidden="true" class="menu menu-left nav-drawer nav-drawer-md" id="ui_menu" tabindex="-1">
 		<div class="menu-scroll">
 			<div class="menu-content">
-				<a class="menu-logo" href="/"><i class="icon icon-lg">person_pin</i>&nbsp;管理面板</a>
-				<ul class="nav">
-					<li><a href="/admin"><i class="icon icon-lg">business_center</i>&nbsp;管理中心</a></li>
-					<li><a href="/admin/node"><i class="icon icon-lg">router</i>&nbsp;节点管理</a></li>
-					<li><a href="/admin/announcement"><i class="icon icon-lg">announcement</i>&nbsp;公告管理</a></li>
-					<li><a href="/admin/code"><i class="icon icon-lg">code</i>&nbsp;充值码管理</a></li>
-					<li><a href="/admin/user"><i class="icon icon-lg">verified_user</i>&nbsp;用户管理</a></li>
-					<li><a href="/admin/invite"><i class="icon icon-lg">loyalty</i>&nbsp;邀请与返利管理</a></li>
-					<li><a href="/admin/shop"><i class="icon icon-lg">shop</i>&nbsp;商品管理</a></li>
-					<li><a href="/admin/coupon"><i class="icon icon-lg">card_giftcard</i>&nbsp;优惠码管理</a></li>
-					<li><a href="/admin/bought"><i class="icon icon-lg">shopping_cart</i>&nbsp;购买记录</a></li>
-					<li><a href="/admin/trafficlog"><i class="icon icon-lg">traffic</i>&nbsp;流量记录</a></li>
-					<li><a href="/admin/alive"><i class="icon icon-lg">dialer_sip</i>&nbsp;在线IP</a></li>
-					<li><a href="/admin/block"><i class="icon icon-lg">dialer_sip</i>&nbsp;节点被封IP</a></li>
-					<li><a href="/admin/unblock"><i class="icon icon-lg">dialer_sip</i>&nbsp;解封IP记录</a></li>
-					<li><a href="/admin/login"><i class="icon icon-lg">text_fields</i>&nbsp;登录记录</a></li>
-					<li><a href="/admin/ticket"><i class="icon icon-lg">question_answer</i>&nbsp;工单</a></li>
-					<li><a href="/user"><i class="icon icon-lg">person</i>&nbsp;用户中心</a></li>
-					<li><a href="/user/logout"><i class="icon icon-lg">call_missed_outgoing</i>&nbsp;退出</a></li>
+				<a class="menu-logo" href="/"><i class="icon icon-lg">person_pin_circle</i>&nbsp;用户面板</a>
+				<ul class="nav">		
+					<li>
+						<a href="/user">
+							<i class="icon icon-lg">recent_actors</i>&nbsp;用户中心
+						</a>
+					</li>
+
+					<li>
+						<a href="/user/node">
+							<i class="icon icon-lg">router</i>&nbsp;节点列表
+						</a>
+					</li>
+
+					<li>
+						<a href="/user/profile">
+							<i class="icon icon-lg">info</i>&nbsp;我的账户
+						</a>
+					</li>
+
+					<li>
+						<a href="/user/trafficlog">
+							<i class="icon icon-lg">traffic</i>&nbsp;流量记录
+						</a>
+					</li>
+					
+					<li>
+						<a href="/user/lookingglass">
+							<i class="icon icon-lg">youtube_searched_for</i>&nbsp;观察窗
+						</a>
+					</li>
+					
+					{if $config["wecenter_url"]!=""}
+					<li>
+						<a href="{$config["wecenter_url"]}" target="_blank">
+							<i class="icon icon-lg">help</i>&nbsp;问答
+						</a>
+					</li>
+					{/if}
+					
+					<li>
+						<a href="/user/shop">
+							<i class="icon icon-lg">shop</i>&nbsp;商店
+						</a>
+					</li>
+					
+					<li><a href="/user/bought"><i class="icon icon-lg">shopping_cart</i>&nbsp;购买记录</a></li>
+					
+					
+
+
+					<li>
+						<a href="/user/code">
+							<i class="icon icon-lg">code</i>&nbsp;充值
+						</a>
+					</li>
+					
+					<li><a href="/user/ticket"><i class="icon icon-lg">question_answer</i>&nbsp;工单</a></li>
+
+
+					<li>
+						<a href="/user/edit">
+							<i class="icon icon-lg">sync_problem</i>&nbsp;修改资料
+						</a>
+					</li>
+
+					<li>
+						<a href="/user/invite">
+							<i class="icon icon-lg">loyalty</i>&nbsp;邀请
+						</a>
+					</li>
+
+					{if $user->isAdmin()}
+						<li>
+							<a href="/admin">
+								<i class="icon icon-lg">person_pin</i>&nbsp;管理面板
+							</a>
+						</li>
+					{/if}
+
 				</ul>
 			</div>
 		</div>
