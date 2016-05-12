@@ -64,13 +64,6 @@
 						{$shops->render()}
 					</div>
 					
-					<div class="fbtn-container">
-						<div class="fbtn-inner">
-							<a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-circle waves-light" href="/admin/shop/create">+</a>
-							
-						</div>
-					</div>
-					
 					<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
 						<div class="modal-dialog">
 							<div class="modal-content">
