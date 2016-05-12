@@ -209,7 +209,7 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">续命获取流量</p>
-											<p> 每天可以续命一次。</p>
+											<p>每天可以续命一次。您可以点击按钮或者摇动手机来续命。</p>
 
 											<p>上次续命时间：<code>{$user->lastCheckInTime()}</code></p>
 											
@@ -302,6 +302,43 @@
 
 
 {include file='user/footer.tpl'}
+
+<script src="theme/material/js/shake.js/shake.js"></script>
+<script>
+window.onload = function() { 
+    var myShakeEvent = new Shake({ 
+        threshold: 15 
+    }); 
+ 
+    myShakeEvent.start(); 
+ 
+    window.addEventListener('shake', shakeEventDidOccur, false); 
+ 
+    function shakeEventDidOccur () { 
+		if("vibrate" in navigator){
+			navigator.vibrate(500);
+		}
+		
+        $.ajax({
+                type: "POST",
+                url: "/user/checkin",
+                dataType: "json",
+                success: function (data) {
+                    $("#checkin-msg").html(data.msg);
+                    $("#checkin-btn").hide();
+					$("#result").modal();
+                    $("#msg").html(data.msg);
+                },
+                error: function (jqXHR) {
+					$("#result").modal();
+                    $("#msg").html("发生错误：" + jqXHR.status);
+                }
+            });
+    } 
+}; 
+
+</script>
+
 
 
 <script>

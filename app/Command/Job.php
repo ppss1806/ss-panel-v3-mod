@@ -282,37 +282,40 @@ class Job
 					)->get();
 					foreach($Nodes as $Node)
 					{
-						$Speed=Speedtest::where("nodeid","=",$Node->id)->where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy("datetime","desc")->take(1)->first();
-						if($Speed!=null)
+						if($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit)
 						{
-							$SpeedArray=explode(" ",$Speed->telecomeupload);
-							if($SpeedArray[0]!="null")
+							$Speed=Speedtest::where("nodeid","=",$Node->id)->where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy("datetime","desc")->take(1)->first();
+							if($Speed!=null)
 							{
-								if($SpeedArray[0]>$Telecom_speed)
+								$SpeedArray=explode(" ",$Speed->telecomeupload);
+								if($SpeedArray[0]!="null")
 								{
-									$Telecom_speed=$SpeedArray[0];
-									$Telecom_node=$Node->id;
-									
+									if($SpeedArray[0]>$Telecom_speed)
+									{
+										$Telecom_speed=$SpeedArray[0];
+										$Telecom_node=$Node->id;
+										
+									}
 								}
-							}
-							
-							$SpeedArray=explode(" ",$Speed->unicomupload);
-							if($SpeedArray[0]!="null")
-							{
-								if($SpeedArray[0]>$Unicom_speed)
+								
+								$SpeedArray=explode(" ",$Speed->unicomupload);
+								if($SpeedArray[0]!="null")
 								{
-									$Unicom_speed=$SpeedArray[0];
-									$Unicom_node=$Node->id;
+									if($SpeedArray[0]>$Unicom_speed)
+									{
+										$Unicom_speed=$SpeedArray[0];
+										$Unicom_node=$Node->id;
+									}
 								}
-							}
-							
-							$SpeedArray=explode(" ",$Speed->cmccupload);
-							if($SpeedArray[0]!="null")
-							{
-								if($SpeedArray[0]>$Cmcc_speed)
+								
+								$SpeedArray=explode(" ",$Speed->cmccupload);
+								if($SpeedArray[0]!="null")
 								{
-									$Cmcc_speed=$SpeedArray[0];
-									$Cmcc_node=$Node->id;
+									if($SpeedArray[0]>$Cmcc_speed)
+									{
+										$Cmcc_speed=$SpeedArray[0];
+										$Cmcc_node=$Node->id;
+									}
 								}
 							}
 						}
@@ -483,36 +486,39 @@ class Job
 					)->get();
 					foreach($Nodes as $Node)
 					{
-						$Speed=Speedtest::where("nodeid","=",$Node->id)->where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy("datetime","desc")->take(1)->first();
-						if($Speed!=null)
+						if($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit)
 						{
-							$SpeedArray=explode(" ",$Speed->telecomping);
-							if($SpeedArray[0]!="null")
+							$Speed=Speedtest::where("nodeid","=",$Node->id)->where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy("datetime","desc")->take(1)->first();
+							if($Speed!=null)
 							{
-								if($SpeedArray[0]<$Telecom_ping||$Telecom_ping==0)
+								$SpeedArray=explode(" ",$Speed->telecomping);
+								if($SpeedArray[0]!="null")
 								{
-									$Telecom_ping=$SpeedArray[0];
-									$Telecom_node=$Node->id;
+									if($SpeedArray[0]<$Telecom_ping||$Telecom_ping==0)
+									{
+										$Telecom_ping=$SpeedArray[0];
+										$Telecom_node=$Node->id;
+									}
 								}
-							}
-							
-							$SpeedArray=explode(" ",$Speed->unicomping);
-							if($SpeedArray[0]!="null")
-							{
-								if($SpeedArray[0]<$Unicom_ping||$Unicom_ping==0)
+								
+								$SpeedArray=explode(" ",$Speed->unicomping);
+								if($SpeedArray[0]!="null")
 								{
-									$Unicom_ping=$SpeedArray[0];
-									$Unicom_node=$Node->id;
+									if($SpeedArray[0]<$Unicom_ping||$Unicom_ping==0)
+									{
+										$Unicom_ping=$SpeedArray[0];
+										$Unicom_node=$Node->id;
+									}
 								}
-							}
-							
-							$SpeedArray=explode(" ",$Speed->cmccping);
-							if($SpeedArray[0]!="null")
-							{
-								if($SpeedArray[0]<$Cmcc_ping||$Cmcc_ping==0)
+								
+								$SpeedArray=explode(" ",$Speed->cmccping);
+								if($SpeedArray[0]!="null")
 								{
-									$Cmcc_ping=$SpeedArray[0];
-									$Cmcc_node=$Node->id;
+									if($SpeedArray[0]<$Cmcc_ping||$Cmcc_ping==0)
+									{
+										$Cmcc_ping=$SpeedArray[0];
+										$Cmcc_node=$Node->id;
+									}
 								}
 							}
 						}

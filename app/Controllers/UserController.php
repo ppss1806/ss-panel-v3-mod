@@ -400,7 +400,7 @@ class UserController extends BaseController
 				continue;
 			}
 			
-			if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0))
+			if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
 			{
 				$temp=explode(" - ",$node->name);
 				if(!isset($node_prefix[$temp[0]]))
@@ -477,7 +477,7 @@ class UserController extends BaseController
 		switch ($node->sort) { 
 
 			case 0: 
-				if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0))
+				if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
 				{
 					$ary['server'] = $node->server;
 					
