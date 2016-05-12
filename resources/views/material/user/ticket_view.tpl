@@ -59,7 +59,7 @@
 					
 					{foreach $ticketset as $ticket}
 					<div class="card">
-						<aside class="card-side pull-left"><img alt="alt text for John Smith avatar" src="{$user->gravatar}"></span></br>{$ticket->User()->user_name}</aside>
+						<aside class="card-side pull-left"><img alt="alt text for John Smith avatar" src="{$ticket->User()->gravatar}"></span></br>{$ticket->User()->user_name}</aside>
 						<div class="card-main">
 							<div class="card-inner">
 								{$ticket->content}
