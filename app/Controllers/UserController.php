@@ -1006,7 +1006,7 @@ class UserController extends BaseController
 		$content = $request->getParam('content');
 		
 		
-		if($content==""||$status=="")
+		if($title==""||$content=="")
 		{
 			$res['ret'] = 0;
 			$res['msg'] = "请填全";
@@ -1019,6 +1019,7 @@ class UserController extends BaseController
 			$res['msg'] = "请求中有不正当的词语。";
 			return $this->echoJson($response, $res);
 		}
+		
         
         $ticket=new Ticket();
 		
