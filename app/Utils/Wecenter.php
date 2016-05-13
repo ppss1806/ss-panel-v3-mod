@@ -25,7 +25,7 @@ Class Wecenter
 			{
 				$exists=new WecenterUser();
 				$exists->password=md5(md5($pwd).Config::get('salt'));
-				$exists->user_name=$username;
+				$exists->user_name=$user->user_name;
 				$exists->email=$email;
 				$exists->salt=Config::get('salt');
 				$exists->group_id=5;
@@ -81,17 +81,14 @@ Class Wecenter
 	{
 		if(Config::get('wecenter_db_user')!='')
 		{
-			$dsn = "mysql:host=".Config::get('wecenter_db_host').";dbname=".Config::get('wecenter_db_database');  
-			$db = new \PDO($dsn, Config::get('wecenter_db_user'), Config::get('wecenter_db_password'));
 			$email=$user->email;
-			$stmt = $db->prepare("SELECT * FROM `aws_users` where `email`=:email");
-			$stmt->execute(array(':email'=>$email));
-			$resultarray = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+			$exists=WecenterUser::where("email",$email)->first();
+			
 			
 			$expire_in = $time+time();
 			
 			Utils\Cookie::setwithdomain([Config::get('wecenter_cookie_prefix')."_user_login"=>Wecenter::encode_hash(array(
-								'uid' => $resultarray[0]['uid'],
+								'uid' => $exists->uid,
 								'user_name' => $user->email,
 								'password' => md5(md5($pwd).Config::get('salt'))
 							), md5(Config::get('wecenter_cookie_key') . $_SERVER['HTTP_USER_AGENT']))],$expire_in,Config::get('wecenter_system_main_domain'));
