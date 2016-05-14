@@ -91,6 +91,8 @@
 <script>
     $(document).ready(function () {
         function submit() {
+			$("#result").modal();
+            $("#msg").html("正在提交。");
             $.ajax({
                 type: "POST",
                 url: "/user/ticket",
