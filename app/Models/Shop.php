@@ -122,10 +122,9 @@ class Shop extends Model
 					}
 					break;
 				case "class":
-					if($user->class==0)
+					if($user->class==0||$user->class!=$value)
 					{
 						$user->class_expire=date("Y-m-d H:i:s",time());
-						
 					}
 					$user->class_expire=date("Y-m-d H:i:s",strtotime($user->class_expire)+$content["class_expire"]*86400);
 					$user->class=$value;
