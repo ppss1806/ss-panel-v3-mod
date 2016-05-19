@@ -98,7 +98,7 @@
                     if (data.ret) {
                         $("#result").modal();
                         $("#msg").html(data.msg+"  五秒后跳转。");
-                        window.setTimeout("location.href='/admin/code'", 5000);
+                        window.setTimeout("location.href=top.document.referrer", 5000);
                     } else {
                         $("#msg-error").hide(10);
                         $("#msg-error").show(100);

@@ -38,6 +38,7 @@
 								<th>内容</th>
 								<th>状态</th>
                                 <th>自动续费天数</th>
+                                <th>续费时重置流量</th>
                                 
                             </tr>
                             {foreach $shops as $shop}
@@ -60,6 +61,12 @@
                                 <td>不自动续费</td>
 								{else}
 								<td>在 {$shop->auto_renew} 天后自动续费</td>
+								{/if}
+								
+								{if $shop->auto_reset_bandwidth==0}
+                                <td>不自动重置</td>
+								{else}
+								<td>自动重置</td>
 								{/if}
                                 
                             </tr>

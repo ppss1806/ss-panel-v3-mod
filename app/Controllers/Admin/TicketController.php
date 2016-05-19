@@ -48,7 +48,6 @@ class TicketController extends AdminController
 			return $this->echoJson($response, $res);
 		}
 		
-		
         
         $ticket_main=Ticket::where("id","=",$id)->where("rootid","=",0)->first();
 		

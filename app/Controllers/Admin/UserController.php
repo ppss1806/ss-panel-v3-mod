@@ -188,6 +188,9 @@ class UserController extends AdminController
             $user->pass = Hash::passwordHash($request->getParam('pass'));
 			Wecenter::ChangeUserName($email1,$email2,$request->getParam('pass'),$user->user_name);
         }
+		
+		$user->auto_reset_day =  $request->getParam('auto_reset_day');
+        $user->auto_reset_bandwidth = $request->getParam('auto_reset_bandwidth');
         $user->port =  $request->getParam('port');
         $user->passwd = $request->getParam('passwd');
         $user->transfer_enable = $request->getParam('transfer_enable');

@@ -95,13 +95,29 @@
 						</div>
 					</div>	
 					
+					<div class="card">
+						<div class="card-main">
+							<div class="card-inner">
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="auto_reset_day">自动重置流量日</label>
+									<input class="form-control" id="auto_reset_day" type="number" value="{$user->auto_reset_day}">
+								</div>
+								
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="auto_reset_bandwidth">重置流量值(GB)</label>
+									<input class="form-control" id="auto_reset_bandwidth" type="number" value="{$user->auto_reset_bandwidth}">
+								</div>
+							</div>
+						</div>
+					</div>
+					
 					
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="invite_num">可用邀请数量</label>
-									<input class="form-control" id="invite_num" type="text" value="{$user->invite_num}">
+									<input class="form-control" id="invite_num" type="number" value="{$user->invite_num}">
 								</div>
 								
 								<div class="form-group form-group-label">
@@ -118,12 +134,12 @@
 							<div class="card-inner">
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="group">用户群组（用户只能访问到组别等于这个数字或0的节点）</label>
-									<input class="form-control" id="group" type="text" value="{$user->node_group}">
+									<input class="form-control" id="group" type="number" value="{$user->node_group}">
 								</div>
 								
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="class">用户级别（用户只能访问到等级小于等于这个数字的节点）</label>
-									<input class="form-control" id="class" type="text" value="{$user->class}">
+									<input class="form-control" id="class" type="number" value="{$user->class}">
 								</div>
 								
 								
@@ -137,6 +153,14 @@
 									<label class="floating-label" for="expire_in">用户账户过期时间(不过期就请不要动)</label>
 									<input class="form-control" id="expire_in" type="text" value="{$user->expire_in}">
 								</div>
+								
+							</div>
+						</div>
+					</div>
+					
+					<div class="card">
+						<div class="card-main">
+							<div class="card-inner">
 								
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="node_speedlimit">用户限速，用户在每个节点所享受到的速度(0 为不限制)(Mbps)</label>
@@ -216,6 +240,8 @@
                 data: {
                     email: $("#email").val(),
                     pass: $("#pass").val(),
+					auto_reset_day: $("#auto_reset_day").val(),
+                    auto_reset_bandwidth: $("#auto_reset_bandwidth").val(),
                     port: $("#port").val(),
 					group: $("#group").val(),
                     passwd: $("#passwd").val(),
@@ -236,7 +262,7 @@
                     if (data.ret) {
                         $("#result").modal();
                         $("#msg").html(data.msg+"  五秒后跳转。");
-                        window.setTimeout("location.href='/admin/user'", 5000);
+                        window.setTimeout("location.href=top.document.referrer", 5000);
                     } else {
                         $("#result").modal();
                         $("#msg").html(data.msg);

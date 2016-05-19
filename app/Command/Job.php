@@ -100,6 +100,23 @@ class Job
 		}
 		
 		
+		$users = User::all();
+        foreach($users as $user){
+			
+			$user->last_day_t=($user->u+$user->d);
+			$user->save();
+				
+				
+			if(date("d")==$user->auto_reset_day)
+			{
+				$user->u=0;
+				$user->d=0;
+				$user->transfer_enable=$user->auto_reset_bandwidth*1024*1024*1024;
+				$user->save();
+			}
+		}
+		
+		
 		
 		#https://github.com/shuax/QQWryUpdate/blob/master/update.php
 		
@@ -181,10 +198,20 @@ class Job
 			
 			if($user->money>=$bought->price)
 			{
+				$shop=Shop::where("id",$bought->shopid);
+				
+				
+				if($shop->auto_reset_bandwidth==1)
+				{
+					$user->u=0;
+					$user->d=0;
+					$user->transfer_enable=$shop->bandwidth()*1024*1024*1024;
+				}
+				
 				$user->money=$user->money-$bought->price;
+				
 				$user->save();
 				
-				$shop::where("id",$bought->shopid);
 				$shop->buy($user);
 				
 				$bought->renew=time()+$shop->auto_renew*86400;
@@ -211,6 +238,11 @@ class Job
 			{
 				if(!file_exists(BASE_PATH."/storage/"+$bought->id+".renew", "w+"))
 				{
+					if($shop->auto_reset_bandwidth==1)
+					{
+						$user->transfer_enable=$shop->bandwidth()*1024*1024*1024;
+					}
+				
 					$subject = Config::get('appName')."-续费失败";
 					$to = $user->email;
 					$text = "您好，系统为您自动续费商品名：".$shop->name.",金额:".$bought->price." 元 时，发现您余额不足，请及时充值，当您充值之后，稍等一会系统就会自动扣费为您续费了。" ;
@@ -279,7 +311,7 @@ class Job
 							$query->where("node_group","=",$Group)
 								->orWhere("node_group","=",0);
 						}
-					)->get();
+					)->where("type","1")->get();
 					foreach($Nodes as $Node)
 					{
 						if($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit)
@@ -483,7 +515,7 @@ class Job
 							$query->where("node_group","=",$Group)
 								->orWhere("node_group","=",0);
 						}
-					)->get();
+					)->where("type","1")->get();
 					foreach($Nodes as $Node)
 					{
 						if($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit)

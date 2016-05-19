@@ -92,7 +92,7 @@ class UserController extends BaseController
 				$query->where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
 			}
-		)->where("node_class","<=",$this->user->class)->get();
+		)->where("type","1")->where("node_class","<=",$this->user->class)->get();
 		$android_add="";
 		foreach($nodes as $node)
 		{
@@ -155,6 +155,8 @@ class UserController extends BaseController
 	
 	public function code($request, $response, $args)
     {
+		
+		
 		$pageNum = 1;
         if (isset($request->getQueryParams()["page"])) {
             $pageNum = $request->getQueryParams()["page"];
@@ -163,6 +165,7 @@ class UserController extends BaseController
 		$codes->setPath('/user/code');
         return $this->view()->assign('codes',$codes)->display('user/code.tpl');
     }
+	
 	
 	public function codepost($request, $response, $args)
     {
@@ -647,7 +650,7 @@ class UserController extends BaseController
 	public function GetPcConf($request, $response, $args){
         
         $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=gui-config.json');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where(
+        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("type","1")->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where(
 			function ($query) {
 				$query->where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
@@ -659,7 +662,7 @@ class UserController extends BaseController
 	public function GetIosConf($request, $response, $args){
         
         $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where(
+        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("type","1")->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where(
 			function ($query) {
 				$query->where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
@@ -887,6 +890,11 @@ class UserController extends BaseController
 			}
 			else
 			{
+				if($coupon->onetime==1)
+				{
+					$onetime=true;
+				}
+				
 				$credit=$coupon->credit;
 			}
 			
@@ -931,11 +939,12 @@ class UserController extends BaseController
 		}
 		
 		$bought->coupon=$code;
-		if($coupon->onetime==1)
+		
+		
+		if(isset($onetime))
 		{
 			$price=$shop->price;
 		}
-		
 		$bought->price=$price;
 		$bought->save();
 		

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\InviteCode;
+use App\Models\User;
 use App\Services\Auth;
 use App\Services\Config;
 use App\Utils\Tools;
@@ -90,5 +91,7 @@ class HomeController extends BaseController
 		$newResponse->getBody()->write($this->view()->assign("pic","/theme/".(Auth::getUser()->isLogin==false?Config::get("theme"):Auth::getUser()->theme)."/images/error/500/".$pic)->display('500.tpl'));
         return $newResponse;
     }
+	
+	
 
 }

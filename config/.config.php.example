@@ -151,3 +151,7 @@ $System_Config['wecenter_cookie_key']='';
 
 #充值返利百分比
 $System_Config['code_payback']='20';
+
+#注册时的流量重置日以及需要重置的流量,0不重置
+$System_Config['reg_auto_reset_day']='0';
+$System_Config['reg_auto_reset_bandwidth']='100';

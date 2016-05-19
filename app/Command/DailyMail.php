@@ -32,8 +32,7 @@ class DailyMail
 				$to = $user->email;
 				$lastday=(($user->u+$user->d)-$user->last_day_t)/1024/1024;
 				$text = "下面是系统中目前的公告:<br><br>".$text1."<br><br>晚安！";
-				$user->last_day_t=($user->u+$user->d);
-				$user->save();
+				
 				
 				try {
 					Mail::send($to, $subject, 'news/daily-traffic-report.tpl', [

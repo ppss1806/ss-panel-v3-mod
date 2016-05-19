@@ -233,10 +233,11 @@
 					<li><a href="/admin/bought"><i class="icon icon-lg">shopping_cart</i>&nbsp;购买记录</a></li>
 					<li><a href="/admin/trafficlog"><i class="icon icon-lg">traffic</i>&nbsp;流量记录</a></li>
 					<li><a href="/admin/alive"><i class="icon icon-lg">dialer_sip</i>&nbsp;在线IP</a></li>
-					<li><a href="/admin/block"><i class="icon icon-lg">dialer_sip</i>&nbsp;节点被封IP</a></li>
-					<li><a href="/admin/unblock"><i class="icon icon-lg">dialer_sip</i>&nbsp;解封IP记录</a></li>
+					<li><a href="/admin/block"><i class="icon icon-lg">dialer_sip</i>&nbsp;已封禁IP</a></li>
+					<li><a href="/admin/unblock"><i class="icon icon-lg">dialer_sip</i>&nbsp;已解封IP</a></li>
 					<li><a href="/admin/login"><i class="icon icon-lg">text_fields</i>&nbsp;登录记录</a></li>
-					<li><a href="/admin/ticket"><i class="icon icon-lg">question_answer</i>&nbsp;工单</a></li>
+					<li><a href="/admin/ticket"><i class="icon icon-lg">question_answer</i>&nbsp;工单管理</a></li>
+					<li><a href="/admin/auto"><i class="icon icon-lg">flash_auto</i>&nbsp;自动化命令下发</a></li>
 					<li><a href="/user"><i class="icon icon-lg">person</i>&nbsp;用户中心</a></li>
 					<li><a href="/user/logout"><i class="icon icon-lg">call_missed_outgoing</i>&nbsp;退出</a></li>
 				</ul>

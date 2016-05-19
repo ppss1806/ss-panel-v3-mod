@@ -180,6 +180,15 @@ $app->group('/admin', function () {
     $this->put('/announcement/{id}', 'App\Controllers\Admin\AnnController:update');
     $this->delete('/announcement', 'App\Controllers\Admin\AnnController:delete');
 	
+	
+	$this->get('/auto', 'App\Controllers\Admin\AutoController:index');
+    $this->get('/auto/create', 'App\Controllers\Admin\AutoController:create');
+    $this->post('/auto', 'App\Controllers\Admin\AutoController:add');
+    $this->delete('/auto', 'App\Controllers\Admin\AutoController:delete');
+	
+	
+	
+	
 	// IP Mange
     $this->get('/alive', 'App\Controllers\Admin\IpController:index');
 	$this->get('/block', 'App\Controllers\Admin\IpController:block');

@@ -41,12 +41,13 @@
 								<th>价格</th>
 								<th>内容</th>
                                 <th>自动续费天数</th>
+								<th>续费时重置流量</th>
                                 
                             </tr>
                             {foreach $shops as $shop}
                             <tr>
 								<td>
-                                    <a class="btn btn-brand-accent" href="javascript:void(0);" onClick="buy('{$shop->id}',{$shop->auto_renew})">购买</a>
+                                    <a class="btn btn-brand-accent" href="javascript:void(0);" onClick="buy('{$shop->id}',{$shop->auto_renew},{$shop->auto_reset_bandwidth})">购买</a>
                                 </td>
                                 <td>#{$shop->id}</td>
                                 <td>{$shop->name}</td>
@@ -56,6 +57,12 @@
                                 <td>不能自动续费</td>
 								{else}
 								<td>可选 在 {$shop->auto_renew} 天后自动续费</td>
+								{/if}
+								
+								{if $shop->auto_reset_bandwidth==0}
+                                <td>不自动重置</td>
+								{else}
+								<td>自动重置</td>
 								{/if}
                                 
                             </tr>
@@ -97,6 +104,7 @@
 									<p id="name">商品名称：</p>
 									<p id="credit">优惠额度：</p>
 									<p id="total">总金额：</p>
+									<p id="auto_reset">在到期时自动续费</p>
 									
 									<div class="checkbox switch" id="autor">
 										<label for="autorenew">
@@ -134,7 +142,7 @@
 
 
 <script>
-function buy(id,auto) {
+function buy(id,auto,auto_reset) {
 	auto_renew=auto;
 	if(auto==0)
 	{
@@ -144,6 +152,16 @@ function buy(id,auto) {
 	{
 		document.getElementById('autor').style.display="";
 	}
+	
+	if(auto_reset==0)
+	{
+		document.getElementById('auto_reset').style.display="none";
+	}
+	else
+	{
+		document.getElementById('auto_reset').style.display="";
+	}
+	
 	shop=id;
 	$("#coupon_modal").modal();
 }

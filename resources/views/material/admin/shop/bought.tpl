@@ -39,6 +39,7 @@
 								<th>用户ID</th>
 								<th>用户名</th>
                                 <th>续费时间</th>
+								<th>续费时重置流量</th>
                                 
                             </tr>
                             {foreach $shops as $shop}
@@ -57,12 +58,19 @@
 								{else}
 								<td>在 {$shop->renew_date()} 续费</td>
 								{/if}
+								
+								{if $shop->shop()->auto_reset_bandwidth==0}
+                                <td>不自动重置</td>
+								{else}
+								<td>自动重置</td>
+								{/if}
                                 
                             </tr>
                             {/foreach}
                         </table>
 						{$shops->render()}
 					</div>
+					
 					
 					<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog" tabindex="-1">
 						<div class="modal-dialog">

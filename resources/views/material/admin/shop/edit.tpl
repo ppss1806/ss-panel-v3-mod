@@ -10,7 +10,7 @@
 	<main class="content">
 		<div class="content-header ui-content-header">
 			<div class="container">
-				<h1 class="content-heading">添加商品</h1>
+				<h1 class="content-heading">编辑商品</h1>
 			</div>
 		</div>
 		<div class="container">
@@ -38,6 +38,7 @@
 								</div>
 								
 								
+								
 							</div>
 						</div>
 					</div>
@@ -49,6 +50,15 @@
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="bandwidth">流量（GB）</label>
 									<input class="form-control" id="bandwidth" type="text" value="{$shop->bandwidth()}">
+								</div>
+								
+								
+								<div class="form-group form-group-label">
+									<div class="checkbox switch">
+										<label for="auto_reset_bandwidth">
+											<input {if $user->auto_reset_bandwidth==1}checked{/if} class="access-hide" id="auto_reset_bandwidth" type="checkbox"><span class="switch-toggle"></span>续费时自动重置用户流量为上面这个流量值
+										</label>
+									</div>
 								</div>
 								
 							</div>
@@ -130,13 +140,22 @@
 <script>
     $(document).ready(function () {
         function submit() {
-		
+			if(document.getElementById('auto_reset_bandwidth').checked)
+			{
+				var auto_reset_bandwidth=1;
+			}
+			else
+			{
+				var auto_reset_bandwidth=0;
+			}
+			
             $.ajax({
                 type: "PUT",
                 url: "/admin/shop/{$shop->id}",
                 dataType: "json",
                 data: {
                     name: $("#name").val(),
+                    auto_reset_bandwidth: auto_reset_bandwidth,
                     price: $("#price").val(),
                     auto_renew: $("#auto_renew").val(),
                     bandwidth: $("#bandwidth").val(),
