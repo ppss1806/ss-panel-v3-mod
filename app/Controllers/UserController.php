@@ -156,6 +156,7 @@ class UserController extends BaseController
 	public function code($request, $response, $args)
     {
 		
+
 		
 		$pageNum = 1;
         if (isset($request->getQueryParams()["page"])) {
@@ -787,16 +788,23 @@ class UserController extends BaseController
             return $response->getBody()->write(json_encode($res));
         }
 		
-        $BIP->delete();
+		$BIP = BlockIp::where("ip",$_SERVER["REMOTE_ADDR"])->get();
+		foreach($BIP as $bi)
+		{
+			$bi->delete();
 		
-		$UIP = new UnblockIp();
-		$UIP->userid = $user->id;
-		$UIP->ip = $_SERVER["REMOTE_ADDR"];
-		$UIP->datetime = time();
+			$UIP = new UnblockIp();
+			$UIP->userid = $user->id;
+			$UIP->ip = $_SERVER["REMOTE_ADDR"];
+			$UIP->datetime = time();
+			$UIP->save();
+		}
+		
+        
 
-		$UIP->save();
+		
         $res['ret'] = 1;
-        $res['msg'] = "解封 "+$_SERVER["REMOTE_ADDR"]+" 成功";
+        $res['msg'] = "解封 ".$_SERVER["REMOTE_ADDR"]." 成功";
         return $this->echoJson($response, $res);
     }
 	
@@ -969,12 +977,12 @@ class UserController extends BaseController
 	
 	public function deleteBoughtGet($request, $response, $args){
         $id = $request->getParam('id');
-        $shop = Bought::where("id",$id)->where("userid",$this->user->id)->get;
+        $shop = Bought::where("id",$id)->where("userid",$this->user->id)->first();
 		
 		if($shop==null)
 		{
 			$rs['ret'] = 0;
-            $rs['msg'] = "退订失败";
+            $rs['msg'] = "退订失败，订单不存在。";
             return $response->getBody()->write(json_encode($rs));
 		}
 		
