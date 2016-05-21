@@ -11,7 +11,7 @@ use App\Services\Boot;
 
 //  BASE_PATH
 define('BASE_PATH', __DIR__);
-define('VERSION', '201605201230');
+define('VERSION', '201605211730');
 
 // Vendor Autoload
 require BASE_PATH.'/vendor/autoload.php';
