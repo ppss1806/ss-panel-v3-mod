@@ -1329,6 +1329,9 @@ class UserController extends BaseController
     {
         $user = Auth::getUser();
 		
+		$email=$user->email;
+		
+		
 		Da::delete($email);
 			
         $passwd = $request->getParam('passwd');
