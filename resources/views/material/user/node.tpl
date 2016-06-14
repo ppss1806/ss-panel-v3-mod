@@ -9,7 +9,8 @@
 {include file='user/main.tpl'}
 
 
-
+<script src="//cdn.bootcss.com/canvasjs/1.7.0/canvasjs.js"></script>
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
 
 	<main class="content">
 		<div class="content-header ui-content-header">
@@ -40,13 +41,12 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<div class="tile-wrap">
+											{$id=0}
 											{foreach $node_prefix as $prefix => $nodes}
-												{$load="暂无数据"}
-												{$uptime="暂无数据"}
-												{$speedtest="暂无数据"}
+												{$id=$id+1}
 												
 													<div class="tile tile-collapse">
-														<div data-target="#heading{$node_order->$prefix}" data-toggle="tile">
+														<div data-toggle="collapse" href="#heading{$node_order->$prefix}">
 															<div class="tile-side pull-left" data-ignore="tile">
 																<div class="avatar avatar-sm">
 																	<span class="icon {if $node_heartbeat[$prefix]=='在线'}text-green{else}text-red{/if}">{if $node_heartbeat[$prefix]=="在线"}backup{else}warning{/if}</span>
@@ -56,11 +56,13 @@
 																<div class="text-overflow">{$prefix} | <i class="icon icon-lg">person</i> {$node_alive[$prefix]} | <i class="icon icon-lg">build</i> {$node_method[$prefix]} | <i class="icon icon-lg">traffic</i> {$node_bandwidth[$prefix]}</div>
 															</div>
 														</div>
-														<div class="tile-active-show collapse" id="heading{$node_order->$prefix}">
+														<div class="collapsible-region collapse" id="heading{$node_order->$prefix}">
 															<div class="tile-sub">
 																
 																<br>
+																
 																{foreach $nodes as $node}
+																
 																
 																	
 																	<div class="card">
@@ -121,34 +123,50 @@
 																			
 																		</div>
 																	</div>
-																	
-																	{if ($node->sort==0||$node->sort==7||$node->sort==8)&&$node->getNodeLoad()!="暂无数据"}
-																	{$load=$node->getNodeLoad()}
-																	{$uptime=$node->getNodeUptime()}
-																	{/if}
-																	
 																	{if $node->sort==0}
-																	{$speedtest=$node->getSpeedtest()}
+																		{$point_node=$node}
 																	{/if}
-																	{/foreach}
+																	
+																
+																{/foreach}
+																	
 																	
 																	
 																
+																{if $point_node!=null}
+																
+																	<div class="card">
+																		<div class="card-main">
+																			<div class="card-inner" id="info{$id}"> 
+																				
+																			</div>
+																		</div>
+																	</div>
+																	
+																	<script>
+																	$().ready(function(){
+																		$('#heading{$node_order->$prefix}').on("shown.bs.collapse", function() {
+
+																			$("#info{$id}").load("/user/node/{$point_node->id}/ajax");
+
+																		});
+																	});
+																	</script>
+																{/if}	
+																
+																{$point_node=null}
+																	
+																	
 																
 																	
 															</div>
 															
-																
-															{if $prefix!="智能线路（速度）"&& $prefix!="智能线路（延时）"}	
-															<p>{$speedtest}</p>
-															<p><i class="icon icon-lg">cloud_down</i>负载：{$load} </p><p><i class="icon icon-lg">trending_up</i>Uptime：{$uptime}</p>
-															<div class="tile-footer">
-																<div class="tile-footer-btn pull-left">
-																	<a class="btn btn-flat waves-attach" data-toggle="tile" href="#heading{$node_order->$prefix}"><span class="icon">close</span>&nbsp;关闭</a>
-																</div>
-															</div>
-															{/if}
+															
+														
 														</div>
+														
+														
+														
 												</div>
 												
 											{/foreach}
@@ -182,6 +200,8 @@
 
 
 <script>
+
+
 function urlChange(id) {
     var site = './node/'+id;
     document.getElementById('infoifram').src = site;

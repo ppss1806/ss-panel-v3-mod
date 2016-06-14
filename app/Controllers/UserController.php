@@ -96,17 +96,6 @@ class UserController extends BaseController
 		$android_add="";
 		foreach($nodes as $node)
 		{
-			if($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))
-			{
-				if(Config::get('cloudxns_apikey')=="")
-				{
-					continue;
-				}
-				
-				$smt=Smartline::where("node_class",$this->user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
-				
-				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
-			}
 			if($android_add=="")
 			{
 				$ary['server'] = $node->server;
@@ -148,25 +137,83 @@ class UserController extends BaseController
 		
 		$Speedtest=Speedtest::where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy('datetime','desc')->get();
 		
-        return $this->view()->assign('speedtest',$Speedtest)->assign('hour',Config::get('Speedtest_duration'))->display('user/lookingglass.tpl');
+        return $this->view()->assign('speedtests',$Speedtest)->assign('hour',Config::get('Speedtest_duration'))->display('user/lookingglass.tpl');
     }
 	
 	
 	
 	public function code($request, $response, $args)
     {
+		require_once(BASE_PATH.'/vendor/paymentwall/paymentwall-php/lib/paymentwall.php');
+		
+		if(Config::get('pmw_publickey')!="")
+		{
+			\Paymentwall_Config::getInstance()->set(array(
+				'api_type' => \Paymentwall_Config::API_VC,
+				'public_key' => Config::get('pmw_publickey'),
+				'private_key' => Config::get('pmw_privatekey')
+			));
+			
+			$widget = new \Paymentwall_Widget(
+				$this->user->id, // id of the end-user who's making the payment
+				Config::get('pmw_widget'),      // widget code, e.g. p1; can be picked inside of your merchant account
+				array(),     // array of products - leave blank for Virtual Currency API
+				array(
+					'email' => $this->user->email,
+					'history'=>
+						array(
+						'registration_date'=>strtotime($this->user->reg_date),
+						'registration_ip'=>$this->user->reg_ip,
+						'payments_number'=>Code::where('userid','=',$this->user->id)->where('type','=',-1)->count(),
+						'membership'=>$this->user->class),
+					'customer'=>array(
+						'username'=>$this->user->user_name
+					)
+				) // additional parameters
+			);
+			
+			$pageNum = 1;
+			if (isset($request->getQueryParams()["page"])) {
+				$pageNum = $request->getQueryParams()["page"];
+			}
+			$codes = Code::where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
+			$codes->setPath('/user/code');
+			return $this->view()->assign('codes',$codes)->assign('pmw_height',Config::get('pmw_height'))->assign('pmw',$widget->getHtmlCode(array("height"=>Config::get('pmw_height'),"width"=>"100%")))->display('user/code.tpl');
+		
+		}
+		else
+		{
+			
+			$pageNum = 1;
+			if (isset($request->getQueryParams()["page"])) {
+				$pageNum = $request->getQueryParams()["page"];
+			}
+			$codes = Code::where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
+			$codes->setPath('/user/code');
+			return $this->view()->assign('codes',$codes)->assign('pmw_height',Config::get('pmw_height'))->assign('pmw','0')->display('user/code.tpl');
+		
+		}
 		
 
 		
-		$pageNum = 1;
-        if (isset($request->getQueryParams()["page"])) {
-            $pageNum = $request->getQueryParams()["page"];
-        }
-		$codes = Code::where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
-		$codes->setPath('/user/code');
-        return $this->view()->assign('codes',$codes)->display('user/code.tpl');
-    }
+	}
 	
+	public function code_check($request, $response, $args)
+    {
+		$time = $request->getQueryParams()["time"];
+		$codes = Code::where('userid','=',$this->user->id)->where('usedatetime','>',date('Y-m-d H:i:s',$time))->count();
+		if($codes!=0)
+		{
+			$res['ret'] = 1;
+            return $response->getBody()->write(json_encode($res));
+		}
+		else
+		{
+			$res['ret'] = 0;
+            return $response->getBody()->write(json_encode($res));
+		}
+		
+    }
 	
 	public function codepost($request, $response, $args)
     {
@@ -333,8 +380,16 @@ class UserController extends BaseController
 	}
 	
 	
+	public function nodeAjax($request, $response, $args)
+    {
+		$id = $args['id'];
+		$point_node=Node::find($id);
+		$prefix=explode(" - ",$point_node->name);
+        return $this->view()->assign('point_node', $point_node)->assign('prefix',$prefix[0])->assign('id', $id)->display('user/nodeajax.tpl');
+    }
+	
 
-    public function node()
+    public function node($request, $response, $args)
     {
         $user = Auth::getUser();
         $nodes = Node::where(
@@ -353,56 +408,6 @@ class UserController extends BaseController
 		$node_bandwidth=Array();
 		
 		foreach ($nodes as $node) {
-			if($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))
-			{
-				if(Config::get('cloudxns_apikey')=="")
-				{
-					continue;
-				}
-				$temp=explode(" - ",$node->name);
-				if(!isset($node_prefix[$temp[0]]))
-				{
-					$node_prefix[$temp[0]]=array();
-					$node_order[$temp[0]]=$a;
-					$node_alive[$temp[0]]=0;
-					$node_method[$temp[0]]=$temp[1];
-					$a++;
-				}
-
-				
-				$node_prealive[$node->id]="混合";
-				if(time()-$node->node_heartbeat>90)
-				{
-					$node_heartbeat[$temp[0]]="离线";
-				}
-				else
-				{
-					$node_heartbeat[$temp[0]]="在线";
-				}
-				
-
-				$node_bandwidth[$temp[0]]="混合";
-				
-
-
-				$node_alive[$temp[0]]="混合";
-
-
-				
-				if(strpos($node_method[$temp[0]],$temp[1])===FALSE)
-				{
-					$node_method[$temp[0]]=$node_method[$temp[0]]." ".$temp[1];
-				}
-		
-				
-				$smt=Smartline::where("node_class",$this->user->class)->where("node_group","=",$this->user->node_group)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
-				
-				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
-				
-				array_push($node_prefix[$temp[0]],$node);
-				
-				continue;
-			}
 			
 			if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
 			{
@@ -486,11 +491,6 @@ class UserController extends BaseController
 					$ary['server'] = $node->server;
 					
 					
-					if(($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))&&Config::get('cloudxns_apikey')!="")
-					{
-						$smt=Smartline::where("node_class",$this->user->class)->where("node_group","=",$this->user->node_group)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
-						$ary['server']=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
-					}
 					
 					$ary['server_port'] = $this->user->port;
 					$ary['password'] = $this->user->passwd;
@@ -651,7 +651,7 @@ class UserController extends BaseController
 	public function GetPcConf($request, $response, $args){
         
         $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=gui-config.json');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("type","1")->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where(
+        $newResponse->getBody()->write(LinkController::GetPcConf(Node::where('sort', 0)->where("type","1")->where(
 			function ($query) {
 				$query->where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
@@ -663,7 +663,7 @@ class UserController extends BaseController
 	public function GetIosConf($request, $response, $args){
         
         $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("type","1")->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where(
+        $newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("type","1")->where(
 			function ($query) {
 				$query->where("node_group","=",$this->user->node_group)
 					->orWhere("node_group","=",0);
@@ -1331,7 +1331,6 @@ class UserController extends BaseController
 		
 		$email=$user->email;
 		
-		
 		Da::delete($email);
 			
         $passwd = $request->getParam('passwd');
@@ -1355,66 +1354,7 @@ class UserController extends BaseController
     }
 
     public function trafficLog($request, $response, $args){
-        $pageNum = 1;
-        if(isset($request->getQueryParams()["page"])){
-            $pageNum = $request->getQueryParams()["page"];
-        }
-		$traffic=TrafficLog::where('user_id',$this->user->id)->where("log_time",">",(time()-3*86400))->orderBy('id', 'desc')->get();
-		
-		
-		$a=0;
-		$log_order=array();
-		$lasttime=0;
-		$nodes=array();
-		foreach ($traffic as $log) {
-			if($lasttime==0||$lasttime-$log->log_time>1800)
-			{
-				if($a>50)
-				{
-					break;
-				}
-				$log_order[$a]=array();
-				$log_order[$a]["node"]=Node::find($log->node_id)->name;
-				$rate=$log->rate;
-				if($log_order[$a]["node"]=="")
-				{
-					$log_order[$a]["node"]="阿卡林";
-				}
-				$nodes[$log->node_id]=Node::find($log->node_id)->name;
-				$log_order[$a]["d"]=($log->d/1024/1024)*$rate;
-				$log_order[$a]["time"]=date("Y-m-d H:i:s", $log->log_time);
-				$a++;
-				$log_order[$a-1]["id"]=$a;
-			}
-			else
-			{
-				$d=$log->d;
-				if(!isset($nodes[$log->node_id]))
-				{
-
-					$nodes[$log->node_id]=Node::find($log->node_id)->name;
-					$rate=$log->rate;
-
-
-				}
-
-				$node=$nodes[$log->node_id];
-				$log_order[$a-1]["d"]=$log_order[$a-1]["d"]+($d/1024/1024)*$log->rate;
-				if(strpos($log_order[$a-1]["node"],$node)===FALSE)
-				{
-
-					$log_order[$a-1]["node"]=$log_order[$a-1]["node"]." & ".$node;
-
-				}
-			}
-			$lasttime=$log->log_time;
-		}
-
-
-		$log_order=(object)$log_order;
-		//var_dump($log_order);
-        //$log_order = $log_order->paginate(15,['*'],'page',$pageNum);
-        //$log_order->setPath('/user/trafficlog');
-        return $this->view()->assign('logs', $log_order)->display('user/trafficlog.tpl');
+        $traffic=TrafficLog::where('user_id',$this->user->id)->where("log_time",">",(time()-3*86400))->orderBy('id', 'desc')->get();
+        return $this->view()->assign('logs', $traffic)->display('user/trafficlog.tpl');
     }
 }

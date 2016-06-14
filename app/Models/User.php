@@ -124,6 +124,18 @@ class User extends Model
         return Tools::flowAutoShow($total);
     }
 	
+	public function TodayusedTraffic()
+    {
+        $total = $this->attributes['u'] + $this->attributes['d']-$this->attributes['last_day_t'];
+        return Tools::flowAutoShow($total);
+    }
+	
+	public function LastusedTraffic()
+    {
+        $total = $this->attributes['last_day_t'];
+        return Tools::flowAutoShow($total);
+    }
+	
 
     public function unusedTraffic()
     {

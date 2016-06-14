@@ -49,6 +49,20 @@
 						</div>
 					</div>
 					
+					{if $pmw!='0'}
+					<div class="col-lg-12 col-md-12">
+						<div class="card margin-bottom-no">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="card-inner" style="height:{$pmw_height}">
+										{$pmw}
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					{/if}
 					
 					<div class="col-lg-12 col-md-12">
 						<div class="card margin-bottom-no">
@@ -151,5 +165,27 @@
         })
     })
 	
+	timestamp = Date.parse(new Date())/1000; 
+		
+		
+	function f(){
+		$.ajax({
+			type: "GET",
+			url: "code_check",
+			dataType: "json",
+			data: {
+				time: timestamp
+			},
+			success: function (data) {
+				if (data.ret) {
+					$("#result").modal();
+					$("#msg").html("充值成功！ 五秒后刷新页面");
+					window.setTimeout("location.href=window.location.href", 5000);
+				}
+			}
+		});
+		setTimeout(f, 1000); //循环调用触发setTimeout
+	}
+	setTimeout(f, 1000);
 </script>
 

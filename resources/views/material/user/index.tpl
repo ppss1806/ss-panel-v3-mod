@@ -174,30 +174,51 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">流量使用情况</p>
-											<div class="row">
-												<div class="col-xs-12">
-													<div class="progress progress-striped progress-green">
-														<div class="progress-bar" role="progressbar" aria-valuenow="40"
-															 aria-valuemin="0" aria-valuemax="100"
-															 style="width: {$user->trafficUsagePercent()}%">
-															<span class="sr-only">Transfer</span>
-														</div>
-													</div>
-												</div>
-											</div>
-											<dl class="dl-horizontal">
-												<dt>总流量</dt>
-												<dd>{$user->enableTraffic()}</dd>
+									
+										<div id="traffic_chart" style="height: 300px; width: 100%;"></div>
+										
+										<script src="//cdn.bootcss.com/canvasjs/1.7.0/canvasjs.js"></script>
+										<script type="text/javascript">
+											var chart = new CanvasJS.Chart("traffic_chart",
+											{
+												title:{
+													text: "流量使用情况",
+													fontFamily: "Impact",
+													fontWeight: "normal"
+												},
 
-												<dt>今日使用流量</dt>
-												<dd>{(($user->u+$user->d)-$user->last_day_t)/1024/1024}MB</dd>
+												legend:{
+													verticalAlign: "bottom",
+													horizontalAlign: "center"
+												},
+												data: [
+												{
+													//startAngle: 45,
+													indexLabelFontSize: 20,
+													indexLabelFontFamily: "Garamond",
+													indexLabelFontColor: "darkgrey",
+													indexLabelLineColor: "darkgrey",
+													indexLabelPlacement: "outside",
+													type: "doughnut",
+													showInLegend: true,
+													dataPoints: [
+														{
+															y: {$user->last_day_t/$user->transfer_enable*100}, legendText:"已用 {number_format($user->last_day_t/$user->transfer_enable*100,2)}% {$user->LastusedTraffic()}", indexLabel: "已用 {number_format($user->last_day_t/$user->transfer_enable*100,2)}% {$user->LastusedTraffic()}"
+														},
+														{
+															y: {($user->u+$user->d-$user->last_day_t)/$user->transfer_enable*100}, legendText:"今日 {number_format(($user->u+$user->d-$user->last_day_t)/$user->transfer_enable*100,2)}% {$user->TodayusedTraffic()}", indexLabel: "今日 {number_format(($user->u+$user->d-$user->last_day_t)/$user->transfer_enable*100,2)}% {$user->TodayusedTraffic()}"
+														},
+														{
+															y: {($user->transfer_enable-($user->u+$user->d))/$user->transfer_enable*100}, legendText:"剩余 {number_format(($user->transfer_enable-($user->u+$user->d))/$user->transfer_enable*100,2)}% {$user->unusedTraffic()}", indexLabel: "剩余 {number_format(($user->transfer_enable-($user->u+$user->d))/$user->transfer_enable*100,2)}% {$user->unusedTraffic()}"
+														}
+													]
+												}
+												]
+											});
 
-												<dt>总已用流量</dt>
-												<dd>{$user->usedTraffic()}</dd>
-												<dt>剩余流量</dt>
-												<dd>{$user->unusedTraffic()}</dd>
-											</dl>
+											chart.render();
+										</script>
+										
 									</div>
 									
 								</div>

@@ -73,7 +73,7 @@ class Tools
     {
         $dtF = new DateTime("@0");
         $dtT = new DateTime("@$seconds");
-        return $dtF->diff($dtT)->format('%a 天, %h 小时, %i 分 and %s 秒');
+        return $dtF->diff($dtT)->format('%a 天, %h 小时, %i 分 + %s 秒');
     }
 
     public static function genSID()

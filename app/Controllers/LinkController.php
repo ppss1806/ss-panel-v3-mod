@@ -124,7 +124,7 @@ class LinkController extends BaseController
 			case -1:
 				$user=User::where("id",$Elink->userid)->first();
 				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
-				$newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("type","1")->where("id","<>",Config::get('cloudxns_ping_nodeid'))->where("id","<>",Config::get('cloudxns_speed_nodeid'))->where(
+				$newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("type","1")->where(
 					function ($query) {
 						$query->where("node_group","=",$user->node_group)
 							->orWhere("node_group","=",0);
@@ -204,16 +204,6 @@ class LinkController extends BaseController
 		$temparray=array();
 		foreach($nodes as $node)
 		{
-			if($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))
-			{
-				if(Config::get('cloudxns_apikey')=="")
-				{
-					continue;
-				}
-				$smt=Smartline::where("node_class",$user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
-				
-				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
-			}
 			array_push($temparray,array("remarks"=>$node->name,
 										"server"=>$node->server,
 										"server_port"=>$user->port,
@@ -238,16 +228,6 @@ class LinkController extends BaseController
 		$proxy_group="";
 		foreach($nodes as $node)
 		{
-			if($node->id==Config::get('cloudxns_ping_nodeid')||$node->id==Config::get('cloudxns_speed_nodeid'))
-			{
-				if(Config::get('cloudxns_apikey')=="")
-				{
-					continue;
-				}
-				$smt=Smartline::where("node_class",$user->class)->where("type",($node->id==Config::get('cloudxns_ping_nodeid')?1:0))->first();
-				
-				$node->server=$smt->domain_prefix.".".Config::get("cloudxns_prefix").".".Config::get("cloudxns_domain");
-			}
 			$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
 			$proxy_name.=",".$node->name;
 		}

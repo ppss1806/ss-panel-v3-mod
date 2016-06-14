@@ -155,3 +155,11 @@ $System_Config['code_payback']='20';
 #注册时的流量重置日以及需要重置的流量,0不重置
 $System_Config['reg_auto_reset_day']='0';
 $System_Config['reg_auto_reset_bandwidth']='100';
+
+
+
+#PaymentWall
+$System_Config['pmw_publickey']='';
+$System_Config['pmw_privatekey']='';
+$System_Config['pmw_widget']='m2_1';
+$System_Config['pmw_height']='350px';

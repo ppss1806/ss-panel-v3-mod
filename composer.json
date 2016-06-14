@@ -16,7 +16,8 @@
     "gregwar/captcha": "1.*",
     "cloudxns/cloud-xns-api-sdk-php": "*",
     "guzzlehttp/guzzle": " ~5.0",
-    "voku/anti-xss": "^1.2"
+    "voku/anti-xss": "^1.2",
+    "paymentwall/paymentwall-php": "^2.1"
   },
   "autoload": {
     "classmap": [

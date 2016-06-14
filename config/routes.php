@@ -70,6 +70,7 @@ $app->get('/', 'App\Controllers\HomeController:index');
 $app->get('/404', 'App\Controllers\HomeController:page404');
 $app->get('/405', 'App\Controllers\HomeController:page405');
 $app->get('/500', 'App\Controllers\HomeController:page500');
+$app->get('/pwm_pingback', 'App\Controllers\HomeController:pmw_pingback');
 $app->get('/code', 'App\Controllers\HomeController:code');
 $app->get('/tos', 'App\Controllers\HomeController:tos');
 $app->get('/staff', 'App\Controllers\HomeController:staff');
@@ -83,6 +84,7 @@ $app->group('/user', function () {
     $this->get('/node', 'App\Controllers\UserController:node');
 	$this->get('/lookingglass', 'App\Controllers\UserController:lookingglass');
     $this->get('/node/{id}', 'App\Controllers\UserController:nodeInfo');
+	$this->get('/node/{id}/ajax', 'App\Controllers\UserController:nodeAjax');
     $this->get('/profile', 'App\Controllers\UserController:profile');
     $this->get('/invite', 'App\Controllers\UserController:invite');
 	
@@ -110,6 +112,7 @@ $app->group('/user', function () {
     $this->post('/kill', 'App\Controllers\UserController:handleKill');
     $this->get('/logout', 'App\Controllers\UserController:logout');
 	$this->get('/code', 'App\Controllers\UserController:code');
+	$this->get('/code_check', 'App\Controllers\UserController:code_check');
 	$this->post('/code', 'App\Controllers\UserController:codepost');
 	$this->post('/gacheck', 'App\Controllers\UserController:GaCheck');
 	$this->post('/gaset', 'App\Controllers\UserController:GaSet');
@@ -148,6 +151,7 @@ $app->group('/admin', function () {
     $this->get('/trafficlog', 'App\Controllers\AdminController:trafficLog');
     // Node Mange
     $this->get('/node', 'App\Controllers\Admin\NodeController:index');
+	
     $this->get('/node/create', 'App\Controllers\Admin\NodeController:create');
     $this->post('/node', 'App\Controllers\Admin\NodeController:add');
     $this->get('/node/{id}/edit', 'App\Controllers\Admin\NodeController:edit');
