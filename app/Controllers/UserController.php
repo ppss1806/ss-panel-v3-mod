@@ -12,7 +12,6 @@ use voku\helper\AntiXSS;
 use App\Models\User;
 use App\Models\Code;
 use App\Models\Ip;
-use App\Models\Smartline;
 use App\Models\LoginIp;
 use App\Models\BlockIp;
 use App\Models\UnblockIp;
@@ -128,7 +127,7 @@ class UserController extends BaseController
 		
 		$ios_token = LinkController::GenerateIosCode("smart",0,$this->user->id,0,"smart");
 		
-        return $this->view()->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+        return $this->view()->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
 	
 	
@@ -425,13 +424,23 @@ class UserController extends BaseController
 				{
 					$node_tempalive=$node->getOnlineUserCount();
 					$node_prealive[$node->id]=$node_tempalive;
-					if(time()-$node->node_heartbeat>90)
+					if($node->node_heartbeat!=0)
 					{
-						$node_heartbeat[$temp[0]]="离线";
+						if(time()-$node->node_heartbeat>90)
+						{
+							$node_heartbeat[$temp[0]]="离线";
+						}
+						else
+						{
+							$node_heartbeat[$temp[0]]="在线";
+						}
 					}
 					else
 					{
-						$node_heartbeat[$temp[0]]="在线";
+						if(!isset($node_heartbeat[$temp[0]]))
+						{
+							$node_heartbeat[$temp[0]]="暂无数据";
+						}
 					}
 					
 					if($node->node_bandwidth_limit==0)
@@ -453,6 +462,10 @@ class UserController extends BaseController
 				else
 				{
 					$node_prealive[$node->id]="暂无数据";
+					if(!isset($node_heartbeat[$temp[0]]))
+					{
+						$node_heartbeat[$temp[0]]="暂无数据";
+					}
 				}
 				
 				if(strpos($node_method[$temp[0]],$temp[1])===FALSE)

@@ -72,6 +72,16 @@ $System_Config['aws_secret_access_key'] = '';
 
 #glzjin's time
 
+#功能开关
+$System_Config['enable_wecenter']='true';
+$System_Config['enable_radius']='true';
+$System_Config['enable_directadmin']='false';
+$System_Config['enable_cloudxns']='true';
+$System_Config['enable_duoshuo']='true';
+
+
+
+
 #用户过期时间，在注册时设置。（天）
 $System_Config['user_expire_in_default']='99999';
 
@@ -163,3 +173,9 @@ $System_Config['pmw_publickey']='';
 $System_Config['pmw_privatekey']='';
 $System_Config['pmw_widget']='m2_1';
 $System_Config['pmw_height']='350px';
+
+
+#Cloudxns
+$System_Config['cloudxns_apikey']='';#自己去 cloudxns.net 申请
+$System_Config['cloudxns_apisecret']='';
+$System_Config['cloudxns_domain']='zhaoj.in';#你的域名

@@ -276,7 +276,7 @@
 						
 						
 						
-						{if $duoshuo_shortname!=""}
+						{if $enable_duoshuo=='true'}
 						
 							<div class="card">
 								<div class="card-main">

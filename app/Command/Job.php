@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\RadiusBan;
 use App\Models\LoginIp;
 use App\Models\Speedtest;
-use App\Models\Smartline;
 use App\Models\Shop;
 use App\Models\Bought;
 use App\Models\Coupon;
@@ -229,9 +228,9 @@ class Job
 					echo $e->getMessage();
 				}
 				
-				if(file_exists(BASE_PATH."/storage/"+$bought->id+".renew", "w+"))
+				if(file_exists(BASE_PATH."/storage/".$bought->id.".renew", "w+"))
 				{
-					unlink(BASE_PATH."/storage/"+$bought->id+".renew");
+					unlink(BASE_PATH."/storage/".$bought->id.".renew");
 				}
 			}
 			else
@@ -254,7 +253,7 @@ class Job
 					} catch (Exception $e) {
 						echo $e->getMessage();
 					}
-					$myfile = fopen(BASE_PATH."/storage/"+$bought->id+".renew", "w+") or die("Unable to open file!");
+					$myfile = fopen(BASE_PATH."/storage/".$bought->id.".renew", "w+") or die("Unable to open file!");
 					$txt = "1";
 					fwrite($myfile, $txt);
 					fclose($myfile);
@@ -313,7 +312,7 @@ class Job
 			$nodes = Node::all();
 			
 			foreach($nodes as $node){
-				if(time()-$node->node_heartbeat>300&&time()-$node->node_heartbeat<360&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
+				if(time()-$node->node_heartbeat>300&&time()-$node->node_heartbeat<=360&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
 				{
 					foreach($adminUser as $user)
 					{
@@ -330,10 +329,52 @@ class Job
 							echo $e->getMessage();
 						}
 						
+						if(Config::get('enable_cloudxns')=='true')
+						{
+							$api=new Api();
+							$api->setApiKey(Config::get("cloudxns_apikey"));//修改成自己API KEY
+							$api->setSecretKey(Config::get("cloudxns_apisecret"));//修改成自己的SECERET KEY
+							
+							$api->setProtocol(true);
+							
+							$domain_json=json_decode($api->domain->domainList());
+							
+							foreach($domain_json->data as $domain)
+							{
+								if(strpos($domain->domain,Config::get('cloudxns_domain'))!==FALSE)
+								{
+									$domain_id=$domain->id;
+								}
+							}
+							
+							$record_json=json_decode($api->record->recordList($domain_id, 0, 0, 2000));
+							
+							foreach($record_json->data as $record)
+							{
+								if(($record->host.".".Config::get('cloudxns_domain'))==$node->server)
+								{
+									$record_id=$record->record_id;
+									
+									$Temp_node=Node::where('node_class','<=',$node->node_class)->where(
+										function ($query) {
+											$query->where("node_group","=",$node->node_group)
+												->orWhere("node_group","=",0);
+										}
+									)->whereRaw('UNIX_TIMESTAMP()-`node_heartbeat`<300')->first();
+									
+									if($Temp_node!=null)
+									{								
+										$api->record->recordUpdate($domain_id, $record->host, $Temp_node->server, 'CNAME', 55, 60, 1, '', $record_id);
+									}
+								}
+							}
+							
+						}
+						
 						
 					}
 					
-					$myfile = fopen(BASE_PATH."/storage/"+$node->id+".offline", "w+") or die("Unable to open file!");
+					$myfile = fopen(BASE_PATH."/storage/".$node->id.".offline", "w+") or die("Unable to open file!");
 					$txt = "1";
 					fwrite($myfile, $txt);
 					fclose($myfile);
@@ -342,7 +383,7 @@ class Job
 			
 			
 			foreach($nodes as $node){
-				if(time()-$node->node_heartbeat<60&&file_exists(BASE_PATH."/storage/"+$node->id+".offline")&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
+				if(time()-$node->node_heartbeat<60&&file_exists(BASE_PATH."/storage/".$node->id.".offline")&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
 				{
 					foreach($adminUser as $user)
 					{
@@ -360,9 +401,41 @@ class Job
 						}
 						
 						
+						if(Config::get('enable_cloudxns')=='true')
+						{
+							$api=new Api();
+							$api->setApiKey(Config::get("cloudxns_apikey"));//修改成自己API KEY
+							$api->setSecretKey(Config::get("cloudxns_apisecret"));//修改成自己的SECERET KEY
+							
+							$api->setProtocol(true);
+							
+							$domain_json=json_decode($api->domain->domainList());
+							
+							foreach($domain_json->data as $domain)
+							{
+								if(strpos($domain->domain,Config::get('cloudxns_domain'))!==FALSE)
+								{
+									$domain_id=$domain->id;
+								}
+							}
+							
+							$record_json=json_decode($api->record->recordList($domain_id, 0, 0, 2000));
+							
+							foreach($record_json->data as $record)
+							{
+								if(($record->host.".".Config::get('cloudxns_domain'))==$node->server)
+								{
+									$record_id=$record->record_id;
+									
+									$api->record->recordUpdate($domain_id, $record->host, $node->node_ip, 'A', 55, 600, 1, '', $record_id);
+								}
+							}
+							
+						}
+						
 					}
 					
-					unlink(BASE_PATH."/storage/"+$node->id+".offline");
+					unlink(BASE_PATH."/storage/".$node->id.".offline");
 				}
 			}
 		}

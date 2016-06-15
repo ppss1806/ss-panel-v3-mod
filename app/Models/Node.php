@@ -37,7 +37,7 @@ class Node extends Model
 	public function getNodeUpRate()
     {
         $id = $this->attributes['id'];
-        $log = NodeInfoLog::where('node_id', $id)->where('log_time', '>=',time()-86400)->count();
+        $log = NodeOnlineLog::where('node_id', $id)->where('log_time', '>=',time()-86400)->count();
 		
 		return $log/1440;
     }

@@ -17,7 +17,7 @@ Class Radius
      */
     static function Add($user,$pwd)
     {
-        if(Config::get('radius_db_user')!='')
+        if(Config::get('enable_radius')==true)
 		{
 			$email=$user->email;
 			$email=str_replace("@","",$email);
@@ -54,7 +54,7 @@ Class Radius
 	
 	static function Delete($email)
 	{
-		if(Config::get('radius_db_user')!='')
+		if(Config::get('enable_radius')==true)
 		{
 			$email=str_replace("@","",$email);
 			$email=str_replace(".","",$email);
@@ -72,7 +72,7 @@ Class Radius
 	
 	static function ChangeUserName($email1,$email2,$passwd)
 	{
-		if(Config::get('radius_db_user')!='')
+		if(Config::get('enable_radius')==true)
 		{
 			$email1=str_replace("@","",$email1);
 			$email1=str_replace(".","",$email1);
@@ -114,7 +114,7 @@ Class Radius
 	
 	static function AddNas($ip,$name)
 	{
-		if(Config::get('radius_db_user')!='')
+		if(Config::get('enable_radius')==true)
 		{
 			$exists=RadiusNas::where("shortname",$ip)->first();
 			if($exists==NULL)
@@ -132,7 +132,7 @@ Class Radius
 	
 	static function DelNas($ip)
 	{
-		if(Config::get('radius_db_user')!='')
+		if(Config::get('enable_radius')==true)
 		{
 			RadiusNas::where("shortname",$ip)->delete();
 		}

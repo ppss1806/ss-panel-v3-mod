@@ -90,7 +90,10 @@ class NodeController extends AdminController
 		$node->sort = $request->getParam('sort');
 		if($node->sort==0)
 		{
-			$node->node_ip=gethostbyname($request->getParam('server'));
+			if(time()-$node->node_heartbeat<300)
+			{
+				$node->node_ip=gethostbyname($request->getParam('server'));
+			}
 		}
 		else
 		{
@@ -99,8 +102,20 @@ class NodeController extends AdminController
 		
 		if($node->sort==1)
 		{
-			$node->node_ip=gethostbyname($request->getParam('server'));
-			Radius::AddNas($node->node_ip,$request->getParam('server'));
+			$SS_Node=Node::where('sort','=',0)->where('server','=',$request->getParam('server'))->first();
+			if($SS_Node!=null)
+			{
+				if(time()-$SS_Node->node_heartbeat<300||$SS_Node->node_heartbeat==0)
+				{
+					$node->node_ip=gethostbyname($request->getParam('server'));
+					Radius::AddNas($node->node_ip,$request->getParam('server'));
+				}
+			}
+			else
+			{
+				$node->node_ip=gethostbyname($request->getParam('server'));
+				Radius::AddNas($node->node_ip,$request->getParam('server'));
+			}
 		}
 
         $node->status = $request->getParam('status');

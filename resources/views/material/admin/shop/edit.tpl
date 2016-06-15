@@ -56,7 +56,7 @@
 								<div class="form-group form-group-label">
 									<div class="checkbox switch">
 										<label for="auto_reset_bandwidth">
-											<input {if $user->auto_reset_bandwidth==1}checked{/if} class="access-hide" id="auto_reset_bandwidth" type="checkbox"><span class="switch-toggle"></span>续费时自动重置用户流量为上面这个流量值
+											<input {if $shop->auto_reset_bandwidth==1}checked{/if} class="access-hide" id="auto_reset_bandwidth" type="checkbox"><span class="switch-toggle"></span>续费时自动重置用户流量为上面这个流量值
 										</label>
 									</div>
 								</div>

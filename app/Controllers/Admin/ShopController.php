@@ -28,7 +28,8 @@ class ShopController extends AdminController
         $shop->name =  $request->getParam('name');
         $shop->price =  $request->getParam('price');
         $shop->auto_renew =  $request->getParam('auto_renew');
-        
+        $shop->auto_reset_bandwidth =  $request->getParam('auto_reset_bandwidth');
+		
 		$content=array();
 		if($request->getParam('bandwidth')!=0)
 		{
@@ -79,6 +80,7 @@ class ShopController extends AdminController
 		$shop->name =  $request->getParam('name');
         $shop->price =  $request->getParam('price');
         $shop->auto_renew =  $request->getParam('auto_renew');
+		$shop->auto_reset_bandwidth =  $request->getParam('auto_reset_bandwidth');
 		$shop->status=1;
         
 		$content=array();

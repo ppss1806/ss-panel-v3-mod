@@ -15,7 +15,7 @@ Class Da
      */
     static function Add($email)
     {
-        if(Config::get('da_username')!='')
+        if(Config::get('enable_directadmin')=='true')
 		{
 			$sock = new HTTPSocket;
 			$sock->connect(Config::get('da_host'), Config::get('da_port')); 	
@@ -29,7 +29,7 @@ Class Da
 	
 	static function Delete($email)
 	{
-		if(Config::get('da_username')!='')
+		if(Config::get('enable_directadmin')=='true')
 		{
 			$sock = new HTTPSocket;
 			$sock->connect(Config::get('da_host'), Config::get('da_port')); 	

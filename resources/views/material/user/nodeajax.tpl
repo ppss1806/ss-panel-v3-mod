@@ -16,7 +16,7 @@
 				},
 				data: [
 				{
-					type: "spline", 
+					type: "line", 
 					dataPoints: [
 						{$i=0}
 						{foreach $load as $single_load}
@@ -82,7 +82,7 @@
 				},
 				data: [
 				{
-					type: "spline", 
+					type: "line", 
 					dataPoints: [
 						{$i=0}
 						{foreach $load as $single_load}
@@ -124,7 +124,7 @@
 				},
 				data: [
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText: "电信延时",
 					dataPoints: [
@@ -153,7 +153,7 @@
 					]
 				},
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText: "联通延时",
 					dataPoints: [
@@ -182,7 +182,7 @@
 					]
 				},
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText:"移动延时",
 					dataPoints: [
@@ -223,7 +223,7 @@
 				},
 				data: [
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText: "电信下载速度",
 					dataPoints: [
@@ -252,7 +252,7 @@
 					]
 				},
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText: "电信上传速度",
 					dataPoints: [
@@ -281,7 +281,7 @@
 					]
 				},
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText: "联通下载速度",
 					dataPoints: [
@@ -310,7 +310,7 @@
 					]
 				},
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText: "联通上传速度",
 					dataPoints: [
@@ -339,7 +339,7 @@
 					]
 				},
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText:"移动上传速度",
 					dataPoints: [
@@ -368,7 +368,7 @@
 					]
 				},
 				{
-					type: "spline", 
+					type: "line", 
 					showInLegend: true,
 					legendText:"移动下载速度",
 					dataPoints: [

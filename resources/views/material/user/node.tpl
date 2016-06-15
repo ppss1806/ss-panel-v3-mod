@@ -46,10 +46,10 @@
 												{$id=$id+1}
 												
 													<div class="tile tile-collapse">
-														<div data-toggle="collapse" href="#heading{$node_order->$prefix}">
+														<div data-toggle="tile" data-target="#heading{$node_order->$prefix}">
 															<div class="tile-side pull-left" data-ignore="tile">
 																<div class="avatar avatar-sm">
-																	<span class="icon {if $node_heartbeat[$prefix]=='在线'}text-green{else}text-red{/if}">{if $node_heartbeat[$prefix]=="在线"}backup{else}warning{/if}</span>
+																	<span class="icon {if $node_heartbeat[$prefix]=='在线'}text-green{else}{if $node_heartbeat[$prefix]=='暂无数据'}text-orange{else}text-red{/if}{/if}">{if $node_heartbeat[$prefix]=="在线"}backup{else}{if $node_heartbeat[$prefix]=='暂无数据'}report{else}warning{/if}{/if}</span>
 																</div>
 															</div>
 															<div class="tile-inner">
@@ -145,7 +145,7 @@
 																	
 																	<script>
 																	$().ready(function(){
-																		$('#heading{$node_order->$prefix}').on("shown.bs.collapse", function() {
+																		$('#heading{$node_order->$prefix}').on("shown.bs.tile", function() {
 
 																			$("#info{$id}").load("/user/node/{$point_node->id}/ajax");
 
