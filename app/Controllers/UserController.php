@@ -127,7 +127,7 @@ class UserController extends BaseController
 		
 		$ios_token = LinkController::GenerateIosCode("smart",0,$this->user->id,0,"smart");
 		
-        return $this->view()->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+        return $this->view()->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("enable_wecenter",Config::get('enable_wecenter'))->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
 	
 	
