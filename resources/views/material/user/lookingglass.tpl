@@ -50,7 +50,8 @@
 											  },
 											  animationEnabled: true,
 											  axisY: {				
-												suffix: " ms"
+												suffix: " ms",
+												maximum: 1000
 												},
 											  legend: {
 												verticalAlign: "bottom",

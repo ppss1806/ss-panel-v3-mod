@@ -53,7 +53,7 @@
 														fontSize: 20
 														
 													},  
-																animationEnabled: true,
+													animationEnabled: true,
 													axisX: {
 														title:"时间",
 														labelFontSize: 14,
