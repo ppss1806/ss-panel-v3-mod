@@ -40,7 +40,7 @@ class Boot
 		
 		if(Config::get('wecenter_db_user')!='')
 		{
-			$capsule->addConnection(Config::getWecenterDbConfig(),'wencenter');
+			$capsule->addConnection(Config::getWecenterDbConfig(),'wecenter');
 		}
         $capsule->bootEloquent();
     }

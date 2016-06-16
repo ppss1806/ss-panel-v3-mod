@@ -16,7 +16,7 @@ Class Wecenter
      */
     static function Add($user,$pwd)
     {
-        if(Config::get('enable_wecenter')==true)
+        if(Config::get('enable_wecenter')=='true')
 		{
 			$email=$user->email;
 			$exists=WecenterUser::where("email",$email)->first();
@@ -43,7 +43,7 @@ Class Wecenter
 	
 	static function Delete($email)
 	{
-		if(Config::get('enable_wecenter')==true)
+		if(Config::get('enable_wecenter')=='true')
 		{
 			WecenterUser::where("email",$email)->delete();
 		}
@@ -51,7 +51,7 @@ Class Wecenter
 	
 	static function ChangeUserName($email1,$email2,$pwd,$username)
 	{
-		if(Config::get('enable_wecenter')==true)
+		if(Config::get('enable_wecenter')=='true')
 		{
 			$email=$user->email;
 			$exists=WecenterUser::where("email",$email1)->first();
@@ -79,7 +79,7 @@ Class Wecenter
 	
 	static function Login($user,$pwd,$time)
 	{
-		if(Config::get('enable_wecenter')==true)
+		if(Config::get('enable_wecenter')=='true')
 		{
 			$email=$user->email;
 			$exists=WecenterUser::where("email",$email)->first();
@@ -98,7 +98,7 @@ Class Wecenter
 	
 	static function Loginout()
 	{
-		if(Config::get('enable_wecenter')==true)
+		if(Config::get('enable_wecenter')=='true')
 		{
 			Utils\Cookie::setwithdomain([Config::get('wecenter_cookie_prefix')."_user_login"=>"loginout"],time()-86400,Config::get('wecenter_system_main_domain'));
 		}
