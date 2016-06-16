@@ -212,7 +212,7 @@
 															{literal}
 															{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getTelecomDownload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getTelecomUpload()}
 															{literal}
 															}
 															{/literal}
@@ -221,7 +221,7 @@
 															{literal}
 															,{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getTelecomDownload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getTelecomUpload()}
 															{literal}
 															}
 															{/literal}
@@ -245,7 +245,7 @@
 															{literal}
 															{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getTelecomUpload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getTelecomDownload()}
 															{literal}
 															}
 															{/literal}
@@ -254,7 +254,7 @@
 															{literal}
 															,{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getTelecomUpload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getTelecomDownload()}
 															{literal}
 															}
 															{/literal}
@@ -279,7 +279,7 @@
 															{literal}
 															{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getUnicomDownload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getUnicomUpload()}
 															{literal}
 															}
 															{/literal}
@@ -288,7 +288,7 @@
 															{literal}
 															,{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getUnicomDownload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getUnicomUpload()}
 															{literal}
 															}
 															{/literal}
@@ -311,7 +311,7 @@
 															{literal}
 															{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getUnicomUpload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getUnicomDownload()}
 															{literal}
 															}
 															{/literal}
@@ -320,7 +320,7 @@
 															{literal}
 															,{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getUnicomUpload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getUnicomDownload()}
 															{literal}
 															}
 															{/literal}
@@ -343,7 +343,7 @@
 															{literal}
 															{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getCmccDownload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getCmccUpload()}
 															{literal}
 															}
 															{/literal}
@@ -352,7 +352,7 @@
 															{literal}
 															,{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getCmccDownload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getCmccUpload()}
 															{literal}
 															}
 															{/literal}
@@ -375,7 +375,7 @@
 															{literal}
 															{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getCmccUpload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getCmccDownload()}
 															{literal}
 															}
 															{/literal}
@@ -384,7 +384,7 @@
 															{literal}
 															,{
 															{/literal}
-																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getCmccUpload()}
+																label: "{$single_speedtest->node()->name}", y: {$single_speedtest->getCmccDownload()}
 															{literal}
 															}
 															{/literal}
