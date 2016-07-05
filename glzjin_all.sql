@@ -666,4 +666,4 @@ ALTER TABLE `code` CHANGE `number` `number` DECIMAL(11,2) NOT NULL;
 CREATE TABLE `auto` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `type` INT NOT NULL , `value` LONGTEXT NOT NULL , `datetime` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 
-ALTER TABLE `auto` ADD `sign` LONGTEXT NOT NULL AFTER `value`;
+ALTER TABLE `auto` ADD `sign` LONGTEXT NOT NULL AFTER `value`;ALTER TABLE `user` ADD `relay_enable` INT NOT NULL DEFAULT '0' AFTER `auto_reset_bandwidth`, ADD `relay_info` LONGTEXT NULL AFTER `relay_enable`;
