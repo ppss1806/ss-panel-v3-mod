@@ -266,42 +266,46 @@ class Job
 
 		$adminUser = User::where("is_admin","=","1")->get();
 		
-		$newmd5 = md5(file_get_contents("https://github.com/glzjin/ss-panel-v3-mod/raw/master/bootstrap.php"));
+		$latest_content = file_get_contents("https://github.com/glzjin/ss-panel-v3-mod/raw/master/bootstrap.php");
+		$newmd5 = md5($latest_content);
 		$oldmd5 = md5(file_get_contents(BASE_PATH."/bootstrap.php"));
 		
-		if($newmd5 == $oldmd5)
+		if($latest_content!="")
 		{
-			if(file_exists(BASE_PATH."/storage/update.md5"))
+			if($newmd5 == $oldmd5)
 			{
-				unlink(BASE_PATH."/storage/update.md5");
-			}
-		}
-		else
-		{
-			if(!file_exists(BASE_PATH."/storage/update.md5"))
-			{
-				foreach($adminUser as $user)
+				if(file_exists(BASE_PATH."/storage/update.md5"))
 				{
-					echo "Send offline mail to user: ".$user->id;
-					$subject = Config::get('appName')."-系统提示";
-					$to = $user->email;
-					$text = "管理员您好，系统发现有了新版本，您可以到 <a href=\"https://github.com/glzjin/ss-panel-v3-mod/issues\">https://github.com/glzjin/ss-panel-v3-mod/issues</a> 按照步骤进行升级。" ;
-					try {
-						Mail::send($to, $subject, 'news/warn.tpl', [
-							"user" => $user,"text" => $text
-						], [
-						]);
-					} catch (Exception $e) {
-						echo $e->getMessage();
+					unlink(BASE_PATH."/storage/update.md5");
+				}
+			}
+			else
+			{
+				if(!file_exists(BASE_PATH."/storage/update.md5"))
+				{
+					foreach($adminUser as $user)
+					{
+						echo "Send offline mail to user: ".$user->id;
+						$subject = Config::get('appName')."-系统提示";
+						$to = $user->email;
+						$text = "管理员您好，系统发现有了新版本，您可以到 <a href=\"https://github.com/glzjin/ss-panel-v3-mod/issues\">https://github.com/glzjin/ss-panel-v3-mod/issues</a> 按照步骤进行升级。" ;
+						try {
+							Mail::send($to, $subject, 'news/warn.tpl', [
+								"user" => $user,"text" => $text
+							], [
+							]);
+						} catch (Exception $e) {
+							echo $e->getMessage();
+						}
+						
+						
 					}
 					
-					
+					$myfile = fopen(BASE_PATH."/storage/update.md5", "w+") or die("Unable to open file!");
+					$txt = "1";
+					fwrite($myfile, $txt);
+					fclose($myfile);
 				}
-				
-				$myfile = fopen(BASE_PATH."/storage/update.md5", "w+") or die("Unable to open file!");
-				$txt = "1";
-				fwrite($myfile, $txt);
-				fclose($myfile);
 			}
 		}
 
@@ -329,7 +333,7 @@ class Job
 							echo $e->getMessage();
 						}
 						
-						if(Config::get('enable_cloudxns')=='true')
+						if(Config::get('enable_cloudxns')=='true'&&$node->sort==0)
 						{
 							$api=new Api();
 							$api->setApiKey(Config::get("cloudxns_apikey"));//修改成自己API KEY
@@ -401,7 +405,7 @@ class Job
 						}
 						
 						
-						if(Config::get('enable_cloudxns')=='true')
+						if(Config::get('enable_cloudxns')=='true'&&$node->sort==0)
 						{
 							$api=new Api();
 							$api->setApiKey(Config::get("cloudxns_apikey"));//修改成自己API KEY

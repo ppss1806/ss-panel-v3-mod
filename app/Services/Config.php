@@ -20,7 +20,8 @@ class Config
             "checkinMin" => self::get("checkinMin"),
 			"code_payback" => self::get("code_payback"),
             "checkinMax" => self::get("checkinMax"),
-			"wecenter_url" => self::get("wecenter_url")
+			"wecenter_url" => self::get("wecenter_url"),
+			"enable_wecenter" => self::get("enable_wecenter"),
          ];
     }
 

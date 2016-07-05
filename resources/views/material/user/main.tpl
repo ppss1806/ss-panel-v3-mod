@@ -268,7 +268,7 @@
 						</a>
 					</li>
 					
-					{if $enable_wecenter=='true'}
+					{if $config['enable_wecenter']=='true'}
 					<li>
 						<a href="{$config["wecenter_url"]}" target="_blank">
 							<i class="icon icon-lg">help</i>&nbsp;问答

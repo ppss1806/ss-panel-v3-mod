@@ -74,6 +74,7 @@ $app->get('/pwm_pingback', 'App\Controllers\HomeController:pmw_pingback');
 $app->get('/code', 'App\Controllers\HomeController:code');
 $app->get('/tos', 'App\Controllers\HomeController:tos');
 $app->get('/staff', 'App\Controllers\HomeController:staff');
+$app->get('/gfwlistjs', 'App\Controllers\LinkController:GetGfwlistJs');
 
 
 // User Center
@@ -102,6 +103,7 @@ $app->group('/user', function () {
     $this->get('/edit', 'App\Controllers\UserController:edit');
     $this->post('/password', 'App\Controllers\UserController:updatePassword');
 	$this->post('/wechat', 'App\Controllers\UserController:updateWechat');
+	$this->post('/relay', 'App\Controllers\UserController:updateRelay');
 	$this->post('/theme', 'App\Controllers\UserController:updateTheme');
 	$this->post('/mail', 'App\Controllers\UserController:updateMail');
     $this->post('/sspwd', 'App\Controllers\UserController:updateSsPwd');

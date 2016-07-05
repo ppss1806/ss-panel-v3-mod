@@ -151,6 +151,40 @@
 							</div>
 						</div>
 						
+						
+						<div class="card margin-bottom-no">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="card-inner">
+										<p class="card-heading">中转是否启用</p>
+										<p>当前转发状态：{if $user->relay_enable==1}启用{else}禁用{/if}</p>
+										<div class="form-group form-group-label">
+											<label class="floating-label" for="relay_enable">是否启用</label>
+											<select id="relay_enable" class="form-control">
+												<option value="0">禁用</option>
+												<option value="1">启用</option>
+											</select>
+										</div>
+										
+										<p class="card-heading">当前转发信息</p>
+										<p>当前转发信息：{$user->relay_info}</p>
+										<div class="form-group form-group-label">
+											<label class="floating-label" for="relay_info">转发信息（地址 端口）（例如：zhaoj.in 10000）</label>
+											<input class="form-control" id="relay_info" type="text">
+										</div>
+										
+									</div>
+									<div class="card-action">
+										<div class="card-action-btn pull-left">
+											<button class="btn btn-flat waves-attach" id="relay-update" ><span class="icon">check</span>&nbsp;提交</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
+						
 					
 					
 						<div class="card margin-bottom-no">
@@ -178,6 +212,11 @@
 							</div>
 						</div>
 						
+					</div>
+					
+					
+					<div class="col-lg-6 col-md-6">
+						
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -195,10 +234,7 @@
 							</div>
 						</div>
 						
-					</div>
 					
-					
-					<div class="col-lg-6 col-md-6">
 					
 						<div class="card margin-bottom-no">
 							<div class="card-main">
@@ -433,6 +469,37 @@
                 data: {
                     wechat: $("#wechat").val(),
 					imtype: $("#imtype").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+                        $("#result").modal();
+						$("#msg").html(data.msg);
+                    } else {
+                        $("#result").modal();
+						$("#msg").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    $("#result").modal();
+					$("#msg").html(data.msg+"     出现了一些错误。");
+                }
+            })
+        })
+    })
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#relay-update").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "relay",
+                dataType: "json",
+                data: {
+                    relay_enable: $("#relay_enable").val(),
+					relay_info: $("#relay_info").val()
                 },
                 success: function (data) {
                     if (data.ret) {

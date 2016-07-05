@@ -127,8 +127,9 @@ class UserController extends BaseController
 		
 		$ios_token = LinkController::GenerateIosCode("smart",0,$this->user->id,0,"smart");
 		
-        return $this->view()->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("enable_wecenter",Config::get('enable_wecenter'))->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+        return $this->view()->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
+	
 	
 	
 	public function lookingglass($request, $response, $args)
@@ -136,8 +137,9 @@ class UserController extends BaseController
 		
 		$Speedtest=Speedtest::where("datetime",">",time()-Config::get('Speedtest_duration')*3600)->orderBy('datetime','desc')->get();
 		
-        return $this->view()->assign('speedtests',$Speedtest)->assign('hour',Config::get('Speedtest_duration'))->display('user/lookingglass.tpl');
+        return $this->view()->assign('speedtest',$Speedtest)->assign('hour',Config::get('Speedtest_duration'))->display('user/lookingglass.tpl');
     }
+	
 	
 	
 	
@@ -1188,6 +1190,23 @@ class UserController extends BaseController
 		
 		
 		return $this->view()->assign('ticketset',$ticketset)->assign("id",$id)->display('user/ticket_view.tpl');
+    }
+	
+	public function updateRelay($request, $response, $args)
+    {
+		$relay_enable = $request->getParam('relay_enable');
+        $relay_info = $request->getParam('relay_info');
+        
+        $user = $this->user;
+		
+        
+		$user->relay_enable = $relay_enable;
+        $user->relay_info = $relay_info;
+        $user->save();
+
+        $res['ret'] = 1;
+        $res['msg'] = "修改成功";
+        return $this->echoJson($response, $res);
     }
 	
 	public function updateWechat($request, $response, $args)
