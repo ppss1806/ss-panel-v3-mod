@@ -74,6 +74,28 @@
 									<label class="floating-label" for="method">自定义加密</label>
 									<input class="form-control" id="method" type="text" value="{$user->method}">
 								</div>
+								
+								{if $config['enable_rss']=='true'}
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="protocol">自定义协议</label>
+									<input class="form-control" id="protocol" type="text" value="{$user->protocol}">
+								</div>
+								
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="protocol_param">自定义协议参数</label>
+									<input class="form-control" id="protocol_param" type="text" value="{$user->protocol_param}">
+								</div>
+								
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="obfs">自定义混淆方式</label>
+									<input class="form-control" id="obfs" type="text" value="{$user->obfs}">
+								</div>
+								
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="obfs_param">自定义混淆参数</label>
+									<input class="form-control" id="obfs_param" type="text" value="{$user->obfs_param}">
+								</div>
+								{/if}
 							</div>
 						</div>
 					</div>	
@@ -256,7 +278,17 @@
 					class: $("#class").val(),
 					class_expire: $("#class_expire").val(),
 					expire_in: $("#expire_in").val(),
-					node_connector: $("#node_connector").val()
+					node_connector: $("#node_connector").val(){if $config['enable_rss']=='true'},
+					protocol: $("#protocol").val(),
+					protocol_param: $("#protocol_param").val(),
+					obfs: $("#obfs").val(),
+					obfs_param: $("#obfs_param").val()
+					{else},
+					protocol: 'origin',
+					protocol_param: '',
+					obfs: 'plain',
+					obfs_param: ''
+					{/if}
                 },
                 success: function (data) {
                     if (data.ret) {

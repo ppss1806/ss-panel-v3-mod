@@ -49,6 +49,16 @@
 										</div>
 									</div>
 									
+									{if $config['enable_rss']=='true'}
+									<div class="form-group form-group-label">
+										<div class="checkbox switch">
+											<label for="custom_rss">
+												<input  class="access-hide" id="custom_rss" type="checkbox" name="custom_rss"><span class="switch-toggle"></span>自定义协议&混淆
+											</label>
+										</div>
+									</div>
+									{/if}
+									
 									
 								</div>
 							</div>
@@ -202,6 +212,17 @@
 			{
 				var type=0;
 			}
+			{/literal}
+			{if $config['enable_rss']=='true'}
+			if(document.getElementById('custom_rss').checked)
+			{
+				var custom_rss=1;
+			}
+			else
+			{
+				var custom_rss=0;
+			}
+			{/if}
 			
 			
             $.ajax({
@@ -209,6 +230,7 @@
                 url: "/admin/node",
                 dataType: "json",
                 data: {
+				{literal}
                     name: $("#name").val(),
                     server: $("#server").val(),
                     method: $("#method").val(),
@@ -223,6 +245,13 @@
 					class: $("#class").val(),
 					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
 					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val()
+					{/literal}
+					{if $config['enable_rss']=='true'}
+					,custom_rss: $(custom_rss).val()
+					{else}
+					,custom_rss: 0
+					{/if}
+					{literal}
                 },
                 success: function (data) {
                     if (data.ret) {

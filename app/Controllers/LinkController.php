@@ -215,13 +215,13 @@ class LinkController extends BaseController
 										"server"=>$node->server,
 										"server_port"=>$user->port,
 										"method"=>($node->custom_method==1?$user->method:$node->method),
-										"obfs"=>"plain",
-										"obfsparam"=>"",
+										"obfs"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain"),
+										"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
 										"remarks_base64"=>base64_encode($node->name),
 										"password"=>$user->passwd,
 										"tcp_over_udp"=>false,
 										"udp_over_tcp"=>false,
-										"protocol"=>"origin",
+										"protocol"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin"),
 										"obfs_udp"=>false,
 										"enable"=>true));
 		}

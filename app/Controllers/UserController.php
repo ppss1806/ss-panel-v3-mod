@@ -515,8 +515,20 @@ class UserController extends BaseController
 					}
 					$json = json_encode($ary);
 					$json_show = json_encode($ary, JSON_PRETTY_PRINT);
-					$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-					$ssqr = "ss://" . base64_encode($ssurl);
+					if(Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))
+					{
+						
+						$ssurl = str_replace("_compatible","",$user->obfs).":".str_replace("_compatible","",$user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
+						$ssqr_s = "ss://" . base64_encode($ssurl);
+						$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
+						$ssqr = "ss://" . base64_encode($ssurl);
+					}
+					else
+					{
+						$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
+						$ssqr = "ss://" . base64_encode($ssurl);
+						$ssqr_s = "ss://" . base64_encode($ssurl);
+					}
 					
 					$token_1 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,0,$ary['method']);
 					$token_2 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,1,$ary['method']);
@@ -525,7 +537,7 @@ class UserController extends BaseController
 					$surge_proxy = "#!PROXY-OVERRIDE:ProxyBase.conf\n";
 					$surge_proxy .= "[Proxy]\n";
 					$surge_proxy .= "Proxy = custom," . $ary['server'] . "," . $ary['server_port'] . "," . $ary['method'] . "," . $ary['password'] . "," . Config::get('baseUrl') . "/downloads/SSEncrypt.module";
-					return $this->view()->assign('ary', $ary)->assign('json', $json)->assign('link1',Config::get('baseUrl')."/link/".$token_1)->assign('link2',Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
+					return $this->view()->assign('ary', $ary)->assign('node',$node)->assign('user',$this->user)->assign('json', $json)->assign('link1',Config::get('baseUrl')."/link/".$token_1)->assign('link2',Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('ssqr_s', $ssqr_s)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
 				}
 			break; 
 
@@ -1230,7 +1242,37 @@ class UserController extends BaseController
         }
         
 		$user->im_type = $type;
-        $user->im_value = filter_var($wechat, FILTER_SANITIZE_STRING);
+		$antiXss = new AntiXSS();
+        $user->im_value = $antiXss->xss_clean($wechat);
+        $user->save();
+
+        $res['ret'] = 1;
+        $res['msg'] = "修改成功";
+        return $this->echoJson($response, $res);
+    }
+	
+	
+	public function updateRss($request, $response, $args)
+    {
+		$protocol = $request->getParam('protocol');
+        $protocol_param = $request->getParam('protocol_param');
+		$obfs = $request->getParam('obfs');
+        $obfs_param = $request->getParam('obfs_param');
+        
+        $user = $this->user;
+		
+		if ( $obfs == ""||$protocol == "") {
+            $res['ret'] = 0;
+            $res['msg'] = "请填好";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
+        $antiXss = new AntiXSS();
+		
+		$user->protocol = $antiXss->xss_clean($protocol);
+        $user->protocol_param = $antiXss->xss_clean($protocol_param);
+        $user->obfs = $antiXss->xss_clean($obfs);
+        $user->obfs_param = $antiXss->xss_clean($obfs_param);
         $user->save();
 
         $res['ret'] = 1;

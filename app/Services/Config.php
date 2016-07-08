@@ -22,6 +22,7 @@ class Config
             "checkinMax" => self::get("checkinMax"),
 			"wecenter_url" => self::get("wecenter_url"),
 			"enable_wecenter" => self::get("enable_wecenter"),
+			"enable_rss" => self::get("enable_rss")
          ];
     }
 

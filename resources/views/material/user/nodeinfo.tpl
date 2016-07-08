@@ -35,14 +35,18 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">配置信息</p>
-										<p>服务器地址：{$ary['server']}<br
-										>
-										服务器端口：{$ary['server_port']}<br
-										>
-										加密方式：{$ary['method']}<br
-										>
-										密码：{$ary['password']}<br
-										></p>
+										<p>服务器地址：{$ary['server']}<br>
+										服务器端口：{$ary['server_port']}<br>
+										加密方式：{$ary['method']}<br>
+										密码：{$ary['password']}<br>
+										{if $config['enable_rss']=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin')}
+										协议：{$user->protocol}<br>
+										协议参数：{$user->protocol_param}<br>
+										混淆：{$user->obfs}<br>
+										混淆参数：{$user->obfs_param}<br>
+										{/if}
+										
+										</p>
 									</div>
 									
 								</div>
@@ -80,7 +84,7 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">配置链接</p>
-										<input id="ss-qr-text" class="form-control" value="{$ssqr}">
+										<input id="ss-qr-text" class="form-control" value="{$ssqr_s}">
 										<a href="{$ssqr}"/>Android 手机上用默认浏览器打开点我就可以直接添加了</a>
 									</div>
 									
@@ -179,9 +183,9 @@
 {include file='user/footer.tpl'}
 
 
-<script src=" /assets/public/js/jquery.qrcode.min.js "></script>
+<script src="/assets/public/js/jquery.qrcode.min.js"></script>
 <script>
-	var text_qrcode = jQuery('#ss-qr-text').val();
+	var text_qrcode = '{$ssqr_s}';
 	jQuery('#ss-qr').qrcode({
 		"text": text_qrcode
 	});

@@ -193,6 +193,10 @@ class UserController extends AdminController
         $user->auto_reset_bandwidth = $request->getParam('auto_reset_bandwidth');
         $user->port =  $request->getParam('port');
         $user->passwd = $request->getParam('passwd');
+        $user->protocol = $request->getParam('protocol');
+        $user->protocol_param = $request->getParam('protocol_param');
+        $user->obfs = $request->getParam('obfs');
+        $user->obfs_param = $request->getParam('obfs_param');
         $user->transfer_enable = $request->getParam('transfer_enable');
         $user->invite_num = $request->getParam('invite_num');
         $user->method = $request->getParam('method');

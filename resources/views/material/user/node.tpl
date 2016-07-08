@@ -53,7 +53,7 @@
 																</div>
 															</div>
 															<div class="tile-inner">
-																<div class="text-overflow">{$prefix} | <i class="icon icon-lg">person</i> {$node_alive[$prefix]} | <i class="icon icon-lg">build</i> {$node_method[$prefix]} | <i class="icon icon-lg">traffic</i> {$node_bandwidth[$prefix]}</div>
+																<div class="text-overflow">{$prefix} | <i class="icon icon-lg">person</i> {$node_alive[$prefix]} | <i class="icon icon-lg">build</i> {$node_method[$prefix]} | <i class="icon icon-lg">traffic</i> {if isset($node_bandwidth[$prefix])==true}{$node_bandwidth[$prefix]}{else}N/A{/if}</div>
 															</div>
 														</div>
 														<div class="collapsible-region collapse" id="heading{$node_order->$prefix}">
@@ -92,6 +92,24 @@
 																						{$node->method}
 																					{/if}
 																				</span></p>
+																				
+																				{if $node->sort==0&&$node->custom_rss==1&&$config['enable_rss']=='true'}
+																					<p>协议：<span class="label label-brand-accent"> 
+																						{$user->protocol}
+																					</span></p>
+																					
+																					<p>协议参数：<span class="label label-red"> 
+																						{$user->protocol_param}
+																					</span></p>
+																					
+																					<p>混淆方式：<span class="label label-brand"> 
+																						{$user->obfs}
+																					</span></p>
+																					
+																					<p>混淆参数：<span class="label label-green"> 
+																						{$user->obfs_param}
+																					</span></p>
+																				{/if}
 																				
 																				
 																				<p>流量比例：<span class="label label-red"> 
