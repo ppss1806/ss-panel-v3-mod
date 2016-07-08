@@ -123,9 +123,13 @@ class LinkController extends BaseController
 		{
 			case -1:
 				$user=User::where("id",$Elink->userid)->first();
+				if($user == null)
+				{
+					return null;
+				}
 				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
 				$newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("type","1")->where(
-					function ($query) {
+					function ($query) use ($user) {
 						$query->where("node_group","=",$user->node_group)
 							->orWhere("node_group","=",0);
 					}
