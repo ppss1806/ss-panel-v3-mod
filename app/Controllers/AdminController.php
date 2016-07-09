@@ -18,7 +18,7 @@ class AdminController extends UserController
         return $this->view()->assign('sts', $sts)->display('admin/index.tpl');
     }
 
-    public function node()
+    public function node($request, $response, $args)
     {
         $nodes = Node::all();
         return $this->view()->assign('nodes', $nodes)->display('admin/node.tpl');

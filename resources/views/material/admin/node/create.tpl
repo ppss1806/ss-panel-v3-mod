@@ -230,7 +230,6 @@
                 url: "/admin/node",
                 dataType: "json",
                 data: {
-				{literal}
                     name: $("#name").val(),
                     server: $("#server").val(),
                     method: $("#method").val(),
@@ -244,14 +243,10 @@
                     sort: $("#sort").val(),
 					class: $("#class").val(),
 					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
-					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val()
-					{/literal}
-					{if $config['enable_rss']=='true'}
-					,custom_rss: $(custom_rss).val()
-					{else}
-					,custom_rss: 0
+					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val(){if $config['enable_rss']=='true'},
+					custom_rss: custom_rss{else},
+					custom_rss: 0
 					{/if}
-					{literal}
                 },
                 success: function (data) {
                     if (data.ret) {
@@ -272,5 +267,5 @@
 	});
 
 </script>
-{/literal}
+
 
