@@ -1,6 +1,8 @@
 详情请看 
 [https://www.zhaoj.in/read-3289.html](https://www.zhaoj.in/read-3289.html) 
 
-欢迎加入ss panel，群号码：260672058
+点击链接加入群【魔改的世界】：http://jq.qq.com/?_wv=1027&k=27pOmIx
 
-不是我建的群，仅供交流，有问题还是请发issue。
+欢迎加入魔改的世界，群号码：567667802
+
+仅供交流，有问题还是请发issue。
