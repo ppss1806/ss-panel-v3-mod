@@ -21,6 +21,7 @@ use App\Utils\QQWry;
 use App\Utils\Duoshuo;
 use App\Utils\GA;
 use CloudXNS\Api;
+use App\Models\Disconnect;
 
 class Job
 {
@@ -189,6 +190,70 @@ class Job
 	
 	public static function CheckJob()
     {
+		//在线人数检测
+		$users = User::where('node_connector','>',0)->get();
+		foreach($users as $user)
+		{
+			$alive_ips = Ip::where("datetime",">=",time()-90)->where('userid', '=',$user->id)->get();
+			$ip_count = 0;
+			$ips = array();
+			foreach($alive_ips as $alive_ip)
+			{
+				if(!isset($ips[$alive_ip->ip]))
+				{
+					$ip_count++;
+					$ips[$alive_ip->ip]=1;
+					if($user->node_connector < $ip_count)
+					{
+						//暂时封禁
+						$disconnect = new Disconnect();
+						$disconnect->userid = $user->id;
+						$disconnect->ip = $alive_ip->ip;
+						$disconnect->datetime = time();
+						
+						if($user->disconnect_ip == NULL||$user->disconnect_ip == "")
+						{
+							$user->disconnect_ip = $alive_ip->ip;
+						}
+						else
+						{
+							$user->disconnect_ip = ",".$alive_ip->ip;
+						}
+						$user->save();
+					}
+				}
+			}
+		}
+		
+		//解封
+		$disconnecteds = Disconnect::where("datetime","<",time()-300)->get();
+		foreach($disconnecteds as $disconnected)
+		{
+			$user = User::where('id','=',$disconnected->userid)->first();
+			
+			$ips = explode(",",$user->disconnect_ip);
+			$new_ips = "";
+			$first = 1;
+			
+			foreach($ips as $ip)
+			{
+				if($ip != $disconnected->ip && $ip != "")
+				{
+					if($first == 1)
+					{
+						$new_ips .= $ip;
+						$first = 0;
+					}
+					else
+					{
+						$new_ips .= ",".$ip;
+					}
+				}
+			}
+			
+			$disconnected->delete();
+		}
+		
 		//auto renew
 		$boughts=Bought::where("renew","<",time())->where("renew","<>",0)->get();
 		foreach($boughts as $bought)

@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin;
 
-use App\Models\User,App\Models\Ip;
+use App\Models\User,App\Models\Ip,App\Models\RadiusBan;
 use App\Controllers\AdminController;
 use App\Utils\Hash,App\Utils\Radius,App\Utils\Da,App\Utils\QQWry;
 use App\Utils\Wecenter;
@@ -210,6 +210,10 @@ class UserController extends AdminController
 		$user->class = $request->getParam('class');
 		$user->class_expire = $request->getParam('class_expire');
 		$user->expire_in = $request->getParam('expire_in');
+		
+		$user->forbidden_ip = str_replace(PHP_EOL, ",", $request->getParam('forbidden_ip'));
+		$user->forbidden_port = str_replace(PHP_EOL, ",", $request->getParam('forbidden_port'));
+		
         if(!$user->save()){
             $rs['ret'] = 0;
             $rs['msg'] = "修改失败";
@@ -227,6 +231,8 @@ class UserController extends AdminController
 		$email1=$user->email;
 		
 		Radius::Delete($email1);
+		
+		RadiusBan::where('userid','=',$user->id)->delete();
 		
 		Wecenter::Delete($email1);
 			

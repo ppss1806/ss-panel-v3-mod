@@ -93,7 +93,7 @@
 													<option value="5">Anyconnect</option>
 													<option value="6">APN</option>
 													<option value="7">PAC PLUS(Socks 代理生成 PAC文件)</option>
-													<option value="7">PAC PLUS PLUS(HTTPS 代理生成 PAC文件)</option>
+													<option value="8">PAC PLUS PLUS(HTTPS 代理生成 PAC文件)</option>
 												</select>
 											</div>
 									</div>

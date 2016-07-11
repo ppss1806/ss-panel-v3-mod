@@ -52,8 +52,9 @@ class SyncRadius
 		
 		foreach($result as $row)  
 		{  
-			//if($row["pass"]!="")
+			if(isset($tempuserbox[$row["username"]]))
 			{
+				
 				$traffic = new TrafficLog();
 				$traffic->user_id = $tempuserbox[$row["username"]];
 				$traffic->u = 0;

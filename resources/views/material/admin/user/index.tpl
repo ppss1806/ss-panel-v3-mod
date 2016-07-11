@@ -79,7 +79,11 @@
 								
                                 <td>{$user->email}</td>
                                 <td>{$user->port}</td>
-                                <td>{$user->enable}</td>
+								{if $user->enable==1}
+                                <td>可用</td>
+								{else}
+								<td>禁用</td>
+								{/if}
                                 <td>{$user->method}</td>
                                 <td>{$user->usedTraffic()}/{$user->enableTraffic()}</td>
 								<td>{(($user->u+$user->d)-$user->last_day_t)/1024/1024}MB</td>

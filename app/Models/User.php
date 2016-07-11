@@ -70,6 +70,16 @@ class User extends Model
         $this->pass = Hash::passwordHash($pwd);
         $this->save();
     }
+	
+	public function get_forbidden_ip()
+    {
+        return str_replace(",", PHP_EOL, $this->attributes['forbidden_ip']);
+    }
+
+    public function get_forbidden_port()
+    {
+        return str_replace(",", PHP_EOL, $this->attributes['forbidden_port']);
+    }
 
     public function updateSsPwd($pwd)
     {

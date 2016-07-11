@@ -197,6 +197,23 @@
 						</div>
 					</div>
 					
+					<div class="card">
+						<div class="card-main">
+							<div class="card-inner">
+								
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="node_speedlimit">禁止用户访问的IP，一行一个</label>
+									<textarea class="form-control" id="forbidden_ip" rows="8">{$user->get_forbidden_ip()}</textarea>
+								</div>
+								
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="node_speedlimit">禁止用户访问的端口，一行一个</label>
+									<textarea class="form-control" id="forbidden_port" rows="8">{$user->get_forbidden_port()}</textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					
 					
 					<div class="card">
 						<div class="card-main">
@@ -275,6 +292,8 @@
                     enable: enable,
                     is_admin: is_admin,
                     ref_by: $("#ref_by").val(),
+                    forbidden_ip: $("#forbidden_ip").val(),
+                    forbidden_port: $("#forbidden_port").val(),
 					class: $("#class").val(),
 					class_expire: $("#class_expire").val(),
 					expire_in: $("#expire_in").val(),

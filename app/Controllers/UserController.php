@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Services\Auth;
 use App\Models\Node,App\Models\TrafficLog,App\Models\InviteCode,App\Models\CheckInLog,App\Models\Ann,App\Models\Speedtest,App\Models\Shop,App\Models\Coupon,App\Models\Bought,App\Models\Ticket;
 use App\Services\Config;
-use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Da;
+use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Da,App\Models\RadiusBan;
 
 use voku\helper\AntiXSS;
 
@@ -1415,8 +1415,9 @@ class UserController extends BaseController
             $res['msg'] = " 密码错误";
             return $this->echoJson($response, $res);
         }
-
 		Radius::Delete($email);
+		
+		RadiusBan::where('userid','=',$user->id)->delete();
 		
 		Wecenter::Delete($email);
 
