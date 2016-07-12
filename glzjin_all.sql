@@ -624,9 +624,7 @@ CREATE TABLE IF NOT EXISTS `ss_node` (
 
 INSERT INTO `ss_node` (`id`, `name`, `type`, `server`, `method`, `info`, `status`, `sort`, `custom_method`, `traffic_rate`, `node_class`, `node_speedlimit`, `node_connector`, `node_bandwidth`, `node_bandwidth_limit`, `bandwidthlimit_resetday`, `node_heartbeat`, `node_ip`) VALUES
 (NULL, '统一验证登陆', 0, 'zhaojin97.cn', 'radius', '统一登陆验证', '可用', 999, 0, 1, 0, 0, 0, 0, 0, 0, 0, ''),
-(NULL, 'VPN 统一流量结算', 0, 'zhaojin97.cn', 'radius', 'VPN 统一流量结算', '可用', 999, 0, 1, 0, 0, 0, 0, 0, 0, 0, NULL),
-(NULL, '智能线路（速度） - Shadowsocks', 1, 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，注重速度。', '可用', 0, 1, 1, 0, 0, 0, 0, 0, 0, 1461851943, NULL),
-(NULL, '智能线路（延时） - Shadowsocks', 1, 'smart.zhaoj.in', 'aes-256-cfb', '智能线路，降低延时。', '可用', 0, 1, 1, 0, 0, 0, 0, 0, 0, 1461851943, NULL);
+(NULL, 'VPN 统一流量结算', 0, 'zhaojin97.cn', 'radius', 'VPN 统一流量结算', '可用', 999, 0, 1, 0, 0, 0, 0, 0, 0, 0, NULL);
 
 
 ALTER TABLE `user` ADD `node_group` INT NOT NULL DEFAULT '0' AFTER `remark`;
