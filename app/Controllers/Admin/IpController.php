@@ -23,10 +23,10 @@ class IpController extends AdminController
 		$iplocation = new QQWry(); 
 		foreach($logs as $log)
 		{
-			if(!isset($loc[$log->ip]))
+			if(!isset($loc[$log->ip()]))
 			{
-				$location=$iplocation->getlocation($log->ip);
-				$loc[$log->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+				$location=$iplocation->getlocation($log->ip());
+				$loc[$log->ip()]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
 			}
 		}
 		

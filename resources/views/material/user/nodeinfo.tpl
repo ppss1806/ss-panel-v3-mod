@@ -92,6 +92,37 @@
 							</div>
 						</div>
 						
+						{if $config['enable_rss']=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin')}
+						<div class="col-lg-12 col-sm-12">
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">原版配置二维码</p>
+										<div class="text-center">
+											<div id="ss-qr-y"></div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-lg-12 col-sm-12">
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">RSS配置二维码</p>
+										<div class="text-center">
+											<div id="ss-qr"></div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+						
+						{else}
+						
 						<div class="col-lg-12 col-sm-12">
 							<div class="card">
 								<div class="card-main">
@@ -105,6 +136,8 @@
 								</div>
 							</div>
 						</div>
+						
+						{/if}
 						
 						<div class="col-lg-12 col-sm-12">
 							<div class="card">
@@ -189,6 +222,14 @@
 	jQuery('#ss-qr').qrcode({
 		"text": text_qrcode
 	});
+	
+	{if $config['enable_rss']=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin')}
+	var text_qrcode1 = '{$ssqr}';
+	jQuery('#ss-qr-y').qrcode({
+		"text": text_qrcode1
+	});
+	{/if}
+	
 	var text_surge_base = jQuery('#surge-base-text').val();
 	jQuery('#surge-base-qr').qrcode({
 		"text": text_surge_base

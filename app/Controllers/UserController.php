@@ -51,10 +51,10 @@ class UserController extends BaseController
 		{
 			//if(isset($useripcount[$single->userid]))
 			{
-				if(!isset($userip[$single->ip]))
+				if(!isset($userip[$single->ip()]))
 				{
 					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
-					$location=$iplocation->getlocation($single->ip);
+					$location=$iplocation->getlocation($single->ip());
 					$userip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
 				}
 			}

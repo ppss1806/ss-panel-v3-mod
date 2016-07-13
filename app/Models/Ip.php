@@ -23,6 +23,12 @@ class Ip extends Model
     {
         return Node::find($this->attributes['nodeid']);
     }
+	
+	
+	public function ip()
+    {
+        return str_replace("::ffff:","",$this->attributes['ip']);
+    }
 
 
 

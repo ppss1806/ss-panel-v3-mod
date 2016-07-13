@@ -46,7 +46,7 @@ class UserController extends AdminController
 				if(!isset($userip[$single->userid][$single->ip]))
 				{
 					$useripcount[$single->userid]=$useripcount[$single->userid]+1;
-					$location=$iplocation->getlocation($single->ip);
+					$location=$iplocation->getlocation($single->ip());
 					$userip[$single->userid][$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
 				}
 			}
