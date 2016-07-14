@@ -202,8 +202,8 @@ class UserController extends BaseController
 	public function code_check($request, $response, $args)
     {
 		$time = $request->getQueryParams()["time"];
-		$codes = Code::where('userid','=',$this->user->id)->where('usedatetime','>',date('Y-m-d H:i:s',$time))->count();
-		if($codes!=0)
+		$codes = Code::where('userid','=',$this->user->id)->where('usedatetime','>',date('Y-m-d H:i:s',$time))->first();
+		if($codes!=null && strpos($codes->code,"Payment Wall 充值") !== FALSE)
 		{
 			$res['ret'] = 1;
             return $response->getBody()->write(json_encode($res));

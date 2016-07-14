@@ -152,9 +152,11 @@
                     if (data.ret) {
                         $("#result").modal();
 						$("#msg").html(data.msg);
+						window.setTimeout("location.href=window.location.href", 5000);
                     } else {
                         $("#result").modal();
 						$("#msg").html(data.msg);
+						window.setTimeout("location.href=window.location.href", 5000);
                     }
                 },
                 error: function (jqXHR) {
@@ -178,13 +180,14 @@
 			},
 			success: function (data) {
 				if (data.ret) {
+					clearTimeout(tid);
 					$("#result").modal();
 					$("#msg").html("充值成功！ 五秒后刷新页面");
 					window.setTimeout("location.href=window.location.href", 5000);
 				}
 			}
 		});
-		setTimeout(f, 1000); //循环调用触发setTimeout
+		tid = setTimeout(f, 1000); //循环调用触发setTimeout
 	}
 	setTimeout(f, 1000);
 </script>
