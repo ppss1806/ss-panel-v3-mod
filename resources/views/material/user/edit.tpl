@@ -53,6 +53,27 @@
 							<div class="card-main">
 								<div class="card-inner">
 									<div class="card-inner">
+										<p class="card-heading">连接密码修改</p>
+										<p>当前连接密码：{$user->passwd}</p>
+										<div class="form-group form-group-label">
+											<label class="floating-label" for="sspwd">连接密码</label>
+											<input class="form-control" id="sspwd" type="text">
+										</div>
+										
+									</div>
+									<div class="card-action">
+										<div class="card-action-btn pull-left">
+											<button class="btn btn-flat waves-attach" id="ss-pwd-update" ><span class="icon">check</span>&nbsp;提交</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="card margin-bottom-no">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="card-inner">
 										<p class="card-heading">联络方式修改</p>
 										<p>当前联络方式：
 										{if $user->im_type==1}
@@ -87,27 +108,6 @@
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
 											<button class="btn btn-flat waves-attach" id="wechat-update" ><span class="icon">check</span>&nbsp;提交</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-						<div class="card margin-bottom-no">
-							<div class="card-main">
-								<div class="card-inner">
-									<div class="card-inner">
-										<p class="card-heading">连接密码修改</p>
-										<p>当前连接密码：{$user->passwd}</p>
-										<div class="form-group form-group-label">
-											<label class="floating-label" for="sspwd">连接密码</label>
-											<input class="form-control" id="sspwd" type="text">
-										</div>
-										
-									</div>
-									<div class="card-action">
-										<div class="card-action-btn pull-left">
-											<button class="btn btn-flat waves-attach" id="ss-pwd-update" ><span class="icon">check</span>&nbsp;提交</button>
 										</div>
 									</div>
 								</div>
@@ -158,7 +158,9 @@
 									<div class="card-inner">
 										<p class="card-heading">RSS 协议&混淆设置</p>
 										<p>当前协议：{$user->protocol}</p>
+										<p>注意：如果需要在手机使用SS请选择带_compatible的兼容选项！</p>
 										<p>当前协议参数：{$user->protocol_param}</p>
+										<p>注意：参数请放空，除非你看得懂<a href="https://github.com/breakwa11/shadowsocks-rss/blob/master/ssr.md">这里</a>！</p>
 										<div class="form-group form-group-label">
 											<label class="floating-label" for="protocol">协议</label>
 											<select id="protocol" class="form-control">
@@ -183,7 +185,9 @@
 									
 									<div class="card-inner">
 										<p>当前混淆方式：{$user->obfs}</p>
+										<p>注意：如果需要在手机使用SS请选择带_compatible的兼容选项！</p>
 										<p>当前混淆参数：{$user->obfs_param}</p>
+										<p>注意：参数请放空，除非你看得懂<a href="https://github.com/breakwa11/shadowsocks-rss/blob/master/ssr.md">这里</a>！</p>
 										<div class="form-group form-group-label">
 											<label class="floating-label" for="obfs">混淆方式</label>
 											<select id="obfs" class="form-control">
@@ -343,8 +347,8 @@
 										<div class="form-group form-group-label">
 											<label class="floating-label" for="ga-enable">验证设置</label>
 											<select id="ga-enable" class="form-control">
-												<option value="1">要求验证</option>
 												<option value="0">不要求</option>
+												<option value="1">要求验证</option>
 											</select>
 										</div>
 										
