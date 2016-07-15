@@ -79,7 +79,7 @@ $System_Config['enable_directadmin']='false';
 $System_Config['enable_cloudxns']='false';
 $System_Config['enable_duoshuo']='false';
 $System_Config['enable_rss']='true';
-$System_Config['enable_paymentwall']='true';
+$System_Config['enable_paymentwall']='false';
 
 
 
