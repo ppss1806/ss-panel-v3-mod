@@ -79,7 +79,7 @@ $System_Config['enable_directadmin']='false';
 $System_Config['enable_cloudxns']='false';
 $System_Config['enable_duoshuo']='false';
 $System_Config['enable_rss']='true';
-$System_Config['enable_paymentwall']='true';
+$System_Config['enable_paymentwall']='false';
 
 
 
@@ -190,3 +190,6 @@ $System_Config['auto_backup_email']='your email';
 $System_Config['auto_backup_webroot']='your base dir ,such as /home/wwwroot/ss.panel/';
 $System_Config['auto_backup_passwd']='zip password';
 
+
+#跳转延时,ms
+$System_Config['jump_delay']='1800';
