@@ -226,7 +226,7 @@ class Job
 		
 		if(Config::get('enable_auto_backup') == 'true')
 		{
-			backup();
+			Job::backup();
 		}
 		
 		
