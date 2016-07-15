@@ -58,6 +58,8 @@ class XCat
 				return Job::SyncDuoshuo();
 			case("userga"):
 				return Job::UserGa();
+			case("backup"):
+				return Job::backup();
             default:
                 return $this->defaultAction();
         }

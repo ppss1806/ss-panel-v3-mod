@@ -79,6 +79,7 @@ $System_Config['enable_directadmin']='false';
 $System_Config['enable_cloudxns']='false';
 $System_Config['enable_duoshuo']='false';
 $System_Config['enable_rss']='true';
+$System_Config['enable_paymentwall']='true';
 
 
 
@@ -180,3 +181,12 @@ $System_Config['pmw_height']='350px';
 $System_Config['cloudxns_apikey']='';#自己去 cloudxns.net 申请
 $System_Config['cloudxns_apisecret']='';
 $System_Config['cloudxns_domain']='zhaoj.in';#你的域名
+
+
+
+#自动备份设置
+$System_Config['enable_auto_backup']='false';
+$System_Config['auto_backup_email']='your email';
+$System_Config['auto_backup_webroot']='your base dir ,such as /home/wwwroot/ss.panel/';
+$System_Config['auto_backup_passwd']='zip password';
+

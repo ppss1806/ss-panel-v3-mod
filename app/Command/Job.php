@@ -38,6 +38,45 @@ class Job
 		}
 	}
 	
+	public static function backup()
+	{
+		mkdir('/tmp/ssmodbackup/');
+		
+		system('mysqldump --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.Config::get('db_host').' '.Config::get('db_database').' announcement auto blockip bought code coupon disconnect_ip link login_ip payback radius_ban shop speedtest ss_invite_code ss_node ss_password_reset ticket unblockip user user_token> /tmp/ssmodbackup/mod.sql',$ret);
+		
+		
+		system('mysqldump --opt --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.Config::get('db_host').' -d '.Config::get('db_database').' alive_ip ss_node_info ss_node_online_log user_traffic_log >> /tmp/ssmodbackup/mod.sql',$ret);
+		
+		if(Config::get('enable_radius')=='true')
+		{
+			system('mysqldump --user='.Config::get('radius_db_user').' --password='.Config::get('radius_db_password').' --host='.Config::get('radius_db_host').' '.Config::get('radius_db_database').'> /tmp/ssmodbackup/radius.sql',$ret);
+		}
+		
+		if(Config::get('enable_wecenter')=='true')
+		{
+			system('mysqldump --user='.Config::get('wecenter_db_user').' --password='.Config::get('wecenter_db_password').' --host='.Config::get('wecenter_db_host').' '.Config::get('wecenter_db_database').'> /tmp/ssmodbackup/wecenter.sql',$ret);
+		}
+	
+		system("cp ".Config::get('auto_backup_webroot')."/config/.config.php /tmp/ssmodbackup/",$ret);
+		system("zip -r /tmp/ssmodbackup.zip /tmp/ssmodbackup/* -P ".Config::get('auto_backup_passwd'),$ret);
+		
+		$subject = Config::get('appName')."-备份成功";
+		$to = Config::get('auto_backup_email');
+		$text = "您好，系统已经为您自动备份，请查看附件，用您设定的密码解压。" ;
+		try {
+			Mail::send($to, $subject, 'news/backup.tpl', [
+				"text" => $text
+			], ["/tmp/ssmodbackup.zip"
+			]);
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+		
+		system("rm -rf /tmp/ssmodbackup",$ret);
+		system("rm /tmp/ssmodbackup.zip",$ret);
+		
+	}
+	
 	public static function SyncDuoshuo()
     {
 		$users = User::all();
@@ -78,6 +117,9 @@ class Job
 	
 	public static function DailyJob()
     {
+		
+		
+		
 		$nodes = Node::all();
         foreach($nodes as $node){
 			if($node->sort==0)
@@ -182,7 +224,10 @@ class Job
 			}
 		}
 		
-		
+		if(Config::get('enable_auto_backup') == 'true')
+		{
+			backup();
+		}
 		
 		
 		

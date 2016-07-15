@@ -147,7 +147,7 @@ class UserController extends BaseController
     {
 		require_once(BASE_PATH.'/vendor/paymentwall/paymentwall-php/lib/paymentwall.php');
 		
-		if(Config::get('pmw_publickey')!="")
+		if(Config::get('enable_paymentwall') == 'true')
 		{
 			\Paymentwall_Config::getInstance()->set(array(
 				'api_type' => \Paymentwall_Config::API_VC,
@@ -1204,22 +1204,6 @@ class UserController extends BaseController
 		return $this->view()->assign('ticketset',$ticketset)->assign("id",$id)->display('user/ticket_view.tpl');
     }
 	
-	public function updateRelay($request, $response, $args)
-    {
-		$relay_enable = $request->getParam('relay_enable');
-        $relay_info = $request->getParam('relay_info');
-        
-        $user = $this->user;
-		
-        
-		$user->relay_enable = $relay_enable;
-        $user->relay_info = $relay_info;
-        $user->save();
-
-        $res['ret'] = 1;
-        $res['msg'] = "修改成功";
-        return $this->echoJson($response, $res);
-    }
 	
 	public function updateWechat($request, $response, $args)
     {
