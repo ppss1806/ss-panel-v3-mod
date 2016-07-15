@@ -629,3 +629,8 @@ ALTER TABLE `user` CHANGE `node_speedlimit` `node_speedlimit` DECIMAL(12,2) NOT 
 
 ALTER TABLE `ss_node` CHANGE `node_speedlimit` `node_speedlimit` DECIMAL(12,2) NOT NULL DEFAULT '0.00';
 
+DROP TABLE `smartline`, `ss_user_admin`;
+
+ALTER TABLE `user`
+  DROP `relay_enable`,
+  DROP `relay_info`;
