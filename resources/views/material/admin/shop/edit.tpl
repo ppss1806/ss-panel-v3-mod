@@ -166,8 +166,8 @@
                 success: function (data) {
                     if (data.ret) {
                         $("#result").modal();
-                        $("#msg").html(data.msg+"  五秒后跳转。");
-                        window.setTimeout("location.href='/admin/shop'", 5000);
+                        $("#msg").html(data.msg);
+                        window.setTimeout("location.href='/admin/shop'", {$config['jump_delay']});
                     } else {
                         $("#result").modal();
                         $("#msg").html(data.msg);

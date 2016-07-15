@@ -91,7 +91,7 @@
                     if (data.ret) {
                         $("#result").modal();
 						$("#msg").html(data.msg);
-                        window.setTimeout("location.href='/'", 5000);
+                        window.setTimeout("location.href='/'", {$config['jump_delay']});
                     } else {
                         $("#result").modal();
 						$("#msg").html(data.msg);

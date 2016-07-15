@@ -158,8 +158,8 @@
                 success: function (data) {
                     if (data.ret) {
                         $("#result").modal();
-                        $("#msg").html(data.msg+"  五秒后跳转。");
-                        window.setTimeout("location.href='/admin/coupon'", 5000);
+                        $("#msg").html(data.msg);
+                        window.setTimeout("location.href='/admin/coupon'", {$config['jump_delay']});
                     }
                     // window.location.reload();
                 },

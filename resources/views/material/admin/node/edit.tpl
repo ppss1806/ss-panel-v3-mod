@@ -253,8 +253,10 @@
                 success: function (data) {
                     if (data.ret) {
                         $("#result").modal();
-                        $("#msg").html(data.msg+"  五秒后跳转。");
-                        window.setTimeout("location.href=top.document.referrer", 5000);
+                        $("#msg").html(data.msg);
+						{/literal}
+                        window.setTimeout("location.href=top.document.referrer", {$config['jump_delay']});
+						{literal}
                     } else {
                         $("#result").modal();
                         $("#msg").html(data.msg);

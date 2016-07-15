@@ -97,8 +97,8 @@
                 success: function (data) {
                     if (data.ret) {
                         $("#result").modal();
-                        $("#msg").html(data.msg+"  五秒后跳转。");
-                        window.setTimeout("location.href=top.document.referrer", 5000);
+                        $("#msg").html(data.msg);
+                        window.setTimeout("location.href=top.document.referrer", {$config['jump_delay']});
                     } else {
                         $("#msg-error").hide(10);
                         $("#msg-error").show(100);

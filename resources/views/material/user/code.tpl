@@ -152,11 +152,11 @@
                     if (data.ret) {
                         $("#result").modal();
 						$("#msg").html(data.msg);
-						window.setTimeout("location.href=window.location.href", 5000);
+						window.setTimeout("location.href=window.location.href", {$config['jump_delay']});
                     } else {
                         $("#result").modal();
 						$("#msg").html(data.msg);
-						window.setTimeout("location.href=window.location.href", 5000);
+						window.setTimeout("location.href=window.location.href", {$config['jump_delay']});
                     }
                 },
                 error: function (jqXHR) {
@@ -182,8 +182,8 @@
 				if (data.ret) {
 					clearTimeout(tid);
 					$("#result").modal();
-					$("#msg").html("充值成功！ 五秒后刷新页面");
-					window.setTimeout("location.href=window.location.href", 5000);
+					$("#msg").html("充值成功！");
+					window.setTimeout("location.href=window.location.href", {$config['jump_delay']});
 				}
 			}
 		});

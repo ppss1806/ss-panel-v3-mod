@@ -172,8 +172,8 @@
                 success:function(data){
                     if(data.ret == 1){
                         $("#result").modal();
-                        $("#msg").html(data.msg+"  五秒后跳转。");
-                        window.setTimeout("location.href='/auth/login'", 5000);
+                        $("#msg").html(data.msg);
+                        window.setTimeout("location.href='/auth/login'", {$config['jump_delay']});
                     }else{
                         $("#result").modal();
                         $("#msg").html(data.msg);
