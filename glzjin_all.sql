@@ -362,11 +362,6 @@ ALTER TABLE `login_ip`
 ALTER TABLE `radius_ban`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `smartline`
---
-ALTER TABLE `smartline`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `speedtest`
@@ -405,11 +400,6 @@ ALTER TABLE `ss_node_online_log`
 ALTER TABLE `ss_password_reset`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `ss_user_admin`
---
-ALTER TABLE `ss_user_admin`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `unblockip`
@@ -478,11 +468,6 @@ ALTER TABLE `login_ip`
 ALTER TABLE `radius_ban`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `smartline`
---
-ALTER TABLE `smartline`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `speedtest`
 --
 ALTER TABLE `speedtest`
@@ -513,10 +498,6 @@ ALTER TABLE `ss_node_online_log`
 ALTER TABLE `ss_password_reset`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `ss_user_admin`
---
-ALTER TABLE `ss_user_admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `unblockip`
 --
@@ -602,7 +583,6 @@ ALTER TABLE `user` ADD `node_group` INT NOT NULL DEFAULT '0' AFTER `remark`;
 ALTER TABLE `ss_node` ADD `node_group` INT NOT NULL DEFAULT '0' AFTER `node_ip`;
 
 
-ALTER TABLE `smartline` ADD `node_group` INT NOT NULL DEFAULT '0' AFTER `c_id`;
 
 
 CREATE TABLE `payback` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `total` DECIMAL(12,2) NOT NULL , `userid` BIGINT NOT NULL , `ref_by` BIGINT NOT NULL , `ref_get` DECIMAL(12,2) NOT NULL , `datetime` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
