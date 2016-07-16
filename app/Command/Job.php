@@ -251,21 +251,26 @@ class Job
 					if($user->node_connector < $ip_count)
 					{
 						//暂时封禁
-						$disconnect = new Disconnect();
-						$disconnect->userid = $user->id;
-						$disconnect->ip = $alive_ip->ip;
-						$disconnect->datetime = time();
-						$disconnect->save();
+						$isDisconnect = Disconnect::where('id','=',$alive->ip)->where('userid','=',$user->id)->first();
 						
-						if($user->disconnect_ip == NULL||$user->disconnect_ip == "")
+						if($isDisconnect == null)
 						{
-							$user->disconnect_ip = $alive_ip->ip;
+							$disconnect = new Disconnect();
+							$disconnect->userid = $user->id;
+							$disconnect->ip = $alive_ip->ip;
+							$disconnect->datetime = time();
+							$disconnect->save();
+							
+							if($user->disconnect_ip == NULL||$user->disconnect_ip == "")
+							{
+								$user->disconnect_ip = $alive_ip->ip;
+							}
+							else
+							{
+								$user->disconnect_ip .= ",".$alive_ip->ip;
+							}
+							$user->save();
 						}
-						else
-						{
-							$user->disconnect_ip .= ",".$alive_ip->ip;
-						}
-						$user->save();
 					}
 				}
 			}
