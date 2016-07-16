@@ -255,6 +255,7 @@ class Job
 						$disconnect->userid = $user->id;
 						$disconnect->ip = $alive_ip->ip;
 						$disconnect->datetime = time();
+						$disconnect->save();
 						
 						if($user->disconnect_ip == NULL||$user->disconnect_ip == "")
 						{
@@ -262,7 +263,7 @@ class Job
 						}
 						else
 						{
-							$user->disconnect_ip = ",".$alive_ip->ip;
+							$user->disconnect_ip .= ",".$alive_ip->ip;
 						}
 						$user->save();
 					}
@@ -295,6 +296,8 @@ class Job
 					}
 				}
 			}
+			
+			$user->save();
 			
 			$disconnected->delete();
 		}
