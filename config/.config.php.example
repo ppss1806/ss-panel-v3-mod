@@ -129,15 +129,6 @@ $System_Config['pacpp_offset']='-20000';
 $System_Config['Speedtest_duration']='6';
 
 
-#Cloudxns
-$System_Config['cloudxns_apikey']='';#自己去 cloudxns.net 申请,不使用智能线路功能的话请清空这里
-$System_Config['cloudxns_apisecret']='';
-$System_Config['cloudxns_domain']='';#你的域名
-$System_Config['cloudxns_prefix']='hello'; #防抓取前缀，自定义
-$System_Config['cloudxns_ping_nodeid']='';#导入了sql之后，看到那两个智能线路的节点 id ,填到这。不使用的话导入之后也要填。
-$System_Config['cloudxns_speed_nodeid']='';#同上
-
-
 #随机分组，注册时随机分配到的分组，多个分组请用英文半角逗号分隔。
 $System_Config['ramdom_group']='0';
 
