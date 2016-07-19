@@ -41,11 +41,10 @@ function checkBOM ($filename) {
 		if ($auto == 1) {
 			$rest = substr($contents, 3);
 			rewrite ($filename, $rest);
-			return ("<font color=red>BOM found, 
-automatically removed.</font>");
+			return ("BOM found, 
+automatically removed.");
 		} else {
-			return ("<font color=red>BOM found.
-</font>");
+			return ("BOM found.");
 		}
 	}
 	else return ("BOM Not Found.");

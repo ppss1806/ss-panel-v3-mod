@@ -17,9 +17,10 @@ class QQWry {
      private $totalip;  
  
  
-     public function __construct($filename = BASE_PATH."/app/Utils/qqwry.dat") {  
- 
-         $this->fp = 0;  
+     public function __construct() {  
+		$filename = BASE_PATH."/app/Utils/qqwry.dat"
+		
+        $this->fp = 0;  
  
          if (($this->fp = fopen($filename, 'rb')) !== false) {  
  
