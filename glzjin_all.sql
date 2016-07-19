@@ -632,3 +632,4 @@ ALTER TABLE `ss_node` CHANGE `node_speedlimit` `node_speedlimit` DECIMAL(12,2) N
 ALTER TABLE `user`
   DROP `relay_enable`,
   DROP `relay_info`;
+ALTER TABLE `user` CHANGE `protocol` `protocol` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'origin', CHANGE `obfs` `obfs` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'plain';
