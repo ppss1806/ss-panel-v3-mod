@@ -313,6 +313,12 @@ class Job
 		{
 			$user=User::where("id",$bought->userid)->first();
 			
+			if($user == NULL)
+			{
+				$bought->delete();
+				continue;
+			}
+			
 			if($user->money>=$bought->price)
 			{
 				$shop=Shop::where("id",$bought->shopid)->first();
@@ -351,20 +357,15 @@ class Job
 					echo $e->getMessage();
 				}
 				
-				if(file_exists(BASE_PATH."/storage/".$bought->id.".renew", "w+"))
+				if(file_exists(BASE_PATH."/storage/".$bought->id.".renew"))
 				{
 					unlink(BASE_PATH."/storage/".$bought->id.".renew");
 				}
 			}
 			else
 			{
-				if(!file_exists(BASE_PATH."/storage/".$bought->id.".renew", "w+"))
+				if(!file_exists(BASE_PATH."/storage/".$bought->id.".renew"))
 				{
-					if($shop->auto_reset_bandwidth==1)
-					{
-						$user->transfer_enable=$shop->bandwidth()*1024*1024*1024;
-					}
-				
 					$subject = Config::get('appName')."-续费失败";
 					$to = $user->email;
 					$text = "您好，系统为您自动续费商品名：".$shop->name.",金额:".$bought->price." 元 时，发现您余额不足，请及时充值，当您充值之后，稍等一会系统就会自动扣费为您续费了。" ;
