@@ -251,7 +251,7 @@ class Job
 					if($user->node_connector < $ip_count)
 					{
 						//暂时封禁
-						$isDisconnect = Disconnect::where('id','=',$alive->ip)->where('userid','=',$user->id)->first();
+						$isDisconnect = Disconnect::where('id','=',$alive_ip->ip)->where('userid','=',$user->id)->first();
 						
 						if($isDisconnect == null)
 						{
@@ -315,8 +315,13 @@ class Job
 			
 			if($user->money>=$bought->price)
 			{
-				$shop=Shop::where("id",$bought->shopid);
+				$shop=Shop::where("id",$bought->shopid)->first();
 				
+				if($shop == NULL)
+				{
+					$bought->delete();
+					continue;
+				}
 				
 				if($shop->auto_reset_bandwidth==1)
 				{
@@ -353,7 +358,7 @@ class Job
 			}
 			else
 			{
-				if(!file_exists(BASE_PATH."/storage/"+$bought->id+".renew", "w+"))
+				if(!file_exists(BASE_PATH."/storage/".$bought->id.".renew", "w+"))
 				{
 					if($shop->auto_reset_bandwidth==1)
 					{
@@ -637,6 +642,13 @@ class Job
 		$rbusers = RadiusBan::all();
 		foreach($rbusers as $sinuser){
 			$user=User::find($sinuser->userid);
+			
+			if($user == NULL)
+			{
+				$sinuser->delete();
+				continue;
+			}
+			
 			if($user->enable==1&&(strtotime($user->expire_in)>time()||strtotime($user->expire_in)<644447105)&&$user->transfer_enable>$user->u+$user->d)
 			{
 				$sinuser->delete();
