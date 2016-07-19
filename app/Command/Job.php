@@ -484,7 +484,7 @@ class Job
 									$record_id=$record->record_id;
 									
 									$Temp_node=Node::where('node_class','<=',$node->node_class)->where(
-										function ($query) {
+										function ($query) use ($node) {
 											$query->where("node_group","=",$node->node_group)
 												->orWhere("node_group","=",0);
 										}
