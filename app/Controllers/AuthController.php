@@ -272,6 +272,11 @@ class AuthController extends BaseController
         $user->t = 0;
         $user->u = 0;
         $user->d = 0;
+		$user->method = Config::get('reg_method');
+		$user->protocol = Config::get('reg_protocol');
+		$user->protocol_param = Config::get('reg_protocol_param');
+		$user->obfs = Config::get('reg_obfs');
+		$user->obfs_param = Config::get('reg_obfs_param');
 		$user->im_type =  $imtype;
 		$user->im_value =  $antiXss->xss_clean($wechat);
         $user->transfer_enable = Tools::toGB(Config::get('defaultTraffic'));
@@ -316,12 +321,12 @@ class AuthController extends BaseController
 			Da::add($email);
 			
 			Radius::Add($user,$user->passwd);
-		
-
-
-
-
-            $c->delete();
+			
+			if(Config::get('enable_invite_code')=='true')
+			{
+				$c->delete();
+			}
+			
             return $response->getBody()->write(json_encode($res));
         }
         $res['ret'] = 0;

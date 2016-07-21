@@ -38,7 +38,7 @@ class Cookie extends Base
         }
 		
 		$nodes=Node::where("node_ip","=",$_SERVER["REMOTE_ADDR"])->first();
-		if($ip != md5($_SERVER["REMOTE_ADDR"].Config::get('key').$uid.$expire_in)&&$nodes==null)
+		if($ip != md5($_SERVER["REMOTE_ADDR"].Config::get('key').$uid.$expire_in) && $nodes==null && Config::get('enable_login_bind_ip')=='true')
 		{
 			$user = new User();
             $user->isLogin = false;

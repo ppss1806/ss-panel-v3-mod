@@ -239,7 +239,7 @@ class Job
 		$users = User::where('node_connector','>',0)->get();
 		foreach($users as $user)
 		{
-			$alive_ips = Ip::where("datetime",">=",time()-90)->where('userid', '=',$user->id)->get();
+			$alive_ips = Ip::where("datetime",">=",time()-60)->where('userid', '=',$user->id)->get();
 			$ip_count = 0;
 			$ips = array();
 			foreach($alive_ips as $alive_ip)
