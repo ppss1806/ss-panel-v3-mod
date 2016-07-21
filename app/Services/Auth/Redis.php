@@ -7,6 +7,7 @@ use App\Models\Node;
 use App\Services\RedisClient;
 use App\Utils\Tools;
 use App\Utils\Cookie;
+use App\Services\Config;
 
 class Redis extends Base
 {
