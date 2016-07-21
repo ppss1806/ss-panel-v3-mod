@@ -123,6 +123,12 @@ class AuthController extends BaseController
 		{
 			$email =  $request->getParam('email');
 			
+			if($email=="")
+			{
+				$res['ret'] = 0;
+				$res['msg'] = "哦？";
+				return $response->getBody()->write(json_encode($res));
+			}
 			
 			$user = User::where('email','=',$email)->first();
 			if($user!=null)

@@ -69,6 +69,43 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="card margin-bottom-no">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="card-inner">
+										<p class="card-heading">加密方式修改</p>
+										<p>当前加密方式：{$user->method}</p>
+										<div class="form-group form-group-label">
+											<label class="floating-label" for="method">加密方式</label>
+											<select id="method" class="form-control">
+												<option value="rc4-md5">RC4-MD5</option>
+												<option value="aes-128-cfb">AES-128-CFB</option>
+												<option value="aes-192-cfb">AES-192-CFB</option>
+												<option value="aes-256-cfb">AES-256-CFB</option>
+												<option value="camellia-128-cfb">CAMELLIA-128-CFB</option>
+												<option value="camellia-192-cfb">CAMELLIA-192-CFB</option>
+												<option value="camellia-256-cfb">CAMELLIA-256-CFB</option>
+												<option value="cast5-cfb">CAST5-CFB</option>
+												<option value="des-cdb">DES-CDB</option>
+												<option value="idea-cfb">IDEA-CFB</option>
+												<option value="rc2-cfb">RC2-CFB</option>
+												<option value="seed-cfb">SEED-CFB</option>
+												<option value="salsa20">SALSA20</option>
+												<option value="chacha20">CHACHA20</option>
+												<option value="chacha20-ietf">CHACHA20-IETF</option>
+											</select>
+										</div>
+										
+									</div>
+									<div class="card-action">
+										<div class="card-action-btn pull-left">
+											<button class="btn btn-flat waves-attach" id="method-update" ><span class="icon">check</span>&nbsp;提交</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
 						<div class="card margin-bottom-no">
 							<div class="card-main">
@@ -114,42 +151,7 @@
 							</div>
 						</div>
 					
-						<div class="card margin-bottom-no">
-							<div class="card-main">
-								<div class="card-inner">
-									<div class="card-inner">
-										<p class="card-heading">加密方式修改</p>
-										<p>当前加密方式：{$user->method}</p>
-										<div class="form-group form-group-label">
-											<label class="floating-label" for="method">加密方式</label>
-											<select id="method" class="form-control">
-												<option value="rc4-md5">RC4-MD5</option>
-												<option value="aes-128-cfb">AES-128-CFB</option>
-												<option value="aes-192-cfb">AES-192-CFB</option>
-												<option value="aes-256-cfb">AES-256-CFB</option>
-												<option value="camellia-128-cfb">CAMELLIA-128-CFB</option>
-												<option value="camellia-192-cfb">CAMELLIA-192-CFB</option>
-												<option value="camellia-256-cfb">CAMELLIA-256-CFB</option>
-												<option value="cast5-cfb">CAST5-CFB</option>
-												<option value="des-cdb">DES-CDB</option>
-												<option value="idea-cfb">IDEA-CFB</option>
-												<option value="rc2-cfb">RC2-CFB</option>
-												<option value="seed-cfb">SEED-CFB</option>
-												<option value="salsa20">SALSA20</option>
-												<option value="chacha20">CHACHA20</option>
-												<option value="chacha20-ietf">CHACHA20-IETF</option>
-											</select>
-										</div>
-										
-									</div>
-									<div class="card-action">
-										<div class="card-action-btn pull-left">
-											<button class="btn btn-flat waves-attach" id="method-update" ><span class="icon">check</span>&nbsp;提交</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						
 						
 						{if $config['enable_rss']=='true'}
 						<div class="card margin-bottom-no">
