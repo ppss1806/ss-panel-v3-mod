@@ -186,7 +186,7 @@ class LinkController extends BaseController
 	public static function GetPcConf($nodes,$user){
 		$string='
 {
-	"index" : 4,
+	"index" : 0,
 	"random" : false,
 	"global" : false,
 	"enabled" : true,
