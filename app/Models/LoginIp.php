@@ -16,7 +16,16 @@ class LoginIp extends Model
 	
 	public function user()
     {
-        return User::find($this->attributes['userid']);
+        $user = User::where("id",$this->attributes['userid'])->first();
+		if($user == NULL)
+		{
+			LoginIp::where('id','=',$this->attributes['id'])->delete();
+			return null;
+		}
+        else
+		{
+			return $user;
+		}
     }
 	
 	public function datetime()

@@ -39,14 +39,16 @@
 								<th>时间</th>
 							</tr>
 							{foreach $logs as $log}
-								<tr>
-									<td>#{$log->id}</td>
-									<td>{$log->user()->id}</td>
-									<td>{$log->user()->user_name}</td>
-									<td>{$log->ip}</td>
-									<td>{$loc[$log->ip]}</td>
-									<td>{$log->time()}</td>
-								</tr>
+								{if $log->user()!=NULL}
+									<tr>
+										<td>#{$log->id}</td>
+										<td>{$log->user()->id}</td>
+										<td>{$log->user()->user_name}</td>
+										<td>{$log->ip}</td>
+										<td>{$loc[$log->ip]}</td>
+										<td>{$log->time()}</td>
+									</tr>
+								{/if}
 							{/foreach}
 						</table>
                         {$logs->render()}

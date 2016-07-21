@@ -104,7 +104,7 @@
 									</div>
 									
 									<div class="form-group form-group-label">
-										<label class="floating-label" for="class">节点类别（不分类请填0，分类为数字）</label>
+										<label class="floating-label" for="class">节点级别（不分级请填0，分级为数字）</label>
 										<input class="form-control" id="class" type="text" value="0" name="class">
 									</div>
 									

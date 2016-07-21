@@ -105,13 +105,13 @@
 						<div class="card-main">
 							<div class="card-inner">
 								<div class="form-group form-group-label">
-									<label class="floating-label" for="transfer_enable">总流量（B）</label>
-									<input class="form-control" id="transfer_enable" type="text" value="{$user->transfer_enable}">
+									<label class="floating-label" for="transfer_enable">总流量（GB）</label>
+									<input class="form-control" id="transfer_enable" type="text" value="{$user->enableTrafficInGB()}">
 								</div>
 								
 								<div class="form-group form-group-label">
-									<label class="floating-label" for="usedTraffic">已用流量（B）</label>
-									<input class="form-control" id="usedTraffic" type="text" value="{$user->u+$user->d}" readonly>
+									<label class="floating-label" for="usedTraffic">已用流量</label>
+									<input class="form-control" id="usedTraffic" type="text" value="{$user->usedTraffic()}" readonly>
 								</div>
 							</div>
 						</div>

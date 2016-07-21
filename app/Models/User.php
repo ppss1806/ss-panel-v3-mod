@@ -127,11 +127,21 @@ class User extends Model
         $transfer_enable = $this->attributes['transfer_enable'];
         return Tools::flowAutoShow($transfer_enable);
     }
-
+    public function enableTrafficInGB()
+    {
+        $transfer_enable = $this->attributes['transfer_enable'];
+        return Tools::flowToGB($transfer_enable);
+    }
     public function usedTraffic()
     {
         $total = $this->attributes['u'] + $this->attributes['d'];
         return Tools::flowAutoShow($total);
+    }
+    public function unusedTraffic()
+    {
+        $total = $this->attributes['u'] + $this->attributes['d'];
+        $transfer_enable = $this->attributes['transfer_enable'];
+        return Tools::flowAutoShow($transfer_enable - $total);
     }
 	
 	public function TodayusedTraffic()
@@ -144,14 +154,6 @@ class User extends Model
     {
         $total = $this->attributes['last_day_t'];
         return Tools::flowAutoShow($total);
-    }
-	
-
-    public function unusedTraffic()
-    {
-        $total = $this->attributes['u'] + $this->attributes['d'];
-        $transfer_enable = $this->attributes['transfer_enable'];
-        return Tools::flowAutoShow($transfer_enable - $total);
     }
 
     public function isAbleToCheckin()

@@ -12,7 +12,16 @@ class UnblockIp extends Model
 
     public function user()
     {
-        return User::find($this->attributes['userid']);
+        $user = User::where("id",$this->attributes['userid'])->first();
+		if($user == NULL)
+		{
+			UnblockIp::where('id','=',$this->attributes['id'])->delete();
+			return null;
+		}
+        else
+		{
+			return $user;
+		}
     }
 	
 	public function time()

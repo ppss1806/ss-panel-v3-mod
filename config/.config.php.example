@@ -184,3 +184,17 @@ $System_Config['auto_backup_passwd']='zip password';
 
 #跳转延时,ms
 $System_Config['jump_delay']='1800';
+
+
+#是否启用邀请码
+$System_Config['enable_invite_code']='true';
+
+#是否启用邮箱验证码
+$System_Config['enable_email_verify']='true';
+
+#邮箱验证码有效期
+$System_Config['email_verify_ttl']='3600';
+
+#单IP可请求验证码次数（上面那个周期内）
+$System_Config['email_verify_iplimit']='10';
+

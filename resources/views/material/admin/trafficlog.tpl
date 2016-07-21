@@ -46,16 +46,18 @@
                                 <th>记录时间</th>
                             </tr>
                             {foreach $logs as $log}
-                                <tr>
-                                    <td>#{$log->id}</td>
-                                    <td>{$log->user_id}</td>
-									<td>{$log->user()->user_name}</td>
-                                    <td>{$log->node()->name}</td>
-                                    <td>{$log->rate}</td>
-                                    <td>{$log->totalUsed()}</td>
-                                    <td>{$log->traffic}</td>
-                                    <td>{$log->logTime()}</td>
-                                </tr>
+								{if $log->user()!=NULL}
+									<tr>
+										<td>#{$log->id}</td>
+										<td>{$log->user_id}</td>
+										<td>{$log->user()->user_name}</td>
+										<td>{$log->node()->name}</td>
+										<td>{$log->rate}</td>
+										<td>{$log->totalUsed()}</td>
+										<td>{$log->traffic}</td>
+										<td>{$log->logTime()}</td>
+									</tr>
+								{/if}
                             {/foreach}
                         </table>
                         {$logs->render()}

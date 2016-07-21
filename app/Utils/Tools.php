@@ -39,6 +39,17 @@ class Tools
         $gb = 1048576 * 1024;
         return $traffic * $gb;
     }
+	
+	
+    /**
+     * @param $traffic
+     * @return float
+     */
+    public static function flowToGB($traffic)
+    {
+        $gb = 1048576 * 1024;
+        return $traffic / $gb;
+    }
 
     //获取随机字符串
     public static function genRandomChar($length = 8)

@@ -19,7 +19,16 @@ class Ticket extends Model
 	
 	public function User()
     {
-        return User::where("id",$this->attributes['userid'])->first();
+        $user = User::where("id",$this->attributes['userid'])->first();
+		if($user == NULL)
+		{
+			Ticket::where('id','=',$this->attributes['id'])->delete();
+			return null;
+		}
+        else
+		{
+			return $user;
+		}
     }
 
 

@@ -17,7 +17,16 @@ class TrafficLog extends Model
 	
 	public function user()
     {
-        return User::find($this->attributes['user_id']);
+        $user = User::where("id",$this->attributes['user_id'])->first();
+		if($user == NULL)
+		{
+			TrafficLog::where('id','=',$this->attributes['id'])->delete();
+			return null;
+		}
+        else
+		{
+			return $user;
+		}
     }
 
     public function totalUsed()

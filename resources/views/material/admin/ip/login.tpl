@@ -40,19 +40,21 @@
 								<th>类型</th>
 							</tr>
 							{foreach $logs as $log}
-								<tr>
-									<td>#{$log->id}</td>
-									<td>{$log->userid}</td>
-									<td>{$log->user()->user_name}</td>
-									<td>{$log->ip}</td>
-									<td>{$loc[$log->ip]}</td>
-									<td>{$log->datetime()}</td>
-									{if $log->type==0}
-										<td>成功</td>
-									{else}
-										<td>失败</td>
-									{/if}
-								</tr>
+								{if $log->user()!=NULL}
+									<tr>
+										<td>#{$log->id}</td>
+										<td>{$log->userid}</td>
+										<td>{$log->user()->user_name}</td>
+										<td>{$log->ip}</td>
+										<td>{$loc[$log->ip]}</td>
+										<td>{$log->datetime()}</td>
+										{if $log->type==0}
+											<td>成功</td>
+										{else}
+											<td>失败</td>
+										{/if}
+									</tr>
+								{/if}
 							{/foreach}
 						</table>
                         {$logs->render()}

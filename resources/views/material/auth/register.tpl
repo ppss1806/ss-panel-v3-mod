@@ -31,7 +31,6 @@
 											</div>
 										</div>
 										
-										
 										<div class="form-group form-group-label">
 											<div class="row">
 												<div class="col-md-10 col-md-push-1">
@@ -40,6 +39,18 @@
 												</div>
 											</div>
 										</div>
+										
+										{if $enable_email_verify == 'true'}
+										<div class="form-group form-group-label">
+											<div class="row">
+												<div class="col-md-10 col-md-push-1">
+													<label class="floating-label" for="email_code">邮箱验证码</label>
+													<input class="form-control" id="email_code" type="text">
+													<button id="email_verify" class="btn btn-block btn-brand-accent waves-attach waves-light">获取验证码</button>
+												</div>
+											</div>
+										</div>
+										{/if}
 										
 										<div class="form-group form-group-label">
 											<div class="row">
@@ -86,15 +97,16 @@
 										
 										
 										
-										
-										<div class="form-group form-group-label">
-											<div class="row">
-												<div class="col-md-10 col-md-push-1">
-													<label class="floating-label" for="code">邀请码</label>
-													<input class="form-control" id="code" type="text" value="{$code}">
+										{if $enable_invite_code == 'true'}
+											<div class="form-group form-group-label">
+												<div class="row">
+													<div class="col-md-10 col-md-push-1">
+														<label class="floating-label" for="code">邀请码</label>
+														<input class="form-control" id="code" type="text" value="{$code}">
+													</div>
 												</div>
 											</div>
-										</div>
+										{/if}
 										
 										<div class="form-group">
 											<div class="row">
@@ -166,8 +178,13 @@
                     repasswd: $("#repasswd").val(),
 					wechat: $("#wechat").val(),
 					imtype: $("#imtype").val(),
-                    code: $("#code").val(),
-                    agree: $("#agree").val()
+					{if $enable_invite_code == 'true'}
+					code: $("#code").val(),
+					{/if}
+					{if $enable_email_verify == 'true'}
+					emailcode: $("#email_code").val(),
+					{/if}
+					agree: $("#agree").val()
                 },
                 success:function(data){
                     if(data.ret == 1){
@@ -202,6 +219,36 @@
 </script>
 
 
+{if $enable_email_verify == 'true'}
+<script>
+    $(document).ready(function () {
+        $("#email_verify").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "send",
+                dataType: "json",
+                data: {
+                    email: $("#email").val()
+                },
+                success: function (data) {
+                    if (data.ret) {
+						$("#email_verify").hide();
+                        $("#result").modal();
+						$("#msg").html(data.msg);
+                    } else {
+                        $("#result").modal();
+						$("#msg").html(data.msg);
+                    }
+                },
+                error: function (jqXHR) {
+                    $("#result").modal();
+					$("#msg").html(data.msg+"     出现了一些错误。");
+                }
+            })
+        })
+    })
+</script>
+{/if}
 
 
 
