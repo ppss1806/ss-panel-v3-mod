@@ -80,14 +80,20 @@
 											<label class="floating-label" for="method">加密方式</label>
 											<select id="method" class="form-control">
 												<option value="rc4-md5">RC4-MD5</option>
+												<option value="rc4-md5-6">RC4-MD5-6</option>
 												<option value="aes-128-cfb">AES-128-CFB</option>
 												<option value="aes-192-cfb">AES-192-CFB</option>
 												<option value="aes-256-cfb">AES-256-CFB</option>
+												<option value="aes-128-ctr">AES-128-CTR</option>
+												<option value="aes-192-ctr">AES-192-CTR</option>
+												<option value="aes-256-ctr">AES-256-CTR</option>
 												<option value="camellia-128-cfb">CAMELLIA-128-CFB</option>
 												<option value="camellia-192-cfb">CAMELLIA-192-CFB</option>
 												<option value="camellia-256-cfb">CAMELLIA-256-CFB</option>
+												<option value="bf-cfb">BF-CFB</option>
 												<option value="cast5-cfb">CAST5-CFB</option>
-												<option value="des-cdb">DES-CDB</option>
+												<option value="des-cfb">DES-CFB</option>
+												<option value="des-cfb">DES-EDE3-CFB</option>
 												<option value="idea-cfb">IDEA-CFB</option>
 												<option value="rc2-cfb">RC2-CFB</option>
 												<option value="seed-cfb">SEED-CFB</option>
