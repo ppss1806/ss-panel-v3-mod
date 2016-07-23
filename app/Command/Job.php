@@ -238,9 +238,24 @@ class Job
     {
 		//在线人数检测
 		$users = User::where('node_connector','>',0)->get();
+		
+		$full_alive_ips = Ip::where("datetime",">=",time()-60)->get();
+		
+		$alive_ipset = array();
+		
+		foreach($full_alive_ips as $full_alive_ip)
+		{
+			if($alive_ipset[$full_alive_ip->userid] == null)
+			{
+				$alive_ipset[$full_alive_ip->userid] = new ArrayObject();
+			}
+			
+			$alive_ipset[$full_alive_ip->userid]->append($full_alive_ip);
+		}
+		
 		foreach($users as $user)
 		{
-			$alive_ips = Ip::where("datetime",">=",time()-60)->where('userid', '=',$user->id)->get();
+			$alive_ips = $alive_ipset[$user->id];
 			$ip_count = 0;
 			$ips = array();
 			foreach($alive_ips as $alive_ip)
