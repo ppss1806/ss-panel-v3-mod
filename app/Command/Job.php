@@ -661,7 +661,7 @@ class Job
 					
 					$subject = Config::get('appName')."-您的用户账户已经被删除了";
 					$to = $user->email;
-					$text = "您好，系统发现您的账号已经过期了。帐号已经被删除。" ;
+					$text = "您好，系统发现您的账号已经过期 ".Config::get('enable_account_expire_delete_days')." 天了，帐号已经被删除。" ;
 					try {
 						Mail::send($to, $subject, 'news/warn.tpl', [
 							"user" => $user,"text" => $text
@@ -671,11 +671,11 @@ class Job
 						echo $e->getMessage();
 					}
 					
-					Radius::Delete($email);
+					Radius::Delete($user->email);
 		
 					RadiusBan::where('userid','=',$user->id)->delete();
 					
-					Wecenter::Delete($email);
+					Wecenter::Delete($user->email);
 					
 					$user->delete();
 					
