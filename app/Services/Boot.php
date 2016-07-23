@@ -44,25 +44,5 @@ class Boot
 		}
         $capsule->bootEloquent();
 		
-		try {
-			$result = $capsule->getConnection('radius');
-			if($result == null)
-			{
-				Config::set('enable_radius','false');
-			}
-		} catch (Exception $e) {
-			Config::set('enable_radius','false');
-		}
-		
-		
-		try {
-			$result = $capsule->getConnection('wecenter');
-			if($result == null)
-			{
-				Config::set('enable_wecenter','false');
-			}
-		} catch (Exception $e) {
-			Config::set('enable_wecenter','false');
-		}
     }
 }
