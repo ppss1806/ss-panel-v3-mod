@@ -1398,7 +1398,6 @@ class UserController extends BaseController
 		
 		$email=$user->email;
 		
-		Da::delete($email);
 			
         $passwd = $request->getParam('passwd');
         // check passwd

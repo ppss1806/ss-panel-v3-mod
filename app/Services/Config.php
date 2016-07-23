@@ -7,8 +7,13 @@ class Config
 {
 	
     public static function get($key){
-		require BASE_PATH."/config/.config.php";
+		global $System_Config;
 		return $System_Config[$key];
+    }
+	
+	public static function set($key,$value){
+		global $System_Config;
+		$System_Config[$key] = $value;
     }
 
     public static function getPublicConfig(){

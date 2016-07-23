@@ -632,12 +632,84 @@ class Job
 				
 			}
 			
+			if(strtotime($user->expire_in)<time()&&strtotime($user->expire_in)>644447105)
+			{
+				if(Config::get('enable_account_expire_reset')=='true')
+				{
+					$user->transfer_enable = Tools::toGB(Config::get('enable_account_expire_reset_traffic'));
+					$user->u = 0;
+					$user->d = 0;
+					
+					$subject = Config::get('appName')."-您的用户账户已经过期了";
+					$to = $user->email;
+					$text = "您好，系统发现您的账号已经过期了。流量已经被重置为".Config::get('enable_account_expire_reset_traffic').'GB' ;
+					try {
+						Mail::send($to, $subject, 'news/warn.tpl', [
+							"user" => $user,"text" => $text
+						], [
+						]);
+					} catch (Exception $e) {
+						echo $e->getMessage();
+					}
+				}
+			}
+			
+			if(strtotime($user->expire_in)+((int)Config::get('enable_account_expire_delete_days')*86400)<time()&&strtotime($user->expire_in)>644447105)
+			{
+				if(Config::get('enable_account_expire_delete')=='true')
+				{
+					
+					$subject = Config::get('appName')."-您的用户账户已经被删除了";
+					$to = $user->email;
+					$text = "您好，系统发现您的账号已经过期了。帐号已经被删除。" ;
+					try {
+						Mail::send($to, $subject, 'news/warn.tpl', [
+							"user" => $user,"text" => $text
+						], [
+						]);
+					} catch (Exception $e) {
+						echo $e->getMessage();
+					}
+					
+					Radius::Delete($email);
+		
+					RadiusBan::where('userid','=',$user->id)->delete();
+					
+					Wecenter::Delete($email);
+					
+					$user->delete();
+					
+					
+					continue;
+				}
+			}
 			
 			if($user->class!=0&&strtotime($user->class_expire)>644447105&&strtotime($user->class_expire)<time())
 			{
+				if(Config::get('enable_class_expire_reset')=='true')
+				{
+					$user->transfer_enable = Tools::toGB(Config::get('enable_class_expire_reset_traffic'));
+					$user->u = 0;
+					$user->d = 0;
+					
+					$subject = Config::get('appName')."-您的用户等级已经过期了";
+					$to = $user->email;
+					$text = "您好，系统发现您的账号等级已经过期了。流量已经被重置为".Config::get('enable_class_expire_reset_traffic').'GB' ;
+					try {
+						Mail::send($to, $subject, 'news/warn.tpl', [
+							"user" => $user,"text" => $text
+						], [
+						]);
+					} catch (Exception $e) {
+						echo $e->getMessage();
+					}
+				}
+				
 				$user->class=0;
-				$user->save();
+				
 			}
+			
+			$user->save();
 		}
 		
 		$rbusers = RadiusBan::all();

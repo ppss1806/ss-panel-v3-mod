@@ -4,7 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Models\User,App\Models\Ip,App\Models\RadiusBan;
 use App\Controllers\AdminController;
-use App\Utils\Hash,App\Utils\Radius,App\Utils\Da,App\Utils\QQWry;
+use App\Utils\Hash,App\Utils\Radius,App\Utils\QQWry;
 use App\Utils\Wecenter;
 use App\Utils\Tools;
 
@@ -172,13 +172,9 @@ class UserController extends AdminController
 
 		$email1=$user->email;
 
-		Da::delete($email1);
-
         $user->email =  $request->getParam('email');
 
 		$email2=$request->getParam('email');
-
-		Da::add($email2);
 
 		$passwd=$request->getParam('passwd');
 
@@ -237,7 +233,6 @@ class UserController extends AdminController
 		
 		Wecenter::Delete($email1);
 			
-		Da::delete($email1);
 			
         if(!$user->delete()){
             $rs['ret'] = 0;

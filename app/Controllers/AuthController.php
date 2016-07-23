@@ -324,7 +324,6 @@ class AuthController extends BaseController
 
 			Duoshuo::add($user);
 		
-			Da::add($email);
 			
 			Radius::Add($user,$user->passwd);
 			

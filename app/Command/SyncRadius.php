@@ -9,6 +9,9 @@ namespace App\Command;
 
 use App\Models\User;
 use App\Models\Node;
+use App\Models\RadiusRadPostauth;
+use App\Models\RadiusRadAcct;
+use App\Models\RadiusNas;
 use App\Services\Config;
 use App\Services\Mail;
 use App\Models\TrafficLog;
@@ -22,7 +25,7 @@ class SyncRadius
 
 	public static function synclogin()
     {
-		if(Config::get('radius_db_host')=="")
+		if(Config::get('enable_radius')=="false")
 		{
 			return;
 		}
@@ -45,18 +48,16 @@ class SyncRadius
 		}*/
 		
 		
-		$dsn = "mysql:host=".Config::get('radius_db_host').";dbname=".Config::get('radius_db_database');  
-		$db = new \PDO($dsn, Config::get('radius_db_user'), Config::get('radius_db_password'));
-		$stmt = $db->query("SELECT * FROM `radpostauth` WHERE `authdate`<'".date("Y-m-d H:i:s")."' AND`authdate`>'".date("Y-m-d H:i:s",time()-60)."'");
-		$result = $stmt->fetchAll();
 		
-		foreach($result as $row)  
+		$logs = RadiusRadPostauth::where('authdate','<',date("Y-m-d H:i:s"))->where('authdate','>',date("Y-m-d H:i:s",time()-60))->get();
+		
+		foreach($logs as $log)  
 		{  
-			if(isset($tempuserbox[$row["username"]]))
+			if(isset($tempuserbox[$log->username]))
 			{
 				
 				$traffic = new TrafficLog();
-				$traffic->user_id = $tempuserbox[$row["username"]];
+				$traffic->user_id = $tempuserbox[$log->username];
 				$traffic->u = 0;
 				$traffic->d = 10000;
 				$traffic->node_id = 1;
@@ -65,7 +66,7 @@ class SyncRadius
 				$traffic->log_time = time();
 				$traffic->save();
 				
-				$user=User::find($tempuserbox[$row["username"]]);
+				$user=User::find($tempuserbox[$log->username]);
 				$user->t = time();
 				$user->u = $user->u + 0;
 				$user->d = $user->d + 10000;
@@ -125,8 +126,6 @@ class SyncRadius
 			}
 		}*/
 		
-		$dsn = "mysql:host=".Config::get('radius_db_host').";dbname=".Config::get('radius_db_database');  
-		$db = new \PDO($dsn, Config::get('radius_db_user'), Config::get('radius_db_password'));
 		/*$stmt = $db->query("SELECT * FROM `radpostauth` WHERE `authdate`<'".date("Y-m-d H:i:s")."' AND`authdate`>'".date("Y-m-d H:i:s",time()-60)."'");
 		$result = $stmt->fetchAll();
 		
@@ -152,25 +151,25 @@ class SyncRadius
 		}  
 		*/
 		
-		$stmt = $db->query("SELECT * FROM `radacct` WHERE `acctstoptime`<'".date("Y-m-d H:i:s")."' AND `acctstoptime`>'".date("Y-m-d H:i:s",time()-60)."'");
-		$result = $stmt->fetchAll();
 		
-		foreach($result as $row)  
-		{  
+		$logs = RadiusRadAcct::where('acctstoptime','<',date("Y-m-d H:i:s"))->where('acctstoptime','>',date("Y-m-d H:i:s",time()-60))->get();
+		
+		foreach($logs as $log)  
+		{ 
 			$traffic = new TrafficLog();
-			$traffic->user_id = $tempuserbox[$row["username"]];
-			$traffic->u = $row["acctinputoctets"];
-			$traffic->d = $row["acctoutputoctets"];
+			$traffic->user_id = $tempuserbox[$log->username];
+			$traffic->u = $log->acctinputoctets;
+			$traffic->d = $log->acctoutputoctets;
 			$traffic->node_id = 2;
 			$traffic->rate = 1;
-			$traffic->traffic = Tools::flowAutoShow(($row["acctinputoctets"]+$row["acctoutputoctets"]));
+			$traffic->traffic = Tools::flowAutoShow(($log->acctinputoctets + $log->acctoutputoctets));
 			$traffic->log_time = time();
 			$traffic->save();	
 			
-			$user=User::find($tempuserbox[$row["username"]]);
+			$user=User::find($tempuserbox[$log->username]);
 			$user->t = time();
-			$user->u = $user->u + $row["acctinputoctets"];
-			$user->d = $user->d + $row["acctoutputoctets"];
+			$user->u = $user->u + $log->acctinputoctets;
+			$user->d = $user->d + $log->acctoutputoctets;
 			$user->save();
 		}  
 		
@@ -184,7 +183,6 @@ class SyncRadius
         foreach($users as $user){
 
 			Radius::Add($user,$user->passwd);
-			Da::Add($user->email);
 
 			echo "Send sync mail to user: ".$user->id;
 			$subject = Config::get('appName')."-密码更新通知";
@@ -206,18 +204,15 @@ class SyncRadius
 		if(Config::get('radius_db_host')!="")
 		{
 			
-			$dsn = "mysql:host=".Config::get('radius_db_host').";dbname=".Config::get('radius_db_database');  
-			$db = new \PDO($dsn, Config::get('radius_db_user'), Config::get('radius_db_password'));
-			$stmt = $db->query("SELECT * FROM `nas` ");
-			$result = $stmt->fetchAll();
-			
 			$md5txt="";
 			
-			foreach($result as $row)  
-			{  
+			$nases = RadiusNas::all();
+		
+			foreach($nases as $nas)  
+			{ 
 				//if($row["pass"]!="")
 				{	
-					$md5txt=$md5txt.$row["id"].$row["nasname"].$row["shortname"].$row["secret"].$row["description"];
+					$md5txt=$md5txt.$nas->id.$nas->nasname.$nas->shortname.$nas->secret.$nas->description;
 				}
 				
 				
