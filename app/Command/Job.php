@@ -255,7 +255,7 @@ class Job
 		
 		foreach($users as $user)
 		{
-			$alive_ips = $alive_ipset[$user->id];
+			$alive_ips = (isset($alive_ipset[$user->id])?$alive_ipset[$user->id]:new \ArrayObject());
 			$ip_count = 0;
 			$ips = array();
 			foreach($alive_ips as $alive_ip)
