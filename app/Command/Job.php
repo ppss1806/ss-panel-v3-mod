@@ -247,7 +247,7 @@ class Job
 		{
 			if($alive_ipset[$full_alive_ip->userid] == null)
 			{
-				$alive_ipset[$full_alive_ip->userid] = new ArrayObject();
+				$alive_ipset[$full_alive_ip->userid] = new \ArrayObject();
 			}
 			
 			$alive_ipset[$full_alive_ip->userid]->append($full_alive_ip);
