@@ -245,7 +245,7 @@ class Job
 		
 		foreach($full_alive_ips as $full_alive_ip)
 		{
-			if($alive_ipset[$full_alive_ip->userid] == null)
+			if(!isset($alive_ipset[$full_alive_ip->userid]))
 			{
 				$alive_ipset[$full_alive_ip->userid] = new \ArrayObject();
 			}
