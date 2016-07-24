@@ -256,15 +256,18 @@ class Job
 		foreach($users as $user)
 		{
 			$alive_ips = (isset($alive_ipset[$user->id])?$alive_ipset[$user->id]:new \ArrayObject());
-			$ip_count = 0;
 			$ips = array();
+			
+			$disconnected_ips = explode(",",$user->disconnect_ip);
+			
 			foreach($alive_ips as $alive_ip)
 			{
-				if(!isset($ips[$alive_ip->ip]))
+				if(!isset($ips[$alive_ip->ip]) && !in_array($alive_ip->ip,$disconnected_ips))
 				{
-					$ip_count++;
+					echo count($ips);
+					echo $alive_ip->ip;
 					$ips[$alive_ip->ip]=1;
-					if($user->node_connector < $ip_count)
+					if($user->node_connector < count($ips))
 					{
 						//暂时封禁
 						$isDisconnect = Disconnect::where('id','=',$alive_ip->ip)->where('userid','=',$user->id)->first();
@@ -316,6 +319,13 @@ class Job
 						$new_ips .= ",".$ip;
 					}
 				}
+			}
+			
+			$user->disconnect_ip = $new_ips;
+			
+			if($new_ips == "")
+			{
+				$user->disconnect_ip = null;
 			}
 			
 			$user->save();
@@ -648,7 +658,7 @@ class Job
 				
 			}
 			
-			if(strtotime($user->expire_in)<time()&&strtotime($user->expire_in)>644447105)
+			if(strtotime($user->expire_in)<time()&&strtotime($user->expire_in)>=time()-60)
 			{
 				if(Config::get('enable_account_expire_reset')=='true')
 				{
@@ -670,7 +680,7 @@ class Job
 				}
 			}
 			
-			if(strtotime($user->expire_in)+((int)Config::get('enable_account_expire_delete_days')*86400)<time()&&strtotime($user->expire_in)>644447105)
+			if(strtotime($user->expire_in)+((int)Config::get('enable_account_expire_delete_days')*86400)<time()&&strtotime($user->expire_in)+((int)Config::get('enable_account_expire_delete_days')*86400)>=time()-60)
 			{
 				if(Config::get('enable_account_expire_delete')=='true')
 				{
@@ -700,7 +710,7 @@ class Job
 				}
 			}
 			
-			if($user->class!=0&&strtotime($user->class_expire)>644447105&&strtotime($user->class_expire)<time())
+			if($user->class!=0&&strtotime($user->class_expire)>=time()-60&&strtotime($user->class_expire)<time())
 			{
 				if(Config::get('enable_class_expire_reset')=='true')
 				{
