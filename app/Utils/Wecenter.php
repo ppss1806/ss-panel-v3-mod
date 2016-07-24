@@ -84,7 +84,6 @@ Class Wecenter
 			$email=$user->email;
 			$exists=WecenterUser::where("email",$email)->first();
 			
-			
 			$expire_in = $time+time();
 			
 			Utils\Cookie::setwithdomain([Config::get('wecenter_cookie_prefix')."_user_login"=>Wecenter::encode_hash(json_encode(array(

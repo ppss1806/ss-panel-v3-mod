@@ -86,12 +86,9 @@ class AuthController extends BaseController
 			}
 		}
 		
-		
         Auth::login($user->id,$time);
         $rs['ret'] = 1;
         $rs['msg'] = "欢迎回来";
-		
-		
 		
 		$loginip=new LoginIp();
 		$loginip->ip=$_SERVER["REMOTE_ADDR"];
@@ -223,10 +220,6 @@ class AuthController extends BaseController
 			}
 			EmailVerify::where('email','=',$email)->delete();
 		}
-		
-		
-		
-		
 		
         // check pwd length
         if(strlen($passwd)<8){

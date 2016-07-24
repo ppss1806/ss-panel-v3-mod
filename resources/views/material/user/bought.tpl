@@ -43,7 +43,7 @@
                             {foreach $shops as $shop}
                             <tr>
 								<td>
-                                    <a class="btn btn-brand" {if $shop->renew==0}disabled{/if} href="javascript:void(0);" onClick="delete_modal_show('{$shop->id}')">退订</a>
+                                    <a class="btn btn-brand" {if $shop->renew==0}disabled{else} href="javascript:void(0);" onClick="delete_modal_show('{$shop->id}')"{/if}>退订</a>
                                 </td>
                                 <td>#{$shop->id}</td>
                                 <td>{$shop->shop()->name}</td>

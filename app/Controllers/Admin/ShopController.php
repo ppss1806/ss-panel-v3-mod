@@ -80,6 +80,18 @@ class ShopController extends AdminController
 		$shop->name =  $request->getParam('name');
         $shop->price =  $request->getParam('price');
         $shop->auto_renew =  $request->getParam('auto_renew');
+		
+		if($shop->auto_reset_bandwidth == 1 && $request->getParam('auto_reset_bandwidth') == 0 )
+		{
+			$boughts = Bought::where("shopid",$id)->get();
+		
+			foreach($boughts as $bought)
+			{
+				$bought->renew=0;
+				$bought->save();
+			}
+		}
+		
 		$shop->auto_reset_bandwidth =  $request->getParam('auto_reset_bandwidth');
 		$shop->status=1;
         
