@@ -44,6 +44,20 @@ class PasswordController extends BaseController
     public function handleToken($request, $response, $args){
         $tokenStr = $args['token'];
         $password =  $request->getParam('password');
+		$repasswd =  $request->getParam('repasswd');
+		
+		if ($password != $repasswd) {
+            $res['ret'] = 0;
+            $res['msg'] = "两次输入不符合";
+            return $response->getBody()->write(json_encode($res));
+        }
+
+        if (strlen($password) < 8) {
+            $res['ret'] = 0;
+            $res['msg'] = "密码太短啦";
+            return $response->getBody()->write(json_encode($res));
+        }
+		
         // check token
         $token = PasswordReset::where('token',$tokenStr)->first();
         if ($token == null || $token->expire_time < time() ){
