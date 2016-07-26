@@ -198,7 +198,8 @@
 					emailcode: $("#email_code").val(){/if}{if $geetest_html != null},
 					geetest_challenge: validate.geetest_challenge,
                     geetest_validate: validate.geetest_validate,
-                    geetest_seccode: validate.geetest_seccode{/if}
+                    geetest_seccode: validate.geetest_seccode
+					{/if}
                 },
                 success:function(data){
                     if(data.ret == 1){
@@ -235,10 +236,12 @@
 			$("div.gt_slider_knob").show();
 		});
 		
-        $("#reg").click(function(){
+        
+		{/if}
+		
+		$("#reg").click(function(){
             register();
         });
-		{/if}
 		
 		$("#tos").click(function(){
 			{if $geetest_html != null}

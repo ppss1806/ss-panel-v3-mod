@@ -165,6 +165,14 @@ $System_Config['cloudxns_apikey']='';#自己去 cloudxns.net 申请
 $System_Config['cloudxns_apisecret']='';
 $System_Config['cloudxns_domain']='zhaoj.in';#你的域名
 
+#支付宝监控 zfbjk.com ，本人不承担任何责任,回调地址 /alipay_callback
+$System_Config['enable_zfbjk']='true';
+
+$System_Config['zfbjk_pid']='1800';
+$System_Config['zfbjk_key']='1800';
+
+#自己改为你的支付宝地址
+$System_Config['zfbjk_qrcode']='https://www.zhaojin97.cn/wp-content/uploads/2016/01/630c50ab52bc139b2a33af8cc64e47ad2016010111570425541.jpg';
 
 
 #自动备份设置
@@ -176,6 +184,7 @@ $System_Config['auto_backup_passwd']='zip password';
 
 #跳转延时,ms
 $System_Config['jump_delay']='1800';
+
 
 
 #是否启用邀请码注册
@@ -208,6 +217,7 @@ $System_Config['reg_obfs_param']='';
 
 #是否将登陆线程和IP绑定
 $System_Config['enable_login_bind_ip']='true';
+
 
 
 #等级到期时是否重置流量
@@ -245,14 +255,14 @@ $System_Config['enable_geetest_login']='false';
 $System_Config['enable_geetest_checkin']='false';
 
 #自动清理多少天没签到的0级用户
-$Systrm_Config['enable_auto_clean_uncheck']='false';
-$Systrm_Config['enable_auto_clean_uncheck_days']='7';
+$System_Config['enable_auto_clean_uncheck']='false';
+$System_Config['enable_auto_clean_uncheck_days']='7';
 
 
 #自动清理多少天没使用的0级用户
-$Systrm_Config['enable_auto_clean_unused']='false';
-$Systrm_Config['enable_auto_clean_unused_days']='30';
+$System_Config['enable_auto_clean_unused']='false';
+$System_Config['enable_auto_clean_unused_days']='30';
 
 
 #是否夹带统计代码，自己在 resources/views/{主题名} 下创建一个 analytics.tpl ，如果有必要就用 literal 界定符
-$Systrm_Config['enable_analytics_code']='false';
+$System_Config['enable_analytics_code']='false';
