@@ -18,6 +18,7 @@ use App\Models\UnblockIp;
 use App\Models\Payback;
 use App\Utils\QQWry;
 use App\Utils\GA;
+use App\Utils\Geetest;
 use App\Services\Mail;
 
 
@@ -127,7 +128,21 @@ class UserController extends BaseController
 		
 		$ios_token = LinkController::GenerateIosCode("smart",0,$this->user->id,0,"smart");
 		
-        return $this->view()->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+		
+		$uid = time().rand(1,10000) ;
+		if(Config::get('enable_geetest_checkin') == 'true')
+		{
+			$GtSdk = Geetest::get($uid);
+		}
+		else
+		{
+			$GtSdk = null;
+		}
+		
+		
+		
+		
+        return $this->view()->assign('geetest_html',$GtSdk)->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
 	
 	
@@ -1373,6 +1388,16 @@ class UserController extends BaseController
 
     public function doCheckIn($request, $response, $args)
     {
+		if(Config::get('enable_geetest_checkin') == 'true')
+		{
+			$ret = Geetest::verify($request->getParam('geetest_challenge'),$request->getParam('geetest_validate'),$request->getParam('geetest_seccode'));
+			if (!$ret) {
+				$res['ret'] = 0;
+				$res['msg'] = "系统无法接受您的验证结果，请刷新页面后重试。";
+				return $response->getBody()->write(json_encode($res));
+			}
+		}
+		
         if (!$this->user->isAbleToCheckin()) {
             $res['msg'] = "您似乎已经续命过了...";
             $res['ret'] = 1;

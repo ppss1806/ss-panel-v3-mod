@@ -20,7 +20,7 @@ use App\Models\EmailVerify;
 use App\Utils\Duoshuo;
 use App\Utils\GA;
 use App\Utils\Wecenter;
-
+use App\Utils\Geetest;
 
 
 
@@ -33,7 +33,16 @@ class AuthController extends BaseController
 
     public function login()
     {
-        return $this->view()->display('auth/login.tpl');
+		$uid = time().rand(1,10000) ;
+		if(Config::get('enable_geetest_login') == 'true')
+		{
+			$GtSdk = Geetest::get($uid);
+		}
+		else
+		{
+			$GtSdk = null;
+		}
+        return $this->view()->assign('geetest_html',$GtSdk)->display('auth/login.tpl');
     }
 
     public function loginHandle($request, $response, $args)
@@ -44,6 +53,16 @@ class AuthController extends BaseController
         $passwd = $request->getParam('passwd');
 		$code = $request->getParam('code');
         $rememberMe = $request->getParam('remember_me');
+		
+		if(Config::get('enable_geetest_login') == 'true')
+		{
+			$ret = Geetest::verify($request->getParam('geetest_challenge'),$request->getParam('geetest_validate'),$request->getParam('geetest_seccode'));
+			if (!$ret) {
+				$res['ret'] = 0;
+				$res['msg'] = "系统无法接受您的验证结果，请刷新页面后重试。";
+				return $response->getBody()->write(json_encode($res));
+			}
+		}
 
         // Handle Login
         $user = User::where('email','=',$email)->first();
@@ -110,7 +129,21 @@ class AuthController extends BaseController
         if(isset($ary['code'])){
             $code = $ary['code'];
         }
-        return $this->view()->assign('enable_invite_code',Config::get('enable_invite_code'))->assign('enable_email_verify',Config::get('enable_email_verify'))->assign('code',$code)->display('auth/register.tpl');
+		
+		$uid = time().rand(1,10000) ;
+		
+		if(Config::get('enable_geetest_reg') == 'true')
+		{
+			$GtSdk = Geetest::get($uid);
+		}
+		else
+		{
+			$GtSdk = null;
+		}
+		
+		
+		
+        return $this->view()->assign('enable_invite_code',Config::get('enable_invite_code'))->assign('geetest_html',$GtSdk)->assign('enable_email_verify',Config::get('enable_email_verify'))->assign('code',$code)->display('auth/register.tpl');
     }
 	
 	
@@ -118,7 +151,7 @@ class AuthController extends BaseController
     {
         if(Config::get('enable_email_verify')=='true')
 		{
-			$email =  $request->getParam('email');
+			$email = $request->getParam('email');
 			
 			if($email=="")
 			{
@@ -173,7 +206,7 @@ class AuthController extends BaseController
 				return false;
 			}
 			
-			$res['ret'] = 0;
+			$res['ret'] = 1;
 			$res['msg'] = "验证码发送成功，请查收邮件。";
 			return $response->getBody()->write(json_encode($res));
 		}
@@ -191,6 +224,16 @@ class AuthController extends BaseController
 		$emailcode = $request->getParam('emailcode');
 		$wechat = $request->getParam('wechat');
         // check code
+		
+		if(Config::get('enable_geetest_reg') == 'true')
+		{
+			$ret = Geetest::verify($request->getParam('geetest_challenge'),$request->getParam('geetest_validate'),$request->getParam('geetest_seccode'));
+			if (!$ret) {
+				$res['ret'] = 0;
+				$res['msg'] = "系统无法接受您的验证结果，请刷新页面后重试。";
+				return $response->getBody()->write(json_encode($res));
+			}
+		}
 		
 		if(Config::get('enable_invite_code')=='true')
 		{

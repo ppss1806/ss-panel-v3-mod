@@ -150,11 +150,12 @@ class Job
 			$user->save();
 				
 				
-			if(date("d")==$user->auto_reset_day)
+			if(date("d") == $user->auto_reset_day)
 			{
-				$user->u=0;
-				$user->d=0;
-				$user->transfer_enable=$user->auto_reset_bandwidth*1024*1024*1024;
+				$user->u = 0;
+				$user->d = 0;
+				$user->last_day_t = 0;
+				$user->transfer_enable = $user->auto_reset_bandwidth*1024*1024*1024;
 				$user->save();
 			}
 		}
@@ -264,8 +265,6 @@ class Job
 			{
 				if(!isset($ips[$alive_ip->ip]) && !in_array($alive_ip->ip,$disconnected_ips))
 				{
-					echo count($ips);
-					echo $alive_ip->ip;
 					$ips[$alive_ip->ip]=1;
 					if($user->node_connector < count($ips))
 					{
@@ -355,11 +354,12 @@ class Job
 					continue;
 				}
 				
-				if($shop->auto_reset_bandwidth==1)
+				if($shop->auto_reset_bandwidth == 1)
 				{
-					$user->u=0;
-					$user->d=0;
-					$user->transfer_enable=$shop->bandwidth()*1024*1024*1024;
+					$user->u = 0;
+					$user->d = 0;
+					$user->last_day_t = 0;
+					$user->transfer_enable = $shop->bandwidth()*1024*1024*1024;
 				}
 				
 				$user->money=$user->money-$bought->price;
@@ -435,7 +435,7 @@ class Job
 				{
 					foreach($adminUser as $user)
 					{
-						echo "Send offline mail to user: ".$user->id;
+						echo "Send mail to user: ".$user->id;
 						$subject = Config::get('appName')."-系统提示";
 						$to = $user->email;
 						$text = "管理员您好，系统发现有了新版本，您可以到 <a href=\"https://github.com/glzjin/ss-panel-v3-mod/issues\">https://github.com/glzjin/ss-panel-v3-mod/issues</a> 按照步骤进行升级。" ;
@@ -665,6 +665,7 @@ class Job
 					$user->transfer_enable = Tools::toGB(Config::get('enable_account_expire_reset_traffic'));
 					$user->u = 0;
 					$user->d = 0;
+					$user->last_day_t = 0;
 					
 					$subject = Config::get('appName')."-您的用户账户已经过期了";
 					$to = $user->email;
@@ -710,6 +711,69 @@ class Job
 				}
 			}
 			
+			
+			
+			if((int)Config::get('enable_auto_clean_uncheck_days')!=0 && $user->last_check_in_time+((int)Config::get('enable_auto_clean_uncheck_days')*86400)<time() && $user->last_check_in_time+((int)Config::get('enable_auto_clean_uncheck_days')*86400)>=time()-60 && $user->class == 0)
+			{
+				if(Config::get('enable_auto_clean_uncheck')=='true')
+				{
+					
+					$subject = Config::get('appName')."-您的用户账户已经被删除了";
+					$to = $user->email;
+					$text = "您好，系统发现您的账号已经 ".Config::get('enable_auto_clean_uncheck_days')." 天没签到了，帐号已经被删除。" ;
+					try {
+						Mail::send($to, $subject, 'news/warn.tpl', [
+							"user" => $user,"text" => $text
+						], [
+						]);
+					} catch (Exception $e) {
+						echo $e->getMessage();
+					}
+					
+					Radius::Delete($user->email);
+		
+					RadiusBan::where('userid','=',$user->id)->delete();
+					
+					Wecenter::Delete($user->email);
+					
+					$user->delete();
+					
+					
+					continue;
+				}
+			}
+			
+			
+			if((int)Config::get('enable_auto_clean_unused_days')!=0 && $user->t+((int)Config::get('enable_auto_clean_unused_days')*86400)<time() && $user->t+((int)Config::get('enable_auto_clean_unused_days')*86400)>=time()-60 && $user->class == 0)
+			{
+				if(Config::get('enable_auto_clean_unused')=='true')
+				{
+					
+					$subject = Config::get('appName')."-您的用户账户已经被删除了";
+					$to = $user->email;
+					$text = "您好，系统发现您的账号已经 ".Config::get('enable_auto_clean_unused_days')." 天没使用了，帐号已经被删除。" ;
+					try {
+						Mail::send($to, $subject, 'news/warn.tpl', [
+							"user" => $user,"text" => $text
+						], [
+						]);
+					} catch (Exception $e) {
+						echo $e->getMessage();
+					}
+					
+					Radius::Delete($user->email);
+		
+					RadiusBan::where('userid','=',$user->id)->delete();
+					
+					Wecenter::Delete($user->email);
+					
+					$user->delete();
+					
+					
+					continue;
+				}
+			}
+			
 			if($user->class!=0&&strtotime($user->class_expire)>=time()-60&&strtotime($user->class_expire)<time())
 			{
 				if(Config::get('enable_class_expire_reset')=='true')
@@ -717,6 +781,7 @@ class Job
 					$user->transfer_enable = Tools::toGB(Config::get('enable_class_expire_reset_traffic'));
 					$user->u = 0;
 					$user->d = 0;
+					$user->last_day_t = 0;
 					
 					$subject = Config::get('appName')."-您的用户等级已经过期了";
 					$to = $user->email;

@@ -235,6 +235,10 @@
 											<p>上次续命时间：<code>{$user->lastCheckInTime()}</code></p>
 											
 											<p id="checkin-msg"></p>
+											
+											{if $geetest_html != null}
+												<div id="popup-captcha"></div>
+											{/if}
 									</div>
 									
 									<div class="card-action">
@@ -325,6 +329,10 @@
 {include file='user/footer.tpl'}
 
 <script src="theme/material/js/shake.js/shake.js"></script>
+
+
+
+{if $geetest_html == null}
 <script>
 window.onload = function() { 
     var myShakeEvent = new Shake({ 
@@ -390,3 +398,85 @@ window.onload = function() {
 	});
 	
 </script>
+{else}
+
+
+<script>
+window.onload = function() { 
+    var myShakeEvent = new Shake({ 
+        threshold: 15 
+    }); 
+ 
+    myShakeEvent.start(); 
+ 
+    window.addEventListener('shake', shakeEventDidOccur, false); 
+ 
+    function shakeEventDidOccur () { 
+		if("vibrate" in navigator){
+			navigator.vibrate(500);
+		}
+		
+        c.show();
+    } 
+}; 
+
+</script>
+
+
+
+<script>
+
+
+	var handlerPopup = function (captchaObj) {
+		c = captchaObj;
+		captchaObj.onSuccess(function () {
+			var validate = captchaObj.getValidate();
+            $.ajax({
+                url: "/user/checkin", // 进行二次验证
+                type: "post",
+                dataType: "json",
+                data: {
+                    // 二次验证所需的三个值
+                    geetest_challenge: validate.geetest_challenge,
+                    geetest_validate: validate.geetest_validate,
+                    geetest_seccode: validate.geetest_seccode
+                },
+                success: function (data) {
+                    $("#checkin-msg").html(data.msg);
+                    $("#checkin-btn").hide();
+					$("#result").modal();
+                    $("#msg").html(data.msg);
+                },
+                error: function (jqXHR) {
+					$("#result").modal();
+                    $("#msg").html("发生错误：" + jqXHR.status);
+                }
+            });
+        });
+        // 弹出式需要绑定触发验证码弹出按钮
+        captchaObj.bindOn("#checkin");
+        // 将验证码加到id为captcha的元素里
+        captchaObj.appendTo("#popup-captcha");
+        // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+    };
+
+	initGeetest({
+		gt: "{$geetest_html->gt}",
+		challenge: "{$geetest_html->challenge}",
+		product: "popup", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+		offline: {if $geetest_html->success}0{else}1{/if} // 表示用户后台检测极验服务器是否宕机，与SDK配合，用户一般不需要关注
+	}, handlerPopup);
+	
+	$("#android_add").click(function(){
+		var links = new Array({$android_add});
+		for(var i=0; i<links.length; i++){
+			window.open (links[i]);
+		}
+	});
+	
+</script>
+
+
+{/if}
+
+

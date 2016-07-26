@@ -230,3 +230,29 @@ $System_Config['enable_account_expire_delete']='true';
 
 #账户到期几天之后会删除账户
 $System_Config['enable_account_expire_delete_days']='0';
+
+#验证码相关设置，自己去 Geetest.com 申请
+$System_Config['geetest_id']='';
+$System_Config['geetest_key']='';
+
+#启用注册验证码
+$System_Config['enable_geetest_reg']='false';
+
+#启用登录验证码
+$System_Config['enable_geetest_login']='false';
+
+#启用签到验证码
+$System_Config['enable_geetest_checkin']='false';
+
+#自动清理多少天没签到的0级用户
+$Systrm_Config['enable_auto_clean_uncheck']='false';
+$Systrm_Config['enable_auto_clean_uncheck_days']='7';
+
+
+#自动清理多少天没使用的0级用户
+$Systrm_Config['enable_auto_clean_unused']='false';
+$Systrm_Config['enable_auto_clean_unused_days']='30';
+
+
+#是否夹带统计代码，自己在 resources/views/{主题名} 下创建一个 analytics.tpl ，如果有必要就用 literal 界定符
+$Systrm_Config['enable_analytics_code']='false';

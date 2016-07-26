@@ -114,6 +114,7 @@ class Shop extends Model
 						$user->transfer_enable=$value*1024*1024*1024;
 						$user->u = 0;
 						$user->d = 0;
+						$user->last_day_t = 0;
 					}
 					else
 					{

@@ -98,12 +98,12 @@ class Analytics
 	
 	public function getTotalSSNode()
     {
-        return Node::where('node_heartbeat','>',0)->count();
+        return Node::where('node_heartbeat','>',0)->where('port','=',0)->count();
     }
 	
 	public function getAliveSSNode()
     {
-        return Node::where('node_heartbeat','>',0)->where('node_heartbeat','>',time()-90)->count();
+        return Node::where('port','=',0)->where('node_heartbeat','>',time()-90)->count();
     }
 
 }

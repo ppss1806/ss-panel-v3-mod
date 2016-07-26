@@ -46,6 +46,16 @@
 											</div>
 										</div>
 										
+										{if $geetest_html != null}
+											<div class="form-group form-group-label">
+												<div class="row">
+													<div class="col-md-10 col-md-push-1">
+														<div id="embed-captcha"></div>
+													</div>
+												</div>
+											</div>
+										{/if}
+										
 										<div class="form-group">
 											<div class="row">
 												<div class="col-md-10 col-md-push-1">
@@ -93,6 +103,24 @@
 <script>
     $(document).ready(function(){
         function login(){
+			{if $geetest_html != null}
+			if(typeof validate == 'undefined')
+			{
+				$("#result").modal();
+                $("#msg").html("请滑动验证码来完成验证。");
+				return;
+			}
+			
+			if (!validate) {
+				$("#result").modal();
+                $("#msg").html("请滑动验证码来完成验证。");
+				return;
+			}
+			
+			{/if}
+			
+			document.getElementById("login").disabled = true; 
+			
             $.ajax({
                 type:"POST",
                 url:"/auth/login",
@@ -101,7 +129,10 @@
                     email: $("#email").val(),
                     passwd: $("#passwd").val(),
 					code: $("#code").val(),
-                    remember_me: $("#remember_me").val()
+                    remember_me: $("#remember_me").val(){if $geetest_html != null},
+					geetest_challenge: validate.geetest_challenge,
+                    geetest_validate: validate.geetest_validate,
+                    geetest_seccode: validate.geetest_seccode{/if}
                 },
                 success:function(data){
                     if(data.ret == 1){
@@ -111,12 +142,14 @@
                     }else{
 						$("#result").modal();
                         $("#msg").html(data.msg);
+						document.getElementById("login").disabled = false; 
                     }
                 },
                 error:function(jqXHR){
                     $("#msg-error").hide(10);
                     $("#msg-error").show(100);
                     $("#msg-error-p").html("发生错误："+jqXHR.status);
+					document.getElementById("login").disabled = false; 
                 }
             });
         }
@@ -128,11 +161,40 @@
         $("#login").click(function(){
             login();
         });
+		
+		$('div.modal').on('shown.bs.modal', function() {
+			$("div.gt_slider_knob").hide();
+		});
+		
+		$('div.modal').on('hidden.bs.modal', function() {
+			$("div.gt_slider_knob").show();
+		});
     })
 </script>
 
 
+{if $geetest_html != null}
+<script>
+	var handlerEmbed = function (captchaObj) {
+        // 将验证码加到id为captcha的元素里
+		
+		captchaObj.onSuccess(function () {
+            validate = captchaObj.getValidate();
+        });
+		
+        captchaObj.appendTo("#embed-captcha");
+        // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+    };
+	
+	initGeetest({
+		gt: "{$geetest_html->gt}",
+		challenge: "{$geetest_html->challenge}",
+		product: "embed", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+		offline: {if $geetest_html->success}0{else}1{/if} // 表示用户后台检测极验服务器是否宕机，与SDK配合，用户一般不需要关注
+	}, handlerEmbed);
+</script>
 
+{/if}
 
 
 
