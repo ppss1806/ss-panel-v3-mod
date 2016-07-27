@@ -192,9 +192,9 @@
 					wechat: $("#wechat").val(),
 					imtype: $("#imtype").val(),
 					{if $enable_invite_code == 'true'}
-					code: $("#code").val(),
+					code: $("#code").val()
 					{/if}
-					{if $enable_email_verify == 'true'}
+					{if $enable_email_verify == 'true'},
 					emailcode: $("#email_code").val(){/if}{if $geetest_html != null},
 					geetest_challenge: validate.geetest_challenge,
                     geetest_validate: validate.geetest_validate,
@@ -226,12 +226,12 @@
             }
         });
 		
-		
+		{if $geetest_html != null}
 		$('div.modal').on('shown.bs.modal', function() {
 			$("div.gt_slider_knob").hide();
 		});
 		
-		{if $geetest_html != null}
+		
 		$('div.modal').on('hidden.bs.modal', function() {
 			$("div.gt_slider_knob").show();
 		});
