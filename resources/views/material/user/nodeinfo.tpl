@@ -166,47 +166,12 @@
 												<p>1、电脑上安装 PP 助手 <a href="http://pro.25pp.com"/>http://pro.25pp.com</a>。</p>
 												<p>2、然后 手机连电脑，然后信任 PP助手。</p>
 												<p>3、下载 surge(<a href="/downloads/Surge_pp.ipa">Surge_pp.ipa</a>)，用 PP 助手安装。</p>
-												<p>配置的话，这里有两种方法：</p>
-												<h4>第一种：直接下载生成好的配置文件，然后在 APP 里添加设置时选择 Download configuration from URL ，把地址粘贴进去添加。</h4>
+												<p>配置的话，直接下载生成好的配置文件，然后在 APP 里添加设置时选择 Download configuration from URL ，把地址粘贴进去添加。</p>
 												<p>第一种分流方式，按照域名的文件下载地址，点击直接下载：<a href="{$link1}">{$link1}</a></p>
 
 												<p>第二种分流方式，按照地区的文件下载地址，感谢 @Tony 提供，点击直接下载：<a href="{$link2}">{$link2}</a></p>
 												<br>
-												<h4>第二种：Surge使用步骤</h4>
-
-												<p>基础配置只需要做一次：
-												<ol>
-													<li>打开 Surge ，点击右上角“Edit”，点击“Download Configuration from URL”</li>
-													<li>输入基础配置的地址（或扫描二维码得到地址，复制后粘贴进来），点击“OK”</li>
-													<li><b>注意：</b>基础配置不要改名，不可以直接启用。</li>
-												</ol>
-												</p>
-												<p>代理配置需要根据不同的节点进行添加：
-												<ol>
-													<li>点击“New Empty Configuration”</li>
-													<li>在“NAME”里面输入一个配置文件的名称</li>
-													<li>点击下方“Edit in Text Mode”</li>
-													<li>输入代理配置的全部文字（或扫描二维码得到配置，复制后粘贴进来），点击“OK”</li>
-													<li>直接启用代理配置即可科学上网。</li>
-												</ol>
-												</p>
-											</div>
 											<div class="col-md-12">
-												<h4>基础配置</h4>
-
-												<div class="text-center">
-													<div id="surge-base-qr"></div>
-												</div>
-												<textarea id="surge-base-text" class="form-control" rows="6">{$surge_base}</textarea>
-											</div>
-											<div class="col-md-12">
-												<h4>代理配置</h4>
-
-												<div class="text-center">
-													<div id="surge-proxy-qr"></div>
-												</div>
-												<textarea id="surge-proxy-text" class="form-control" rows="6">{$surge_proxy}</textarea>
-											</div>
 										</div>
 									</div>
 									
@@ -248,13 +213,5 @@
 		"text": text_qrcode2
 	});
 	{/if}
-	
-	var text_surge_base = jQuery('#surge-base-text').val();
-	jQuery('#surge-base-qr').qrcode({
-		"text": text_surge_base
-	});
-	var text_surge_proxy = jQuery('#surge-proxy-text').text();
-	jQuery('#surge-proxy-qr').qrcode({
-		"text": text_surge_proxy
-	});
+
 </script>

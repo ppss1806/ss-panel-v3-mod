@@ -28,7 +28,7 @@
 									<h4>注意!</h4>
 									<p>请勿在任何地方公开节点地址！</p>
 									<p>流量比例为0.5即使用1000MB按照500MB流量记录记录结算.</p>
-									<p>菜单分两级，点击某个节点名称展开这个节点的方式后，可以点击这个方式查看具体的配置信息。</p>
+									<a href="javascript:void(0);" onClick="urlChange('guide')">如果您不知道如何查看节点的详细信息和二维码，请点我。</a>
 								</div>
 							</div>
 						</div>
@@ -198,7 +198,7 @@
 						<div aria-hidden="true" class="modal fade" id="nodeinfo" role="dialog" tabindex="-1">
 							<div class="modal-dialog modal-full">
 								<div class="modal-content">
-									<iframe class="iframe-seamless" src="https://www.zhaoj.in" title="Modal with iFrame" id="infoifram"></iframe>
+									<iframe class="iframe-seamless" title="Modal with iFrame" id="infoifram"></iframe>
 								</div>
 							</div>
 						</div>
@@ -222,7 +222,17 @@
 
 function urlChange(id) {
     var site = './node/'+id;
-    document.getElementById('infoifram').src = site;
+	if(id == 'guide')
+	{
+		var doc = document.getElementById('infoifram').contentWindow.document;
+		doc.open();
+		doc.write('<img src="https://www.zhaoj.in/wp-content/uploads/2016/07/1469595156fca44223cf8da9719e1d084439782b27.gif" style="width: 100%;height: 100%; border: none;"/>');
+		doc.close();
+	}
+	else
+	{
+		document.getElementById('infoifram').src = site;
+	}
 	$("#nodeinfo").modal();
 }
 </script>
