@@ -165,14 +165,6 @@ $System_Config['cloudxns_apikey']='';#自己去 cloudxns.net 申请
 $System_Config['cloudxns_apisecret']='';
 $System_Config['cloudxns_domain']='zhaoj.in';#你的域名
 
-#支付宝监控 zfbjk.com ，本人不承担任何责任,回调地址 /alipay_callback
-$System_Config['enable_zfbjk']='true';
-
-$System_Config['zfbjk_pid']='1800';
-$System_Config['zfbjk_key']='1800';
-
-#自己改为你的支付宝地址
-$System_Config['zfbjk_qrcode']='https://www.zhaojin97.cn/wp-content/uploads/2016/01/630c50ab52bc139b2a33af8cc64e47ad2016010111570425541.jpg';
 
 
 #自动备份设置
