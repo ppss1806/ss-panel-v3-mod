@@ -21,16 +21,7 @@ class Bought extends Model
 	
 	public function user()
     {
-		$user = User::where("id",$this->attributes['userid'])->first();
-		if($user == NULL)
-		{
-			Bought::where('id','=',$this->attributes['id'])->delete();
-			return null;
-		}
-        else
-		{
-			return $user;
-		}
+		return User::where("id",$this->attributes['userid'])->first();
     }
 	
 	public function shop()

@@ -41,45 +41,6 @@ class UserController extends BaseController
 
     public function index($request, $response, $args)
     {
-		$Anns = Ann::orderBy('id', 'desc')->get();
-		
-		$userip=array();
-		
-		$total = Ip::where("datetime",">=",time()-86400)->where('userid', '=',$this->user->id)->get();
-		
-		$iplocation = new QQWry(); 
-		foreach($total as $single)
-		{
-			//if(isset($useripcount[$single->userid]))
-			{
-				if(!isset($userip[$single->ip()]))
-				{
-					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
-					$location=$iplocation->getlocation($single->ip());
-					$userip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
-				}
-			}
-		}
-		
-		$totallogin = LoginIp::where('userid', '=',$this->user->id)->where("type","=",0)->orderBy("datetime","desc")->take(10)->get();
-		
-		$userloginip=array();
-		
-		foreach($totallogin as $single)
-		{
-			//if(isset($useripcount[$single->userid]))
-			{
-				if(!isset($userloginip[$single->ip]))
-				{
-					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
-					$location=$iplocation->getlocation($single->ip);
-					$userloginip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
-				}
-			}
-		}
-		
-		
-		
 		/*$Speedtest['Tping']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("telecomping","desc")->get();
 		$Speedtest['Uping']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("unicomping","desc")->take(3);
 		$Speedtest['Cping']=Speedtest::where("datetime",">",time()-6*3600)->orderBy("cmccping","desc")->take(3);
@@ -139,10 +100,10 @@ class UserController extends BaseController
 			$GtSdk = null;
 		}
 		
+		$Ann = Ann::orderBy('date', 'desc')->first();
 		
 		
-		
-        return $this->view()->assign('geetest_html',$GtSdk)->assign('anns',$Anns)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign("userloginip",$userloginip)->assign("userip",$userip)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
+        return $this->view()->assign('ann',$Ann)->assign('geetest_html',$GtSdk)->assign("ios_token",$ios_token)->assign("android_add",$android_add)->assign('enable_duoshuo',Config::get('enable_duoshuo'))->assign('duoshuo_shortname',Config::get('duoshuo_shortname'))->assign('baseUrl',Config::get('baseUrl'))->display('user/index.tpl');
     }
 	
 	
@@ -213,6 +174,32 @@ class UserController extends BaseController
 
 		
 	}
+	
+	
+	
+	
+	public function donate($request, $response, $args)
+    {
+		if(Config::get('enable_donate') != 'true')
+		{
+			exit(0);
+		}
+		
+		$pageNum = 1;
+		if (isset($request->getQueryParams()["page"])) {
+			$pageNum = $request->getQueryParams()["page"];
+		}
+		$codes = Code::where(
+			function ($query) {
+				$query->where("type","=",-1)
+					->orWhere("type","=",-2);
+			}
+		)->where("isused",1)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
+		$codes->setPath('/user/donate');
+		return $this->view()->assign('codes',$codes)->assign('total_in',Code::where('type',-1)->sum('number'))->assign('total_out',Code::where('type',-2)->sum('number'))->display('user/donate.tpl');
+		
+	}
+	
 	
 	public function code_check($request, $response, $args)
     {
@@ -490,9 +477,12 @@ class UserController extends BaseController
 					}
 				}
 				
-				if(strpos($node_method[$temp[0]],$temp[1])===FALSE)
+				if(isset($temp[1]))
 				{
-					$node_method[$temp[0]]=$node_method[$temp[0]]." ".$temp[1];
+					if(strpos($node_method[$temp[0]],$temp[1])===FALSE)
+					{
+						$node_method[$temp[0]]=$node_method[$temp[0]]." ".$temp[1];
+					}
 				}
 		
 				
@@ -733,7 +723,55 @@ class UserController extends BaseController
 		$paybacks = Payback::where("ref_by",$this->user->id)->orderBy("datetime","desc")->paginate(15, ['*'], 'page', $pageNum);
 		$paybacks->setPath('/user/profile');
 		
-        return $this->view()->assign("paybacks",$paybacks)->display('user/profile.tpl');
+		
+		$userip=array();
+		
+		$total = Ip::where("datetime",">=",time()-86400)->where('userid', '=',$this->user->id)->get();
+		
+		$iplocation = new QQWry(); 
+		foreach($total as $single)
+		{
+			//if(isset($useripcount[$single->userid]))
+			{
+				if(!isset($userip[$single->ip()]))
+				{
+					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
+					$location=$iplocation->getlocation($single->ip());
+					$userip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+				}
+			}
+		}
+		
+		$totallogin = LoginIp::where('userid', '=',$this->user->id)->where("type","=",0)->orderBy("datetime","desc")->take(10)->get();
+		
+		$userloginip=array();
+		
+		foreach($totallogin as $single)
+		{
+			//if(isset($useripcount[$single->userid]))
+			{
+				if(!isset($userloginip[$single->ip]))
+				{
+					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
+					$location=$iplocation->getlocation($single->ip);
+					$userloginip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+				}
+			}
+		}
+		
+		
+		
+        return $this->view()->assign("userloginip",$userloginip)->assign("userip",$userip)->assign("paybacks",$paybacks)->display('user/profile.tpl');
+    }
+	
+	
+	public function announcement($request, $response, $args)
+    {
+		$Anns = Ann::orderBy('date', 'desc')->get();
+		
+		
+		
+        return $this->view()->assign("anns",$Anns)->display('user/announcement.tpl');
     }
 
     public function edit($request, $response, $args)
@@ -822,6 +860,18 @@ class UserController extends BaseController
         }
         $hashPwd = Hash::passwordHash($pwd);
         $user->pass = $hashPwd;
+        $user->save();
+
+        $res['ret'] = 1;
+        $res['msg'] = "修改成功";
+        return $this->echoJson($response, $res);
+    }
+	
+	public function updateHide($request, $response, $args)
+    {
+        $hide = $request->getParam('hide');
+        $user = $this->user;
+        $user->is_hide = $hide;
         $user->save();
 
         $res['ret'] = 1;

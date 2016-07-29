@@ -83,6 +83,8 @@ $app->group('/user', function () {
     $this->get('/', 'App\Controllers\UserController:index');
     $this->post('/checkin', 'App\Controllers\UserController:doCheckin');
     $this->get('/node', 'App\Controllers\UserController:node');
+	$this->get('/announcement', 'App\Controllers\UserController:announcement');
+	$this->get('/donate', 'App\Controllers\UserController:donate');
 	$this->get('/lookingglass', 'App\Controllers\UserController:lookingglass');
     $this->get('/node/{id}', 'App\Controllers\UserController:nodeInfo');
 	$this->get('/node/{id}/ajax', 'App\Controllers\UserController:nodeAjax');
@@ -108,6 +110,7 @@ $app->group('/user', function () {
 	$this->post('/mail', 'App\Controllers\UserController:updateMail');
     $this->post('/sspwd', 'App\Controllers\UserController:updateSsPwd');
     $this->post('/method', 'App\Controllers\UserController:updateMethod');
+    $this->post('/hide', 'App\Controllers\UserController:updateHide');
     $this->get('/sys', 'App\Controllers\UserController:sys');
     $this->get('/trafficlog', 'App\Controllers\UserController:trafficLog');
     $this->get('/kill', 'App\Controllers\UserController:kill');
@@ -205,8 +208,10 @@ $app->group('/admin', function () {
 	
 	// Code Mange
     $this->get('/code', 'App\Controllers\Admin\CodeController:index');
-    $this->get('/code/create', 'App\Controllers\Admin\CodeController:create');
-    $this->post('/code', 'App\Controllers\Admin\CodeController:add');
+	$this->get('/code/create', 'App\Controllers\Admin\CodeController:create');
+	$this->post('/code', 'App\Controllers\Admin\CodeController:add');
+	$this->get('/donate/create', 'App\Controllers\Admin\CodeController:donate_create');
+    $this->post('/donate', 'App\Controllers\Admin\CodeController:donate_add');
 
     // User Mange
     $this->get('/user', 'App\Controllers\Admin\UserController:index');

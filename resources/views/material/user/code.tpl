@@ -165,7 +165,7 @@
                 }
             })
         })
-    })
+
 	
 	timestamp = {time()}; 
 		
@@ -190,5 +190,6 @@
 		tid = setTimeout(f, 1000); //循环调用触发setTimeout
 	}
 	setTimeout(f, 1000);
+})
 </script>
 

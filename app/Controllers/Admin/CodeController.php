@@ -5,7 +5,7 @@ namespace App\Controllers\Admin;
 use App\Models\Code;
 use App\Controllers\AdminController;
 use App\Utils\Tools;
-
+use App\Services\Auth;
 
 class CodeController extends AdminController
 {
@@ -21,6 +21,10 @@ class CodeController extends AdminController
 
     public function create($request, $response, $args){
         return $this->view()->display('admin/code/add.tpl');
+    }
+	
+	public function donate_create($request, $response, $args){
+        return $this->view()->display('admin/code/add_donate.tpl');
     }
 
     public function add($request, $response, $args){
@@ -45,6 +49,31 @@ class CodeController extends AdminController
 		
         $rs['ret'] = 1;
         $rs['msg'] = "充值码添加成功";
+        return $response->getBody()->write(json_encode($rs));
+    }
+	
+	
+	public function donate_add($request, $response, $args){
+		
+		$amount = $request->getParam('amount');
+		$type = $request->getParam('type');
+		$text = $request->getParam('code');
+
+		
+		$code = new Code();
+		$code->code = $text;
+		$code->type = $type;
+		$code->number = $amount;
+		$code->userid = Auth::getUser()->id;
+		$code->isused = 1;
+		$code->usedatetime = date("Y:m:d H:i:s");
+		
+		$code->save();
+		
+		
+		
+        $rs['ret'] = 1;
+        $rs['msg'] = "添加成功";
         return $response->getBody()->write(json_encode($rs));
     }
 }

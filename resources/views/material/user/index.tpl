@@ -21,110 +21,19 @@
 		<div class="container">
 			<section class="content-inner margin-top-no">
 				<div class="ui-card-wrap">
-					
-						<div class="col-lg-6 col-md-6">
-							<div class="card">
-								<div class="card-main">
-									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">公告</p>
-										<div class="card-table">
-											<div class="table-responsive">
-												<table class="table">
-													<tr>
-														<th>ID</th>
-														<th>日期</th>
-														<th>内容</th>
-													</tr>
-													{foreach $anns as $ann}
-														<tr>
-															<td>#{$ann->id}</td>
-															<td>{$ann->date}</td>
-															<td>{$ann->content}</td>
-														</tr>
-													{/foreach}
-												</table>
-											</div>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-							
-						
-						
-							<div class="card">
-								<div class="card-main">
-									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">最近一天使用IP</p>
-										<p>请确认都为自己的IP，如有异常请及时修改连接密码。部分节点不支持记录。</p>
-										<div class="card-table">
-											<div class="table-responsive">
-												<table class="table">
-													<tr>
-														
-														<th>IP</th>
-														<th>归属地</th>
-													</tr>
-													{foreach $userip as $single=>$location}
-														<tr>
-															
-															<td>{$single}</td>
-															<td>{$location}</td>
-														</tr>
-													{/foreach}
-												</table>
-											</div>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-							
-						
-						
-							<div class="card">
-								<div class="card-main">
-									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">最近10次登录IP</p>
-										<p>请确认都为自己的IP，如有异常请及时修改密码。</p>
-										<div class="card-table">
-											<div class="table-responsive">
-												<table class="table">
-													<tr>
-														
-														<th>IP</th>
-														<th>归属地</th>
-													</tr>
-													{foreach $userloginip as $single=>$location}
-														<tr>
-															
-															<td>{$single}</td>
-															<td>{$location}</td>
-														</tr>
-													{/foreach}
-												</table>
-											</div>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-						
-							<div class="card">
-								<div class="card-main">
-									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">FAQ</p>
-										<p>流量不会重置，可以通过续命获取流量。</p>
-
-										<p>每次续命可以获取{$config['checkinMin']}~{$config['checkinMax']}MB流量。</p>
-									</div>
-									
-								</div>
-							</div>
-							
-						</div>
 						
 						<div class="col-lg-6 col-md-6">
+						
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">系统中最新公告</p>
+										<p>其他公告请到<a href="/user/announcement"/>公告面板</a>查看。</p>
+										<p>{$ann->content}</p>
+									</div>
+									
+								</div>
+							</div>
 						
 							<div class="card">
 								<div class="card-main">
@@ -165,9 +74,13 @@
 									
 								</div>
 							</div>
-							
-							
 						
+							
+							
+							
+						</div>
+						
+						<div class="col-lg-6 col-md-6">
 							
 						
 						
@@ -230,6 +143,10 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">续命获取流量</p>
+											<p>流量不会重置，可以通过续命获取流量。</p>
+
+											<p>每次续命可以获取{$config['checkinMin']}~{$config['checkinMax']}MB流量。</p>
+										
 											<p>每天可以续命一次。您可以点击按钮或者摇动手机来续命。</p>
 
 											<p>上次续命时间：<code>{$user->lastCheckInTime()}</code></p>

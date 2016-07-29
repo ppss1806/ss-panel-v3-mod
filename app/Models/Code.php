@@ -15,7 +15,10 @@ class Code extends Model
     protected $table = "code";
 
 
-
+	public function user()
+    {
+        return User::where("id",$this->attributes['userid'])->first();
+    }
 
 
 }

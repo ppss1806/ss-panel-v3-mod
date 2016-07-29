@@ -19,11 +19,6 @@ class Auth{
             return $newResponse;
         }
 		
-		if($user->im_value==""&&$_SERVER["REQUEST_URI"]!="/user/edit"&&$_SERVER["REQUEST_URI"]!="/user/wechat")
-		{
-			echo("<script language=\"JavaScript\">alert(\"为了便于身份管理，请各位到 修改资料 面板 填好联络方式后再继续操作，谢谢。\");window.location.href='/user/edit';</script>");
-		}
-		
 		if(Config::get('enable_duoshuo')=='true')
 		{
 		
