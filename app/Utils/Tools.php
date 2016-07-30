@@ -110,23 +110,13 @@ class Tools
 	
 	public static function getAvPort()
     {
-		$retry=10;
-		$i=0;
-		while($i<$retry)
-		{
-			$port=(int)rand(Config::get('min_port'),Config::get('max_port'));
-			$user = User::where('port', $port)->first();
-			if ($user == null) {
-				return $port; 
-			}
-			else
-			{
-				$i++;
-			}
-			
-		}
-        
-        return (int)Rand(0,65535);
+		//检索User数据表现有port
+		$det = User::pluck('port')->toArray();
+
+		$port = array_diff(range(Config::get('min_port'),Config::get('max_port')),$det);
+		shuffle($port);
+
+		return $port[0];
     }
 	
 	public static function getDir($dir) {

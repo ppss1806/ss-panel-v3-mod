@@ -488,7 +488,7 @@ class UserController extends BaseController
 						$node_method[$temp[0]]=$node_method[$temp[0]]." ".$temp[1];
 					}
 				}
-					
+				
 		
 				
 				
