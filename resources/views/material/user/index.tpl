@@ -29,7 +29,9 @@
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">系统中最新公告</p>
 										<p>其他公告请到<a href="/user/announcement"/>公告面板</a>查看。</p>
+										{if $ann->content != null}
 										<p>{$ann->content}</p>
+										{/if}
 									</div>
 									
 								</div>
