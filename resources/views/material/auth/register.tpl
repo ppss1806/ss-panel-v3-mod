@@ -190,11 +190,8 @@
                     passwd: $("#passwd").val(),
                     repasswd: $("#repasswd").val(),
 					wechat: $("#wechat").val(),
-					imtype: $("#imtype").val(),
-					{if $enable_invite_code == 'true'}
-					code: $("#code").val()
-					{/if}
-					{if $enable_email_verify == 'true'},
+					imtype: $("#imtype").val(){if $enable_invite_code == 'true'},
+					code: $("#code").val(){/if}{if $enable_email_verify == 'true'},
 					emailcode: $("#email_code").val(){/if}{if $geetest_html != null},
 					geetest_challenge: validate.geetest_challenge,
                     geetest_validate: validate.geetest_validate,
@@ -267,9 +264,29 @@
 
 {if $enable_email_verify == 'true'}
 <script>
+var wait=60;
+function time(o) {
+		if (wait == 0) {
+			o.removeAttr("disabled");			
+			o.text("获取验证码");
+			wait = 60;
+		} else {
+			o.attr("disabled","disabled");
+			o.text("重新发送(" + wait + ")");
+			wait--;
+			setTimeout(function() {
+				time(o)
+			},
+			1000)
+		}
+	}
+
+
+
     $(document).ready(function () {
         $("#email_verify").click(function () {
-			document.getElementById("email_verify").disabled = true; 
+			time($("#email_verify"));
+			
             $.ajax({
                 type: "POST",
                 url: "send",
@@ -279,17 +296,15 @@
                 },
                 success: function (data) {
                     if (data.ret) {
-						document.getElementById("email_verify").disabled = true; 
                         $("#result").modal();
 						$("#msg").html(data.msg);
+						
                     } else {
-						document.getElementById("email_verify").disabled = false; 
                         $("#result").modal();
 						$("#msg").html(data.msg);
                     }
                 },
                 error: function (jqXHR) {
-					document.getElementById("email_verify").disabled = false; 
                     $("#result").modal();
 					$("#msg").html(data.msg+"     出现了一些错误。");
                 }

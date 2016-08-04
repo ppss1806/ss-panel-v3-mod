@@ -60,7 +60,7 @@
 										<p><a href="/downloads/client/ShadowsocksR-win.7z"><i class="icon icon-lg">desktop_windows</i>&nbsp;Windows</a></p>
 										<p><a href="/downloads/client/ShadowsocksX.dmg"><i class="icon icon-lg">laptop_mac</i>&nbsp;Mac OS X</a></p>
 										<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation"><i class="icon icon-lg">laptop_windows</i>&nbsp;Linux</a></p>
-										<p><a href="/downloads/client/shadowsocks.apk"><i class="icon icon-lg">android</i>&nbsp;Android</a></p>
+										<p><a href="https://github.com/glzjin/shadowsocks-android/releases"><i class="icon icon-lg">android</i>&nbsp;Android</a></p>
 									</div>
 									
 								</div>
@@ -85,7 +85,10 @@
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">配置链接</p>
 										<input id="ss-qr-text" class="form-control" value="{$ssqr_s}">
-										<a href="{$ssqr}"/>Android 手机上用默认浏览器打开点我就可以直接添加了</a>
+										<p><a href="{$ssqr}"/>Android 手机上用默认浏览器打开点我就可以直接添加了(给原版APP)</a></p>
+										{if $config['enable_rss']=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin')}
+										<p><a href="{$ssqr_s_new}"/>Android 手机上用默认浏览器打开点我就可以直接添加了(给 SSR)</a></p>
+										{/if}
 									</div>
 									
 								</div>
@@ -111,7 +114,7 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">RSS旧版(3.8.3之前)配置二维码</p>
+										<p class="card-heading">SSR 旧版(3.8.3之前)配置二维码</p>
 										<div class="text-center">
 											<div id="ss-qr"></div>
 										</div>
@@ -125,7 +128,7 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">RSS新版(3.8.3之后)配置二维码</p>
+										<p class="card-heading">SSR 新版(3.8.3之后)配置二维码</p>
 										<div class="text-center">
 											<div id="ss-qr-n"></div>
 										</div>

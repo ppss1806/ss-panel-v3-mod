@@ -156,9 +156,17 @@ class AuthController extends BaseController
 			if($email=="")
 			{
 				$res['ret'] = 0;
-				$res['msg'] = "哦？";
+				$res['msg'] = "哦？你填了你的邮箱了吗？";
 				return $response->getBody()->write(json_encode($res));
 			}
+			
+			// check email format
+			if(!Check::isEmailLegal($email)){
+				$res['ret'] = 0;
+				$res['msg'] = "邮箱无效";
+				return $response->getBody()->write(json_encode($res));
+			}
+			
 			
 			$user = User::where('email','=',$email)->first();
 			if($user!=null)

@@ -24,6 +24,16 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner">
+										<p>免责声明</p>
+										<p>您当前所访问的站点使用的是下面所提到的开源程序。您能看到这个页面仅代表这个站点使用了本程序，其使用过程中发生的一切问题需要其自行解决，本本程序不承担任何责任。</p>
+									</div>
+								</div>
+							</div>
+							
+							
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner">
 										<p>本程序参与人员列表。</p>
 										    <p>此列表为参与到 <a href="https://github.com/glzjin/ss-panel-v3-mod">ss-panel-v3 glzjin mod {$config["version"]}</a> 中的人员，在此表示感谢。</p>
 									</div>

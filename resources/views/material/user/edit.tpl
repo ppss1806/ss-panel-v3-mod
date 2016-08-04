@@ -164,7 +164,7 @@
 							<div class="card-main">
 								<div class="card-inner">
 									<div class="card-inner">
-										<p class="card-heading">RSS 协议&混淆设置</p>
+										<p class="card-heading">SSR 协议&混淆设置</p>
 										<p>当前协议：{$user->protocol}</p>
 										<p>注意：如果需要在手机使用SS请选择带_compatible的兼容选项！</p>
 										<p>当前协议参数：{$user->protocol_param}</p>
