@@ -121,11 +121,11 @@ class Tools
 	
 	
 	public function base64_url_encode($input) {
-		return strtr(base64_encode($input), '+/=', '-_,');
+		return strtr(base64_encode($input), '+/', '-_');
 	}
 
 	public function base64_url_decode($input) {
-		return base64_decode(strtr($input, '-_,', '+/='));
+		return base64_decode(strtr($input, '-_', '+/'));
 	}
 	
 	public static function getDir($dir) {
