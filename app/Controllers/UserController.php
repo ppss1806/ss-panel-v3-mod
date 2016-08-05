@@ -55,35 +55,30 @@ class UserController extends BaseController
 			}
 		)->where("type","1")->where("node_class","<=",$this->user->class)->get();
 		$android_add="";
+		
+		$user = $this->user;
+		
 		foreach($nodes as $node)
 		{
-			if($android_add=="")
+			$ary['server'] = $node->server;
+			$ary['server_port'] = $user->port;
+			$ary['password'] = $user->passwd;
+			$ary['method'] = $node->method;
+			if ($node->custom_method) {
+				$ary['method'] = $this->user->method;
+			}
+			
+			if(Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))
 			{
-				$ary['server'] = $node->server;
-				$ary['server_port'] = $this->user->port;
-				$ary['password'] = $this->user->passwd;
-				$ary['method'] = $node->method;
-				if ($node->custom_method) {
-					$ary['method'] = $this->user->method;
-				}
-				
-				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-				$ssqr = "ss://" . base64_encode($ssurl);
-				$android_add .="'".$ssqr."'";
+				$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name);
+				$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+				$android_add .= $ssqr_s_new."|";
 			}
 			else
 			{
-				$ary['server'] = $node->server;
-				$ary['server_port'] = $this->user->port;
-				$ary['password'] = $this->user->passwd;
-				$ary['method'] = $node->method;
-				if ($node->custom_method) {
-					$ary['method'] = $this->user->method;
-				}
-				
 				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
 				$ssqr = "ss://" . base64_encode($ssurl);
-				$android_add .=",'".$ssqr."'";
+				$android_add .= $ssqr."|";
 			}
 		}
 		

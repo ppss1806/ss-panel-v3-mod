@@ -12,7 +12,16 @@ class TrafficLog extends Model
 
     public function node()
     {
-        return Node::find($this->attributes['node_id']);
+		$node = Node::where("id",$this->attributes['node_id'])->first();
+		if($node == NULL)
+		{
+			TrafficLog::where('id','=',$this->attributes['id'])->delete();
+			return null;
+		}
+        else
+		{
+			return $node;
+		}
     }
 	
 	public function user()

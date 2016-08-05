@@ -46,7 +46,7 @@
                                 <th>记录时间</th>
                             </tr>
                             {foreach $logs as $log}
-								{if $log->user()!=NULL}
+								{if $log->user() != NULL && $log->node() != NULL}
 									<tr>
 										<td>#{$log->id}</td>
 										<td>{$log->user_id}</td>

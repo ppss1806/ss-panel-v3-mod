@@ -58,6 +58,7 @@
 								<th>时间</th>
 							</tr>
 							{foreach $logs as $log}
+								{if $log->node()!=null}
 								<tr>
 									<td>#{$log->id}</td>
 									<td>{$log->node()->id}</td>
@@ -66,6 +67,7 @@
 									<td>{$loc[$log->ip]}</td>
 									<td>{$log->time()}</td>
 								</tr>
+								{/if}
 							{/foreach}
 						</table>
                         {$logs->render()}

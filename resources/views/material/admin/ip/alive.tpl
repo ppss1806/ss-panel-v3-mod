@@ -40,7 +40,7 @@
 								<th>节点名称</th>
 							</tr>
 							{foreach $logs as $log}
-								{if $log->user()!=NULL}
+								{if $log->user() != NULL && $log->node() != NULL}
 									<tr>
 										<td>#{$log->id}</td>
 										<td>{$log->userid}</td>

@@ -30,7 +30,16 @@ class Ip extends Model
 
 	public function Node()
     {
-        return Node::find($this->attributes['nodeid']);
+		$node = Node::where("id",$this->attributes['nodeid'])->first();
+		if($node == NULL)
+		{
+			Ip::where('id','=',$this->attributes['id'])->delete();
+			return null;
+		}
+        else
+		{
+			return $node;
+		}
     }
 	
 	
