@@ -44,12 +44,6 @@ class DailyMail
 				}
 				$text="";
 			}
-			else
-			{
-				$lastday=(($user->u+$user->d)-$user->last_day_t)/1024/1024;
-				$user->last_day_t=($user->u+$user->d);
-				$user->save();
-			}
         }
     }
 
