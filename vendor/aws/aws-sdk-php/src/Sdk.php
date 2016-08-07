@@ -8,6 +8,10 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionAcm(array $args = [])
  * @method \Aws\ApiGateway\ApiGatewayClient createApiGateway(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionApiGateway(array $args = [])
+ * @method \Aws\ApplicationAutoScaling\ApplicationAutoScalingClient createApplicationAutoScaling(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionApplicationAutoScaling(array $args = [])
+ * @method \Aws\ApplicationDiscoveryService\ApplicationDiscoveryServiceClient createApplicationDiscoveryService(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionApplicationDiscoveryService(array $args = [])
  * @method \Aws\AutoScaling\AutoScalingClient createAutoScaling(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionAutoScaling(array $args = [])
  * @method \Aws\CloudFormation\CloudFormationClient createCloudFormation(array $args = [])
@@ -84,6 +88,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionGlacier(array $args = [])
  * @method \Aws\Iam\IamClient createIam(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionIam(array $args = [])
+ * @method \Aws\ImportExport\ImportExportClient createImportExport(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionImportExport(array $args = [])
  * @method \Aws\Inspector\InspectorClient createInspector(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionInspector(array $args = [])
  * @method \Aws\Iot\IotClient createIot(array $args = [])
@@ -114,6 +120,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionRoute53Domains(array $args = [])
  * @method \Aws\S3\S3Client createS3(array $args = [])
  * @method \Aws\S3\S3MultiRegionClient createMultiRegionS3(array $args = [])
+ * @method \Aws\ServiceCatalog\ServiceCatalogClient createServiceCatalog(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionServiceCatalog(array $args = [])
  * @method \Aws\Ses\SesClient createSes(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionSes(array $args = [])
  * @method \Aws\Sns\SnsClient createSns(array $args = [])
@@ -137,7 +145,7 @@ namespace Aws;
  */
 class Sdk
 {
-    const VERSION = '3.18.6';
+    const VERSION = '3.18.37';
 
     /** @var array Arguments for creating clients */
     private $args;
@@ -188,7 +196,6 @@ class Sdk
         // Get information about the service from the manifest file.
         $service = manifest($name);
         $namespace = $service['namespace'];
-        $args = $this->mergeArgs($namespace, $service, $args);
 
         // Instantiate the client class.
         $client = "Aws\\{$namespace}\\{$namespace}Client";

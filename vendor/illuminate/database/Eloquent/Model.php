@@ -381,15 +381,11 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public static function getGlobalScope($scope)
     {
-        $modelScopes = Arr::get(static::$globalScopes, static::class, []);
-
-        if (is_string($scope)) {
-            return isset($modelScopes[$scope]) ? $modelScopes[$scope] : null;
+        if (! is_string($scope)) {
+            $scope = get_class($scope);
         }
 
-        return Arr::first($modelScopes, function ($key, $value) use ($scope) {
-            return $scope instanceof $value;
-        });
+        return Arr::get(static::$globalScopes, static::class.'.'.$scope);
     }
 
     /**
@@ -823,7 +819,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         // If the type value is null it is probably safe to assume we're eager loading
         // the relationship. When that is the case we will pass in a dummy query as
         // there are multiple types in the morph and we can't use single queries.
-        if (is_null($class = $this->$type)) {
+        if (empty($class = $this->$type)) {
             return new MorphTo(
                 $this->newQuery(), $this, $id, null, $type, $name
             );
@@ -2126,6 +2122,10 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     {
         $this->hidden = array_diff($this->hidden, (array) $attributes);
 
+        if (! empty($this->visible)) {
+            $this->addVisible($attributes);
+        }
+
         return $this;
     }
 
@@ -3034,11 +3034,13 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public function replicate(array $except = null)
     {
-        $except = $except ?: [
+        $defaults = [
             $this->getKeyName(),
             $this->getCreatedAtColumn(),
             $this->getUpdatedAtColumn(),
         ];
+
+        $except = $except ? array_unique(array_merge($except, $defaults)) : $defaults;
 
         $attributes = Arr::except($this->attributes, $except);
 
@@ -3453,15 +3455,14 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * Determine if an attribute exists on the model.
+     * Determine if an attribute or relation exists on the model.
      *
      * @param  string  $key
      * @return bool
      */
     public function __isset($key)
     {
-        return (isset($this->attributes[$key]) || isset($this->relations[$key])) ||
-                ($this->hasGetMutator($key) && ! is_null($this->getAttributeValue($key)));
+        return ! is_null($this->getAttribute($key));
     }
 
     /**

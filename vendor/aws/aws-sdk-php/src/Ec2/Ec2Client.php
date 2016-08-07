@@ -235,6 +235,8 @@ use Aws\Api\ApiProvider;
  * @method \GuzzleHttp\Promise\Promise describeScheduledInstanceAvailabilityAsync(array $args = [])
  * @method \Aws\Result describeScheduledInstances(array $args = [])
  * @method \GuzzleHttp\Promise\Promise describeScheduledInstancesAsync(array $args = [])
+ * @method \Aws\Result describeSecurityGroupReferences(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeSecurityGroupReferencesAsync(array $args = [])
  * @method \Aws\Result describeSecurityGroups(array $args = [])
  * @method \GuzzleHttp\Promise\Promise describeSecurityGroupsAsync(array $args = [])
  * @method \Aws\Result describeSnapshotAttribute(array $args = [])
@@ -253,6 +255,8 @@ use Aws\Api\ApiProvider;
  * @method \GuzzleHttp\Promise\Promise describeSpotInstanceRequestsAsync(array $args = [])
  * @method \Aws\Result describeSpotPriceHistory(array $args = [])
  * @method \GuzzleHttp\Promise\Promise describeSpotPriceHistoryAsync(array $args = [])
+ * @method \Aws\Result describeStaleSecurityGroups(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeStaleSecurityGroupsAsync(array $args = [])
  * @method \Aws\Result describeSubnets(array $args = [])
  * @method \GuzzleHttp\Promise\Promise describeSubnetsAsync(array $args = [])
  * @method \Aws\Result describeTags(array $args = [])
@@ -311,6 +315,8 @@ use Aws\Api\ApiProvider;
  * @method \GuzzleHttp\Promise\Promise enableVpcClassicLinkDnsSupportAsync(array $args = [])
  * @method \Aws\Result getConsoleOutput(array $args = [])
  * @method \GuzzleHttp\Promise\Promise getConsoleOutputAsync(array $args = [])
+ * @method \Aws\Result getConsoleScreenshot(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise getConsoleScreenshotAsync(array $args = [])
  * @method \Aws\Result getPasswordData(array $args = [])
  * @method \GuzzleHttp\Promise\Promise getPasswordDataAsync(array $args = [])
  * @method \Aws\Result importImage(array $args = [])
@@ -411,6 +417,10 @@ use Aws\Api\ApiProvider;
  * @method \GuzzleHttp\Promise\Promise unassignPrivateIpAddressesAsync(array $args = [])
  * @method \Aws\Result unmonitorInstances(array $args = [])
  * @method \GuzzleHttp\Promise\Promise unmonitorInstancesAsync(array $args = [])
+ * @method \Aws\Result describeIdentityIdFormat(array $args = []) (supported in versions 2016-04-01)
+ * @method \GuzzleHttp\Promise\Promise describeIdentityIdFormatAsync(array $args = []) (supported in versions 2016-04-01)
+ * @method \Aws\Result modifyIdentityIdFormat(array $args = []) (supported in versions 2016-04-01)
+ * @method \GuzzleHttp\Promise\Promise modifyIdentityIdFormatAsync(array $args = []) (supported in versions 2016-04-01)
  */
 class Ec2Client extends AwsClient
 {

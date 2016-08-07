@@ -105,7 +105,7 @@ Using Paymentwall PHP Library v1 (deprecated in v2):
 ```php
 require_once('/path/to/paymentwall-php/lib/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
-Paymentwall_Base::setAppKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
+Paymentwall_Base::setAppKey('YOUR_PUBLIC_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 ```
 
@@ -276,7 +276,12 @@ $subscription->create(array(
 	'plan' => 'product_123',
 	'description' => 'Order #123',
 	'period' => 'week',
-	'period_duration' => 2
+	'period_duration' => 2,
+	// if trial, add following parameters
+	'trial[amount]' => 1,
+	'trial[currency]' => 'USD',
+	'trial[period]'   => 'month',
+	'trial[period_duration]' => 1
 ));
 
 echo $subscription->getId();

@@ -25,12 +25,4 @@ class KeyExpireAt extends Command
     {
         return 'EXPIREAT';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function parseResponse($data)
-    {
-        return (bool) $data;
-    }
 }

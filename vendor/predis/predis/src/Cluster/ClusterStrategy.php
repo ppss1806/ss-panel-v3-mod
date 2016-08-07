@@ -43,7 +43,7 @@ abstract class ClusterStrategy implements StrategyInterface
 
         return array(
             /* commands operating on the key space */
-            'EXISTS' => $getKeyFromFirstArgument,
+            'EXISTS' => $getKeyFromAllArguments,
             'DEL' => $getKeyFromAllArguments,
             'TYPE' => $getKeyFromFirstArgument,
             'EXPIRE' => $getKeyFromFirstArgument,
@@ -53,7 +53,7 @@ abstract class ClusterStrategy implements StrategyInterface
             'PEXPIREAT' => $getKeyFromFirstArgument,
             'TTL' => $getKeyFromFirstArgument,
             'PTTL' => $getKeyFromFirstArgument,
-            'SORT' => $getKeyFromFirstArgument, // TODO
+            'SORT' => array($this, 'getKeyFromSortCommand'),
             'DUMP' => $getKeyFromFirstArgument,
             'RESTORE' => $getKeyFromFirstArgument,
 
@@ -80,6 +80,7 @@ abstract class ClusterStrategy implements StrategyInterface
             'SUBSTR' => $getKeyFromFirstArgument,
             'BITOP' => array($this, 'getKeyFromBitOp'),
             'BITCOUNT' => $getKeyFromFirstArgument,
+            'BITFIELD' => $getKeyFromFirstArgument,
 
             /* commands operating on lists */
             'LINSERT' => $getKeyFromFirstArgument,
@@ -164,6 +165,14 @@ abstract class ClusterStrategy implements StrategyInterface
             /* scripting */
             'EVAL' => array($this, 'getKeyFromScriptingCommands'),
             'EVALSHA' => array($this, 'getKeyFromScriptingCommands'),
+
+            /* commands performing geospatial operations */
+            'GEOADD' => $getKeyFromFirstArgument,
+            'GEOHASH' => $getKeyFromFirstArgument,
+            'GEOPOS' => $getKeyFromFirstArgument,
+            'GEODIST' => $getKeyFromFirstArgument,
+            'GEORADIUS' => array($this, 'getKeyFromGeoradiusCommands'),
+            'GEORADIUSBYMEMBER' => array($this, 'getKeyFromGeoradiusCommands'),
         );
     }
 
@@ -262,6 +271,35 @@ abstract class ClusterStrategy implements StrategyInterface
     }
 
     /**
+     * Extracts the key from SORT command.
+     *
+     * @param CommandInterface $command Command instance.
+     *
+     * @return string|null
+     */
+    protected function getKeyFromSortCommand(CommandInterface $command)
+    {
+        $arguments = $command->getArguments();
+        $firstKey = $arguments[0];
+
+        if (1 === $argc = count($arguments)) {
+            return $firstKey;
+        }
+
+        $keys = array($firstKey);
+
+        for ($i = 1; $i < $argc; ++$i) {
+            if (strtoupper($arguments[$i]) === 'STORE') {
+                $keys[] = $arguments[++$i];
+            }
+        }
+
+        if ($this->checkSameSlotForKeys($keys)) {
+            return $firstKey;
+        }
+    }
+
+    /**
      * Extracts the key from BLPOP and BRPOP commands.
      *
      * @param CommandInterface $command Command instance.
@@ -291,6 +329,39 @@ abstract class ClusterStrategy implements StrategyInterface
         if ($this->checkSameSlotForKeys(array_slice($arguments, 1, count($arguments)))) {
             return $arguments[1];
         }
+    }
+
+    /**
+     * Extracts the key from GEORADIUS and GEORADIUSBYMEMBER commands.
+     *
+     * @param CommandInterface $command Command instance.
+     *
+     * @return string|null
+     */
+    protected function getKeyFromGeoradiusCommands(CommandInterface $command)
+    {
+        $arguments = $command->getArguments();
+        $argc = count($arguments);
+        $startIndex = $command->getId() === 'GEORADIUS' ? 5 : 4;
+
+        if ($argc > $startIndex) {
+            $keys = array($arguments[0]);
+
+            for ($i = $startIndex; $i < $argc; ++$i) {
+                $argument = strtoupper($arguments[$i]);
+                if ($argument === 'STORE' || $argument === 'STOREDIST') {
+                    $keys[] = $arguments[++$i];
+                }
+            }
+
+            if ($this->checkSameSlotForKeys($keys)) {
+                return $arguments[0];
+            } else {
+                return;
+            }
+        }
+
+        return $arguments[0];
     }
 
     /**

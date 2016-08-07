@@ -259,8 +259,8 @@ class NumberFormatter
     /**
      * Constructor.
      *
-     * @param string $locale  The locale code. The only currently supported locale is "en" (or null using the default locale, i.e. "en").
-     * @param int    $style   Style of the formatting, one of the format style constants.
+     * @param string $locale  The locale code. The only currently supported locale is "en" (or null using the default locale, i.e. "en")
+     * @param int    $style   Style of the formatting, one of the format style constants
      *                        The only supported styles are NumberFormatter::DECIMAL
      *                        and NumberFormatter::CURRENCY.
      * @param string $pattern Not supported. A pattern string in case $style is NumberFormat::PATTERN_DECIMAL or
@@ -296,8 +296,8 @@ class NumberFormatter
     /**
      * Static constructor.
      *
-     * @param string $locale  The locale code. The only supported locale is "en" (or null using the default locale, i.e. "en").
-     * @param int    $style   Style of the formatting, one of the format style constants.
+     * @param string $locale  The locale code. The only supported locale is "en" (or null using the default locale, i.e. "en")
+     * @param int    $style   Style of the formatting, one of the format style constants
      *                        The only currently supported styles are NumberFormatter::DECIMAL
      *                        and NumberFormatter::CURRENCY.
      * @param string $pattern Not supported. A pattern string in case $style is NumberFormat::PATTERN_DECIMAL or
@@ -328,7 +328,7 @@ class NumberFormatter
      * @return string The formatted currency value
      *
      * @see http://www.php.net/manual/en/numberformatter.formatcurrency.php
-     * @see http://www.iso.org/iso/support/faqs/faqs_widely_used_standards/widely_used_standards_other/currency_codes/currency_codes_list-1.htm
+     * @see https://en.wikipedia.org/wiki/ISO_4217#Active_codes
      */
     public function formatCurrency($value, $currency)
     {
@@ -358,7 +358,7 @@ class NumberFormatter
      * Format a number.
      *
      * @param number $value The value to format
-     * @param int    $type  Type of the formatting, one of the format type constants.
+     * @param int    $type  Type of the formatting, one of the format type constants
      *                      Only type NumberFormatter::TYPE_DEFAULT is currently supported.
      *
      * @return bool|string The formatted value or false on error
@@ -568,10 +568,10 @@ class NumberFormatter
     /**
      * Set an attribute.
      *
-     * @param int $attr  An attribute specifier, one of the numeric attribute constants.
+     * @param int $attr  An attribute specifier, one of the numeric attribute constants
      *                   The only currently supported attributes are NumberFormatter::FRACTION_DIGITS,
      *                   NumberFormatter::GROUPING_USED and NumberFormatter::ROUNDING_MODE.
-     * @param int $value The attribute value.
+     * @param int $value The attribute value
      *
      * @return bool true on success or false on failure
      *

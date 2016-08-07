@@ -33,7 +33,7 @@ class KeyPrefixProcessor implements ProcessorInterface
         $this->prefix = $prefix;
         $this->commands = array(
             /* ---------------- Redis 1.2 ---------------- */
-            'EXISTS' => 'static::first',
+            'EXISTS' => 'static::all',
             'DEL' => 'static::all',
             'TYPE' => 'static::first',
             'KEYS' => 'static::first',
@@ -159,6 +159,13 @@ class KeyPrefixProcessor implements ProcessorInterface
             'BITPOS' => 'static::first',
             /* ---------------- Redis 3.2 ---------------- */
             'HSTRLEN' => 'static::first',
+            'BITFIELD' => 'static::first',
+            'GEOADD' => 'static::first',
+            'GEOHASH' => 'static::first',
+            'GEOPOS' => 'static::first',
+            'GEODIST' => 'static::first',
+            'GEORADIUS' => 'static::georadius',
+            'GEORADIUSBYMEMBER' => 'static::georadius',
         );
     }
 
@@ -338,7 +345,7 @@ class KeyPrefixProcessor implements ProcessorInterface
 
             if (($count = count($arguments)) > 1) {
                 for ($i = 1; $i < $count; ++$i) {
-                    switch ($arguments[$i]) {
+                    switch (strtoupper($arguments[$i])) {
                         case 'BY':
                         case 'STORE':
                             $arguments[$i] = "$prefix{$arguments[++$i]}";
@@ -409,6 +416,34 @@ class KeyPrefixProcessor implements ProcessorInterface
     {
         if ($arguments = $command->getArguments()) {
             $arguments[2] = "$prefix{$arguments[2]}";
+            $command->setRawArguments($arguments);
+        }
+    }
+
+    /**
+     * Applies the specified prefix to the key of a GEORADIUS command.
+     *
+     * @param CommandInterface $command Command instance.
+     * @param string           $prefix  Prefix string.
+     */
+    public static function georadius(CommandInterface $command, $prefix)
+    {
+        if ($arguments = $command->getArguments()) {
+            $arguments[0] = "$prefix{$arguments[0]}";
+            $startIndex = $command->getId() === 'GEORADIUS' ? 5 : 4;
+
+            if (($count = count($arguments)) > $startIndex) {
+                for ($i = $startIndex; $i < $count; ++$i) {
+                    switch (strtoupper($arguments[$i])) {
+                        case 'STORE':
+                        case 'STOREDIST':
+                            $arguments[$i] = "$prefix{$arguments[++$i]}";
+                            break;
+
+                    }
+                }
+            }
+
             $command->setRawArguments($arguments);
         }
     }
