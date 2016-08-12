@@ -270,7 +270,7 @@ class UserController extends BaseController
 				}
 				else
 				{
-					Telegram::Send("姐姐姐姐，".$this->user->name." 大老爷给我们捐了 ".$codeq->number." 元呢~");
+					Telegram::Send("姐姐姐姐，".$this->user->user_name." 大老爷给我们捐了 ".$codeq->number." 元呢~");
 				}
 			}
 			

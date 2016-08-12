@@ -175,13 +175,13 @@ class HomeController extends BaseController
 				
 				if(Config::get('enable_donate') == 'true')
 				{
-					if($this->user->is_hide == 1)
+					if($user->is_hide == 1)
 					{
 						Telegram::Send("姐姐姐姐，一位不愿透露姓名的大老爷给我们捐了 ".$codeq->number." 元呢~");
 					}
 					else
 					{
-						Telegram::Send("姐姐姐姐，".$user->name." 大老爷给我们捐了 ".$codeq->number." 元呢~");
+						Telegram::Send("姐姐姐姐，".$user->user_name." 大老爷给我们捐了 ".$codeq->number." 元呢~");
 					}
 				}
 			
