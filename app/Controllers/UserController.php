@@ -262,7 +262,7 @@ class UserController extends BaseController
 			$res['ret'] = 1;
 			$res['msg'] = "充值成功，充值的金额为".$codeq->number."元。";
 			
-			if(Config::get('enable_donate'))
+			if(Config::get('enable_donate') == 'true')
 			{
 				if($this->user->is_hide == 1)
 				{
@@ -270,7 +270,7 @@ class UserController extends BaseController
 				}
 				else
 				{
-					Telegram::Send("姐姐姐姐，"$this->user->name." 大老爷给我们捐了 ".$codeq->number." 元呢~");
+					Telegram::Send("姐姐姐姐，".$this->user->name." 大老爷给我们捐了 ".$codeq->number." 元呢~");
 				}
 			}
 			

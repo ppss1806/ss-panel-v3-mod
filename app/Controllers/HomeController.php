@@ -9,6 +9,7 @@ use App\Models\Payback;
 use App\Services\Auth;
 use App\Services\Config;
 use App\Utils\Tools;
+use App\Utils\Telegram;
 
 /**
  *  HomeController
@@ -170,6 +171,21 @@ class HomeController extends BaseController
 			  
 			  
 				echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
+				
+				
+				if(Config::get('enable_donate') == 'true')
+				{
+					if($this->user->is_hide == 1)
+					{
+						Telegram::Send("姐姐姐姐，一位不愿透露姓名的大老爷给我们捐了 ".$codeq->number." 元呢~");
+					}
+					else
+					{
+						Telegram::Send("姐姐姐姐，".$user->name." 大老爷给我们捐了 ".$codeq->number." 元呢~");
+					}
+				}
+			
+			
 			} else {
 				echo $pingback->getErrorSummary();
 			}
@@ -179,7 +195,5 @@ class HomeController extends BaseController
 			echo 'error';
 		}
     }
-	
-	
 
 }
