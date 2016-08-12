@@ -31,7 +31,7 @@ class DailyMail
 		
         foreach($users as $user){
 			$lastday = (($user->u+$user->d)-$user->last_day_t)/1024/1024;
-			$lastday_total += $lastday;
+			$lastday_total += ($user->u+$user->d)-$user->last_day_t);
 			
 			if($user->sendDailyMail==1)
 			{
