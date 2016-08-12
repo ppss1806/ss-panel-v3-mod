@@ -42,6 +42,25 @@ class HomeController extends BaseController
         return $this->view()->display('staff.tpl');
     }
 	
+	
+	public function telegram()
+    {
+		try {
+			$bot = new \TelegramBot\Api\Client(Config::get('telegram_token'));
+			// or initialize with botan.io tracker api key
+			// $bot = new \TelegramBot\Api\Client('YOUR_BOT_API_TOKEN', 'YOUR_BOTAN_TRACKER_API_KEY');
+
+			$bot->command('ping', function ($message) use ($bot) {
+				$bot->sendMessage($message->getChat()->getId(), 'Pong!这个群组的 ID 是 '.$message->getChat()->getId().'!');
+			});
+
+			$bot->run();
+
+		} catch (\TelegramBot\Api\Exception $e) {
+			$e->getMessage();
+		}
+    }
+	
 	public function page404($request, $response, $args)
     {
 		$pics=scandir(BASE_PATH."/public/theme/".(Auth::getUser()->isLogin==false?Config::get("theme"):Auth::getUser()->theme)."/images/error/404/");
@@ -96,7 +115,6 @@ class HomeController extends BaseController
 	
 	public function pmw_pingback($request, $response, $args)
     {
-        require_once(BASE_PATH.'/vendor/paymentwall/paymentwall-php/lib/paymentwall.php');
 		
 		if(Config::get('pmw_publickey')!="")
 		{

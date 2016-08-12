@@ -9,6 +9,7 @@ return array(
     'voku\\helper\\' => array($vendorDir . '/voku/anti-xss/src/voku/helper'),
     'voku\\' => array($vendorDir . '/voku/portable-utf8/src/voku'),
     'Whoops\\' => array($vendorDir . '/filp/whoops/src/Whoops'),
+    'TelegramBot\\Api\\' => array($vendorDir . '/telegram-bot/api/src'),
     'Symfony\\Polyfill\\' => array($vendorDir . '/symfony/polyfill/src'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'Symfony\\Component\\Intl\\' => array($vendorDir . '/symfony/intl'),

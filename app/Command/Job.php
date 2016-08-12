@@ -21,6 +21,7 @@ use App\Services\Mail;
 use App\Utils\QQWry;
 use App\Utils\Duoshuo;
 use App\Utils\GA;
+use App\Utils\Telegram;
 use CloudXNS\Api;
 use App\Models\Disconnect;
 
@@ -75,6 +76,8 @@ class Job
 		
 		system("rm -rf /tmp/ssmodbackup",$ret);
 		system("rm /tmp/ssmodbackup.zip",$ret);
+		
+		Telegram::Send("备份完毕了喵~今天又是安全祥和的一天呢。");
 		
 	}
 	
@@ -218,7 +221,8 @@ class Job
 					fwrite($fp, $qqwry);
 					fclose($fp);
 				}
-		
+				
+				Telegram::Send("系统升级完 IP 库了咯~");
 			}
 			else
 			{
@@ -448,7 +452,7 @@ class Job
 							echo $e->getMessage();
 						}
 						
-						
+						Telegram::Send("姐姐姐姐，面板程序有更新了呢~看看你的邮箱吧~");
 					}
 					
 					$myfile = fopen(BASE_PATH."/storage/update.md5", "w+") or die("Unable to open file!");
@@ -523,6 +527,11 @@ class Job
 								}
 							}
 							
+							Telegram::Send("喵喵喵~ ".$node->name." 节点掉线了喵~域名解析被切换到了 ".$Temp_node->name." 上了喵~");
+						}
+						else
+						{
+							Telegram::Send("喵喵喵~ ".$node->name." 节点掉线了喵~");
 						}
 						
 						
@@ -585,6 +594,12 @@ class Job
 								}
 							}
 							
+							
+							Telegram::Send("喵喵喵~ ".$node->name." 节点恢复了喵~域名解析被切换回来了喵~");
+						}
+						else
+						{
+							Telegram::Send("喵喵喵~ ".$node->name." 节点恢复了喵~");
 						}
 						
 					}

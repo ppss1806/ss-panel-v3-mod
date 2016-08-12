@@ -19,6 +19,7 @@ use App\Models\Payback;
 use App\Utils\QQWry;
 use App\Utils\GA;
 use App\Utils\Geetest;
+use App\Utils\Telegram;
 use App\Services\Mail;
 
 
@@ -116,7 +117,6 @@ class UserController extends BaseController
 	
 	public function code($request, $response, $args)
     {
-		require_once(BASE_PATH.'/vendor/paymentwall/paymentwall-php/lib/paymentwall.php');
 		
 		if(Config::get('enable_paymentwall') == 'true')
 		{
@@ -261,6 +261,19 @@ class UserController extends BaseController
 			
 			$res['ret'] = 1;
 			$res['msg'] = "充值成功，充值的金额为".$codeq->number."元。";
+			
+			if(Config::get('enable_donate'))
+			{
+				if($this->user->is_hide == 1)
+				{
+					Telegram::Send("姐姐姐姐，一位不愿透露姓名的大老爷给我们捐了 ".$codeq->number." 元呢~");
+				}
+				else
+				{
+					Telegram::Send("姐姐姐姐，"$this->user->name." 大老爷给我们捐了 ".$codeq->number." 元呢~");
+				}
+			}
+			
 			return $response->getBody()->write(json_encode($res));
 		}
 		

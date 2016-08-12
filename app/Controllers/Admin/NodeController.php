@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Models\Node;
 use App\Utils\Radius;
+use App\Utils\Telegram;
 use App\Controllers\AdminController;
 
 class NodeController extends AdminController
@@ -61,6 +62,9 @@ class NodeController extends AdminController
             $rs['msg'] = "添加失败";
             return $response->getBody()->write(json_encode($rs));
         }
+		
+		Telegram::Send("新节点添加~".$request->getParam('name'));
+		
         $rs['ret'] = 1;
         $rs['msg'] = "节点添加成功";
         return $response->getBody()->write(json_encode($rs));
@@ -130,6 +134,9 @@ class NodeController extends AdminController
             $rs['msg'] = "修改失败";
             return $response->getBody()->write(json_encode($rs));
         }
+		
+		Telegram::Send("节点信息被修改~".$request->getParam('name'));
+		
         $rs['ret'] = 1;
         $rs['msg'] = "修改成功";
         return $response->getBody()->write(json_encode($rs));
@@ -144,11 +151,16 @@ class NodeController extends AdminController
 			Radius::DelNas($node->node_ip);
 		}
 		
+		$name = $node->name;
+		
         if(!$node->delete()){
             $rs['ret'] = 0;
             $rs['msg'] = "删除失败";
             return $response->getBody()->write(json_encode($rs));
         }
+		
+		Telegram::Send("节点被删除~".$name);
+		
         $rs['ret'] = 1;
         $rs['msg'] = "删除成功";
         return $response->getBody()->write(json_encode($rs));
