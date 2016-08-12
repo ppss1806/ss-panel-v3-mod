@@ -131,6 +131,10 @@
 										Google+
 										{/if}
 										
+										{if $user->im_type==4}
+										Telegram
+										{/if}
+										
 										{$user->im_value}</p>
 										<div class="form-group form-group-label">
 											<label class="floating-label" for="imtype">选择您的联络方式</label>
@@ -139,6 +143,7 @@
 												<option value="1">微信</option>
 												<option value="2">QQ</option>
 												<option value="3">Google+</option>
+												<option value="4">Telegram</option>
 											</select>
 										</div>
 											

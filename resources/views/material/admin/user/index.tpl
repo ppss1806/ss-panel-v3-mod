@@ -103,7 +103,14 @@
 								Google+
 								{/if}
 								
-								{$user->im_value}</th>
+								{if $user->im_type==4}
+								Telegram
+								{/if}
+								{if $user->im_type==4}
+								<a href="https://telegram.me/{$user->im_value}">{$user->im_value}</a>
+								{else}
+								{$user->im_value}
+								{/if}</th>
 								<th>{$user->reg_date}<br>{$user->reg_ip}　{$regloc[$user->id]}</th>
                                 <th>{$user->ref_by}</th>
                                 
