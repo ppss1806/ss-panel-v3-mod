@@ -143,6 +143,7 @@ class Job
 			NodeInfoLog::truncate();
 			NodeOnlineLog::truncate();
 			TrafficLog::truncate();
+			Telegram::Send("姐姐姐姐，数据库被清空，感觉身体被掏空了呢~");
 		}
 		
 		

@@ -24,7 +24,7 @@ class Tools
         } else if (abs($value) > $kb) {
             return round($value / $kb, 2) . "KB";
         } else {
-            return round($value, 2);
+            return round($value, 2)."B";
         }
     }
 
