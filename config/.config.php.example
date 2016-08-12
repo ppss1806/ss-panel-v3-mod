@@ -262,3 +262,17 @@ $System_Config['enable_alipay']='true';
 
 #是否启用捐赠相关功能
 $System_Config['enable_donate']='true';
+
+
+
+
+
+
+#telegram bot,是否启用
+$System_Config['enable_telegram']='false';
+
+#telegram bot,bot 的 token ，跟 father bot 申请
+$System_Config['telegram_token']='';
+
+#telegram bot,群组会话 ID,把机器人拉进群里之后跟他 /ping 一下即可得到。
+$System_Config['telegram_chatid']='';
