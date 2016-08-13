@@ -359,19 +359,11 @@ class Job
 					continue;
 				}
 				
-				if($shop->auto_reset_bandwidth == 1)
-				{
-					$user->u = 0;
-					$user->d = 0;
-					$user->last_day_t = 0;
-					$user->transfer_enable = $shop->bandwidth()*1024*1024*1024;
-				}
-				
 				$user->money=$user->money-$bought->price;
 				
 				$user->save();
 				
-				$shop->buy($user);
+				$shop->buy($user,1);
 				
 				$bought->renew=time()+$shop->auto_renew*86400;
 				$bought->save();

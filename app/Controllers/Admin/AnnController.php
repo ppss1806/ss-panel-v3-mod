@@ -34,7 +34,7 @@ class AnnController extends AdminController
             return $response->getBody()->write(json_encode($rs));
         }
 		
-		Telegram::Send("新公告：".PHP_EOL.$request->getParam('markdown'));
+		Telegram::SendMarkdown("新公告：".PHP_EOL.$request->getParam('markdown'));
 		
         $rs['ret'] = 1;
         $rs['msg'] = "公告添加成功";
@@ -64,7 +64,7 @@ class AnnController extends AdminController
             return $response->getBody()->write(json_encode($rs));
         }
 		
-		Telegram::Send("公告更新：".PHP_EOL.$request->getParam('markdown'));
+		Telegram::SendMarkdown("公告更新：".PHP_EOL.$request->getParam('markdown'));
 		
         $rs['ret'] = 1;
         $rs['msg'] = "修改成功";
