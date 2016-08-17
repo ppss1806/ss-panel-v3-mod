@@ -49,7 +49,7 @@
 								<div class="form-group form-group-label">
 									<div class="checkbox switch">
 										<label for="onetime">
-											<input class="access-hide" id="onetime" type="checkbox"><span class="switch-toggle"></span>一次性的
+											<input class="access-hide" id="onetime" type="checkbox"><span class="switch-toggle"></span>一次性的,只在用户当次购买时有效
 										</label>
 									</div>
 								</div>
