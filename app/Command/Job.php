@@ -179,34 +179,8 @@ class Job
 		{
 			file_put_contents(BASE_PATH."/storage/qqwry.md5",$newmd5);
 			$qqwry = file_get_contents("http://update.cz88.net/ip/qqwry.rar");
-			$key = unpack("V6", $copywrite)[6];
-			for($i=0; $i<0x200; $i++)
+			if($qqwry != "")
 			{
-				$key *= 0x805;
-				$key ++;
-				$key = $key & 0xFF;
-				$qqwry[$i] = chr( ord($qqwry[$i]) ^ $key );
-			}
-			$qqwry = gzuncompress($qqwry);
-			$fp = fopen(BASE_PATH."/app/Utils/qqwry.dat", "wb");
-			if($fp)
-			{
-				fwrite($fp, $qqwry);
-				fclose($fp);
-			}
-			
-			
-		}
-		
-		for($i=0;$i<5;$i++)
-		{
-			$iplocation = new QQWry(); 
-			$location=$iplocation->getlocation("8.8.8.8");
-			$Userlocation = $location['country'];
-			if(iconv('gbk', 'utf-8//IGNORE', $Userlocation)!="美国")
-			{
-				file_put_contents(BASE_PATH."/storage/qqwry.md5",$newmd5);
-				$qqwry = file_get_contents("http://update.cz88.net/ip/qqwry.rar");
 				$key = unpack("V6", $copywrite)[6];
 				for($i=0; $i<0x200; $i++)
 				{
@@ -216,19 +190,23 @@ class Job
 					$qqwry[$i] = chr( ord($qqwry[$i]) ^ $key );
 				}
 				$qqwry = gzuncompress($qqwry);
+				rename(BASE_PATH."/app/Utils/qqwry.dat",BASE_PATH."/app/Utils/qqwry.dat.bak");
 				$fp = fopen(BASE_PATH."/app/Utils/qqwry.dat", "wb");
 				if($fp)
 				{
 					fwrite($fp, $qqwry);
 					fclose($fp);
 				}
-				
-				Telegram::Send("系统升级完 IP 库了咯~");
 			}
-			else
-			{
-				break;
-			}
+		}
+		
+		$iplocation = new QQWry(); 
+		$location=$iplocation->getlocation("8.8.8.8");
+		$Userlocation = $location['country'];
+		if(iconv('gbk', 'utf-8//IGNORE', $Userlocation)!="美国")
+		{
+			unlink(BASE_PATH."/app/Utils/qqwry.dat");
+			rename(BASE_PATH."/app/Utils/qqwry.dat.bak",BASE_PATH."/app/Utils/qqwry.dat");
 		}
 		
 		if(Config::get('enable_auto_backup') == 'true')
