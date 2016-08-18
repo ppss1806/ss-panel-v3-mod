@@ -636,3 +636,12 @@ ALTER TABLE `user` CHANGE `protocol` `protocol` VARCHAR(128) CHARACTER SET utf8 
 CREATE TABLE `email_verify` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `email` TEXT NOT NULL , `ip` TEXT NOT NULL , `code` TEXT NOT NULL , `expire_in` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;ALTER TABLE `user` ADD `is_hide` INT NOT NULL DEFAULT '0' AFTER `disconnect_ip`;
 
 
+CREATE TABLE `detect_list` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `name` LONGTEXT NOT NULL , `text` LONGTEXT NOT NULL , `regex` LONGTEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+CREATE TABLE `detect_log` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `user_id` BIGINT NOT NULL , `list_id` BIGINT NOT NULL , `datetime` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `detect_list` ADD `type` INT NOT NULL AFTER `regex`;
+
+ALTER TABLE `detect_log` ADD `node_id` INT NOT NULL AFTER `datetime`;
+
+

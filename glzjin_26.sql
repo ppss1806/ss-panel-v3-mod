@@ -4,4 +4,6 @@ CREATE TABLE `detect_log` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `user_id` BIGI
 
 ALTER TABLE `detect_list` ADD `type` INT NOT NULL AFTER `regex`;
 
+ALTER TABLE `detect_log` ADD `node_id` INT NOT NULL AFTER `datetime`;
+
 

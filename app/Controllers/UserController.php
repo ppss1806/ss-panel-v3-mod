@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Services\Auth;
 use App\Models\Node,App\Models\TrafficLog,App\Models\InviteCode,App\Models\CheckInLog,App\Models\Ann,App\Models\Speedtest,App\Models\Shop,App\Models\Coupon,App\Models\Bought,App\Models\Ticket;
 use App\Services\Config;
-use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Wecenter,App\Models\RadiusBan;
+use App\Utils\Hash,App\Utils\Tools,App\Utils\Radius,App\Utils\Wecenter,App\Models\RadiusBan,App\Models\DetectLog,App\Models\DetectRule;
 
 use voku\helper\AntiXSS;
 
@@ -787,6 +787,9 @@ class UserController extends BaseController
         return $this->view()->assign("anns",$Anns)->display('user/announcement.tpl');
     }
 
+
+
+
     public function edit($request, $response, $args)
     {
 		$themes=Tools::getDir(BASE_PATH."/resources/views");
@@ -1508,4 +1511,27 @@ class UserController extends BaseController
         $traffic=TrafficLog::where('user_id',$this->user->id)->where("log_time",">",(time()-3*86400))->orderBy('id', 'desc')->get();
         return $this->view()->assign('logs', $traffic)->display('user/trafficlog.tpl');
     }
+
+
+
+
+    	public function detect_index($request, $response, $args){
+		$pageNum = 1;
+		if (isset($request->getQueryParams()["page"])) {
+			$pageNum = $request->getQueryParams()["page"];
+		}
+		$logs = DetectRule::paginate(15, ['*'], 'page', $pageNum);
+		$logs->setPath('/user/detect');
+		return $this->view()->assign('rules',$logs)->display('user/detect_index.tpl');
+	}
+
+	public function detect_log($request, $response, $args){
+		$pageNum = 1;
+		if (isset($request->getQueryParams()["page"])) {
+			$pageNum = $request->getQueryParams()["page"];
+		}
+		$logs = DetectLog::orderBy('id', 'desc')->where('user_id',$this->user->id)->paginate(15, ['*'], 'page', $pageNum);
+		$logs->setPath('/user/detect/log');
+		return $this->view()->assign('logs',$logs)->display('user/detect_log.tpl');
+	}
 }
