@@ -45,6 +45,7 @@
 												<label class="floating-label" for="type">规则类型</label>
 												<select id="type" class="form-control" name="type">
 													<option value="1" {if $rule->type == 1}selected{/if}>数据包明文匹配</option>
+													<option value="2" {if $rule->type == 2}selected{/if}>数据包 hex 匹配</option>
 												</select>
 											</div>
 									</div>

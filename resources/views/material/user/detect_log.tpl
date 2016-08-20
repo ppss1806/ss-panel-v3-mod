@@ -55,6 +55,9 @@
 								{if $log->DetectRule()->type == 1}
 									<td>数据包明文匹配</td>
 								{/if}		
+								{if $log->DetectRule()->type == 2}
+									<td>数据包 hex 匹配</td>
+								{/if}
 								<td>{date('Y-m-d H:i:s',$log->datetime)}</td>						
 						        </tr>
 						    {/foreach}
