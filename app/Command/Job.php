@@ -13,6 +13,7 @@ use App\Models\Ip;
 use App\Models\NodeInfoLog;
 use App\Models\NodeOnlineLog;
 use App\Models\TrafficLog;
+use App\Models\DetectLog;
 use App\Services\Config;
 use App\Utils\Radius;
 use App\Utils\Wecenter;
@@ -44,10 +45,10 @@ class Job
 	{
 		mkdir('/tmp/ssmodbackup/');
 		
-		system('mysqldump --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.Config::get('db_host').' '.Config::get('db_database').' announcement auto blockip bought code coupon disconnect_ip link login_ip payback radius_ban shop speedtest ss_invite_code ss_node ss_password_reset ticket unblockip user user_token email_verify> /tmp/ssmodbackup/mod.sql',$ret);
+		system('mysqldump --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.Config::get('db_host').' '.Config::get('db_database').' announcement auto blockip bought code coupon disconnect_ip link login_ip payback radius_ban shop speedtest ss_invite_code ss_node ss_password_reset ticket unblockip user user_token email_verify detect_list> /tmp/ssmodbackup/mod.sql',$ret);
 		
 		
-		system('mysqldump --opt --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.Config::get('db_host').' -d '.Config::get('db_database').' alive_ip ss_node_info ss_node_online_log user_traffic_log >> /tmp/ssmodbackup/mod.sql',$ret);
+		system('mysqldump --opt --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.Config::get('db_host').' -d '.Config::get('db_database').' alive_ip ss_node_info ss_node_online_log user_traffic_log detect_log>> /tmp/ssmodbackup/mod.sql',$ret);
 		
 		if(Config::get('enable_radius')=='true')
 		{
@@ -143,6 +144,7 @@ class Job
 			NodeInfoLog::truncate();
 			NodeOnlineLog::truncate();
 			TrafficLog::truncate();
+			DetectLog::truncate();
 			Telegram::Send("姐姐姐姐，数据库被清空，感觉身体被掏空了呢~");
 		}
 		
