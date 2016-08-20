@@ -32,6 +32,8 @@ class XCat
                 return $this->resetTraffic();
 			case("setTelegram"):
                 return $this->setTelegram();
+			case("initQQWry"):
+                return $this->initQQWry();
             case("sendDiaryMail"):
                 return DailyMail::sendDailyMail();
 			case("reall"):
@@ -76,6 +78,7 @@ class XCat
     }
 
     public function createAdmin(){
+		$this->initQQWry();
         echo "add admin/ 创建管理员帐号.....";
         // ask for input
         fwrite(STDOUT, "Enter your email/输入管理员邮箱: ");
@@ -116,10 +119,10 @@ class XCat
 
 
 
-		$ga = new GA();
-                $secret = $ga->createSecret();
-                $user->ga_token=$secret;
-                $user->ga_enable=0;
+			$ga = new GA();
+			$secret = $ga->createSecret();
+			$user->ga_token=$secret;
+			$user->ga_enable=0;
 
 
 
@@ -151,5 +154,33 @@ class XCat
 	public function setTelegram(){
         $bot = new \TelegramBot\Api\BotApi(Config::get('telegram_token'));
 		echo $bot->setWebhook(Config::get('baseUrl')."/telegram_callback");
+    }
+	
+	public function initQQWry(){
+		echo("downloading....");
+		$copywrite = file_get_contents("http://update.cz88.net/ip/copywrite.rar");
+		$newmd5 = md5($copywrite);
+		file_put_contents(BASE_PATH."/storage/qqwry.md5",$newmd5);
+        $qqwry = file_get_contents("http://update.cz88.net/ip/qqwry.rar");
+		if($qqwry != "")
+		{
+			$key = unpack("V6", $copywrite)[6];
+			for($i=0; $i<0x200; $i++)
+			{
+				$key *= 0x805;
+				$key ++;
+				$key = $key & 0xFF;
+				$qqwry[$i] = chr( ord($qqwry[$i]) ^ $key );
+			}
+			$qqwry = gzuncompress($qqwry);
+			rename(BASE_PATH."/app/Utils/qqwry.dat",BASE_PATH."/app/Utils/qqwry.dat.bak");
+			$fp = fopen(BASE_PATH."/storage/qqwry.dat", "wb");
+			if($fp)
+			{
+				fwrite($fp, $qqwry);
+				fclose($fp);
+			}
+		}
+		echo("finish....");
     }
 }

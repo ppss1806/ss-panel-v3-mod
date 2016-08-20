@@ -192,8 +192,8 @@ class Job
 					$qqwry[$i] = chr( ord($qqwry[$i]) ^ $key );
 				}
 				$qqwry = gzuncompress($qqwry);
-				rename(BASE_PATH."/app/Utils/qqwry.dat",BASE_PATH."/app/Utils/qqwry.dat.bak");
-				$fp = fopen(BASE_PATH."/app/Utils/qqwry.dat", "wb");
+				rename(BASE_PATH."/storage/qqwry.dat",BASE_PATH."/storage/qqwry.dat.bak");
+				$fp = fopen(BASE_PATH."/storage/qqwry.dat", "wb");
 				if($fp)
 				{
 					fwrite($fp, $qqwry);
@@ -207,8 +207,8 @@ class Job
 		$Userlocation = $location['country'];
 		if(iconv('gbk', 'utf-8//IGNORE', $Userlocation)!="美国")
 		{
-			unlink(BASE_PATH."/app/Utils/qqwry.dat");
-			rename(BASE_PATH."/app/Utils/qqwry.dat.bak",BASE_PATH."/app/Utils/qqwry.dat");
+			unlink(BASE_PATH."/storage/qqwry.dat");
+			rename(BASE_PATH."/storage/qqwry.dat.bak",BASE_PATH."/storage/qqwry.dat");
 		}
 		
 		if(Config::get('enable_auto_backup') == 'true')

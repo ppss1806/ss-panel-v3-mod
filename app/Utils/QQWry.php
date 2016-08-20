@@ -19,7 +19,7 @@ class QQWry {
  
      public function __construct() {  
 	 
-		$filename = BASE_PATH."/app/Utils/qqwry.dat";
+		$filename = BASE_PATH."/storage/qqwry.dat";
  
 		$this->fp = 0;  
 
