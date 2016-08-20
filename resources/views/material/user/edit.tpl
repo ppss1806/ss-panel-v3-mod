@@ -182,7 +182,7 @@
 												<option value="verify_sha1_compatible">verify_sha1_compatible</option>
 												<option value="auth_simple">auth_simple</option>
 												<option value="auth_sha1">auth_sha1</option>
-												<option value="auth_sha1_compatible"> auth_sha1_compatible</option>
+												<option value="auth_sha1_compatible">auth_sha1_compatible</option>
 												<option value="auth_sha1_v2">auth_sha1_v2</option>
 												<option value="auth_sha1_v2_compatible">auth_sha1_v2_compatible</option>
 											</select>
@@ -198,7 +198,9 @@
 											<select id="obfs" class="form-control">
 												<option value="plain">plain</option>
 												<option value="http_simple">http_simple</option>
-												<option value="http_simple_compatible"> http_simple_compatible</option>
+												<option value="http_simple_compatible">http_simple_compatible</option>
+												<option value="http_post">http_post</option>
+												<option value="http_post_compatible">http_post_compatible</option>
 												<option value="tls_simple">tls_simple</option>
 												<option value="tls_simple_compatible">tls_simple_compatible</option>
 												<option value="random_head">random_head</option>
