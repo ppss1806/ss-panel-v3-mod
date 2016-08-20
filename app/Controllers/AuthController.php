@@ -327,6 +327,8 @@ class AuthController extends BaseController
 		$user->protocol_param = Config::get('reg_protocol_param');
 		$user->obfs = Config::get('reg_obfs');
 		$user->obfs_param = Config::get('reg_obfs_param');
+		$user->forbidden_ip = Config::get('reg_forbidden_ip');
+		$user->forbidden_port = Config::get('reg_forbidden_port');
 		$user->im_type =  $imtype;
 		$user->im_value =  $antiXss->xss_clean($wechat);
         $user->transfer_enable = Tools::toGB(Config::get('defaultTraffic'));

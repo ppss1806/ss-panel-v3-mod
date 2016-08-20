@@ -207,6 +207,12 @@ $System_Config['reg_obfs']='plain';
 #注册时默认混淆参数
 $System_Config['reg_obfs_param']='';
 
+#注册时默认禁止访问IP列表，半角英文逗号分割
+$System_Config['reg_forbidden_ip']='127.0.0.0/8,::1/128';
+
+#注册时默认禁止访问端口列表，半角英文逗号分割，支持端口段
+$System_Config['reg_forbidden_port']='';
+
 #是否将登陆线程和IP绑定
 $System_Config['enable_login_bind_ip']='true';
 
