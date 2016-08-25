@@ -417,11 +417,22 @@ class UserController extends BaseController
 		$node_prealive=array();
 		$node_heartbeat=Array();
 		$node_bandwidth=Array();
+		$node_muport=Array();
 		
 		foreach ($nodes as $node) {
 			
 			if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
 			{
+				if($node->sort==9)
+				{
+					$mu_user=User::where('port','=',$node->server)->first();
+					$mu_user->obfs_param=$this->user->getMuMd5().".".$this->user->id.".".Config::get("mu_suffix");
+					array_push($node_muport,array('server'=>$node->server,'user'=>$mu_user));
+					continue;
+				}
+				
+				
+				
 				$temp=explode(" - ",$node->name);
 				if(!isset($node_prefix[$temp[0]]))
 				{
@@ -440,7 +451,8 @@ class UserController extends BaseController
 					
 					$a++;
 				}
-
+				
+				
 				if($node->sort==0||$node->sort==7||$node->sort==8)
 				{
 					$node_tempalive=$node->getOnlineUserCount();
@@ -497,7 +509,8 @@ class UserController extends BaseController
 					}
 				}
 				
-		
+				
+				
 				
 				
 				array_push($node_prefix[$temp[0]],$node);
@@ -506,7 +519,7 @@ class UserController extends BaseController
 		}
 		$node_prefix=(object)$node_prefix;
 		$node_order=(object)$node_order;
-        return $this->view()->assign('node_method', $node_method)->assign('node_bandwidth',$node_bandwidth)->assign('node_heartbeat',$node_heartbeat)->assign('node_prefix', $node_prefix)->assign('node_prealive', $node_prealive)->assign('node_order', $node_order)->assign('user', $user)->assign('node_alive', $node_alive)->display('user/node.tpl');
+        return $this->view()->assign('node_method', $node_method)->assign('node_muport', $node_muport)->assign('node_bandwidth',$node_bandwidth)->assign('node_heartbeat',$node_heartbeat)->assign('node_prefix', $node_prefix)->assign('node_prealive', $node_prealive)->assign('node_order', $node_order)->assign('user', $user)->assign('node_alive', $node_alive)->display('user/node.tpl');
     }
 
 
@@ -514,6 +527,7 @@ class UserController extends BaseController
     {
 		$user = Auth::getUser();
         $id = $args['id'];
+        $mu = $request->getQueryParams()["ismu"];
         $node = Node::find($id);
 
         if ($node == null) {
@@ -528,14 +542,28 @@ class UserController extends BaseController
 				{
 					$ary['server'] = $node->server;
 					
-					
-					
-					$ary['server_port'] = $this->user->port;
-					$ary['password'] = $this->user->passwd;
-					$ary['method'] = $node->method;
-					if ($node->custom_method) {
-						$ary['method'] = $this->user->method;
+					if($mu == 0)
+					{
+						$ary['server_port'] = $this->user->port;
+						$ary['password'] = $this->user->passwd;
+						$ary['method'] = $node->method;
+						if ($node->custom_method) {
+							$ary['method'] = $this->user->method;
+						}
 					}
+					else
+					{
+						$mu_user = User::where('port','=',$mu)->first();
+						$mu_user->obfs_param = $this->user->getMuMd5().".".$this->user->id.".".Config::get("mu_suffix");
+						$user = $mu_user;
+						$ary['server_port'] = $mu_user->port;
+						$ary['password'] = $mu_user->passwd;
+						$ary['method'] = $node->method;
+						if ($node->custom_method) {
+							$ary['method'] = $mu_user->method;
+						}
+					}
+					
 					$json = json_encode($ary);
 					$json_show = json_encode($ary, JSON_PRETTY_PRINT);
 					if(Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))
@@ -564,7 +592,7 @@ class UserController extends BaseController
 					$surge_proxy = "#!PROXY-OVERRIDE:ProxyBase.conf\n";
 					$surge_proxy .= "[Proxy]\n";
 					$surge_proxy .= "Proxy = custom," . $ary['server'] . "," . $ary['server_port'] . "," . $ary['method'] . "," . $ary['password'] . "," . Config::get('baseUrl') . "/downloads/SSEncrypt.module";
-					return $this->view()->assign('ary', $ary)->assign('node',$node)->assign('user',$this->user)->assign('json', $json)->assign('link1',Config::get('baseUrl')."/link/".$token_1)->assign('link2',Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('ssqr_s_new',$ssqr_s_new)->assign('ssqr_s', $ssqr_s)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
+					return $this->view()->assign('ary', $ary)->assign('node',$node)->assign('user',$user)->assign('json', $json)->assign('link1',Config::get('baseUrl')."/link/".$token_1)->assign('link2',Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('ssqr_s_new',$ssqr_s_new)->assign('ssqr_s', $ssqr_s)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
 				}
 			break; 
 

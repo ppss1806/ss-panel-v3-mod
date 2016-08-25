@@ -52,6 +52,11 @@ class User extends Model
         return Tools::toDateTime($this->attributes['t']);
     }
 
+    public function getMuMd5()
+    {
+        return MD5($this->attributes['id'].$this->attributes['passwd'].$this->attributes['method'].$this->attributes['obfs'].$this->attributes['protocol']);
+    }
+
     public function lastCheckInTime()
     {
         if ($this->attributes['last_check_in_time'] == 0) {

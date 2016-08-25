@@ -282,3 +282,6 @@ $System_Config['telegram_token']='';
 
 #telegram bot,群组会话 ID,把机器人拉进群里之后跟他 /ping 一下即可得到。
 $System_Config['telegram_chatid']='';
+
+#多用户混淆参数后缀
+$System_Config['mu_suffix']='baidu.com';

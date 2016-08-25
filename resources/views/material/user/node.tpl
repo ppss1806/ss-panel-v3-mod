@@ -28,7 +28,7 @@
 									<h4>注意!</h4>
 									<p>请勿在任何地方公开节点地址！</p>
 									<p>流量比例为0.5即使用1000MB按照500MB流量记录记录结算.</p>
-									<a href="javascript:void(0);" onClick="urlChange('guide')">如果您不知道如何查看节点的详细信息和二维码，请点我。</a>
+									<a href="javascript:void(0);" onClick="urlChange('guide',0)">如果您不知道如何查看节点的详细信息和二维码，请点我。</a>
 								</div>
 							</div>
 						</div>
@@ -69,14 +69,14 @@
 																		<div class="card-main">
 																			<div class="card-inner"> 
 																			<p class="card-heading" >
-																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}')">{$node->name}</a> 
+																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0)">{$node->name}</a> 
 																				<span class="label label-green">{$node->status}</span>
 																			</p>
 																			
 																			
 																			{if $node->sort > 2 && $node->sort != 5}
 																				<p>地址：<span class="label" > 
-																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}')">请点这里进入查看详细信息</a>
+																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0)">请点这里进入查看详细信息</a>
 																			{else}
 																				<p>地址：<span class="label label-brand-accent"> 
 																				{$node->server}
@@ -145,6 +145,59 @@
 																		{$point_node=$node}
 																	{/if}
 																	
+																	
+																	
+																	{if $node->sort == 0 && $node->custom_rss == 1}
+																		{foreach $node_muport as $single_muport}
+																			<div class="card">
+																				<div class="card-main">
+																					<div class="card-inner"> 
+																					<p class="card-heading" >
+																						<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']})">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']} 端口</a> 
+																						<span class="label label-green">{$node->status}</span>
+																					</p>
+																					
+																					
+																					<p>地址：<span class="label label-brand-accent"> 
+																					{$node->server}
+																					
+																					</span></p>
+																					
+																					<p>端口：<span class="label label-brand-red"> 
+																						{$single_muport['user']['port']}
+																					</span></p>
+																					
+																					<p>加密方式：<span class="label label-brand"> 
+																						{$single_muport['user']['method']}
+																					</span></p>
+																					
+																					<p>协议：<span class="label label-brand-accent"> 
+																						{$single_muport['user']['protocol']}
+																					</span></p>
+																					
+																					<p>协议参数：<span class="label label-red"> 
+																						{$single_muport['user']['protocol_param']}
+																					</span></p>
+																					
+																					<p>混淆方式：<span class="label label-brand"> 
+																						{$single_muport['user']['obfs']}
+																					</span></p>
+																					
+																					<p>混淆参数：<span class="label label-green"> 
+																						{$single_muport['user']['obfs_param']}
+																					</span></p>
+																					
+																					<p>{$node->info}</p>
+																					
+																					
+																					
+																					
+																					 </div>
+																					
+																				</div>
+																			</div>
+																		{/foreach}
+																	{/if}
 																
 																{/foreach}
 																	
@@ -220,8 +273,8 @@
 <script>
 
 
-function urlChange(id) {
-    var site = './node/'+id;
+function urlChange(id,is_mu) {
+    var site = './node/'+id+'?ismu='+is_mu;
 	if(id == 'guide')
 	{
 		var doc = document.getElementById('infoifram').contentWindow.document;

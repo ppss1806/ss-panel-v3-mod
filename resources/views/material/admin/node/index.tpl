@@ -43,8 +43,8 @@
                             {foreach $nodes as $node}
                             <tr>
 								<td>
-                                    <a class="btn btn-brand" href="/admin/node/{$node->id}/edit">编辑</a>
-                                    <a class="btn btn-brand-accent" id="delete" href="javascript:void(0);" onClick="delete_modal_show('{$node->id}')">删除</a>
+                                    <a class="btn btn-brand"  {if $node->sort==999}disabled{else}href="/admin/node/{$node->id}/edit"{/if}>编辑</a>
+                                    <a class="btn btn-brand-accent" id="delete"  {if $node->sort==999}disabled{else}href="javascript:void(0);" onClick="delete_modal_show('{$node->id}')"{/if}>删除</a>
                                 </td>
                                 <td>#{$node->id}</td>
                                 <td>{$node->name}</td>
@@ -85,6 +85,10 @@
 								
 								{if $node->sort==8}
                                 <td>PAC PLUS PLUS(HTTPS 代理生成 PAC文件)</td>
+								{/if}
+								
+								{if $node->sort==9}
+                                <td>Shadowsocks - 单端口多用户</td>
 								{/if}
 								
 								{if $node->sort==999}
