@@ -645,3 +645,5 @@ ALTER TABLE `detect_list` ADD `type` INT NOT NULL AFTER `regex`;
 ALTER TABLE `detect_log` ADD `node_id` INT NOT NULL AFTER `datetime`;
 
 
+ALTER TABLE `user` ADD `is_multi_user` INT NOT NULL DEFAULT '0' AFTER `is_hide`;
+
