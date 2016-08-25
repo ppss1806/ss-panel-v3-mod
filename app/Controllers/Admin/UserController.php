@@ -194,6 +194,7 @@ class UserController extends AdminController
         $user->protocol_param = $request->getParam('protocol_param');
         $user->obfs = $request->getParam('obfs');
         $user->obfs_param = $request->getParam('obfs_param');
+        $user->is_multi_user = $request->getParam('is_multi_user');
         $user->transfer_enable = Tools::toGB($request->getParam('transfer_enable'));
         $user->invite_num = $request->getParam('invite_num');
         $user->method = $request->getParam('method');

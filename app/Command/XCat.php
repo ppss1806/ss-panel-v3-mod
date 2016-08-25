@@ -173,7 +173,6 @@ class XCat
 				$qqwry[$i] = chr( ord($qqwry[$i]) ^ $key );
 			}
 			$qqwry = gzuncompress($qqwry);
-			rename(BASE_PATH."/app/Utils/qqwry.dat",BASE_PATH."/app/Utils/qqwry.dat.bak");
 			$fp = fopen(BASE_PATH."/storage/qqwry.dat", "wb");
 			if($fp)
 			{
