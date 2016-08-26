@@ -1,5 +1,3 @@
-zh
-
 {include file='admin/main.tpl'}
 
 
