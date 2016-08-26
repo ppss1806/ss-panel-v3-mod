@@ -1,4 +1,4 @@
-
+zh
 
 {include file='admin/main.tpl'}
 
@@ -298,7 +298,7 @@
                     pass: $("#pass").val(),
 					auto_reset_day: $("#auto_reset_day").val(),
                     auto_reset_bandwidth: $("#auto_reset_bandwidth").val(),
-                    is_multi_user: $("#is_multi_user").val(),
+                    is_multi_user: is_multi_user,
                     port: $("#port").val(),
 					group: $("#group").val(),
                     passwd: $("#passwd").val(),
