@@ -213,6 +213,9 @@ class LinkController extends BaseController
 		
 		$json=json_decode($string,TRUE);
 		$temparray=array();
+		
+		$mu_nodes = Node::where('sort',9)->get();
+		
 		foreach($nodes as $node)
 		{
 			array_push($temparray,array("remarks"=>$node->name,
@@ -228,7 +231,31 @@ class LinkController extends BaseController
 										"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
 										"obfs_udp"=>false,
 										"enable"=>true));
+										
+			if($node->custom_rss == 1)
+			{
+				foreach($mu_nodes as $mu_node)
+				{
+					$mu_user = User::where('port','=',$mu_node->server)->first();
+					$mu_user->obfs_param = $user->getMuMd5().".".$user->id.".".Config::get("mu_suffix");
+					
+					array_push($temparray,array("remarks"=>$node->name."- ".$mu_node->server." 端口单端口多用户",
+										"server"=>$node->server,
+										"server_port"=>$mu_user->port,
+										"method"=>$mu_user->method,
+										"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
+										"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
+										"remarks_base64"=>base64_encode($node->name."- ".$mu_node->server." 端口单端口多用户"),
+										"password"=>$mu_user->passwd,
+										"tcp_over_udp"=>false,
+										"udp_over_tcp"=>false,
+										"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
+										"obfs_udp"=>false,
+										"enable"=>true));
+				}
+			}
 		}
+		
 		$json["configs"]=$temparray;
         return json_encode($json);
     }
