@@ -53,7 +53,6 @@ Class Wecenter
 	{
 		if(Config::get('enable_wecenter')=='true')
 		{
-			$email=$user->email;
 			$exists=WecenterUser::where("email",$email1)->first();
 			
 			if($exists!=NULL)
