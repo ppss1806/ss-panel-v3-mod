@@ -185,6 +185,8 @@
 												<option value="auth_sha1_compatible">auth_sha1_compatible</option>
 												<option value="auth_sha1_v2">auth_sha1_v2</option>
 												<option value="auth_sha1_v2_compatible">auth_sha1_v2_compatible</option>
+												<option value="auth_sha1_v3">auth_sha1_v3</option>
+												<option value="auth_sha1_v3_compatible">auth_sha1_v3_compatible</option>
 											</select>
 										</div>
 										
@@ -205,8 +207,6 @@
 												<option value="tls_simple_compatible">tls_simple_compatible</option>
 												<option value="random_head">random_head</option>
 												<option value="random_head_compatible">random_head_compatible</option>
-												<option value="tls1.0_session_auth">tls1.0_session_auth</option>
-												<option value="tls1.0_session_auth_compatible">tls1.0_session_auth_compatible</option>
 												<option value="tls1.2_ticket_auth">tls1.2_ticket_auth</option>
 												<option value="tls1.2_ticket_auth_compatible">tls1.2_ticket_auth_compatible</option>
 											</select>
