@@ -203,8 +203,6 @@
 												<option value="http_simple_compatible">http_simple_compatible</option>
 												<option value="http_post">http_post</option>
 												<option value="http_post_compatible">http_post_compatible</option>
-												<option value="tls_simple">tls_simple</option>
-												<option value="tls_simple_compatible">tls_simple_compatible</option>
 												<option value="random_head">random_head</option>
 												<option value="random_head_compatible">random_head_compatible</option>
 												<option value="tls1.2_ticket_auth">tls1.2_ticket_auth</option>
