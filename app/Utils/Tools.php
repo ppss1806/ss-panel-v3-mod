@@ -146,7 +146,7 @@ class Tools
 	
 	function is_validate($str)
 	{
-		$pattern = "/[^a-z0-9\-]/";
+		$pattern = "/[^A-Za-z0-9\-_\.]/";
 		if (preg_match($pattern, $str))
 		{
 			return false;
