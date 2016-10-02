@@ -646,7 +646,7 @@ class Job
 				
 			}
 			
-			if(strtotime($user->expire_in)<time()&&strtotime($user->expire_in)>=time()-60)
+			if(strtotime($user->expire_in)<time() && $user->transfer_enable != Tools::toGB(Config::get('enable_account_expire_reset_traffic')))
 			{
 				if(Config::get('enable_account_expire_reset')=='true')
 				{
@@ -669,7 +669,7 @@ class Job
 				}
 			}
 			
-			if(strtotime($user->expire_in)+((int)Config::get('enable_account_expire_delete_days')*86400)<time()&&strtotime($user->expire_in)+((int)Config::get('enable_account_expire_delete_days')*86400)>=time()-60)
+			if(strtotime($user->expire_in)+((int)Config::get('enable_account_expire_delete_days')*86400)<time())
 			{
 				if(Config::get('enable_account_expire_delete')=='true')
 				{
@@ -701,7 +701,7 @@ class Job
 			
 			
 			
-			if((int)Config::get('enable_auto_clean_uncheck_days')!=0 && $user->last_check_in_time+((int)Config::get('enable_auto_clean_uncheck_days')*86400)<time() && $user->last_check_in_time+((int)Config::get('enable_auto_clean_uncheck_days')*86400)>=time()-60 && $user->class == 0)
+			if((int)Config::get('enable_auto_clean_uncheck_days')!=0 && $user->last_check_in_time+((int)Config::get('enable_auto_clean_uncheck_days')*86400)<time() && $user->class == 0)
 			{
 				if(Config::get('enable_auto_clean_uncheck')=='true')
 				{
@@ -732,7 +732,7 @@ class Job
 			}
 			
 			
-			if((int)Config::get('enable_auto_clean_unused_days')!=0 && $user->t+((int)Config::get('enable_auto_clean_unused_days')*86400)<time() && $user->t+((int)Config::get('enable_auto_clean_unused_days')*86400)>=time()-60 && $user->class == 0)
+			if((int)Config::get('enable_auto_clean_unused_days')!=0 && $user->t+((int)Config::get('enable_auto_clean_unused_days')*86400)<time() && $user->class == 0)
 			{
 				if(Config::get('enable_auto_clean_unused')=='true')
 				{
@@ -762,7 +762,7 @@ class Job
 				}
 			}
 			
-			if($user->class!=0&&strtotime($user->class_expire)>=time()-60&&strtotime($user->class_expire)<time())
+			if($user->class!=0 && $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) && strtotime($user->class_expire)<time())
 			{
 				if(Config::get('enable_class_expire_reset')=='true')
 				{
