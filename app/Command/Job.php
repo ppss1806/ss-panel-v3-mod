@@ -701,7 +701,7 @@ class Job
 			
 			
 			
-			if((int)Config::get('enable_auto_clean_uncheck_days')!=0 && $user->last_check_in_time+((int)Config::get('enable_auto_clean_uncheck_days')*86400)<time() && $user->class == 0)
+			if((int)Config::get('enable_auto_clean_uncheck_days')!=0 && max($user->last_check_in_time,strtotime($user->reg_date)) + ((int)Config::get('enable_auto_clean_uncheck_days')*86400) < time() && $user->class == 0)
 			{
 				if(Config::get('enable_auto_clean_uncheck')=='true')
 				{
@@ -732,7 +732,7 @@ class Job
 			}
 			
 			
-			if((int)Config::get('enable_auto_clean_unused_days')!=0 && $user->t+((int)Config::get('enable_auto_clean_unused_days')*86400)<time() && $user->class == 0)
+			if((int)Config::get('enable_auto_clean_unused_days')!=0 && max($user->t,strtotime($user->reg_date)) + ((int)Config::get('enable_auto_clean_unused_days')*86400) < time() && $user->class == 0)
 			{
 				if(Config::get('enable_auto_clean_unused')=='true')
 				{
@@ -762,7 +762,7 @@ class Job
 				}
 			}
 			
-			if($user->class!=0 && $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) && strtotime($user->class_expire)<time())
+			if($user->class!=0 && $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) && strtotime($user->class_expire)<time() && $user->class_expire > 1420041600)
 			{
 				if(Config::get('enable_class_expire_reset')=='true')
 				{
