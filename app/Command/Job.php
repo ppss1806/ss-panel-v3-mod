@@ -316,6 +316,9 @@ class Job
 			
 			$disconnected->delete();
 		}
+
+
+		Ip::where("datetime","<",time()-300)->delete();
 		
 		//auto renew
 		$boughts=Bought::where("renew","<",time())->where("renew","<>",0)->get();
