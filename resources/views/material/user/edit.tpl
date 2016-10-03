@@ -192,6 +192,8 @@
 												<option value="auth_aes128">auth_aes128</option>
 												<option value="auth_aes128_sha1">auth_aes128_sha1</option>
 												<option value="auth_aes128_sha1_compatible">auth_aes128_sha1_compatible</option>
+												<option value="auth_aes128_md5">auth_aes128_md5</option>
+												<option value="auth_aes128_md5_compatible">auth_aes128_md5_compatible</option>
 											</select>
 										</div>
 
