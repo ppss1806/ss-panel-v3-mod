@@ -180,13 +180,10 @@
 												<option value="verify_deflate">verify_deflate</option>
 												<option value="verify_sha1">verify_sha1</option>
 												<option value="verify_sha1_compatible">verify_sha1_compatible</option>
-												<option value="auth_simple">auth_simple</option>
 												<option value="auth_sha1">auth_sha1</option>
 												<option value="auth_sha1_compatible">auth_sha1_compatible</option>
 												<option value="auth_sha1_v2">auth_sha1_v2</option>
 												<option value="auth_sha1_v2_compatible">auth_sha1_v2_compatible</option>
-												<option value="auth_sha1_v3">auth_sha1_v3</option>
-												<option value="auth_sha1_v3_compatible">auth_sha1_v3_compatible</option>
 												<option value="auth_sha1_v4">auth_sha1_v4</option>
 												<option value="auth_sha1_v4_compatible">auth_sha1_v4_compatible</option>
 												<option value="auth_aes128">auth_aes128</option>
