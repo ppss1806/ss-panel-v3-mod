@@ -68,19 +68,17 @@
 							</div>
 						</div>
 						
-						{if $mu == 0}
-							<div class="col-lg-12 col-sm-12">
-								<div class="card">
-									<div class="card-main">
-										<div class="card-inner margin-bottom-no">
-											<p class="card-heading">配置Json</p>
-											<textarea class="form-control" rows="6">{$json_show}</textarea>
-										</div>
-										
+						<div class="col-lg-12 col-sm-12">
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner margin-bottom-no">
+										<p class="card-heading">SSR-Python 配置Json</p>
+										<textarea class="form-control" rows="6">{$json_show}</textarea>
 									</div>
+									
 								</div>
 							</div>
-						{/if}
+						</div>
 						
 						<div class="col-lg-12 col-sm-12">
 							<div class="card">

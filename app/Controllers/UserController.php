@@ -565,6 +565,11 @@ class UserController extends BaseController
 				if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
 				{
 					$ary['server'] = $node->server;
+					$ary['local_address'] = '127.0.0.1';
+					$ary['local_port'] = 1080;
+					$ary['timeout'] = 300;	
+					$ary['fast_open'] = 'false';
+					$ary['workers'] = 1;				
 					
 					$is_mu = 0;
 					
@@ -595,6 +600,12 @@ class UserController extends BaseController
 						if ($node->custom_method) {
 							$ary['method'] = $mu_user->method;
 						}
+
+						if ($node->custom_rss) {
+							$ary['obfs'] = str_replace("_compatible","",$this->user->obfs);
+							$ary['protocol'] = str_replace("_compatible","",$this->user->protocol);
+						}
+
 						$is_mu = 1;
 					}
 					
