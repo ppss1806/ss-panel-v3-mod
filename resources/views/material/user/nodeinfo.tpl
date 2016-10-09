@@ -57,10 +57,11 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">客户端下载</p>
-										<p><a href="/downloads/client/ShadowsocksR-win.7z"><i class="icon icon-lg">desktop_windows</i>&nbsp;Windows</a></p>
-										<p><a href="/downloads/client/ShadowsocksX.dmg"><i class="icon icon-lg">laptop_mac</i>&nbsp;Mac OS X</a></p>
-										<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/Installation"><i class="icon icon-lg">laptop_windows</i>&nbsp;Linux</a></p>
-										<p><a href="https://github.com/glzjin/shadowsocks-android/releases"><i class="icon icon-lg">android</i>&nbsp;Android</a></p>
+										<p><a href="https://bit.no.com:43110/shadowsocksr.bit"><i class="icon icon-lg">desktop_windows</i>&nbsp;Windows</a> 选择 C# 版</p>
+										<p><a href="https://github.com/qinyuhang/ShadowsocksX-NG/releases"><i class="icon icon-lg">laptop_mac</i>&nbsp;Mac OS X</a></p>
+										<p><a href="https://github.com/breakwa11/shadowsocks-rss/wiki/Python-client"><i class="icon icon-lg">laptop_windows</i>&nbsp;Linux</a></p>
+										<p><a href="https://bit.no.com:43110/shadowsocksr.bit"><i class="icon icon-lg">android</i>&nbsp;Android</a> 选择 Android 版</p>
+										<p><a href="https://itunes.apple.com/us/app/shadowrocket/id932747118"><i class="icon icon-lg">phone_iphone</i>&nbsp;iOS</a></p>
 									</div>
 									
 								</div>
@@ -167,7 +168,7 @@
 								<div class="card">
 									<div class="card-main">
 										<div class="card-inner margin-bottom-no">
-											<p class="card-heading">iOS9 上 Surge配置</p>
+											<p class="card-heading">iOS9 上 Surge 配置</p>
 											<div class="row">
 											
 												<div class="col-md-12">
