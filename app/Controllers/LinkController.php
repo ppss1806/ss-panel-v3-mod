@@ -185,29 +185,40 @@ class LinkController extends BaseController
 	
 	public static function GetPcConf($nodes,$user){
 		$string='
-{
-	"index" : 0,
+	{	
+	"index" : 1,
 	"random" : false,
-	"global" : false,
-	"enabled" : true,
+	"sysProxyMode" : 2,
 	"shareOverLan" : false,
-	"isDefault" : false,
+	"bypassWhiteList" : false,
 	"localPort" : 1080,
-	"pacUrl" : null,
-	"useOnlinePac" : false,
-	"reconnectTimes" : 3,
+	"reconnectTimes" : 4,
 	"randomAlgorithm" : 0,
-	"TTL" : 0,
+	"TTL" : 60,
+	"connect_timeout" : 5,
 	"proxyEnable" : false,
+	"pacDirectGoProxy" : false,
 	"proxyType" : 0,
-	"proxyHost" : null,
+	"proxyHost" : "",
 	"proxyPort" : 0,
-	"proxyAuthUser" : null,
-	"proxyAuthPass" : null,
-	"authUser" : null,
-	"authPass" : null,
-	"autoban" : false
-}
+	"proxyAuthUser" : "",
+	"proxyAuthPass" : "",
+	"proxyUserAgent" : "",
+	"authUser" : "",
+	"authPass" : "",
+	"autoBan" : false,
+	"sameHostForSameTarget" : true,
+	"keepVisitTime" : 180,
+	"isHideTips" : false,
+	"dns_server" : "",
+	"proxyRuleMode" : 1,
+	"token" : {
+
+	},
+	"portMap" : {
+
+	}
+	}
 		';
 		
 		
@@ -228,6 +239,7 @@ class LinkController extends BaseController
 										"password"=>$user->passwd,
 										"tcp_over_udp"=>false,
 										"udp_over_tcp"=>false,
+										"group"=>Config::get('appName'),
 										"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
 										"obfs_udp"=>false,
 										"enable"=>true));
@@ -243,6 +255,7 @@ class LinkController extends BaseController
 										"server"=>$node->server,
 										"server_port"=>$mu_user->port,
 										"method"=>$mu_user->method,
+										"group"=>Config::get('appName'),
 										"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
 										"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
 										"remarks_base64"=>base64_encode($node->name."- ".$mu_node->server." 端口单端口多用户"),
@@ -257,7 +270,7 @@ class LinkController extends BaseController
 		}
 		
 		$json["configs"]=$temparray;
-        return json_encode($json);
+        return json_encode($json,JSON_PRETTY_PRINT);
     }
 	
 	
