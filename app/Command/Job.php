@@ -44,20 +44,23 @@ class Job
 	public static function backup()
 	{
 		mkdir('/tmp/ssmodbackup/');
+
+		$db_address_array = explode(':',Config::get('db_host'));
 		
-		system('mysqldump --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.Config::get('db_host').' '.Config::get('db_database').' announcement auto blockip bought code coupon disconnect_ip link login_ip payback radius_ban shop speedtest ss_invite_code ss_node ss_password_reset ticket unblockip user user_token email_verify detect_list> /tmp/ssmodbackup/mod.sql',$ret);
+		system('mysqldump --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.$db_address_array[0].' '.(isset($db_address_array[1])?'-P '.$db_address_array[1]:'').' '.Config::get('db_database').' announcement auto blockip bought code coupon disconnect_ip link login_ip payback radius_ban shop speedtest ss_invite_code ss_node ss_password_reset ticket unblockip user user_token email_verify detect_list > /tmp/ssmodbackup/mod.sql',$ret);
 		
-		
-		system('mysqldump --opt --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.Config::get('db_host').' -d '.Config::get('db_database').' alive_ip ss_node_info ss_node_online_log user_traffic_log detect_log>> /tmp/ssmodbackup/mod.sql',$ret);
+		system('mysqldump --opt --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.$db_address_array[0].' '.(isset($db_address_array[1])?'-P '.$db_address_array[1]:'').' -d '.Config::get('db_database').' alive_ip ss_node_info ss_node_online_log user_traffic_log detect_log >> /tmp/ssmodbackup/mod.sql',$ret);
 		
 		if(Config::get('enable_radius')=='true')
 		{
-			system('mysqldump --user='.Config::get('radius_db_user').' --password='.Config::get('radius_db_password').' --host='.Config::get('radius_db_host').' '.Config::get('radius_db_database').'> /tmp/ssmodbackup/radius.sql',$ret);
+			$db_address_array = explode(':',Config::get('radius_db_host'));
+			system('mysqldump --user='.Config::get('radius_db_user').' --password='.Config::get('radius_db_password').' --host='.$db_address_array[0].' '.(isset($db_address_array[1])?'-P '.$db_address_array[1]:'').''.Config::get('radius_db_database').'> /tmp/ssmodbackup/radius.sql',$ret);
 		}
 		
 		if(Config::get('enable_wecenter')=='true')
 		{
-			system('mysqldump --user='.Config::get('wecenter_db_user').' --password='.Config::get('wecenter_db_password').' --host='.Config::get('wecenter_db_host').' '.Config::get('wecenter_db_database').'> /tmp/ssmodbackup/wecenter.sql',$ret);
+			$db_address_array = explode(':',Config::get('wecenter_db_host'));
+			system('mysqldump --user='.Config::get('wecenter_db_user').' --password='.Config::get('wecenter_db_password').' --host='.(isset($db_address_array[1])?'-P '.$db_address_array[1]:'').' '.Config::get('wecenter_db_database').'> /tmp/ssmodbackup/wecenter.sql',$ret);
 		}
 	
 		system("cp ".Config::get('auto_backup_webroot')."/config/.config.php /tmp/ssmodbackup/",$ret);
@@ -316,9 +319,6 @@ class Job
 			
 			$disconnected->delete();
 		}
-
-
-		Ip::where("datetime","<",time()-300)->delete();
 		
 		//auto renew
 		$boughts=Bought::where("renew","<",time())->where("renew","<>",0)->get();
@@ -391,7 +391,7 @@ class Job
 			}
 		}
 		
-		
+		Ip::where("datetime","<",time()-300)->delete();
 		
 
 		$adminUser = User::where("is_admin","=","1")->get();
