@@ -809,7 +809,23 @@ class UserController extends BaseController
 		$paybacks = Payback::where("ref_by",$this->user->id)->orderBy("datetime","desc")->paginate(15, ['*'], 'page', $pageNum);
 		$paybacks->setPath('/user/profile');
 
-		$iplocation = new QQWry();
+		$userip=array();
+		
+		$total = Ip::where("datetime",">=",time()-300)->where('userid', '=',$this->user->id)->get();
+		
+		$iplocation = new QQWry(); 
+		foreach($total as $single)
+		{
+			//if(isset($useripcount[$single->userid]))
+			{
+				if(!isset($userip[$single->ip()]))
+				{
+					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
+					$location=$iplocation->getlocation($single->ip());
+					$userip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+				}
+			}
+		}
 		
 		$totallogin = LoginIp::where('userid', '=',$this->user->id)->where("type","=",0)->orderBy("datetime","desc")->take(10)->get();
 		
@@ -830,7 +846,7 @@ class UserController extends BaseController
 		
 		
 		
-        return $this->view()->assign("userloginip",$userloginip)->assign("paybacks",$paybacks)->display('user/profile.tpl');
+        return $this->view()->assign("userip",$userip)->assign("userloginip",$userloginip)->assign("paybacks",$paybacks)->display('user/profile.tpl');
     }
 	
 	
