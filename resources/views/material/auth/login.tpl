@@ -140,16 +140,22 @@
                         $("#msg").html(data.msg);
                         window.setTimeout("location.href='/user'", {$config['jump_delay']});
                     }else{
-						$("#result").modal();
+			$("#result").modal();
                         $("#msg").html(data.msg);
-						document.getElementById("login").disabled = false; 
+			document.getElementById("login").disabled = false;
+			{if $geetest_html != null}
+			captcha.refresh();
+			{/if} 
                     }
                 },
                 error:function(jqXHR){
-                    $("#msg-error").hide(10);
-                    $("#msg-error").show(100);
-                    $("#msg-error-p").html("发生错误："+jqXHR.status);
+			$("#msg-error").hide(10);
+			$("#msg-error").show(100);
+			$("#msg-error-p").html("发生错误："+jqXHR.status);
 					document.getElementById("login").disabled = false; 
+			{if $geetest_html != null}
+			captcha.refresh();
+			{/if}
                 }
             });
         }
@@ -179,11 +185,13 @@
         // 将验证码加到id为captcha的元素里
 		
 		captchaObj.onSuccess(function () {
-            validate = captchaObj.getValidate();
-        });
+            		validate = captchaObj.getValidate();
+		});
 		
-        captchaObj.appendTo("#embed-captcha");
-        // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+		captchaObj.appendTo("#embed-captcha");
+
+		captcha = captchaObj;
+		// 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
     };
 	
 	initGeetest({

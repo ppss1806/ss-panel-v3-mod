@@ -207,14 +207,21 @@
                     }else{
                         $("#result").modal();
                         $("#msg").html(data.msg);
-						document.getElementById("tos").disabled = false; 
+			document.getElementById("tos").disabled = false; 
+
+			{if $geetest_html != null}
+			captcha.refresh();
+			{/if}
                     }
                 },
                 error:function(jqXHR){
-                    $("#msg-error").hide(10);
-                    $("#msg-error").show(100);
-                    $("#msg-error-p").html("发生错误："+jqXHR.status);
-					document.getElementById("tos").disabled = false; 
+			$("#msg-error").hide(10);
+			$("#msg-error").show(100);
+			$("#msg-error-p").html("发生错误："+jqXHR.status);
+			document.getElementById("tos").disabled = false; 
+			{if $geetest_html != null}
+			captcha.refresh();
+			{/if}
                 }
             });
         }
@@ -298,16 +305,16 @@ function time(o) {
                 success: function (data) {
                     if (data.ret) {
                         $("#result").modal();
-						$("#msg").html(data.msg);
+			$("#msg").html(data.msg);
 						
                     } else {
                         $("#result").modal();
-						$("#msg").html(data.msg);
+			$("#msg").html(data.msg);
                     }
                 },
                 error: function (jqXHR) {
                     $("#result").modal();
-					$("#msg").html(data.msg+"     出现了一些错误。");
+			$("#msg").html(data.msg+"     出现了一些错误。");
                 }
             })
         })
@@ -321,11 +328,13 @@ function time(o) {
         // 将验证码加到id为captcha的元素里
 		
 		captchaObj.onSuccess(function () {
-            validate = captchaObj.getValidate();
-        });
+		    validate = captchaObj.getValidate();
+		});
 		
-        captchaObj.appendTo("#embed-captcha");
-        // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+		captchaObj.appendTo("#embed-captcha");
+
+		captcha = captchaObj;
+		// 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
     };
 	
 	initGeetest({
