@@ -186,7 +186,6 @@
 												<option value="auth_sha1_v2_compatible">auth_sha1_v2_compatible</option>
 												<option value="auth_sha1_v4">auth_sha1_v4</option>
 												<option value="auth_sha1_v4_compatible">auth_sha1_v4_compatible</option>
-												<option value="auth_aes128">auth_aes128</option>
 												<option value="auth_aes128_sha1">auth_aes128_sha1</option>
 												<option value="auth_aes128_sha1_compatible">auth_aes128_sha1_compatible</option>
 												<option value="auth_aes128_md5">auth_aes128_md5</option>
