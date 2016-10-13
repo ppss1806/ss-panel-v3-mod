@@ -428,8 +428,9 @@ class Job
 							echo $e->getMessage();
 						}
 						
-						Telegram::Send("姐姐姐姐，面板程序有更新了呢~看看你的邮箱吧~");
 					}
+					
+					Telegram::Send("姐姐姐姐，面板程序有更新了呢~看看你的邮箱吧~");
 					
 					$myfile = fopen(BASE_PATH."/storage/update.md5", "w+") or die("Unable to open file!");
 					$txt = "1";
@@ -447,7 +448,7 @@ class Job
 			
 			foreach($nodes as $node){
 				if(time()-$node->node_heartbeat>300&&time()-$node->node_heartbeat<=360&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
-				{
+				{	
 					foreach($adminUser as $user)
 					{
 						echo "Send offline mail to user: ".$user->id;
@@ -503,15 +504,17 @@ class Job
 								}
 							}
 							
-							Telegram::Send("喵喵喵~ ".$node->name." 节点掉线了喵~域名解析被切换到了 ".$Temp_node->name." 上了喵~");
+							$notice_text = "喵喵喵~ ".$node->name." 节点掉线了喵~域名解析被切换到了 ".$Temp_node->name." 上了喵~";
 						}
 						else
 						{
-							Telegram::Send("喵喵喵~ ".$node->name." 节点掉线了喵~");
+							$notice_text = "喵喵喵~ ".$node->name." 节点掉线了喵~";
 						}
 						
 						
 					}
+
+					Telegram::Send($notice_text);
 					
 					$myfile = fopen(BASE_PATH."/storage/".$node->id.".offline", "w+") or die("Unable to open file!");
 					$txt = "1";
@@ -571,14 +574,16 @@ class Job
 							}
 							
 							
-							Telegram::Send("喵喵喵~ ".$node->name." 节点恢复了喵~域名解析被切换回来了喵~");
+							$notice_text = "喵喵喵~ ".$node->name." 节点恢复了喵~域名解析被切换回来了喵~";
 						}
 						else
 						{
-							Telegram::Send("喵喵喵~ ".$node->name." 节点恢复了喵~");
+							$notice_text = "喵喵喵~ ".$node->name." 节点恢复了喵~";
 						}
 						
 					}
+
+					Telegram::Send($notice_text);
 					
 					unlink(BASE_PATH."/storage/".$node->id.".offline");
 				}
