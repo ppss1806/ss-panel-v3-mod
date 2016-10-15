@@ -118,7 +118,7 @@ Class Wecenter
 	}
 	
 	
-	private function get_key($mcrypt, $key = null)
+	private static function get_key($mcrypt, $key = null)
     {
         if (!$key)
         {
@@ -128,7 +128,7 @@ Class Wecenter
         return substr($key, 0, mcrypt_enc_get_key_size($mcrypt));
     }
 
-    private function get_algorithms()
+    private static function get_algorithms()
     {
         $algorithms = mcrypt_list_algorithms();
 
@@ -151,7 +151,7 @@ Class Wecenter
         return end($algorithms);
     }
 
-    private function str_to_hex($string)
+    private static function str_to_hex($string)
     {
 		$hex = null;
         for ($i = 0; $i < strlen($string); $i++)
@@ -164,7 +164,7 @@ Class Wecenter
         return strtoupper($hex);
     }
 
-    private function hex_to_str($hex)
+    private static function hex_to_str($hex)
     {
 		$string = null;
         for ($i = 0; $i < strlen($hex)-1; $i += 2)
