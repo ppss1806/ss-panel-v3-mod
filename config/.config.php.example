@@ -24,7 +24,6 @@ $System_Config['muKey'] = '';
 $System_Config['mailDriver'] = 'mailgun';   // mailgun or smtp
 
 // 用户签到设置
-$System_Config['checkinTime'] = '24';      // 签到间隔时间 单位小时
 $System_Config['checkinMin'] = '1989';       // 签到最少流量 单位MB
 $System_Config['checkinMax'] = '8964';       // 签到最多流量
 
