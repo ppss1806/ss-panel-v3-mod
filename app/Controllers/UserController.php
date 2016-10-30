@@ -91,7 +91,7 @@ class UserController extends BaseController
 				foreach($mu_nodes as $mu_node)
 				{
 					$mu_user = User::where('port','=',$mu_node->server)->first();
-					$mu_user->obfs_param = $user->getMuMd5().".".$user->id.".".Config::get("mu_suffix");
+					$mu_user->obfs_param = $user->getMuMd5();
 					
 					$ary['server_port'] = $mu_user->port;
 					$ary['password'] = $mu_user->passwd;
@@ -236,6 +236,7 @@ class UserController extends BaseController
 		}
 		
     }
+	
 	
 	public function codepost($request, $response, $args)
     {
@@ -450,7 +451,7 @@ class UserController extends BaseController
 				if($node->sort==9)
 				{
 					$mu_user=User::where('port','=',$node->server)->first();
-					$mu_user->obfs_param=$this->user->getMuMd5().".".$this->user->id.".".Config::get("mu_suffix");
+					$mu_user->obfs_param=$this->user->getMuMd5();
 					array_push($node_muport,array('server'=>$node->server,'user'=>$mu_user));
 					continue;
 				}
@@ -590,7 +591,7 @@ class UserController extends BaseController
 					else
 					{
 						$mu_user = User::where('port','=',$mu)->first();
-						$mu_user->obfs_param = $this->user->getMuMd5().".".$this->user->id.".".Config::get("mu_suffix");
+						$mu_user->obfs_param = $this->user->getMuMd5();
 						$user = $mu_user;
 						$node->name .= " - ".$mu." 端口单端口多用户";
 						$ary['server_port'] = $mu_user->port;
@@ -602,8 +603,9 @@ class UserController extends BaseController
 						}
 
 						if ($node->custom_rss) {
-							$ary['obfs'] = str_replace("_compatible","",$this->user->obfs);
-							$ary['protocol'] = str_replace("_compatible","",$this->user->protocol);
+							$ary['obfs'] = str_replace("_compatible","",$mu_user->obfs);
+							$ary['obfs_param'] = $mu_user->obfs_param;
+							$ary['protocol'] = str_replace("_compatible","",$mu_user->protocol);
 						}
 
 						$is_mu = 1;

@@ -249,7 +249,7 @@ class LinkController extends BaseController
 				foreach($mu_nodes as $mu_node)
 				{
 					$mu_user = User::where('port','=',$mu_node->server)->first();
-					$mu_user->obfs_param = $user->getMuMd5().".".$user->id.".".Config::get("mu_suffix");
+					$mu_user->obfs_param = $user->getMuMd5();
 					
 					array_push($temparray,array("remarks"=>$node->name."- ".$mu_node->server." 端口单端口多用户",
 										"server"=>$node->server,

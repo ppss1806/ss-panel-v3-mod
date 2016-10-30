@@ -16,7 +16,7 @@ use App\Utils\GA;
 class User extends Model
 
 {
-	protected $connection = "default";
+    protected $connection = "default";
     protected $table = "user";
 
     public $isLogin;
@@ -54,7 +54,18 @@ class User extends Model
 
     public function getMuMd5()
     {
-        return MD5($this->attributes['id'].$this->attributes['passwd'].$this->attributes['method'].$this->attributes['obfs'].$this->attributes['protocol']);
+        $str = str_replace("%id", $this->attributes['id'], Config::get('mu_regex'));
+        $str = str_replace("%suffix", Config::get('mu_suffix'), $str);
+        preg_match_all("|%[\d]m|U", $str, $matches, PREG_PATTERN_ORDER);
+        foreach($matches[0] as $key)
+        {
+            preg_match("|[\d]|U", $key, $key_match);
+            $md5 = substr(MD5($this->attributes['id'].$this->attributes['passwd'].$this->attributes['method'].$this->attributes['obfs'].$this->attributes['protocol']), 
+            ($key_match[0] < 0? -1 : 0),
+            $key_match[0]);
+            $str = str_replace($key, $md5, $str);
+        }
+        return $str;
     }
 
     public function lastCheckInTime()
@@ -75,8 +86,8 @@ class User extends Model
         $this->pass = Hash::passwordHash($pwd);
         $this->save();
     }
-	
-	public function get_forbidden_ip()
+    
+    public function get_forbidden_ip()
     {
         return str_replace(",", PHP_EOL, $this->attributes['forbidden_ip']);
     }
@@ -148,14 +159,14 @@ class User extends Model
         $transfer_enable = $this->attributes['transfer_enable'];
         return Tools::flowAutoShow($transfer_enable - $total);
     }
-	
-	public function TodayusedTraffic()
+    
+    public function TodayusedTraffic()
     {
         $total = $this->attributes['u'] + $this->attributes['d']-$this->attributes['last_day_t'];
         return Tools::flowAutoShow($total);
     }
-	
-	public function LastusedTraffic()
+    
+    public function LastusedTraffic()
     {
         $total = $this->attributes['last_day_t'];
         return Tools::flowAutoShow($total);
@@ -165,8 +176,8 @@ class User extends Model
     {
         $last = $this->attributes['last_check_in_time'];
     
-		$now = time(); 
-		if(date("Ymd", $now)!= date("Ymd", $last) ){
+        $now = time(); 
+        if(date("Ymd", $now)!= date("Ymd", $last) ){
             return true;
         }
         return false;
@@ -178,13 +189,13 @@ class User extends Model
     public function addTraffic($traffic)
     {
     }
-	
-	public function getGAurl()
-	{
-		$ga = new GA();
-		$url = $ga->getUrl(Config::get('appName')."-".$this->attributes['user_name']."-两步验证码",$this->attributes['ga_token']);
-		return $url;
-	}
+    
+    public function getGAurl()
+    {
+        $ga = new GA();
+        $url = $ga->getUrl(Config::get('appName')."-".$this->attributes['user_name']."-两步验证码",$this->attributes['ga_token']);
+        return $url;
+    }
 
     public function inviteCodes()
     {

@@ -195,5 +195,4 @@ class HomeController extends BaseController
 			echo 'error';
 		}
     }
-
 }

@@ -47,7 +47,8 @@ class Job
 
 		$db_address_array = explode(':',Config::get('db_host'));
 		
-		system('mysqldump --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.$db_address_array[0].' '.(isset($db_address_array[1])?'-P '.$db_address_array[1]:'').' '.Config::get('db_database').' announcement auto blockip bought code coupon disconnect_ip link login_ip payback radius_ban shop speedtest ss_invite_code ss_node ss_password_reset ticket unblockip user user_token email_verify detect_list > /tmp/ssmodbackup/mod.sql',$ret);
+		system('mysqldump --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.$db_address_array[0].' '.(isset($db_address_array[1])?'-P '.$db_address_array[1]:'').' '.Config::get('db_database').' announcement auto blockip bought code coupon disconnect_ip link login_ip payback radius_ban shop speedtest ss_invite_code ss_node ss_password_reset ticket unblockip user user_token email_verify detect_list> /tmp/ssmodbackup/mod.sql',$ret);
+		
 		
 		system('mysqldump --opt --user='.Config::get('db_username').' --password='.Config::get('db_password').' --host='.$db_address_array[0].' '.(isset($db_address_array[1])?'-P '.$db_address_array[1]:'').' -d '.Config::get('db_database').' alive_ip ss_node_info ss_node_online_log user_traffic_log detect_log >> /tmp/ssmodbackup/mod.sql',$ret);
 		
@@ -654,7 +655,7 @@ class Job
 				
 			}
 			
-			if(strtotime($user->expire_in)<time() && $user->transfer_enable != Tools::toGB(Config::get('enable_account_expire_reset_traffic')))
+			if(strtotime($user->expire_in)<time() && (Config::get('enable_account_expire_reset')=='true' ? $user->transfer_enable != Tools::toGB(Config::get('enable_account_expire_reset_traffic')) : True && Config::get('enable_class_expire_reset')=='true' ? $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) : True))
 			{
 				if(Config::get('enable_account_expire_reset')=='true')
 				{
@@ -770,7 +771,7 @@ class Job
 				}
 			}
 			
-			if($user->class!=0 && $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) && strtotime($user->class_expire)<time() && strtotime($user->class_expire) > 1420041600)
+			if($user->class!=0 && (Config::get('enable_account_expire_reset')=='true' ? $user->transfer_enable != Tools::toGB(Config::get('enable_account_expire_reset_traffic')) : True && Config::get('enable_class_expire_reset')=='true' ? $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) : True) && strtotime($user->class_expire)<time() && strtotime($user->class_expire) > 1420041600)
 			{
 				if(Config::get('enable_class_expire_reset')=='true')
 				{
