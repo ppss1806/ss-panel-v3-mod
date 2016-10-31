@@ -59,10 +59,11 @@ class User extends Model
         preg_match_all("|%-?[1-9]\d*m|U", $str, $matches, PREG_PATTERN_ORDER);
         foreach($matches[0] as $key)
         {
-            preg_match("|-?[1-9]\d*|U", $key, $key_match);
+            $key_match = str_replace("%", "",$key);
+            $key_match = str_replace("m", "",$key_match);
             $md5 = substr(MD5($this->attributes['id'].$this->attributes['passwd'].$this->attributes['method'].$this->attributes['obfs'].$this->attributes['protocol']), 
-            ($key_match[0] < 0 ? $key_match[0] : 0),
-            abs($key_match[0]));
+            ($key_match < 0 ? $key_match : 0),
+            abs($key_match));
             $str = str_replace($key, $md5, $str);
         }
         return $str;
