@@ -56,13 +56,13 @@ class User extends Model
     {
         $str = str_replace("%id", $this->attributes['id'], Config::get('mu_regex'));
         $str = str_replace("%suffix", Config::get('mu_suffix'), $str);
-        preg_match_all("|%[\d]m|U", $str, $matches, PREG_PATTERN_ORDER);
+        preg_match_all("|%-?[1-9]\d*m|U", $str, $matches, PREG_PATTERN_ORDER);
         foreach($matches[0] as $key)
         {
-            preg_match("|[\d]|U", $key, $key_match);
+            preg_match("|-?[1-9]\d*|U", $key, $key_match);
             $md5 = substr(MD5($this->attributes['id'].$this->attributes['passwd'].$this->attributes['method'].$this->attributes['obfs'].$this->attributes['protocol']), 
-            ($key_match[0] < 0? -1 : 0),
-            $key_match[0]);
+            ($key_match[0] < 0 ? $key_match[0] : 0),
+            abs($key_match[0]));
             $str = str_replace($key, $md5, $str);
         }
         return $str;
