@@ -349,8 +349,17 @@ class Job
 				
 				$shop->buy($user,1);
 				
-				$bought->renew=time()+$shop->auto_renew*86400;
+				$bought->renew=0;
 				$bought->save();
+
+
+				$bought_new=new Bought();
+				$bought_new->userid=$user->id;
+				$bought_new->shopid=$shop->id;
+				$bought_new->datetime=time();
+				$bought_new->renew=time()+$shop->auto_renew*86400;
+				$bought_new->price=$bought->price;
+				$bought_new->save();
 				
 				$subject = Config::get('appName')."-续费成功";
 				$to = $user->email;
