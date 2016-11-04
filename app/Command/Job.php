@@ -64,7 +64,8 @@ class Job
 			system('mysqldump --user='.Config::get('wecenter_db_user').' --password='.Config::get('wecenter_db_password').' --host='.(isset($db_address_array[1])?'-P '.$db_address_array[1]:'').' '.Config::get('wecenter_db_database').'> /tmp/ssmodbackup/wecenter.sql',$ret);
 		}
 	
-		system("cp ".Config::get('auto_backup_webroot')."/config/.config.php /tmp/ssmodbackup/",$ret);
+		system("cp ".Config::get('auto_backup_webroot')."/config/.config.php /tmp/ssmodbackup/configbak.php",$ret);
+		echo $ret;
 		system("zip -r /tmp/ssmodbackup.zip /tmp/ssmodbackup/* -P ".Config::get('auto_backup_passwd'),$ret);
 		
 		$subject = Config::get('appName')."-备份成功";
