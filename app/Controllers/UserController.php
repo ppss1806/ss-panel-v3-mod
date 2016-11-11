@@ -172,7 +172,7 @@ class UserController extends BaseController
 			if (isset($request->getQueryParams()["page"])) {
 				$pageNum = $request->getQueryParams()["page"];
 			}
-			$codes = Code::where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
+			$codes = Code::where('type','<>','-2')->where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
 			$codes->setPath('/user/code');
 			return $this->view()->assign('codes',$codes)->assign('pmw_height',Config::get('pmw_height'))->assign('pmw',$widget->getHtmlCode(array("height"=>Config::get('pmw_height'),"width"=>"100%")))->display('user/code.tpl');
 		
@@ -184,7 +184,7 @@ class UserController extends BaseController
 			if (isset($request->getQueryParams()["page"])) {
 				$pageNum = $request->getQueryParams()["page"];
 			}
-			$codes = Code::where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
+			$codes = Code::where('type','<>','-2')->where('userid','=',$this->user->id)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
 			$codes->setPath('/user/code');
 			return $this->view()->assign('codes',$codes)->assign('pmw_height',Config::get('pmw_height'))->assign('pmw','0')->display('user/code.tpl');
 		
