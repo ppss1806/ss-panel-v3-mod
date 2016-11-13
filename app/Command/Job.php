@@ -141,17 +141,12 @@ class Job
 				}
 			}
 		}
-		
-		
-		if(date("d")==14)
-		{
-			Ip::truncate();
-			NodeInfoLog::truncate();
-			NodeOnlineLog::truncate();
-			TrafficLog::truncate();
-			DetectLog::truncate();
-			Telegram::Send("姐姐姐姐，数据库被清空，感觉身体被掏空了呢~");
-		}
+
+		NodeInfoLog::where("log_time","<",time()-86400*3)->delete();
+		NodeOnlineLog::where("log_time","<",time()-86400*3)->delete();;
+		TrafficLog::where("log_time","<",time()-86400*3)->delete();;
+		DetectLog::where("datetime","<",time()-86400*3)->delete();;
+		Telegram::Send("姐姐姐姐，数据库被清理了，感觉身体被掏空了呢~");
 		
 		
 		$users = User::all();
@@ -665,7 +660,7 @@ class Job
 				
 			}
 			
-			if(strtotime($user->expire_in)<time() && ((Config::get('enable_account_expire_reset')=='true' ? $user->transfer_enable != Tools::toGB(Config::get('enable_account_expire_reset_traffic')) : True) && (Config::get('enable_class_expire_reset')=='true' ? $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) : True)))
+			if(strtotime($user->expire_in) < time() && (((Config::get('enable_account_expire_reset')=='true' && strtotime($user->expire_in) < time()) ? $user->transfer_enable != Tools::toGB(Config::get('enable_account_expire_reset_traffic')) : True) && ((Config::get('enable_class_expire_reset')=='true' && ($user->class!=0 && strtotime($user->class_expire)<time() && strtotime($user->class_expire) > 1420041600))? $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) : True)))
 			{
 				if(Config::get('enable_account_expire_reset')=='true')
 				{
@@ -781,7 +776,7 @@ class Job
 				}
 			}
 			
-			if($user->class!=0 && ((Config::get('enable_account_expire_reset')=='true' ? $user->transfer_enable != Tools::toGB(Config::get('enable_account_expire_reset_traffic')) : True) && (Config::get('enable_class_expire_reset')=='true' ? $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) : True)) && strtotime($user->class_expire)<time() && strtotime($user->class_expire) > 1420041600)
+			if($user->class!=0 && (((Config::get('enable_account_expire_reset')=='true' && strtotime($user->expire_in) < time()) ? $user->transfer_enable != Tools::toGB(Config::get('enable_account_expire_reset_traffic')) : True) && ((Config::get('enable_class_expire_reset')=='true' && ($user->class!=0 && strtotime($user->class_expire)<time() && strtotime($user->class_expire) > 1420041600))? $user->transfer_enable != Tools::toGB(Config::get('enable_class_expire_reset_traffic')) : True)) && strtotime($user->class_expire)<time() && strtotime($user->class_expire) > 1420041600)
 			{
 				if(Config::get('enable_class_expire_reset')=='true')
 				{
