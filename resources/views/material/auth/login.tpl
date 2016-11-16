@@ -130,7 +130,7 @@
                     email: $("#email").val(),
                     passwd: $("#passwd").val(),
 					code: $("#code").val(),
-                    remember_me: $("#remember_me").val(){if $geetest_html != null},
+                    remember_me: $("#remember_me:checked").val(){if $geetest_html != null},
 					geetest_challenge: validate.geetest_challenge,
                     geetest_validate: validate.geetest_validate,
                     geetest_seccode: validate.geetest_seccode{/if}
