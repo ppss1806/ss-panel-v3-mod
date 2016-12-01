@@ -225,7 +225,7 @@ class LinkController extends BaseController
 		$json=json_decode($string,TRUE);
 		$temparray=array();
 		
-		$mu_nodes = Node::where('sort',9)->get();
+		$mu_nodes = Node::where('sort',9)->where('node_class',$user->class)->get();
 		
 		foreach($nodes as $node)
 		{
