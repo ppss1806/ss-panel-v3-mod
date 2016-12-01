@@ -19,11 +19,11 @@ class UserController extends BaseController
 		
 		if($node->node_group!=0)
 		{
-			$users = User::where("class",">=",$node->node_class)->where("node_group","=",$node->node_group)->where("expire_in",">",date("Y-m-d H:i:s"))->get();
+			$users = User::where("class",">=",$node->node_class)->where("is_multi_user",0)->where("node_group","=",$node->node_group)->where("expire_in",">",date("Y-m-d H:i:s"))->get();
 		}
 		else
 		{
-			$users = User::where("class",">=",$node->node_class)->where("expire_in",">",date("Y-m-d H:i:s"))->get();
+			$users = User::where("class",">=",$node->node_class)->where("is_multi_user",0)->where("expire_in",">",date("Y-m-d H:i:s"))->get();
 		}
 		if($node->node_bandwidth_limit!=0)
 		{
