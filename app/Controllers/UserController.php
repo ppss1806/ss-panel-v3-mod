@@ -60,7 +60,7 @@ class UserController extends BaseController
 		$user = $this->user;
 		
 		
-		$mu_nodes = Node::where('sort',9)->where('node_class',$user->class)->get();
+		$mu_nodes = Node::where('sort',9)->where('node_class','<=',$user->class)->get();
 		
 		foreach($nodes as $node)
 		{
