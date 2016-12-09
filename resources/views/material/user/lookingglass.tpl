@@ -27,7 +27,7 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">注意!</p>
-										<p>此处只展示最近{$hour}小时的记录.</p>
+										<p>此处只展示最近{$hour}小时的记录.</p><b>测试节点来自 <a href="http://speedtest.net">Speedtest</a>，数据仅供参考~</b>
 									</div>
 									
 								</div>

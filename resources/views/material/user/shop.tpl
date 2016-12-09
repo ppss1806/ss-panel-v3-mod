@@ -71,9 +71,9 @@
 						{$shops->render()}
 					</div>
 					
-
-					<div aria-hidden="true" class="modal fade" id="coupon_modal" role="dialog" tabindex="-1">
-						<div class="modal-dialog">
+					
+					<div aria-hidden="true" class="modal modal-va-middle fade" id="coupon_modal" role="dialog" tabindex="-1">
+						<div class="modal-dialog modal-xs">
 							<div class="modal-content">
 								<div class="modal-heading">
 									<a class="modal-close" data-dismiss="modal">×</a>
@@ -93,8 +93,8 @@
 					</div>
 					
 					
-					<div aria-hidden="true" class="modal fade" id="order_modal" role="dialog" tabindex="-1">
-						<div class="modal-dialog">
+					<div aria-hidden="true" class="modal modal-va-middle fade" id="order_modal" role="dialog" tabindex="-1">
+						<div class="modal-dialog modal-xs">
 							<div class="modal-content">
 								<div class="modal-heading">
 									<a class="modal-close" data-dismiss="modal">×</a>

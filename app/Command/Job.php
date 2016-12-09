@@ -143,9 +143,9 @@ class Job
 		}
 
 		NodeInfoLog::where("log_time","<",time()-86400*3)->delete();
-		NodeOnlineLog::where("log_time","<",time()-86400*3)->delete();;
-		TrafficLog::where("log_time","<",time()-86400*3)->delete();;
-		DetectLog::where("datetime","<",time()-86400*3)->delete();;
+		NodeOnlineLog::where("log_time","<",time()-86400*3)->delete();
+		TrafficLog::where("log_time","<",time()-86400*3)->delete();
+		DetectLog::where("datetime","<",time()-86400*3)->delete();
 		Telegram::Send("姐姐姐姐，数据库被清理了，感觉身体被掏空了呢~");
 
 
@@ -355,6 +355,7 @@ class Job
 				$bought_new->datetime=time();
 				$bought_new->renew=time()+$shop->auto_renew*86400;
 				$bought_new->price=$bought->price;
+				$bought_new->coupon="";
 				$bought_new->save();
 
 				$subject = Config::get('appName')."-续费成功";

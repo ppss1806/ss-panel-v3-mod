@@ -248,7 +248,7 @@
 							</div>
 						</div>
 						
-						<div aria-hidden="true" class="modal fade" id="nodeinfo" role="dialog" tabindex="-1">
+						<div aria-hidden="true" class="modal modal-va-middle fade" id="nodeinfo" role="dialog" tabindex="-1">
 							<div class="modal-dialog modal-full">
 								<div class="modal-content">
 									<iframe class="iframe-seamless" title="Modal with iFrame" id="infoifram"></iframe>
