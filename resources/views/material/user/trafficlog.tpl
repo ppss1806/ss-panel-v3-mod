@@ -28,7 +28,7 @@
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">注意!</p>
 										<p>部分节点不支持流量记录.</p>
-										<p>此处只展示最近 72 小时的记，粒度为分钟。</p>
+										<p>此处只展示最近 72 小时的记录，粒度为分钟。</p>
 									</div>
 									
 								</div>

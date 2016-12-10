@@ -81,7 +81,7 @@ class UserController extends BaseController
 			else
 			{
 				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-				$ssqr = "ss://" . base64_encode($ssurl);
+				$ssqr = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
 				$android_add .= $ssqr."|";
 			}
 			
@@ -569,7 +569,6 @@ class UserController extends BaseController
 					$ary['local_address'] = '127.0.0.1';
 					$ary['local_port'] = 1080;
 					$ary['timeout'] = 300;	
-					$ary['fast_open'] = 'false';
 					$ary['workers'] = 1;				
 					
 					$is_mu = 0;
@@ -617,19 +616,19 @@ class UserController extends BaseController
 					{
 						
 						$ssurl = str_replace("_compatible","",$user->obfs).":".str_replace("_compatible","",$user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
-						$ssqr_s = "ss://" . base64_encode($ssurl);
+						$ssqr_s = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
 						$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name);
 						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
 						$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-						$ssqr = "ss://" . base64_encode($ssurl);
+						$ssqr = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
 						
 					}
 					else
 					{
 						$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-						$ssqr = "ss://" . base64_encode($ssurl);
-						$ssqr_s = "ss://" . base64_encode($ssurl);
-						$ssqr_s_new = "ss://" . base64_encode($ssurl);
+						$ssqr = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
+						$ssqr_s = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
+						$ssqr_s_new = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
 					}
 					
 					$token_1 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,0,$ary['method']);
