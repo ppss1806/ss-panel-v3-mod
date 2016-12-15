@@ -186,16 +186,19 @@ class LinkController extends BaseController
 	public static function GetPcConf($nodes,$user){
 		$string='
 	{	
-	"index" : 1,
+	"index" : 0,
 	"random" : false,
-	"sysProxyMode" : 2,
+	"sysProxyMode" : 0,
 	"shareOverLan" : false,
 	"bypassWhiteList" : false,
 	"localPort" : 1080,
+	"localAuthPassword" : "'.Tools::genRandomChar(26).'",
+	"dns_server" : "",
 	"reconnectTimes" : 4,
 	"randomAlgorithm" : 0,
 	"TTL" : 60,
 	"connect_timeout" : 5,
+	"proxyRuleMode" : 1,
 	"proxyEnable" : false,
 	"pacDirectGoProxy" : false,
 	"proxyType" : 0,
@@ -209,9 +212,7 @@ class LinkController extends BaseController
 	"autoBan" : false,
 	"sameHostForSameTarget" : true,
 	"keepVisitTime" : 180,
-	"isHideTips" : false,
-	"dns_server" : "",
-	"proxyRuleMode" : 1,
+	"isHideTips" : true,
 	"token" : {
 
 	},
