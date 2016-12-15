@@ -80,7 +80,12 @@ class ApiController extends BaseController
 			}
 		)->get();
 		
-		$mu_nodes = Node::where('sort',9)->where('node_class','<=',$user->class)->get();
+		$mu_nodes = Node::where('sort',9)->where('node_class','<=',$user->class)->where("type","1")->where(
+			function ($query) use ($user) {
+				$query->where("node_group","=",$user->node_group)
+					->orWhere("node_group","=",0);
+			}
+		)->get();
 		
 		$temparray=array();
 		foreach($nodes as $node)
