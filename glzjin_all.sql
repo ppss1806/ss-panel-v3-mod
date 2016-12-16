@@ -647,3 +647,4 @@ ALTER TABLE `detect_log` ADD `node_id` INT NOT NULL AFTER `datetime`;
 
 ALTER TABLE `user` ADD `is_multi_user` INT NOT NULL DEFAULT '0' AFTER `is_hide`;
 
+ALTER TABLE `ss_node` ADD `mu_only` INT NULL DEFAULT '0' AFTER `custom_rss`;

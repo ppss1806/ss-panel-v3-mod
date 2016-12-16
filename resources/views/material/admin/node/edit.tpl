@@ -60,6 +60,15 @@
 											</label>
 										</div>
 									</div>
+									
+									<div class="form-group form-group-label">
+										<div class="checkbox switch">
+											<label for="mu_only">
+												<input {if $node->mu_only==1}checked{/if} class="access-hide" id="mu_only" type="checkbox" name="mu_only"><span class="switch-toggle"></span>只启用单端口多用户
+											</label>
+										</div>
+									</div>
+									
 									{/if}
 									
 									
@@ -221,6 +230,16 @@
 			{
 				var custom_rss=0;
 			}
+			
+			if(document.getElementById('mu_only').checked)
+			{
+				var mu_only=1;
+			}
+			else
+			{
+				var mu_only=0;
+			}
+			
 			{/if}
 			
 			
@@ -246,8 +265,10 @@
 					class: $("#class").val(),
 					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
 					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val(){/literal}{if $config['enable_rss']=='true'},
-					custom_rss: custom_rss{else},
-					custom_rss: 0
+					custom_rss: custom_rss,
+					mu_only: mu_only{else},
+					custom_rss: 0,
+					mu_only: 0
 					{/if}
 					{literal}
                 },

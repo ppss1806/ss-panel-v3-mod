@@ -79,17 +79,20 @@ class UserController extends BaseController
 			
 			if(Config::get('enable_rss')=='true')
 			{
-				if($node->custom_rss == 1)
+				if($node->mu_only == 0)
 				{
-					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name);
-					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
-					$android_add .= $ssqr_s_new."|";
-				}
-				else
-				{
-					$ssurl = $ary['server']. ":" . $ary['server_port'].":origin:".$ary['method'].":plain:".Tools::base64_url_encode($ary['password'])."/?remarks=".Tools::base64_url_encode($node->name);
-					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
-					$android_add .= $ssqr_s_new."|";
+					if($node->custom_rss == 1)
+					{
+						$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name);
+						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+						$android_add .= $ssqr_s_new."|";
+					}
+					else
+					{
+						$ssurl = $ary['server']. ":" . $ary['server_port'].":origin:".$ary['method'].":plain:".Tools::base64_url_encode($ary['password'])."/?remarks=".Tools::base64_url_encode($node->name);
+						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+						$android_add .= $ssqr_s_new."|";
+					}
 				}
 			}
 			else

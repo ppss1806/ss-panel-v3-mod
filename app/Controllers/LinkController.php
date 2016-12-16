@@ -235,21 +235,24 @@ class LinkController extends BaseController
 		
 		foreach($nodes as $node)
 		{
-			array_push($temparray,array("remarks"=>$node->name,
-										"server"=>$node->server,
-										"server_port"=>$user->port,
-										"method"=>($node->custom_method==1?$user->method:$node->method),
-										"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
-										"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
-										"remarks_base64"=>base64_encode($node->name),
-										"password"=>$user->passwd,
-										"tcp_over_udp"=>false,
-										"udp_over_tcp"=>false,
-										"group"=>Config::get('appName'),
-										"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
-										"obfs_udp"=>false,
-										"enable"=>true));
-										
+			if($node->mu_only == 0)
+			{
+				array_push($temparray,array("remarks"=>$node->name,
+											"server"=>$node->server,
+											"server_port"=>$user->port,
+											"method"=>($node->custom_method==1?$user->method:$node->method),
+											"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
+											"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
+											"remarks_base64"=>base64_encode($node->name),
+											"password"=>$user->passwd,
+											"tcp_over_udp"=>false,
+											"udp_over_tcp"=>false,
+											"group"=>Config::get('appName'),
+											"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
+											"obfs_udp"=>false,
+											"enable"=>true));
+			}
+			
 			if($node->custom_rss == 1)
 			{
 				foreach($mu_nodes as $mu_node)

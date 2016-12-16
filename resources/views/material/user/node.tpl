@@ -64,7 +64,7 @@
 																{foreach $nodes as $node}
 																
 																
-																	
+																	{if $node->mu_only == 0}
 																	<div class="card">
 																		<div class="card-main">
 																			<div class="card-inner"> 
@@ -141,6 +141,8 @@
 																			
 																		</div>
 																	</div>
+																	{/if}
+																	
 																	{if $node->sort==0}
 																		{$point_node=$node}
 																	{/if}
