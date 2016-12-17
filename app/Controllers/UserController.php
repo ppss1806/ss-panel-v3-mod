@@ -628,24 +628,13 @@ class UserController extends BaseController
 					
 					$json = json_encode($ary);
 					$json_show = json_encode($ary, JSON_PRETTY_PRINT);
-					if(Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))
-					{
-						
-						$ssurl = str_replace("_compatible","",$user->obfs).":".str_replace("_compatible","",$user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
-						$ssqr_s = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
-						$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name);
-						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
-						$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-						$ssqr = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
-						
-					}
-					else
-					{
-						$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-						$ssqr = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
-						$ssqr_s = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
-						$ssqr_s_new = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
-					}
+					
+					$ssurl = str_replace("_compatible","",$user->obfs).":".str_replace("_compatible","",$user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
+					$ssqr_s = "ss://" . base64_encode($ssurl);
+					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name);
+					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+					$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
+					$ssqr = "ss://" . base64_encode($ssurl) . "#" . urlencode($node->name);
 					
 					$token_1 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,0,$ary['method']);
 					$token_2 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,1,$ary['method']);
