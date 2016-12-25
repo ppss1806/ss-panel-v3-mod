@@ -130,10 +130,7 @@
 																				</span></p>
 																				
 																				
-																				<p>在线人数：<span class="label label-orange"> 
-																					{$node->getOnlineUserCount()}
-																				</span></p>
-																			
+																				
 																				{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
 																					<p>节点限速：<span class="label label-green"> 
 																						{if $node->node_speedlimit>$user->node_speedlimit}
@@ -181,7 +178,7 @@
 																				<div class="card-main">
 																					<div class="card-inner"> 
 																					<p class="card-heading" >
-																						<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']},0,0,0)">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']} 端口</a> 
+																						<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']->server},0,0,0)">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']->server} 端口</a> 
 																						<span class="label label-green">{$node->status}</span>
 																					</p>
 																					
@@ -213,6 +210,10 @@
 																					
 																					<p>混淆参数：<span class="label label-green"> 
 																						{$single_muport['user']['obfs_param']}
+																					</span></p>
+																					
+																					<p>流量比例：<span class="label label-red"> 
+																						{$node->traffic_rate}
 																					</span></p>
 																					
 																					<p>{$node->info}</p>
@@ -283,14 +284,9 @@
 																								</span></p>
 																								
 																								<p>流量比例：<span class="label label-red"> 
-																									{$node->traffic_rate}
+																									{$node->traffic_rate + $relay_node->traffic_rate}
 																								</span></p>
 																								
-																								
-																								<p>在线人数：<span class="label label-orange"> 
-																									{$node->getOnlineUserCount()}
-																								</span></p>
-																							
 																								{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
 																									<p>节点限速：<span class="label label-green"> 
 																										{if $node->node_speedlimit>$user->node_speedlimit}
@@ -351,14 +347,10 @@
 																								</span></p>
 																								
 																								<p>流量比例：<span class="label label-red"> 
-																									{$node->traffic_rate}
+																									{$node->traffic_rate + $single_node_relay['rule']->Source_Node()->traffic_rate}
 																								</span></p>
 																								
 																								
-																								<p>在线人数：<span class="label label-orange"> 
-																									{$node->getOnlineUserCount()}
-																								</span></p>
-																							
 																								{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
 																									<p>节点限速：<span class="label label-green"> 
 																										{if $node->node_speedlimit>$user->node_speedlimit}
@@ -402,7 +394,7 @@
 																									<div class="card-main">
 																										<div class="card-inner"> 
 																										<p class="card-heading" >
-																											<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']},{$single_node_relay['rule']->id},{$relay_node->id})">{$prefix} - 单端口多用户 Shadowsocks  - {$single_muport['server']} 端口 - {$relay_node->name}</a> 
+																											<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']->server},{$single_node_relay['rule']->id},{$relay_node->id})">{$prefix} - 单端口多用户 Shadowsocks  - {$single_muport['server']->server} 端口 - {$relay_node->name}</a> 
 																											<span class="label label-green">{$node->status}</span>
 																										</p>
 																										
@@ -436,6 +428,10 @@
 																											{$single_muport['user']['obfs_param']}
 																										</span></p>
 																										
+																										<p>流量比例：<span class="label label-red"> 
+																											{$single_muport['server']->traffic_rate + $relay_node->traffic_rate}
+																										</span></p>
+																										
 																										<p>{$node->info}</p>
 																										
 																										
@@ -453,7 +449,7 @@
 																									<div class="card-main">
 																										<div class="card-inner"> 
 																										<p class="card-heading" >
-																											<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']},{$single_node_relay['rule']->id},0)">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']} 端口 - {$single_node_relay['rule']->Source_Node()->name}</a> 
+																											<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']->server},{$single_node_relay['rule']->id},0)">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']->server} 端口 - {$single_node_relay['rule']->Source_Node()->name}</a> 
 																											<span class="label label-green">{$node->status}</span>
 																										</p>
 																										
@@ -485,6 +481,10 @@
 																										
 																										<p>混淆参数：<span class="label label-green"> 
 																											{$single_muport['user']['obfs_param']}
+																										</span></p>
+																										
+																										<p>流量比例：<span class="label label-red"> 
+																										{$single_muport['server']->traffic_rate + $single_node_relay['rule']->Source_Node()->traffic_rate}
 																										</span></p>
 																										
 																										<p>{$node->info}</p>

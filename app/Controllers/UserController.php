@@ -685,7 +685,7 @@ class UserController extends BaseController
 				{
 					$mu_user=User::where('port','=',$node->server)->first();
 					$mu_user->obfs_param=$this->user->getMuMd5();
-					array_push($node_muport,array('server'=>$node->server,'user'=>$mu_user));
+					array_push($node_muport,array('server'=>$node,'user'=>$mu_user));
 					continue;
 				}
 				
