@@ -98,6 +98,15 @@ $app->group('/user', function () {
 	$this->get('/shop', 'App\Controllers\UserController:shop');
 	$this->post('/coupon_check', 'App\Controllers\UserController:CouponCheck');
 	$this->post('/buy', 'App\Controllers\UserController:buy');
+	
+	
+	// Relay Mange
+	$this->get('/relay', 'App\Controllers\RelayController:index');
+	$this->get('/relay/create', 'App\Controllers\RelayController:create');
+	$this->post('/relay', 'App\Controllers\RelayController:add');
+	$this->get('/relay/{id}/edit', 'App\Controllers\RelayController:edit');
+	$this->put('/relay/{id}', 'App\Controllers\RelayController:update');
+	$this->delete('/relay', 'App\Controllers\RelayController:delete');
 
 	$this->get('/ticket', 'App\Controllers\UserController:ticket');
 	$this->get('/ticket/create', 'App\Controllers\UserController:ticket_create');
@@ -173,6 +182,13 @@ $app->group('/admin', function () {
 	$this->get('/ticket/{id}/view', 'App\Controllers\Admin\TicketController:show');
 	$this->put('/ticket/{id}', 'App\Controllers\Admin\TicketController:update');
 
+	// Relay Mange
+	$this->get('/relay', 'App\Controllers\Admin\RelayController:index');
+	$this->get('/relay/create', 'App\Controllers\Admin\RelayController:create');
+	$this->post('/relay', 'App\Controllers\Admin\RelayController:add');
+	$this->get('/relay/{id}/edit', 'App\Controllers\Admin\RelayController:edit');
+	$this->put('/relay/{id}', 'App\Controllers\Admin\RelayController:update');
+	$this->delete('/relay', 'App\Controllers\Admin\RelayController:delete');
 
 	// Shop Mange
 	$this->get('/shop', 'App\Controllers\Admin\ShopController:index');
