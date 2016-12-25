@@ -210,19 +210,19 @@ class Job
 			unlink(BASE_PATH."/storage/qqwry.dat");
 			rename(BASE_PATH."/storage/qqwry.dat.bak",BASE_PATH."/storage/qqwry.dat");
 		}
+		
+		
 
 		if(Config::get('enable_auto_backup') == 'true')
 		{
 			Job::backup();
 		}
 
-		updatedownload();
-
-
+		Job::updatedownload();
 
 	}
 
-	public function updatedownload()
+	public static function updatedownload()
 	{
 		system('cd '.BASE_PATH."/public/ssr-download/ && git pull", $ret);
 		echo $ret;
