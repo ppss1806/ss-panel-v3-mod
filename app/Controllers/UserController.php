@@ -16,6 +16,7 @@ use App\Models\LoginIp;
 use App\Models\BlockIp;
 use App\Models\UnblockIp;
 use App\Models\Payback;
+use App\Models\Relay;
 use App\Utils\QQWry;
 use App\Utils\GA;
 use App\Utils\Geetest;
@@ -67,6 +68,15 @@ class UserController extends BaseController
 			}
 		)->get();
 		
+		$relay_nodes = Node::where(
+			function ($query) use ($user){
+				$query->Where("node_group","=",$user->node_group)
+					->orWhere("node_group","=",0);
+			}
+		)->where('type', 1)->where('sort', 10)->where("node_class","<=",$user->class)->orderBy('name')->get();
+		
+		$relay_rules = Relay::where('user_id', $this->user->id)->get();
+		
 		foreach($nodes as $node)
 		{
 			$ary['server'] = $node->server;
@@ -85,13 +95,76 @@ class UserController extends BaseController
 					{
 						$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
 						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
-						$android_add .= $ssqr_s_new."|";
+						$android_add .= $ssqr_s_new." ";
 					}
 					else
 					{
 						$ssurl = $ary['server']. ":" . $ary['server_port'].":origin:".$ary['method'].":plain:".Tools::base64_url_encode($ary['password'])."/?remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
-						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
-						$android_add .= $ssqr_s_new."|";
+						$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
+						$android_add .= $ssqr_s_new." ";
+					}
+					
+					$rules = Relay::where("dist_node_id","=",$node->id)->where('port', $user->port)->where('user_id', $user->id)->orderBy('id','asc')->get();
+					
+					foreach($rules as $rule)
+					{
+						$has_higher_priority = False;
+						
+						$priority_rule = Relay::where(
+							function ($query) use ($rule){
+								$query->Where("source_node_id","=",$rule->source_node_id)
+									->orWhere("source_node_id","=",0);
+							}
+						)->where('port', $user->port)->where('user_id', $user->id)->orderBy('priority','desc')->first();
+						
+						if($priority_rule->id != $rule->id)
+						{
+							$has_higher_priority = True;
+						}
+						
+						if($has_higher_priority == True)
+						{
+							continue;
+						}
+						
+						$relay_server = $rule->Source_Node();
+						
+						if($rule->source_node_id == 0)
+						{
+							foreach($relay_nodes as $relay_node)
+							{
+								if($node->custom_rss == 1)
+								{
+									$ssurl = $relay_node->server. ":" . $user->port . ":".str_replace("_compatible","",$user->protocol).":".($node->custom_method==1?$user->method:$node->method).":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($user->passwd)."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name." - ".$relay_node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+									$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+									$android_add .= $ssqr_s_new." ";
+								}
+								else
+								{
+									$ssurl = $relay_node->server. ":" . $user->port . ":origin:".($node->custom_method==1?$user->method:$node->method).":plain:".Tools::base64_url_encode($user->passwd)."/?remarks=".Tools::base64_url_encode($node->name." - ".$relay_node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+									$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
+									$android_add .= $ssqr_s_new." ";
+								}
+							}
+						}
+						else
+						{
+							if($relay_server != NULL)
+							{
+								if($node->custom_rss == 1)
+								{
+									$ssurl = $relay_server->server. ":" . $user->port . ":".str_replace("_compatible","",$user->protocol).":".($node->custom_method==1?$user->method:$node->method).":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($user->passwd)."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name." - ".$relay_server->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+									$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+									$android_add .= $ssqr_s_new." ";
+								}
+								else
+								{
+									$ssurl = $relay_server->server. ":" . $user->port . ":origin:".($node->custom_method==1?$user->method:$node->method).":plain:".Tools::base64_url_encode($user->passwd)."/?remarks=".Tools::base64_url_encode($node->name." - ".$relay_server->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+									$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
+									$android_add .= $ssqr_s_new." ";
+								}
+							}
+						}
 					}
 				}
 			}
@@ -99,8 +172,9 @@ class UserController extends BaseController
 			{
 				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
 				$ssqr = "ss://" . base64_encode($ssurl);
-				$android_add .= $ssqr."|";
+				$android_add .= $ssqr." ";
 			}
+			
 			
 			if($node->custom_rss == 1 && Config::get('enable_rss')=='true')
 			{
@@ -118,10 +192,135 @@ class UserController extends BaseController
 					
 					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$mu_user->protocol).":".$ary['method'].":".str_replace("_compatible","",$mu_user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($mu_user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name." - ".$mu_node->server." 端口单端口多用户") . "&group=" . Tools::base64_url_encode(Config::get('appName'));
 					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
-					$android_add .= $ssqr_s_new."|";
+					$android_add .= $ssqr_s_new." ";
+					
+					$rules = Relay::where("dist_node_id","=",$node->id)->where('port', $mu_user->port)->where('user_id', $user->id)->orderBy('id','asc')->get();
+					
+					foreach($rules as $rule)
+					{
+						$has_higher_priority = False;
+						
+						$priority_rule = Relay::where(
+							function ($query) use ($rule){
+								$query->Where("source_node_id","=",$rule->source_node_id)
+									->orWhere("source_node_id","=",0);
+							}
+						)->where('port', $user->port)->where('user_id', $user->id)->orderBy('priority','desc')->first();
+
+						if($priority_rule != NULL)
+						{
+							if($priority_rule->id != $rule->id)
+							{
+								$has_higher_priority = True;
+							}
+						}
+						
+						if($has_higher_priority == True)
+						{
+							continue;
+						}
+						
+						$relay_server = $rule->Source_Node();
+						
+						if($rule->source_node_id == 0)
+						{
+							foreach($relay_nodes as $relay_node)
+							{
+								if($node->custom_rss == 1)
+								{
+									$ssurl = $relay_node->server. ":" . $user->port . ":".str_replace("_compatible","",$user->protocol).":".($node->custom_method==1?$user->method:$node->method).":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($user->passwd)."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+									$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+									$android_add .= $ssqr_s_new." ";
+								}
+								else
+								{
+									$ssurl = $relay_node->server. ":" . $user->port . ":origin:".($node->custom_method==1?$user->method:$node->method).":plain:".Tools::base64_url_encode($user->passwd)."/?remarks=".Tools::base64_url_encode($node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+									$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
+									$android_add .= $ssqr_s_new." ";
+								}
+							}
+						}
+						else
+						{
+							if($relay_server != NULL)
+							{
+								if($node->custom_rss == 1)
+								{
+									$ssurl = $relay_server->server. ":" . $user->port . ":".str_replace("_compatible","",$user->protocol).":".($node->custom_method==1?$user->method:$node->method).":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($user->passwd)."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_server->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+									$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+									$android_add .= $ssqr_s_new." ";
+								}
+								else
+								{
+									$ssurl = $relay_server->server. ":" . $user->port . ":origin:".($node->custom_method==1?$user->method:$node->method).":plain:".Tools::base64_url_encode($user->passwd)."/?remarks=".Tools::base64_url_encode($node->name." - ".$mu_node->server." 端口单端口多用户 - ".$relay_server->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+									$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
+									$android_add .= $ssqr_s_new." ";
+								}
+							}
+						}
+					}
+					
 				}
 			}
 		}
+		
+		foreach($relay_nodes as $node)
+		{
+			$rules = Relay::where(
+				function ($query) use ($node){
+					$query->Where("source_node_id","=",$node->id)
+						->orWhere("source_node_id","=",0);
+				}
+			)->where('port', $user->port)->where('user_id', $user->id)->first();
+			if($rules == NULL)
+			{
+				if($node->custom_rss == 1)
+				{
+					$ssurl = $node->server. ":" . $user->port . ":".str_replace("_compatible","",$user->protocol).":".($node->custom_method==1?$user->method:$node->method).":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($user->passwd)."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+					$android_add .= $ssqr_s_new." ";
+				}
+				else
+				{
+					$ssurl = $node->server. ":" . $user->port . ":origin:".($node->custom_method==1?$user->method:$node->method).":plain:".Tools::base64_url_encode($user->passwd)."/?remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+					$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
+					$android_add .= $ssqr_s_new." ";
+				}
+			}
+			
+			if($node->custom_rss == 1)
+			{
+				foreach($mu_nodes as $mu_node)
+				{
+					$mu_user = User::where('port','=',$mu_node->server)->first();
+					$mu_user->obfs_param = $user->getMuMd5();
+					
+					$rules = Relay::where(
+						function ($query) use ($node){
+							$query->Where("source_node_id","=",$node->id)
+								->orWhere("source_node_id","=",0);
+						}
+					)->where('port', $mu_user->port)->where('user_id', $user->id)->first();
+					if($rules == NULL)
+					{
+						if($node->custom_rss == 1)
+						{
+							$ssurl = $node->server. ":" . $mu_user->port . ":".str_replace("_compatible","",$mu_user->protocol).":".($node->custom_method==1?$mu_user->method:$node->method).":".str_replace("_compatible","",$mu_user->obfs).":".Tools::base64_url_encode($mu_user->passwd)."/?obfsparam=".Tools::base64_url_encode($mu_user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name."- ".$mu_node->server." 端口单端口多用户") . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+							$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+							$android_add .= $ssqr_s_new." ";
+						}
+						else
+						{
+							$ssurl = $node->server. ":" . $mu_user->port . ":origin:".($node->custom_method==1?$mu_user->method:$node->method).":plain:".Tools::base64_url_encode($mu_user->passwd)."/?remarks=".Tools::base64_url_encode($node->name."- ".$mu_node->server." 端口单端口多用户") . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+							$ssqr_s_new = "ss://" . Tools::base64_url_encode($ssurl);
+							$android_add .= $ssqr_s_new." ";
+						}
+					}
+					
+				}
+			}
+		}
+		
 		
 		$ios_token = LinkController::GenerateIosCode("smart",0,$this->user->id,0,"smart");
 		
@@ -450,6 +649,14 @@ class UserController extends BaseController
 					->orWhere("node_group","=",0);
 			}
 		)->where('type', 1)->where("node_class","<=",$this->user->class)->orderBy('name')->get();
+		
+		$relay_nodes = Node::where(
+			function ($query) {
+				$query->Where("node_group","=",$this->user->node_group)
+					->orWhere("node_group","=",0);
+			}
+		)->where('type', 1)->where('sort', 10)->where("node_class","<=",$this->user->class)->orderBy('name')->get();
+		
 		$node_prefix=Array();
 		$node_method=Array();
 		$a=0;
@@ -459,6 +666,16 @@ class UserController extends BaseController
 		$node_heartbeat=Array();
 		$node_bandwidth=Array();
 		$node_muport=Array();
+		$node_relay=Array();
+		
+		$ports_count = Node::where(
+			function ($query) use ($user) {
+				$query->Where("node_group","=",$user->node_group)
+					->orWhere("node_group","=",0);
+			}
+		)->where('type', 1)->where('sort',9)->where("node_class","<=",$user->class)->orderBy('name')->count();
+		
+		$ports_count += 1;
 		
 		foreach ($nodes as $node) {
 			
@@ -470,6 +687,34 @@ class UserController extends BaseController
 					$mu_user->obfs_param=$this->user->getMuMd5();
 					array_push($node_muport,array('server'=>$node->server,'user'=>$mu_user));
 					continue;
+				}
+				
+				if($node->sort==10)
+				{
+					$rules = Relay::where(
+						function ($query) use ($node){
+							$query->Where("source_node_id","=",$node->id)
+								->orWhere("source_node_id","=",0);
+						}
+					)->where('user_id', $this->user->id)->orderBy('id','asc')->get();
+					
+					$port_conut = 0;
+					$exist_port = array();
+					
+					foreach($rules as $rule)
+					{
+						if(!isset($node_relay[$rule->id]))
+						{
+							$node_relay[$rule->id] = array('node_id' => $rule->dist_node_id, 'rule' => $rule);
+						}
+						
+						$exist_port[$rule->port] = 1;
+					}
+					
+					if(count($exist_port) >= $ports_count)
+					{
+						continue;
+					}
 				}
 				
 				
@@ -494,7 +739,7 @@ class UserController extends BaseController
 				}
 				
 				
-				if($node->sort==0||$node->sort==7||$node->sort==8)
+				if($node->sort==0||$node->sort==7||$node->sort==8||$node->sort==10)
 				{
 					$node_tempalive=$node->getOnlineUserCount();
 					$node_prealive[$node->id]=$node_tempalive;
@@ -560,7 +805,7 @@ class UserController extends BaseController
 		}
 		$node_prefix=(object)$node_prefix;
 		$node_order=(object)$node_order;
-        return $this->view()->assign('node_method', $node_method)->assign('node_muport', $node_muport)->assign('node_bandwidth',$node_bandwidth)->assign('node_heartbeat',$node_heartbeat)->assign('node_prefix', $node_prefix)->assign('node_prealive', $node_prealive)->assign('node_order', $node_order)->assign('user', $user)->assign('node_alive', $node_alive)->display('user/node.tpl');
+        return $this->view()->assign('relay_nodes', $relay_nodes)->assign('node_method', $node_method)->assign('node_relay', $node_relay)->assign('node_muport', $node_muport)->assign('node_bandwidth',$node_bandwidth)->assign('node_heartbeat',$node_heartbeat)->assign('node_prefix', $node_prefix)->assign('node_prealive', $node_prealive)->assign('node_order', $node_order)->assign('user', $user)->assign('node_alive', $node_alive)->display('user/node.tpl');
     }
 
 
@@ -569,6 +814,8 @@ class UserController extends BaseController
 		$user = Auth::getUser();
         $id = $args['id'];
         $mu = $request->getQueryParams()["ismu"];
+		$relay_rule_id = $request->getQueryParams()["relay_rule"];
+		$relay_node_id = $request->getQueryParams()["relay_node_id"];
         $node = Node::find($id);
 
         if ($node == null) {
@@ -581,11 +828,41 @@ class UserController extends BaseController
 			case 0: 
 				if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
 				{
+					if($relay_rule_id != 0)
+					{
+						$relay_rule = Relay::where('id', $relay_rule_id)->where('user_id', $this->user->id)->first();
+						if($relay_rule == NULL)
+						{
+							exit(0);
+						}
+						
+						$relay_server = $relay_rule->Source_Node();
+						
+						if($relay_server == NULL)
+						{
+							$relay_server = Node::where('id',$relay_node_id)->where(
+								function ($query) {
+									$query->Where("node_group","=",$this->user->node_group)
+										->orWhere("node_group","=",0);
+								}
+							)->where('type', 1)->where('sort', 10)->where("node_class","<=",$this->user->class)->first();
+							
+							if($relay_server == NULL)
+							{
+								exit(0);
+							}
+						}
+						
+						$node->server = $relay_server->server;
+						
+						
+					}
+					
 					$ary['server'] = $node->server;
 					$ary['local_address'] = '127.0.0.1';
 					$ary['local_port'] = 1080;
-					$ary['timeout'] = 300;	
-					$ary['workers'] = 1;				
+					$ary['timeout'] = 300;
+					$ary['workers'] = 1;
 					
 					$is_mu = 0;
 					
@@ -624,6 +901,11 @@ class UserController extends BaseController
 						}
 
 						$is_mu = 1;
+					}
+					
+					if($relay_rule_id != 0)
+					{
+						$node->name .= " - ".$relay_server->name;
 					}
 					
 					$json = json_encode($ary);
@@ -763,6 +1045,76 @@ class UserController extends BaseController
 				}
 
 
+			break; 
+			
+			
+			case 10: 
+				if($user->class>=$node->node_class&&($user->node_group==$node->node_group||$node->node_group==0)&&($node->node_bandwidth_limit==0||$node->node_bandwidth<$node->node_bandwidth_limit))
+				{
+					$ary['server'] = $node->server;
+					$ary['local_address'] = '127.0.0.1';
+					$ary['local_port'] = 1080;
+					$ary['timeout'] = 300;
+					$ary['workers'] = 1;
+					
+					$is_mu = 0;
+					
+					if($mu == 0)
+					{
+						$ary['server_port'] = $this->user->port;
+						$ary['password'] = $this->user->passwd;
+						$ary['method'] = $node->method;
+						if ($node->custom_method) {
+							$ary['method'] = $this->user->method;
+						}
+						
+						if ($node->custom_rss) {
+							$ary['obfs'] = str_replace("_compatible","",$this->user->obfs);
+							$ary['protocol'] = str_replace("_compatible","",$this->user->protocol);
+						}
+					}
+					else
+					{
+						$mu_user = User::where('port','=',$mu)->first();
+						$mu_user->obfs_param = $this->user->getMuMd5();
+						$user = $mu_user;
+						$node->name .= " - ".$mu." 端口单端口多用户";
+						$ary['server_port'] = $mu_user->port;
+						$ary['password'] = $mu_user->passwd;
+						$ary['method'] = $node->method;
+						
+						if ($node->custom_method) {
+							$ary['method'] = $mu_user->method;
+						}
+
+						if ($node->custom_rss) {
+							$ary['obfs'] = str_replace("_compatible","",$mu_user->obfs);
+							$ary['obfs_param'] = $mu_user->obfs_param;
+							$ary['protocol'] = str_replace("_compatible","",$mu_user->protocol);
+						}
+
+						$is_mu = 1;
+					}
+					
+					$json = json_encode($ary);
+					$json_show = json_encode($ary, JSON_PRETTY_PRINT);
+					
+					$ssurl = str_replace("_compatible","",$user->obfs).":".str_replace("_compatible","",$user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
+					$ssqr_s = "ss://" . base64_encode($ssurl);
+					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+					$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
+					$ssqr = "ss://" . base64_encode($ssurl);
+					
+					$token_1 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,0,$ary['method']);
+					$token_2 = LinkController::GenerateSurgeCode($ary['server'],$ary['server_port'],$this->user->id,1,$ary['method']);
+
+					$surge_base = Config::get('baseUrl') . "/downloads/ProxyBase.conf";
+					$surge_proxy = "#!PROXY-OVERRIDE:ProxyBase.conf\n";
+					$surge_proxy .= "[Proxy]\n";
+					$surge_proxy .= "Proxy = custom," . $ary['server'] . "," . $ary['server_port'] . "," . $ary['method'] . "," . $ary['password'] . "," . Config::get('baseUrl') . "/downloads/SSEncrypt.module";
+					return $this->view()->assign('ary', $ary)->assign('mu',$is_mu)->assign('node',$node)->assign('user',$user)->assign('json', $json)->assign('link1',Config::get('baseUrl')."/link/".$token_1)->assign('link2',Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('ssqr_s_new',$ssqr_s_new)->assign('ssqr_s', $ssqr_s)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
+				}
 			break; 
 
 

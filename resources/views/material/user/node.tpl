@@ -28,7 +28,7 @@
 									<h4>注意!</h4>
 									<p>请勿在任何地方公开节点地址！</p>
 									<p>流量比例为0.5即使用1000MB按照500MB流量记录记录结算.</p>
-									<a href="javascript:void(0);" onClick="urlChange('guide',0)">如果您不知道如何查看节点的详细信息和二维码，请点我。</a>
+									<a href="javascript:void(0);" onClick="urlChange('guide',0,0,0)">如果您不知道如何查看节点的详细信息和二维码，请点我。</a>
 								</div>
 							</div>
 						</div>
@@ -62,21 +62,34 @@
 																<br>
 																
 																{foreach $nodes as $node}
-																
-																
+																	
+																	
 																	{if $node->mu_only == 0}
+																	
+																	{$has_taken_up = false}
+																	
+																	{if $node->sort == 10}
+																		{foreach $node_relay as $match_node_relay}
+																			{if ($match_node_relay['rule']->source_node_id == $node->id || $match_node_relay['rule']->source_node_id == 0) && $user->port == $match_node_relay['rule']->port}
+																				{$has_taken_up = true}
+																			{/if}
+																		{/foreach}
+																	{/if}
+																	
+																	{if $has_taken_up != true}
+																	
 																	<div class="card">
 																		<div class="card-main">
 																			<div class="card-inner"> 
 																			<p class="card-heading" >
-																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0)">{$node->name}</a> 
+																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0,0,0)">{$node->name}</a> 
 																				<span class="label label-green">{$node->status}</span>
 																			</p>
 																			
 																			
 																			{if $node->sort > 2 && $node->sort != 5}
 																				<p>地址：<span class="label" > 
-																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0)">请点这里进入查看详细信息</a>
+																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0,0,0)">请点这里进入查看详细信息</a>
 																			{else}
 																				<p>地址：<span class="label label-brand-accent"> 
 																				{$node->server}
@@ -142,20 +155,33 @@
 																		</div>
 																	</div>
 																	{/if}
+																	{/if}
 																	
-																	{if $node->sort==0}
+																	{if $node->sort == 0 || $node->sort == 10}
 																		{$point_node=$node}
 																	{/if}
 																	
 																	
 																	
-																	{if $node->sort == 0 && $node->custom_rss == 1}
+																	{if ($node->sort == 0 || $node->sort == 10) && $node->custom_rss == 1}
 																		{foreach $node_muport as $single_muport}
+																			
+																			{$has_taken_up = false}
+																			{foreach $node_relay as $match_node_relay}
+																				{if ($match_node_relay['rule']->source_node_id == $node->id || $match_node_relay['rule']->source_node_id == 0) && $single_muport['user']['port'] == $match_node_relay['rule']->port}
+																					{$has_taken_up = true}
+																				{/if}
+																			{/foreach}
+																			
+																			{if $has_taken_up == true}
+																			{continue}
+																			{/if}
+																			
 																			<div class="card">
 																				<div class="card-main">
 																					<div class="card-inner"> 
 																					<p class="card-heading" >
-																						<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']})">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']} 端口</a> 
+																						<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']},0,0,0)">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']} 端口</a> 
 																						<span class="label label-green">{$node->status}</span>
 																					</p>
 																					
@@ -198,6 +224,283 @@
 																					
 																				</div>
 																			</div>
+																		{/foreach}
+																	{/if}
+																	
+																	{if $node->sort == 0 && $node->custom_rss == 1}
+																		{foreach $node_relay as $single_node_relay}
+																			{if $node->id == $single_node_relay['node_id']}
+																				{if $user->port == $single_node_relay['rule']->port}
+																					{$has_higher_priority = false}
+																					{foreach $node_relay as $priority_node_relay}
+																						{if $priority_node_relay['rule']->priority >= $single_node_relay['rule']->priority && ($single_node_relay['rule']->source_node_id == $priority_node_relay['rule']->source_node_id || $priority_node_relay['rule']->source_node_id == 0) && $single_node_relay['rule']->id < $priority_node_relay['rule']->id && $user->port == $priority_node_relay['rule']->port}
+																							{$has_higher_priority = true}
+																						{/if}
+																					{/foreach}
+																					
+																					{if $has_higher_priority == true}
+																						{continue}
+																					{/if}
+																					
+																					
+																					{if $single_node_relay['rule']->source_node_id == 0}
+																						{foreach $relay_nodes as $relay_node}
+																						<div class="card">
+																							<div class="card-main">
+																								<div class="card-inner"> 
+																								<p class="card-heading" >
+																									<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0,{$single_node_relay['rule']->id},{$relay_node->id})">{$prefix} - {$relay_node->name}</a> 
+																									<span class="label label-green">{$node->status}</span>
+																								</p>
+																								
+																								<p>地址：<span class="label label-brand-accent"> 
+																								{$relay_node->server}
+																								
+																								</span></p>
+																								
+																								<p>加密方式：<span class="label label-brand"> 
+																									{if $node->custom_method == 1}
+																										{$user->method}
+																									{else}
+																										{$node->method}
+																									{/if}
+																								</span></p>
+																								
+																								<p>协议：<span class="label label-brand-accent"> 
+																									{$user->protocol}
+																								</span></p>
+																								
+																								<p>协议参数：<span class="label label-red"> 
+																									{$user->protocol_param}
+																								</span></p>
+																								
+																								<p>混淆方式：<span class="label label-brand"> 
+																									{$user->obfs}
+																								</span></p>
+																								
+																								<p>混淆参数：<span class="label label-green"> 
+																									{$user->obfs_param}
+																								</span></p>
+																								
+																								<p>流量比例：<span class="label label-red"> 
+																									{$node->traffic_rate}
+																								</span></p>
+																								
+																								
+																								<p>在线人数：<span class="label label-orange"> 
+																									{$node->getOnlineUserCount()}
+																								</span></p>
+																							
+																								{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
+																									<p>节点限速：<span class="label label-green"> 
+																										{if $node->node_speedlimit>$user->node_speedlimit}
+																											{$node->node_speedlimit}Mbps
+																										{else}
+																											{$user->node_speedlimit}Mbps
+																										{/if}
+																									</span></p>
+																								{/if}
+																								
+																								<p>{$node->info}</p>
+																								
+																								
+																								
+																								
+																								 </div>
+																								
+																							</div>
+																						</div>
+																						{/foreach}
+																					{else}
+																						
+																						<div class="card">
+																							<div class="card-main">
+																								<div class="card-inner"> 
+																								<p class="card-heading" >
+																									<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0,{$single_node_relay['rule']->id},0)">{$prefix} - {$single_node_relay['rule']->Source_Node()->name}</a> 
+																									<span class="label label-green">{$node->status}</span>
+																								</p>
+																								
+																								<p>地址：<span class="label label-brand-accent"> 
+																								{$single_node_relay['rule']->Source_Node()->server}
+																								
+																								</span></p>
+																								
+																								<p>加密方式：<span class="label label-brand"> 
+																									{if $node->custom_method == 1}
+																										{$user->method}
+																									{else}
+																										{$node->method}
+																									{/if}
+																								</span></p>
+																								
+																								<p>协议：<span class="label label-brand-accent"> 
+																									{$user->protocol}
+																								</span></p>
+																								
+																								<p>协议参数：<span class="label label-red"> 
+																									{$user->protocol_param}
+																								</span></p>
+																								
+																								<p>混淆方式：<span class="label label-brand"> 
+																									{$user->obfs}
+																								</span></p>
+																								
+																								<p>混淆参数：<span class="label label-green"> 
+																									{$user->obfs_param}
+																								</span></p>
+																								
+																								<p>流量比例：<span class="label label-red"> 
+																									{$node->traffic_rate}
+																								</span></p>
+																								
+																								
+																								<p>在线人数：<span class="label label-orange"> 
+																									{$node->getOnlineUserCount()}
+																								</span></p>
+																							
+																								{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
+																									<p>节点限速：<span class="label label-green"> 
+																										{if $node->node_speedlimit>$user->node_speedlimit}
+																											{$node->node_speedlimit}Mbps
+																										{else}
+																											{$user->node_speedlimit}Mbps
+																										{/if}
+																									</span></p>
+																								{/if}
+																								
+																								<p>{$node->info}</p>
+																								
+																								
+																								
+																								
+																								</div>
+																								
+																							</div>
+																						</div>
+																					{/if}
+																				{else}
+																					{foreach $node_muport as $single_muport}
+																						{if $single_muport['user']['port'] == $single_node_relay['rule']->port}
+																							
+																							{$has_higher_priority = false}
+																							{foreach $node_relay as $priority_node_relay}
+																								{if $priority_node_relay['rule']->priority >= $single_node_relay['rule']->priority && ($single_node_relay['rule']->source_node_id == $priority_node_relay['rule']->source_node_id || $priority_node_relay['rule']->source_node_id == 0) && $single_node_relay['rule']->id < $priority_node_relay['rule']->id && $single_muport['user']['port'] == $priority_node_relay['rule']->port}
+																									{$has_higher_priority = true}
+																								{/if}
+																							{/foreach}
+																							
+																							{if $has_higher_priority == true}
+																								{continue}
+																							{/if}
+																							
+																							{if $single_node_relay['rule']->source_node_id == 0}
+																								{foreach $relay_nodes as $relay_node}
+																								
+																								
+																								<div class="card">
+																									<div class="card-main">
+																										<div class="card-inner"> 
+																										<p class="card-heading" >
+																											<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']},{$single_node_relay['rule']->id},{$relay_node->id})">{$prefix} - 单端口多用户 Shadowsocks  - {$single_muport['server']} 端口 - {$relay_node->name}</a> 
+																											<span class="label label-green">{$node->status}</span>
+																										</p>
+																										
+																										
+																										<p>地址：<span class="label label-brand-accent"> 
+																										{$relay_node->server}
+																										
+																										</span></p>
+																										
+																										<p>端口：<span class="label label-brand-red"> 
+																											{$single_muport['user']['port']}
+																										</span></p>
+																										
+																										<p>加密方式：<span class="label label-brand"> 
+																											{$single_muport['user']['method']}
+																										</span></p>
+																										
+																										<p>协议：<span class="label label-brand-accent"> 
+																											{$single_muport['user']['protocol']}
+																										</span></p>
+																										
+																										<p>协议参数：<span class="label label-red"> 
+																											{$single_muport['user']['protocol_param']}
+																										</span></p>
+																										
+																										<p>混淆方式：<span class="label label-brand"> 
+																											{$single_muport['user']['obfs']}
+																										</span></p>
+																										
+																										<p>混淆参数：<span class="label label-green"> 
+																											{$single_muport['user']['obfs_param']}
+																										</span></p>
+																										
+																										<p>{$node->info}</p>
+																										
+																										
+																										
+																										
+																										 </div>
+																										
+																									</div>
+																								</div>
+																								
+																								{/foreach}
+																							{else}
+																								
+																								<div class="card">
+																									<div class="card-main">
+																										<div class="card-inner"> 
+																										<p class="card-heading" >
+																											<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']},{$single_node_relay['rule']->id},0)">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']} 端口 - {$single_node_relay['rule']->Source_Node()->name}</a> 
+																											<span class="label label-green">{$node->status}</span>
+																										</p>
+																										
+																										
+																										<p>地址：<span class="label label-brand-accent"> 
+																										{$single_node_relay['rule']->Source_Node()->server}
+																										
+																										</span></p>
+																										
+																										<p>端口：<span class="label label-brand-red"> 
+																											{$single_muport['user']['port']}
+																										</span></p>
+																										
+																										<p>加密方式：<span class="label label-brand"> 
+																											{$single_muport['user']['method']}
+																										</span></p>
+																										
+																										<p>协议：<span class="label label-brand-accent"> 
+																											{$single_muport['user']['protocol']}
+																										</span></p>
+																										
+																										<p>协议参数：<span class="label label-red"> 
+																											{$single_muport['user']['protocol_param']}
+																										</span></p>
+																										
+																										<p>混淆方式：<span class="label label-brand"> 
+																											{$single_muport['user']['obfs']}
+																										</span></p>
+																										
+																										<p>混淆参数：<span class="label label-green"> 
+																											{$single_muport['user']['obfs_param']}
+																										</span></p>
+																										
+																										<p>{$node->info}</p>
+																										
+																										
+																										
+																										
+																										 </div>
+																										
+																									</div>
+																								</div>
+																							{/if}
+																						{/if}
+																					{/foreach}
+																				{/if}
+																			{/if}
 																		{/foreach}
 																	{/if}
 																
@@ -275,8 +578,8 @@
 <script>
 
 
-function urlChange(id,is_mu) {
-    var site = './node/'+id+'?ismu='+is_mu;
+function urlChange(id,is_mu,rule,relay_node_id) {
+    var site = './node/'+id+'?ismu='+is_mu+'&relay_rule='+rule+"&relay_node_id="+relay_node_id;
 	if(id == 'guide')
 	{
 		var doc = document.getElementById('infoifram').contentWindow.document;

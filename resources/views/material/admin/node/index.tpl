@@ -91,6 +91,10 @@
                                 <td>Shadowsocks - 单端口多用户</td>
 								{/if}
 								
+								{if $node->sort==10}
+                                <td>Shadowsocks - 中转</td>
+								{/if}
+								
 								{if $node->sort==999}
                                 <td>系统保留，请勿删除</td>
 								{/if}

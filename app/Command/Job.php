@@ -216,8 +216,16 @@ class Job
 			Job::backup();
 		}
 
+		updatedownload();
 
 
+
+	}
+
+	public function updatedownload()
+	{
+		system('cd '.BASE_PATH."/public/ssr-download/ && git pull", $ret);
+		echo $ret;
 	}
 
 	public static function CheckJob()
@@ -454,7 +462,7 @@ class Job
 			$nodes = Node::all();
 
 			foreach($nodes as $node){
-				if(time()-$node->node_heartbeat>300&&time()-$node->node_heartbeat<=360&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
+				if(time()-$node->node_heartbeat>300&&time()-$node->node_heartbeat<=360&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8||$node->sort==10))
 				{
 					foreach($adminUser as $user)
 					{
@@ -532,7 +540,7 @@ class Job
 
 
 			foreach($nodes as $node){
-				if(time()-$node->node_heartbeat<60&&file_exists(BASE_PATH."/storage/".$node->id.".offline")&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8))
+				if(time()-$node->node_heartbeat<60&&file_exists(BASE_PATH."/storage/".$node->id.".offline")&&$node->node_heartbeat!=0&&($node->sort==0||$node->sort==7||$node->sort==8||$node->sort==10))
 				{
 					foreach($adminUser as $user)
 					{

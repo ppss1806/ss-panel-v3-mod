@@ -106,6 +106,7 @@
 													<option value="7" {if $node->sort==7}selected{/if}>PAC PLUS(Socks 代理生成 PAC文件)</option>
 													<option value="8" {if $node->sort==8}selected{/if}>PAC PLUS PLUS(HTTPS 代理生成 PAC文件)</option>
 													<option value="9" {if $node->sort==9}selected{/if}>Shadowsocks 单端口多用户</option>
+													<option value="10" {if $node->sort==10}selected{/if}>Shadowsocks 中转</option>
 												</select>
 											</div>
 									</div>
