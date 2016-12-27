@@ -83,11 +83,11 @@
 																			<div class="card-inner"> 
 																			<p class="card-heading" >
 																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0,0,0)">{$node->name}</a> 
-																				<span class="label label-green">{$node->status}</span>
+																				<span class="label label-brand-accent">{$node->status}</span>
 																			</p>
 																			
 																			
-																			{if $node->sort > 2 && $node->sort != 5}
+																			{if $node->sort > 2 && $node->sort != 5 && $node->sort != 10}
 																				<p>地址：<span class="label" > 
 																				<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0,0,0)">请点这里进入查看详细信息</a>
 																			{else}
@@ -97,7 +97,7 @@
 																				
 																				</span></p>
 																			
-																			{if $node->sort == 0||$node->sort==7||$node->sort==8}
+																			{if $node->sort == 0||$node->sort==7||$node->sort==8||$node->sort==10}
 																				<p>加密方式：<span class="label label-brand"> 
 																					{if $node->custom_method == 1}
 																						{$user->method}
@@ -106,7 +106,7 @@
 																					{/if}
 																				</span></p>
 																				
-																				{if $node->sort==0&&$node->custom_rss==1&&$config['enable_rss']=='true'}
+																				{if ($node->sort==0||$node->sort==10)&&$node->custom_rss==1&&$config['enable_rss']=='true'}
 																					<p>协议：<span class="label label-brand-accent"> 
 																						{$user->protocol}
 																					</span></p>
@@ -131,7 +131,7 @@
 																				
 																				
 																				
-																				{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
+																				{if ($node->sort==0||$node->sort==7||$node->sort==8||$node->sort==10)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
 																					<p>节点限速：<span class="label label-green"> 
 																						{if $node->node_speedlimit>$user->node_speedlimit}
 																							{$node->node_speedlimit}Mbps
@@ -179,7 +179,7 @@
 																					<div class="card-inner"> 
 																					<p class="card-heading" >
 																						<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']->server},0,0,0)">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']->server} 端口</a> 
-																						<span class="label label-green">{$node->status}</span>
+																						<span class="label label-brand-accent">{$node->status}</span>
 																					</p>
 																					
 																					
@@ -251,7 +251,7 @@
 																								<div class="card-inner"> 
 																								<p class="card-heading" >
 																									<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0,{$single_node_relay['rule']->id},{$relay_node->id})">{$prefix} - {$relay_node->name}</a> 
-																									<span class="label label-green">{$node->status}</span>
+																									<span class="label label-brand-accent">{$node->status}</span>&nbsp;<span class="label {if $relay_node->node_heartbeat==0}label-orange{else}{if time()-$relay_node->node_heartbeat>90}label-red{else}label-green{/if}{/if}"><span class="icon">{if $relay_node->node_heartbeat==0}report{else}{if time()-$relay_node->node_heartbeat>90}warning{else}backup{/if}{/if}</span>&nbsp;{if $relay_node->node_heartbeat==0}无数据{else}{if time()-$relay_node->node_heartbeat>90}离线{else}在线{/if}{/if}</span>&nbsp;<span class="label label-brand"><span class="icon">person</span>&nbsp;在线{$relay_node->getOnlineUserCount()}人</span>
 																								</p>
 																								
 																								<p>地址：<span class="label label-brand-accent"> 
@@ -287,17 +287,13 @@
 																									{$node->traffic_rate + $relay_node->traffic_rate}
 																								</span></p>
 																								
-																								{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
+																								{if ($node->sort==0||$node->sort==7||$node->sort==8||$sort->sort==10)&&(max(min($relay_node->node_speedlimit, $node->node_speedlimit), $user->node_speedlimit) > 0)}
 																									<p>节点限速：<span class="label label-green"> 
-																										{if $node->node_speedlimit>$user->node_speedlimit}
-																											{$node->node_speedlimit}Mbps
-																										{else}
-																											{$user->node_speedlimit}Mbps
-																										{/if}
+																										{max(min($relay_node->node_speedlimit, $node->node_speedlimit), $user->node_speedlimit)}Mbps
 																									</span></p>
 																								{/if}
 																								
-																								<p>{$node->info}</p>
+																								<p>{$relay_node->info}</p>
 																								
 																								
 																								
@@ -314,7 +310,7 @@
 																								<div class="card-inner"> 
 																								<p class="card-heading" >
 																									<a href="javascript:void(0);" onClick="urlChange('{$node->id}',0,{$single_node_relay['rule']->id},0)">{$prefix} - {$single_node_relay['rule']->Source_Node()->name}</a> 
-																									<span class="label label-green">{$node->status}</span>
+																									<span class="label label-brand-accent">{$single_node_relay['rule']->Source_Node()->status}</span>&nbsp;<span class="label {if $single_node_relay['rule']->Source_Node()->node_heartbeat==0}label-orange{else}{if time()-$single_node_relay['rule']->Source_Node()->node_heartbeat>90}label-red{else}label-green{/if}{/if}"><span class="icon">{if $single_node_relay['rule']->Source_Node()->node_heartbeat==0}report{else}{if time()-$single_node_relay['rule']->Source_Node()->node_heartbeat>90}warning{else}backup{/if}{/if}</span>&nbsp;{if $single_node_relay['rule']->Source_Node()->node_heartbeat==0}无数据{else}{if time()-$single_node_relay['rule']->Source_Node()->node_heartbeat>90}离线{else}在线{/if}{/if}</span>&nbsp;<span class="label label-brand"><span class="icon">person</span>&nbsp;在线{$single_node_relay['rule']->Source_Node()->getOnlineUserCount()}人</span>
 																								</p>
 																								
 																								<p>地址：<span class="label label-brand-accent"> 
@@ -351,17 +347,13 @@
 																								</span></p>
 																								
 																								
-																								{if ($node->sort==0||$node->sort==7||$node->sort==8)&&($node->node_speedlimit!=0||$user->node_speedlimit!=0)}
+																								{if ($node->sort==0||$node->sort==7||$node->sort==8||$sort->sort==10)&&(max(min($single_node_relay['rule']->Source_Node()->node_speedlimit, $node->node_speedlimit), $user->node_speedlimit) > 0)}
 																									<p>节点限速：<span class="label label-green"> 
-																										{if $node->node_speedlimit>$user->node_speedlimit}
-																											{$node->node_speedlimit}Mbps
-																										{else}
-																											{$user->node_speedlimit}Mbps
-																										{/if}
+																										{max(min($single_node_relay['rule']->Source_Node()->node_speedlimit, $node->node_speedlimit), $user->node_speedlimit)}Mbps
 																									</span></p>
 																								{/if}
 																								
-																								<p>{$node->info}</p>
+																								<p>{$single_node_relay['rule']->Source_Node()->info}</p>
 																								
 																								
 																								
@@ -395,7 +387,7 @@
 																										<div class="card-inner"> 
 																										<p class="card-heading" >
 																											<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']->server},{$single_node_relay['rule']->id},{$relay_node->id})">{$prefix} - 单端口多用户 Shadowsocks  - {$single_muport['server']->server} 端口 - {$relay_node->name}</a> 
-																											<span class="label label-green">{$node->status}</span>
+																											<span class="label label-brand-accent">{$node->status}</span>&nbsp;<span class="label {if $relay_node->node_heartbeat==0}label-orange{else}{if time()-$relay_node->node_heartbeat>90}label-red{else}label-green{/if}{/if}"><span class="icon">{if $relay_node->node_heartbeat==0}report{else}{if time()-$relay_node->node_heartbeat>90}warning{else}backup{/if}{/if}</span>&nbsp;{if $relay_node->node_heartbeat==0}无数据{else}{if time()-$relay_node->node_heartbeat>90}离线{else}在线{/if}{/if}</span>&nbsp;<span class="label label-brand"><span class="icon">person</span>&nbsp;在线{$relay_node->getOnlineUserCount()}人</span>
 																										</p>
 																										
 																										
@@ -432,7 +424,7 @@
 																											{$single_muport['server']->traffic_rate + $relay_node->traffic_rate}
 																										</span></p>
 																										
-																										<p>{$node->info}</p>
+																										<p>{$relay_node->info}</p>
 																										
 																										
 																										
@@ -450,7 +442,7 @@
 																										<div class="card-inner"> 
 																										<p class="card-heading" >
 																											<a href="javascript:void(0);" onClick="urlChange('{$node->id}',{$single_muport['server']->server},{$single_node_relay['rule']->id},0)">{$prefix} - 单端口多用户 Shadowsocks - {$single_muport['server']->server} 端口 - {$single_node_relay['rule']->Source_Node()->name}</a> 
-																											<span class="label label-green">{$node->status}</span>
+																											<span class="label label-brand-accent">{$node->status}</span>&nbsp;<span class="label {if $single_node_relay['rule']->Source_Node()->node_heartbeat==0}label-orange{else}{if time()-$single_node_relay['rule']->Source_Node()->node_heartbeat>90}label-red{else}label-green{/if}{/if}"><span class="icon">{if $single_node_relay['rule']->Source_Node()->node_heartbeat==0}report{else}{if time()-$single_node_relay['rule']->Source_Node()->node_heartbeat>90}warning{else}backup{/if}{/if}</span>&nbsp;{if $single_node_relay['rule']->Source_Node()->node_heartbeat==0}无数据{else}{if time()-$single_node_relay['rule']->Source_Node()->node_heartbeat>90}离线{else}在线{/if}{/if}</span>&nbsp;<span class="label label-brand"><span class="icon">person</span>&nbsp;在线{$single_node_relay['rule']->Source_Node()->getOnlineUserCount()}人</span>
 																										</p>
 																										
 																										
@@ -487,7 +479,7 @@
 																										{$single_muport['server']->traffic_rate + $single_node_relay['rule']->Source_Node()->traffic_rate}
 																										</span></p>
 																										
-																										<p>{$node->info}</p>
+																										<p>{$single_node_relay['rule']->Source_Node()->info}</p>
 																										
 																										
 																										

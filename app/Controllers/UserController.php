@@ -423,7 +423,7 @@ class UserController extends BaseController
 		if (isset($request->getQueryParams()["page"])) {
 			$pageNum = $request->getQueryParams()["page"];
 		}
-		$codes = Code::where(
+		$codes = Code::where('isused', 1)->where(
 			function ($query) {
 				$query->where("type","=",-1)
 					->orWhere("type","=",-2);

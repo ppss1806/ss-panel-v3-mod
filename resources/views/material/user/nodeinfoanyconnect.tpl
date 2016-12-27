@@ -50,11 +50,7 @@
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">客户端下载</p>
-										<p><a href="/downloads/client/anyconnect.msi"><i class="icon icon-lg">desktop_windows</i>&nbsp;Windows</a></p>
-										<p><a href="/downloads/client/anyconnect.dmg"><i class="icon icon-lg">laptop_mac</i>&nbsp;Mac OS X</a></p>
-										<p><a href="https://www.microsoft.com/zh-hans-cn/store/apps/anyconnect/9wzdncrdj8lh"><i class="icon icon-lg">smartphone</i>&nbsp;Windows Phone</a></p>
-										<p><a href="/downloads/client/anyconnect.apk"><i class="icon icon-lg">android</i>&nbsp;Android</a></p>
-                                        <p><a href="https://itunes.apple.com/cn/app/cisco-anyconnect/id392790924"><i class="icon icon-lg">phone_iphone</i>&nbsp;iOS</a></p>
+										<p>由于版权问题，此处不提供下载。</p>
 									</div>
 									
 								</div>
