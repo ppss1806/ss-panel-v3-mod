@@ -240,6 +240,8 @@ class LinkController extends BaseController
 					->orWhere("node_group","=",0);
 			}
 		)->where('type', 1)->where('sort', 10)->where("node_class","<=",$user->class)->orderBy('name')->get();
+
+		$relay_rules = Relay::where('user_id', $user->id)->orderBy('id', 'asc')->get();
 		
 		
 		foreach($nodes as $node)
@@ -262,34 +264,22 @@ class LinkController extends BaseController
 											"enable"=>true));
 											
 				
-				$rules = Relay::where("dist_node_id","=",$node->id)->where('port', $user->port)->where('user_id', $user->id)->orderBy('id','asc')->get();
-				
-				foreach($rules as $rule)
+				foreach($relay_rules as $relay_rule)
 				{
-					$has_higher_priority = False;
-					$priority_rule = Relay::where(
-						function ($query) use ($rule){
-							$query->Where("source_node_id","=",$rule->source_node_id)
-								->orWhere("source_node_id","=",0);
-						}
-					)->where('port', $user->port)->where('user_id', $user->id)->orderBy('priority','desc')->first();
-					
-					if($priority_rule->id != $rule->id)
-					{
-						$has_higher_priority = True;
-					}
-					
-					if($has_higher_priority == True)
+					if(!($relay_rule->dist_node_id == $node->id && $relay_rule->port == $user->port))
 					{
 						continue;
 					}
 					
-					$relay_server = $rule->Source_Node();
-					
-					if($rule->source_node_id == 0)
+					if($relay_rule->source_node_id == 0)
 					{
 						foreach($relay_nodes as $relay_node)
 						{
+							if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $relay_node->id))
+							{
+								continue;
+							}
+							
 							array_push($temparray,array("remarks"=>$node->name." - ".$relay_node->name,
 														"server"=>$relay_node->server,
 														"server_port"=>$user->port,
@@ -308,15 +298,22 @@ class LinkController extends BaseController
 					}
 					else
 					{
-						if($relay_server != NULL)
+						$relay_node = $relay_rule->Source_Node();
+						
+						if($relay_node != NULL)
 						{
-							array_push($temparray,array("remarks"=>$node->name." - ".$relay_server->name,
-														"server"=>$relay_server->server,
+							if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $relay_node->id))
+							{
+								continue;
+							}
+							
+							array_push($temparray,array("remarks"=>$node->name." - ".$relay_node->name,
+														"server"=>$relay_node->server,
 														"server_port"=>$user->port,
 														"method"=>($node->custom_method==1?$user->method:$node->method),
 														"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
 														"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
-														"remarks_base64"=>base64_encode($node->name." - ".$relay_server->name),
+														"remarks_base64"=>base64_encode($node->name." - ".$relay_node->name),
 														"password"=>$user->passwd,
 														"tcp_over_udp"=>false,
 														"udp_over_tcp"=>false,
@@ -351,34 +348,22 @@ class LinkController extends BaseController
 												"obfs_udp"=>false,
 												"enable"=>true));
 												
-					$rules = Relay::where("dist_node_id","=",$node->id)->where('port', $mu_user->port)->where('user_id', $user->id)->orderBy('id','asc')->get();
-					
-					foreach($rules as $rule)
+					foreach($relay_rules as $relay_rule)
 					{
-						$has_higher_priority = False;
-						$priority_rule = Relay::where(
-							function ($query) use ($rule){
-								$query->Where("source_node_id","=",$rule->source_node_id)
-									->orWhere("source_node_id","=",0);
-							}
-						)->where('port', $user->port)->where('user_id', $user->id)->orderBy('priority','desc')->first();
-						
-						if($priority_rule->id != $rule->id)
-						{
-							$has_higher_priority = True;
-						}
-						
-						if($has_higher_priority == True)
+						if(!($relay_rule->dist_node_id == $node->id && $relay_rule->port == $mu_user->port))
 						{
 							continue;
 						}
-						
-						$relay_server = $rule->Source_Node();
-						
-						if($rule->source_node_id == 0)
+							
+						if($relay_rule->source_node_id == 0)
 						{
 							foreach($relay_nodes as $relay_node)
 							{
+								if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $relay_node->id))
+								{
+									continue;
+								}
+								
 								array_push($temparray,array("remarks"=>$node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name,
 															"server"=>$relay_node->server,
 															"server_port"=>$mu_user->port,
@@ -397,16 +382,23 @@ class LinkController extends BaseController
 						}
 						else
 						{
-							if($relay_server != NULL)
+							$relay_node = $relay_rule->Source_Node();
+							
+							if($relay_node != NULL)
 							{
-								array_push($temparray,array("remarks"=>$node->name." - ".$mu_node->server." 端口单端口多用户 - ".$relay_server->name,
-															"server"=>$relay_server->server,
+								if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $relay_node->id))
+								{
+									continue;
+								}
+								
+								array_push($temparray,array("remarks"=>$node->name." - ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name,
+															"server"=>$relay_node->server,
 															"server_port"=>$mu_user->port,
 															"method"=>$mu_user->method,
 															"group"=>Config::get('appName'),
 															"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
 															"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
-															"remarks_base64"=>base64_encode($node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_server->name),
+															"remarks_base64"=>base64_encode($node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name),
 															"password"=>$mu_user->passwd,
 															"tcp_over_udp"=>false,
 															"udp_over_tcp"=>false,

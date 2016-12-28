@@ -232,20 +232,11 @@
 																		{foreach $node_relay as $single_node_relay}
 																			{if $node->id == $single_node_relay['node_id']}
 																				{if $user->port == $single_node_relay['rule']->port}
-																					{$has_higher_priority = false}
-																					{foreach $node_relay as $priority_node_relay}
-																						{if $priority_node_relay['rule']->priority >= $single_node_relay['rule']->priority && ($single_node_relay['rule']->source_node_id == $priority_node_relay['rule']->source_node_id || $priority_node_relay['rule']->source_node_id == 0) && $single_node_relay['rule']->id < $priority_node_relay['rule']->id && $user->port == $priority_node_relay['rule']->port}
-																							{$has_higher_priority = true}
-																						{/if}
-																					{/foreach}
-																					
-																					{if $has_higher_priority == true}
-																						{continue}
-																					{/if}
 																					
 																					
 																					{if $single_node_relay['rule']->source_node_id == 0}
 																						{foreach $relay_nodes as $relay_node}
+																						{if !$tools->is_relay_rule_avaliable($single_node_relay['rule'], $relay_rules, $relay_node->id)}{continue}{/if}
 																						<div class="card">
 																							<div class="card-main">
 																								<div class="card-inner"> 
@@ -304,6 +295,7 @@
 																						</div>
 																						{/foreach}
 																					{else}
+																						{if !$tools->is_relay_rule_avaliable($single_node_relay['rule'], $relay_rules, $single_node_relay['rule']->Source_Node()->id)}{continue}{/if}
 																						
 																						<div class="card">
 																							<div class="card-main">
@@ -367,19 +359,10 @@
 																					{foreach $node_muport as $single_muport}
 																						{if $single_muport['user']['port'] == $single_node_relay['rule']->port}
 																							
-																							{$has_higher_priority = false}
-																							{foreach $node_relay as $priority_node_relay}
-																								{if $priority_node_relay['rule']->priority >= $single_node_relay['rule']->priority && ($single_node_relay['rule']->source_node_id == $priority_node_relay['rule']->source_node_id || $priority_node_relay['rule']->source_node_id == 0) && $single_node_relay['rule']->id < $priority_node_relay['rule']->id && $single_muport['user']['port'] == $priority_node_relay['rule']->port}
-																									{$has_higher_priority = true}
-																								{/if}
-																							{/foreach}
-																							
-																							{if $has_higher_priority == true}
-																								{continue}
-																							{/if}
 																							
 																							{if $single_node_relay['rule']->source_node_id == 0}
 																								{foreach $relay_nodes as $relay_node}
+																								{if !$tools->is_relay_rule_avaliable($single_node_relay['rule'], $relay_rules, $relay_node->id)}{continue}{/if}
 																								
 																								
 																								<div class="card">
@@ -436,6 +419,7 @@
 																								
 																								{/foreach}
 																							{else}
+																								{if !$tools->is_relay_rule_avaliable($single_node_relay['rule'], $relay_rules, $single_node_relay['rule']->Source_Node()->id)}{continue}{/if}
 																								
 																								<div class="card">
 																									<div class="card-main">

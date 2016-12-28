@@ -194,7 +194,7 @@ class User extends Model
     public function getGAurl()
     {
         $ga = new GA();
-        $url = $ga->getUrl(Config::get('appName')."-".$this->attributes['user_name']."-两步验证码",$this->attributes['ga_token']);
+        $url = $ga->getUrl(urlencode(Config::get('appName')."-".$this->attributes['user_name']."-两步验证码"),$this->attributes['ga_token']);
         return $url;
     }
 
