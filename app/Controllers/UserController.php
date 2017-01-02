@@ -399,14 +399,14 @@ class UserController extends BaseController
 		if (isset($request->getQueryParams()["page"])) {
 			$pageNum = $request->getQueryParams()["page"];
 		}
-		$codes = Code::where('isused', 1)->where(
+		$codes = Code::where(
 			function ($query) {
 				$query->where("type","=",-1)
 					->orWhere("type","=",-2);
 			}
 		)->where("isused",1)->orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
 		$codes->setPath('/user/donate');
-		return $this->view()->assign('codes',$codes)->assign('total_in',Code::where('type',-1)->sum('number'))->assign('total_out',Code::where('type',-2)->sum('number'))->display('user/donate.tpl');
+		return $this->view()->assign('codes',$codes)->assign('total_in',Code::where('type',-1)->where("isused",1)->sum('number'))->assign('total_out',Code::where('type',-2)->where("isused",1)->sum('number'))->display('user/donate.tpl');
 		
 	}
 	
