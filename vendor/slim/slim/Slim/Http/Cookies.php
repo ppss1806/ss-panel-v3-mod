@@ -1,6 +1,6 @@
 <?php
 /**
- * Slim Framework (http://slimframework.com)
+ * Slim Framework (https://slimframework.com)
  *
  * @link      https://github.com/slimphp/Slim
  * @copyright Copyright (c) 2011-2016 Josh Lockhart
@@ -141,7 +141,7 @@ class Cookies implements CookiesInterface
         if (isset($properties['secure']) && $properties['secure']) {
             $result .= '; secure';
         }
-        
+
         if (isset($properties['hostonly']) && $properties['hostonly']) {
             $result .= '; HostOnly';
         }
@@ -174,7 +174,7 @@ class Cookies implements CookiesInterface
         }
 
         $header = rtrim($header, "\r\n");
-        $pieces = preg_split('@\s*[;,]\s*@', $header);
+        $pieces = preg_split('@[;]\s*@', $header);
         $cookies = [];
 
         foreach ($pieces as $cookie) {

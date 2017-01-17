@@ -1,6 +1,6 @@
 <?php
 /**
- * Slim Framework (http://slimframework.com)
+ * Slim Framework (https://slimframework.com)
  *
  * @link      https://github.com/slimphp/Slim
  * @copyright Copyright (c) 2011-2016 Josh Lockhart
@@ -47,7 +47,7 @@ class Error extends AbstractError
             case 'text/html':
                 $output = $this->renderHtmlErrorMessage($exception);
                 break;
-            
+
             default:
                 throw new UnexpectedValueException('Cannot render unknown content type ' . $contentType);
         }

@@ -1,14 +1,12 @@
 {
   "require": {
     "slim/slim": "*",
-    "illuminate/database": "*",
     "slim/twig-view": "*",
     "slim/csrf": "*",
     "smarty/smarty": "~3.1",
     "mailgun/mailgun-php": "~1.7.2",
     "predis/predis": "~1.0",
     "phpmailer/phpmailer": "~5.2",
-    "illuminate/pagination": "~5.1",
     "vlucas/phpdotenv": "~2.1",
     "zeuxisoo/slim-whoops": "0.5.*",
     "firebase/php-jwt": "~3.0",
@@ -18,7 +16,9 @@
     "guzzlehttp/guzzle": " ~5.0",
     "voku/anti-xss": "^1.2",
     "paymentwall/paymentwall-php": "^2.1",
-    "telegram-bot/api": "^2.2"
+    "telegram-bot/api": "^2.2",
+    "illuminate/pagination": "5.2.*",
+    "illuminate/database": "5.2.*"
   },
   "autoload": {
     "classmap": [

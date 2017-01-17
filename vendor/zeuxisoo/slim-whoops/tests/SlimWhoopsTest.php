@@ -8,15 +8,8 @@ use \Slim\Http\Request;
 use \Slim\Http\Response;
 use Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware;
 
-class Stackable {
-    use \Slim\MiddlewareAwareTrait;
+class SlimWhoopsTest extends PHPUnit_Framework_TestCase {
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response) {
-        return $res->write('Center');
-    }
-}
-
-class MessageTest extends PHPUnit_Framework_TestCase {
     public function setUp() {
         ob_start();
     }
@@ -111,4 +104,5 @@ class MessageTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(1, count($handlers));
         $this->assertEquals('subl://open?url=file://test_path&line=169', $handlers[0]->getEditorHref('test_path', 169));
     }
+
 }

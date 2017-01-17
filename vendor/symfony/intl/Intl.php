@@ -234,7 +234,7 @@ final class Intl
      */
     public static function getIcuStubVersion()
     {
-        return '55.1';
+        return '57.1';
     }
 
     /**
@@ -244,7 +244,7 @@ final class Intl
      */
     public static function getDataDirectory()
     {
-        return realpath(__DIR__.'/Resources/data');
+        return __DIR__.'/Resources/data';
     }
 
     /**

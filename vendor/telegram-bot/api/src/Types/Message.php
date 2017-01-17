@@ -12,7 +12,7 @@ class Message extends BaseType implements TypeInterface
      *
      * @var array
      */
-    static protected $requiredParams = ['message_id', 'from', 'date', 'chat'];
+    static protected $requiredParams = ['message_id', 'date', 'chat'];
 
     /**
      * {@inheritdoc}
@@ -28,6 +28,7 @@ class Message extends BaseType implements TypeInterface
         'forward_date' => true,
         'reply_to_message' => Message::class,
         'text' => true,
+        'entities' => ArrayOfMessageEntity::class,
         'audio' => Audio::class,
         'document' => Document::class,
         'photo' => ArrayOfPhotoSize::class,
@@ -37,8 +38,9 @@ class Message extends BaseType implements TypeInterface
         'caption' => true,
         'contact' => Contact::class,
         'location' => Location::class,
-        'new_chat_participant' => User::class,
-        'left_chat_participant' => User::class,
+        'venue' => Venue::class,
+        'new_chat_member' => User::class,
+        'left_chat_member' => User::class,
         'new_chat_title' => true,
         'new_chat_photo' => ArrayOfPhotoSize::class,
         'delete_chat_photo' => true,
@@ -47,6 +49,7 @@ class Message extends BaseType implements TypeInterface
         'channel_chat_created' => true,
         'migrate_to_chat_id' => true,
         'migrate_from_chat_id' => true,
+        'pinned_message' => Message::class,
     ];
 
     /**
@@ -57,7 +60,7 @@ class Message extends BaseType implements TypeInterface
     protected $messageId;
 
     /**
-     * Sender
+     * Optional. Sender name. Can be empty for messages sent to channels
      *
      * @var \TelegramBot\Api\Types\User
      */
@@ -105,6 +108,14 @@ class Message extends BaseType implements TypeInterface
      * @var string
      */
     protected $text;
+
+    /**
+     * Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
+     * array of \TelegramBot\Api\Types\MessageEntity
+     *
+     * @var array
+     */
+    protected $entities;
 
     /**
      * Optional. Message is an audio file, information about the file
@@ -164,18 +175,25 @@ class Message extends BaseType implements TypeInterface
     protected $location;
 
     /**
+     * Optional. Message is a venue, information about the venue
+     *
+     * @var \TelegramBot\Api\Types\Venue
+     */
+    protected $venue;
+
+    /**
      * Optional. A new member was added to the group, information about them (this member may be bot itself)
      *
      * @var \TelegramBot\Api\Types\User
      */
-    protected $newChatParticipant;
+    protected $newChatMember;
 
     /**
      * Optional. A member was removed from the group, information about them (this member may be bot itself)
      *
      * @var \TelegramBot\Api\Types\User
      */
-    protected $leftChatParticipant;
+    protected $leftChatMember;
 
     /**
      * Optional. A group title was changed to this value
@@ -244,6 +262,14 @@ class Message extends BaseType implements TypeInterface
     protected $migrateFromChatId;
 
     /**
+     * Optional. Specified message was pinned.Note that the Message object in this field
+     * will not contain further reply_to_message fields even if it is itself a reply.
+     *
+     * @var Message
+     */
+    protected $pinnedMessage;
+
+    /**
      * @return string
      */
     public function getCaption()
@@ -276,7 +302,7 @@ class Message extends BaseType implements TypeInterface
     }
 
     /**
-     * @return TypeInterface
+     * @return Chat
      */
     public function getChat()
     {
@@ -418,17 +444,17 @@ class Message extends BaseType implements TypeInterface
     /**
      * @return User
      */
-    public function getLeftChatParticipant()
+    public function getLeftChatMember()
     {
-        return $this->leftChatParticipant;
+        return $this->leftChatMember;
     }
 
     /**
-     * @param User $leftChatParticipant
+     * @param User $leftChatMember
      */
-    public function setLeftChatParticipant($leftChatParticipant)
+    public function setLeftChatMember($leftChatMember)
     {
-        $this->leftChatParticipant = $leftChatParticipant;
+        $this->leftChatMember = $leftChatMember;
     }
 
     /**
@@ -448,6 +474,22 @@ class Message extends BaseType implements TypeInterface
     }
 
     /**
+     * @return Venue
+     */
+    public function getVenue()
+    {
+        return $this->venue;
+    }
+
+    /**
+     * @param Venue $venue
+     */
+    public function setVenue($venue)
+    {
+        $this->venue = $venue;
+    }
+
+    /**
      * @return int
      */
     public function getMessageId()
@@ -462,7 +504,7 @@ class Message extends BaseType implements TypeInterface
      */
     public function setMessageId($messageId)
     {
-        if (is_integer($messageId)) {
+        if (is_integer($messageId) || is_float($messageId)) {
             $this->messageId = $messageId;
         } else {
             throw new InvalidArgumentException();
@@ -472,17 +514,17 @@ class Message extends BaseType implements TypeInterface
     /**
      * @return User
      */
-    public function getNewChatParticipant()
+    public function getNewChatMember()
     {
-        return $this->newChatParticipant;
+        return $this->newChatMember;
     }
 
     /**
-     * @param User $newChatParticipant
+     * @param User $newChatMember
      */
-    public function setNewChatParticipant($newChatParticipant)
+    public function setNewChatMember($newChatMember)
     {
-        $this->newChatParticipant = $newChatParticipant;
+        $this->newChatMember = $newChatMember;
     }
 
     /**
@@ -582,6 +624,22 @@ class Message extends BaseType implements TypeInterface
     }
 
     /**
+     * @return array
+     */
+    public function getEntities()
+    {
+        return $this->entities;
+    }
+
+    /**
+     * @param array $entities
+     */
+    public function setEntities($entities)
+    {
+        $this->entities = $entities;
+    }
+
+    /**
      * @return User
      */
     public function getFrom()
@@ -630,11 +688,27 @@ class Message extends BaseType implements TypeInterface
     }
 
     /**
+     * @param boolean $supergroupChatCreated
+     */
+    public function setSupergroupChatCreated($supergroupChatCreated)
+    {
+        $this->supergroupChatCreated = $supergroupChatCreated;
+    }
+
+    /**
      * @return boolean
      */
     public function isSupergroupChatCreated()
     {
         return $this->supergroupChatCreated;
+    }
+
+    /**
+     * @param boolean $channelChatCreated
+     */
+    public function setChannelChatCreated($channelChatCreated)
+    {
+        $this->channelChatCreated = $channelChatCreated;
     }
 
     /**
@@ -646,6 +720,14 @@ class Message extends BaseType implements TypeInterface
     }
 
     /**
+     * @param int $migrateToChatId
+     */
+    public function setMigrateToChatId($migrateToChatId)
+    {
+        $this->migrateToChatId = $migrateToChatId;
+    }
+
+    /**
      * @return int
      */
     public function getMigrateToChatId()
@@ -654,10 +736,34 @@ class Message extends BaseType implements TypeInterface
     }
 
     /**
+     * @param int $migrateFromChatId
+     */
+    public function setMigrateFromChatId($migrateFromChatId)
+    {
+        $this->migrateFromChatId = $migrateFromChatId;
+    }
+
+    /**
      * @return int
      */
     public function getMigrateFromChatId()
     {
         return $this->migrateFromChatId;
+    }
+
+    /**
+     * @return Message
+     */
+    public function getPinnedMessage()
+    {
+        return $this->pinnedMessage;
+    }
+
+    /**
+     * @param Message $pinnedMessage
+     */
+    public function setPinnedMessage($pinnedMessage)
+    {
+        $this->pinnedMessage = $pinnedMessage;
     }
 }

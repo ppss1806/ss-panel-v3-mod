@@ -2,10 +2,15 @@
 namespace Aws\Rds;
 
 use Aws\AwsClient;
-
+use Aws\Api\Service;
+use Aws\Api\DocModel;
+use Aws\Api\ApiProvider;
+use Aws\PresignUrlMiddleware;
 /**
  * This client is used to interact with the **Amazon Relational Database Service (Amazon RDS)**.
  *
+ * @method \Aws\Result addRoleToDBCluster(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise addRoleToDBClusterAsync(array $args = [])
  * @method \Aws\Result addSourceIdentifierToSubscription(array $args = [])
  * @method \GuzzleHttp\Promise\Promise addSourceIdentifierToSubscriptionAsync(array $args = [])
  * @method \Aws\Result addTagsToResource(array $args = [])
@@ -120,6 +125,8 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise describeReservedDBInstancesAsync(array $args = [])
  * @method \Aws\Result describeReservedDBInstancesOfferings(array $args = [])
  * @method \GuzzleHttp\Promise\Promise describeReservedDBInstancesOfferingsAsync(array $args = [])
+ * @method \Aws\Result describeSourceRegions(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeSourceRegionsAsync(array $args = [])
  * @method \Aws\Result downloadDBLogFilePortion(array $args = [])
  * @method \GuzzleHttp\Promise\Promise downloadDBLogFilePortionAsync(array $args = [])
  * @method \Aws\Result failoverDBCluster(array $args = [])
@@ -152,6 +159,8 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise purchaseReservedDBInstancesOfferingAsync(array $args = [])
  * @method \Aws\Result rebootDBInstance(array $args = [])
  * @method \GuzzleHttp\Promise\Promise rebootDBInstanceAsync(array $args = [])
+ * @method \Aws\Result removeRoleFromDBCluster(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise removeRoleFromDBClusterAsync(array $args = [])
  * @method \Aws\Result removeSourceIdentifierFromSubscription(array $args = [])
  * @method \GuzzleHttp\Promise\Promise removeSourceIdentifierFromSubscriptionAsync(array $args = [])
  * @method \Aws\Result removeTagsFromResource(array $args = [])
@@ -173,4 +182,54 @@ use Aws\AwsClient;
  * @method \Aws\Result revokeDBSecurityGroupIngress(array $args = [])
  * @method \GuzzleHttp\Promise\Promise revokeDBSecurityGroupIngressAsync(array $args = [])
  */
-class RdsClient extends AwsClient {}
+class RdsClient extends AwsClient
+{
+    public function __construct(array $args)
+    {
+        $args['with_resolved'] = function (array $args) {
+            $this->getHandlerList()->appendInit(
+                PresignUrlMiddleware::wrap(
+                    $this,
+                    $args['endpoint_provider'],
+                    [
+                        'operations' => [
+                            'CopyDBSnapshot',
+                        ],
+                        'service' => 'rds',
+                        'presign_param' => 'PreSignedUrl',
+                    ]
+                ),
+                'rds.presigner'
+            );
+        };
+
+        parent::__construct($args);
+    }
+
+    /**
+     * @internal
+     * @codeCoverageIgnore
+     */
+    public static function applyDocFilters(array $api, array $docs)
+    {
+        // Add the SourceRegion parameter
+        $docs['shapes']['SourceRegion']['base'] = 'A required parameter that indicates '
+            . 'the region that the DB snapshot will be copied from.';
+        $api['shapes']['SourceRegion'] = ['type' => 'string'];
+        $api['shapes']['CopyDBSnapshotMessage']['members']['SourceRegion'] = ['shape' => 'SourceRegion'];
+
+        // Several parameters in presign APIs are optional.
+        $docs['shapes']['String']['refs']['CopyDBSnapshotMessage$PreSignedUrl']
+            = '<div class="alert alert-info">The SDK will compute this value '
+            . 'for you on your behalf.</div>';
+        $docs['shapes']['String']['refs']['CopyDBSnapshotMessage$DestinationRegion']
+            = '<div class="alert alert-info">The SDK will populate this '
+            . 'parameter on your behalf using the configured region value of '
+            . 'the client.</div>';
+
+        return [
+            new Service($api, ApiProvider::defaultProvider()),
+            new DocModel($docs)
+        ];
+    }
+}

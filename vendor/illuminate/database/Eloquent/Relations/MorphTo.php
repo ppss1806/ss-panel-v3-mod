@@ -183,11 +183,9 @@ class MorphTo extends BelongsTo
 
         $key = $instance->getTable().'.'.$instance->getKeyName();
 
-        $eagerLoads = $this->getQuery()->nestedRelations($this->relation);
-
         $query = $this->replayMacros($instance->newQuery())
             ->mergeModelDefinedRelationConstraints($this->getQuery())
-            ->setEagerLoads($eagerLoads);
+            ->with($this->getQuery()->getEagerLoads());
 
         return $query->whereIn($key, $this->gatherKeysByType($type)->all())->get();
     }

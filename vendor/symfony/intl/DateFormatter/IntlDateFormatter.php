@@ -136,7 +136,7 @@ class IntlDateFormatter
      * @param int    $timetype Type of time formatting, one of the format type constants
      * @param mixed  $timezone Timezone identifier
      * @param int    $calendar Calendar to use for formatting or parsing. The only currently
-     *                         supported value is IntlDateFormatter::GREGORIAN.
+     *                         supported value is IntlDateFormatter::GREGORIAN (or null using the default calendar, i.e. "GREGORIAN")
      * @param string $pattern  Optional pattern to use when formatting
      *
      * @see http://www.php.net/manual/en/intldateformatter.create.php
@@ -151,7 +151,7 @@ class IntlDateFormatter
             throw new MethodArgumentValueNotImplementedException(__METHOD__, 'locale', $locale, 'Only the locale "en" is supported');
         }
 
-        if (self::GREGORIAN !== $calendar) {
+        if (self::GREGORIAN !== $calendar && null !== $calendar) {
             throw new MethodArgumentValueNotImplementedException(__METHOD__, 'calendar', $calendar, 'Only the GREGORIAN calendar is supported');
         }
 
@@ -173,7 +173,7 @@ class IntlDateFormatter
      *                         One of the calendar constants.
      * @param string $pattern  Optional pattern to use when formatting
      *
-     * @return IntlDateFormatter
+     * @return self
      *
      * @see http://www.php.net/manual/en/intldateformatter.create.php
      * @see http://userguide.icu-project.org/formatparse/datetime
@@ -550,7 +550,7 @@ class IntlDateFormatter
         try {
             $this->dateTimeZone = new \DateTimeZone($timeZoneId);
             if ('GMT' !== $timeZoneId && $this->dateTimeZone->getName() !== $timeZoneId) {
-                $timeZoneId = $timeZone = $this->getTimeZoneId();
+                $timeZone = $this->getTimeZoneId();
             }
         } catch (\Exception $e) {
             $timeZoneId = $timeZone = $this->getTimeZoneId();

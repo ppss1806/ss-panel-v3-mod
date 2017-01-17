@@ -5,7 +5,7 @@ namespace TelegramBot\Api\Events;
 use Closure;
 use ReflectionFunction;
 use TelegramBot\Api\Botan;
-use TelegramBot\Api\Types\Message;
+use TelegramBot\Api\Types\Update;
 
 class EventCollection
 {
@@ -54,15 +54,18 @@ class EventCollection
     }
 
     /**
-     * @param \TelegramBot\Api\Types\Message
+     * @param \TelegramBot\Api\Types\Update
      */
-    public function handle(Message $message)
+    public function handle(Update $update)
     {
         foreach ($this->events as $event) {
-            if ($event->executeChecker($message) === true) {
-                if (false === $event->executeAction($message) && !is_null($this->tracker)) {
-                    $checker = new ReflectionFunction($event->getChecker());
-                    $this->tracker->track($message, $checker->getStaticVariables()['name']);
+            /* @var \TelegramBot\Api\Events\Event $event */
+            if ($event->executeChecker($update) === true) {
+                if (false === $event->executeAction($update)) {
+                    if (!is_null($this->tracker)) {
+                        $checker = new ReflectionFunction($event->getChecker());
+                        $this->tracker->track($update->getMessage(), $checker->getStaticVariables()['name']);
+                    }
                     break;
                 }
             }

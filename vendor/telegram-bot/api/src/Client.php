@@ -5,7 +5,6 @@ namespace TelegramBot\Api;
 use Closure;
 use ReflectionFunction;
 use TelegramBot\Api\Events\EventCollection;
-use TelegramBot\Api\Types\Message;
 use TelegramBot\Api\Types\Update;
 
 /**
@@ -33,7 +32,7 @@ class Client
     /**
      * Client constructor
      *
-     * @param string $token             Telegram Bot API token
+     * @param string $token Telegram Bot API token
      * @param string|null $trackerToken Yandex AppMetrica application api_key
      */
     public function __construct($token, $trackerToken = null)
@@ -55,9 +54,14 @@ class Client
         return $this->on(self::getEvent($action), self::getChecker($name));
     }
 
+    public function inlineQuery(Closure $action)
+    {
+        return $this->on(self::getInlineQueryEvent($action), self::getInlineQueryChecker());
+    }
+
     /**
      * Use this method to add an event.
-     * If first closure will return true (or if you are passed null instead of closure), second one will be executed.
+     * If second closure will return true (or if you are passed null instead of closure), first one will be executed.
      *
      * @param \Closure $event
      * @param \Closure|null $checker
@@ -79,7 +83,8 @@ class Client
     public function handle(array $updates)
     {
         foreach ($updates as $update) {
-            $this->events->handle($update->getMessage());
+            /* @var \TelegramBot\Api\Types\Update $update */
+            $this->events->handle($update);
         }
     }
 
@@ -91,9 +96,14 @@ class Client
      */
     public function run()
     {
-        if ($data = BotApi::jsonValidate(file_get_contents('php://input'), true)) {
+        if ($data = BotApi::jsonValidate($this->getRawBody(), true)) {
             $this->handle([Update::fromResponse($data)]);
         }
+    }
+
+    public function getRawBody()
+    {
+        return file_get_contents('php://input');
     }
 
     /**
@@ -105,7 +115,12 @@ class Client
      */
     protected static function getEvent(Closure $action)
     {
-        return function (Message $message) use ($action) {
+        return function (Update $update) use ($action) {
+            $message = $update->getMessage();
+            if (!$message) {
+                return true;
+            }
+
             preg_match(self::REGEXP, $message->getText(), $matches);
 
             if (isset($matches[3]) && !empty($matches[3])) {
@@ -126,6 +141,19 @@ class Client
         };
     }
 
+    protected static function getInlineQueryEvent(Closure $action)
+    {
+        return function (Update $update) use ($action) {
+            if (!$update->getInlineQuery()) {
+                return true;
+            }
+
+            $reflectionAction = new ReflectionFunction($action);
+            $reflectionAction->invokeArgs([$update->getInlineQuery()]);
+            return false;
+        };
+    }
+
     /**
      * Returns check function to handling the command.
      *
@@ -135,14 +163,27 @@ class Client
      */
     protected static function getChecker($name)
     {
-        return function (Message $message) use ($name) {
-            if (!strlen($message->getText())) {
+        return function (Update $update) use ($name) {
+            $message = $update->getMessage();
+            if (is_null($message) || !strlen($message->getText())) {
                 return false;
             }
 
             preg_match(self::REGEXP, $message->getText(), $matches);
 
             return !empty($matches) && $matches[1] == $name;
+        };
+    }
+
+    /**
+     * Returns check function to handling the inline queries.
+     *
+     * @return Closure
+     */
+    protected static function getInlineQueryChecker()
+    {
+        return function (Update $update) {
+            return !is_null($update->getInlineQuery());
         };
     }
 

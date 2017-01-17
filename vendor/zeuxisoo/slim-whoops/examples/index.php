@@ -13,23 +13,24 @@ $app = new App([
 ]);
 
 if ($app->getContainer()->settings['debug'] === false) {
-    $container['errorHandler'] = function ($c) {
-        return function ($request, $response, $exception) use ($c) {
+    $container['errorHandler'] = function($c) {
+        return function($request, $response, $exception) use ($c) {
             $data = [
-                'code' => $exception->getCode(),
+                'code'    => $exception->getCode(),
                 'message' => $exception->getMessage(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'trace' => explode("\n", $exception->getTraceAsString()),
+                'file'    => $exception->getFile(),
+                'line'    => $exception->getLine(),
+                'trace'   => explode("\n", $exception->getTraceAsString()),
             ];
 
-            return $c->get('response')->withStatus(500)
+            return $c->get('response')
+                    ->withStatus(500)
                     ->withHeader('Content-Type', 'application/json')
                     ->write(json_encode($data));
         };
     };
 }else{
-    $app->add(new WhoopsMiddleware);
+    $app->add(new WhoopsMiddleware($app));
 }
 
 // Throw exception, Named route does not exist for name: hello
