@@ -163,7 +163,7 @@ class UserController extends AdminController
         if ($user == null){
 
         }
-        return $this->view()->assign('user',$user)->display('admin/user/edit.tpl');
+        return $this->view()->assign('edit_user',$user)->display('admin/user/edit.tpl');
     }
 
     public function update($request, $response, $args){

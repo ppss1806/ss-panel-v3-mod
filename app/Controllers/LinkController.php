@@ -110,6 +110,27 @@ class LinkController extends BaseController
 		return $NLink->token;
     }
 	
+	public static function GenerateAclCode($address,$port,$userid,$geo,$method)
+    {
+		$Elink = Link::where("type","=",9)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
+		if($Elink != null)
+		{
+			return $Elink->token;
+		}
+		$NLink = new Link();
+		$NLink->type = 9;
+		$NLink->address = $address;
+		$NLink->port = $port;
+		$NLink->ios = 0;
+		$NLink->geo = $geo;
+		$NLink->method = $method;
+		$NLink->userid = $userid;
+		$NLink->token = Tools::genRandomChar(8);
+		$NLink->save();
+		
+		return $NLink->token;
+	}
+	
 	public static function GetContent($request, $response, $args){
         $token = $args['token'];
         
@@ -169,6 +190,10 @@ class LinkController extends BaseController
 					$type = "SOCKS";
 				}
 				break;
+			case 9:
+				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.acl');//->getBody()->write($builder->output());
+				$newResponse->getBody()->write(LinkController::GetAcl(User::where("id","=",$Elink->userid)->first()));
+				return $newResponse;
 			default:
 				break;
 		}
@@ -331,7 +356,16 @@ class LinkController extends BaseController
 				foreach($mu_nodes as $mu_node)
 				{
 					$mu_user = User::where('port','=',$mu_node->server)->first();
-					$mu_user->obfs_param = $user->getMuMd5();
+					if($mu_user->is_multi_user == 1)
+					{
+						$mu_user->obfs_param = $user->getMuMd5();
+						$mu_user->protocol_param = $user->id.":".$user->passwd;
+					}
+					else
+					{
+						$mu_user->obfs_param = "";
+						$mu_user->protocol_param = $user->id.":".$user->passwd;
+					}
 					
 					array_push($temparray,array("remarks"=>$node->name."- ".$mu_node->server." 端口单端口多用户",
 												"server"=>$node->server,
@@ -345,6 +379,7 @@ class LinkController extends BaseController
 												"tcp_over_udp"=>false,
 												"udp_over_tcp"=>false,
 												"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
+												"protocolparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
 												"obfs_udp"=>false,
 												"enable"=>true));
 												
@@ -376,6 +411,7 @@ class LinkController extends BaseController
 															"tcp_over_udp"=>false,
 															"udp_over_tcp"=>false,
 															"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
+															"protocolparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
 															"obfs_udp"=>false,
 															"enable"=>true));
 							}
@@ -403,6 +439,7 @@ class LinkController extends BaseController
 															"tcp_over_udp"=>false,
 															"udp_over_tcp"=>false,
 															"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
+															"protocolparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
 															"obfs_udp"=>false,
 															"enable"=>true));
 							}
@@ -444,7 +481,16 @@ class LinkController extends BaseController
 				foreach($mu_nodes as $mu_node)
 				{
 					$mu_user = User::where('port','=',$mu_node->server)->first();
-					$mu_user->obfs_param = $user->getMuMd5();
+					if($mu_user->is_multi_user == 1)
+					{
+						$mu_user->obfs_param = $user->getMuMd5();
+						$mu_user->protocol_param = $user->id.":".$user->passwd;
+					}
+					else
+					{
+						$mu_user->obfs_param = "";
+						$mu_user->protocol_param = $user->id.":".$user->passwd;
+					}
 					
 					$rules = Relay::where(
 						function ($query) use ($node){
@@ -466,6 +512,7 @@ class LinkController extends BaseController
 													"tcp_over_udp"=>false,
 													"udp_over_tcp"=>false,
 													"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
+													"protocolparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
 													"obfs_udp"=>false,
 													"enable"=>true));
 												
@@ -1550,6 +1597,242 @@ FINAL,Proxy';
 		header('Content-type: application/x-ns-proxy-autoconfig');
 		return LinkController::get_mac_pac();
 
+	}
+	
+	
+	private static function GetAcl($user)
+	{
+		$rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$user->pac;  
+		$gfwlist = explode("\n", $rulelist);  
+	  
+		$count = 0;  
+		$acl_content = '';   
+		$find_function_content = '
+#Generated by sspanel-glzjin-mod v3
+#Time:'.date('Y-m-d H:i:s').'
+
+[bypass_all]
+
+';
+
+		$proxy_list = '[proxy_list]
+
+';
+		$bypass_list = '[bypass_list]
+
+';
+		$outbound_block_list = '[outbound_block_list]
+
+';
+		
+		$isget=array();
+		foreach($gfwlist as $index=>$rule) {  
+			if (empty($rule))  
+				continue;  
+			else if (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[')  
+				continue;  
+			
+			if (substr($rule, 0, 2) == '@@') {  
+			  	// ||开头表示前面还有路径  
+				if (substr($rule, 2, 2) =='||') {  
+					//$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
+					$host = substr($rule, 4);
+					//preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
+					if(isset($isget[$host]))
+					{
+						continue;
+					}
+					$isget[$host]=1;
+					//$find_function_content.="DOMAIN,".$host.",DIRECT,force-remote-dns\n";
+					$bypass_list .= $host."\n";
+					continue;
+				// !开头相当于正则表达式^  
+				} else if (substr($rule, 2, 1) == '|') {  
+					preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 3), $matches); 
+					if(!isset($matches[0]))
+					{
+						continue;
+					}
+					
+					$host = $matches[0];
+					if($host != "")
+					{
+						if(isset($isget[$host]))
+						{
+							continue;
+						}
+						$isget[$host]=1;
+						//$find_function_content.="IP-CIDR,".$host."/32,DIRECT,no-resolve \n"; 
+						$bypass_list .= $host."/32\n";
+						continue;
+					}
+					else
+					{
+						preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,3), $matches);  
+						
+						if(!isset($matches[4][0]))
+						{
+							continue;
+						}
+						
+						$host = $matches[4][0];
+						if($host != "")
+						{
+							if(isset($isget[$host]))
+							{
+								continue;
+							}
+							$isget[$host]=1;
+							//$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns\n";
+							$bypass_list .= $host."\n";
+							continue;
+						}
+					}
+				} else if (substr($rule, 2, 1) == '.') {
+					$host = substr($rule, 3);
+					if($host != "")
+					{
+						if(isset($isget[$host]))
+						{
+							continue;
+						}
+						$isget[$host]=1;
+						//$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns \n"; 
+						$bypass_list .= $host."\n";
+						continue;
+					}
+				}
+			} 
+			
+			// ||开头表示前面还有路径  
+			if (substr($rule, 0, 2) =='||') {  
+				//$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
+				$host = substr($rule, 2);
+				//preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
+				
+				if(strpos($host,"*")!==FALSE)
+				{
+					$host = substr($host,strpos($host,"*")+1);
+					if(strpos($host,".")!==FALSE)
+					{
+						$host = substr($host,strpos($host,".")+1);
+					}
+					if(isset($isget[$host]))
+					{
+						continue;
+					}
+					$isget[$host]=1;
+					//$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n"; 
+					$proxy_list .= $host."\n";
+					continue;
+				}
+					
+				if(isset($isget[$host]))
+				{
+					continue;
+				}
+				$isget[$host]=1;
+				//$find_function_content.="DOMAIN,".$host.",Proxy,force-remote-dns\n";  
+				$proxy_list .= $host."\n";
+			// !开头相当于正则表达式^  
+			} else if (substr($rule, 0, 1) == '|') {  
+				preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 1), $matches);  
+				
+				if(!isset($matches[0]))
+				{
+					continue;
+				}
+				
+				$host = $matches[0];
+				if($host != "")
+				{
+					if(isset($isget[$host]))
+					{
+						continue;
+					}
+					$isget[$host]=1;
+					
+					preg_match("/(\d{1,3}\.){3}\d{1,3}\/\d{1,2}/",substr($rule, 1), $matches_ips);
+					
+					if(!isset($matches_ips[0]))
+					{
+						$proxy_list .= $host."/32\n";
+					}
+					else
+					{
+						$host = $matches_ips[0];
+						$proxy_list .= $host."\n";
+					}
+					
+					//$find_function_content.="IP-CIDR,".$host."/32,Proxy,no-resolve \n";  
+					
+					continue;
+				}
+				else
+				{
+					preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,1), $matches);  
+					
+					if(!isset($matches[4][0]))
+					{
+						continue;
+					}
+					
+					$host = $matches[4][0];
+					if(strpos($host,"*")!==FALSE)
+					{
+						$host = substr($host,strpos($host,"*")+1);
+						if(strpos($host,".")!==FALSE)
+						{
+							$host = substr($host,strpos($host,".")+1);
+						}
+						if(isset($isget[$host]))
+						{
+							continue;
+						}
+						$isget[$host]=1;
+						//$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n"; 
+						$proxy_list .= $host."\n";
+						continue;
+					}
+					
+					if($host != "")
+					{
+						if(isset($isget[$host]))
+						{
+							continue;
+						}
+						$isget[$host]=1;
+						//$find_function_content.="DOMAIN-SUFFIX,".$host.",Proxy,force-remote-dns\n"; 
+						$proxy_list .= $host."\n";
+						continue;
+					}
+				}
+			} else {
+				$host = substr($rule, 0);
+				if(strpos($host,"/")!==FALSE)
+				{
+					$host = substr($host,0,strpos($host,"/"));
+				}
+				
+				if($host != "")
+				{
+					if(isset($isget[$host]))
+					{
+						continue;
+					}
+					$isget[$host]=1;
+					//$find_function_content.="DOMAIN-KEYWORD,".$host.",PROXY,force-remote-dns \n";  
+					$proxy_list .= $host."\n";
+					continue;
+				}
+			}
+			
+			
+			$count = $count + 1;  
+		}
+		
+		$acl_content .= $find_function_content."\n".$proxy_list."\n".$bypass_list."\n".$outbound_block_list;   
+		return $acl_content;  
 	}
 	
 	

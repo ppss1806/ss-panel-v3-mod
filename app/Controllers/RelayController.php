@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Relay;
 use App\Models\Node;
+use App\Models\User;
 use App\Services\Auth;
 use App\Controllers\UserController;
 
@@ -46,7 +47,11 @@ class RelayController extends UserController
 		$ports = Array();
 		foreach($ports_raw as $port_raw)
 		{
-			array_push($ports, $port_raw->server);
+			$mu_user = User::where('port', $port_raw->server)->first();
+			if($mu_user->is_multi_user == 1)
+			{
+				array_push($ports, $port_raw->server);
+			}
 		}
 		
 		array_push($ports, $user->port);
@@ -157,7 +162,11 @@ class RelayController extends UserController
 		$ports = Array();
 		foreach($ports_raw as $port_raw)
 		{
-			array_push($ports, $port_raw->server);
+			$mu_user = User::where('port', $port_raw->server)->first();
+			if($mu_user->is_multi_user == 1)
+			{
+				array_push($ports, $port_raw->server);
+			}
 		}
 		
 		array_push($ports, $user->port);

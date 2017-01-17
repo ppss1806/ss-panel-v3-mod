@@ -372,10 +372,12 @@
 							<div class="card-main">
 								<div class="card-inner">
 									<div class="card-inner">
-										<p class="card-heading">自定义PAC/Surge</p>
-										<p>参看<a href="https://adblockplus.org/zh_CN/filters">https://adblockplus.org/zh_CN/filters</a></p>
+										<p class="card-heading">自定义ACL/PAC/Surge</p>
+										<p>您可以在此处追加 Gfwlist 规则。</p>
+										<p>格式参看<a href="https://adblockplus.org/zh_CN/filters">https://adblockplus.org/zh_CN/filters</a></p>
+										<p>IP 段请使用 |127.0.0.0/8 类似格式表示</p>
 										<div class="form-group form-group-label">
-											<label class="floating-label" for="pac">自定义PAC/Surge规则</label>
+											<label class="floating-label" for="pac">规则书写区</label>
 											<textarea class="form-control" id="pac" rows="8">{$user->pac}</textarea>
 										</div>
 

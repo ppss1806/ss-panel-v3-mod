@@ -41,7 +41,7 @@
 									<div class="card-inner margin-bottom-no">
 										<div id="log_chart" style="height: 300px; width: 100%;"></div>
 										
-										<script src="//cdn.bootcss.com/canvasjs/1.7.0/canvasjs.js"></script>
+										<script src="//cdn.staticfile.org/canvasjs/1.7.0/canvasjs.js"></script>
 											
 										<script type="text/javascript">
 											window.onload = function () {

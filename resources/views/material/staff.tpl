@@ -51,18 +51,6 @@
 								</div>
 							</div>
 
-
-
-							<div class="card">
-								<div class="card-main">
-									<div class="card-inner">
-											<h2 class="content-sub-heading">耻辱柱</h2>
-											<p><a href="https://github.com/glzjin/ss-panel-v3-mod/issues/457">这里记录了所有那些令人羞愧的行为。</a></p>
-									</div>
-								</div>
-							</div>
-
-
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner">
@@ -92,6 +80,16 @@
 									</div>
 								</div>
 							</div>
+							
+							
+							<div class="card">
+								<div class="card-main">
+									<div class="card-inner">
+											<h2 class="content-sub-heading">现阶段维护</h2>
+											<p><a href="https://github.com/esdeathlove/">esdeathlove</a></p>
+									</div>
+								</div>
+							</div>
 
 
 
@@ -100,7 +98,7 @@
 								<div class="card-main">
 									<div class="card-inner">
 											<h2 class="content-sub-heading">监督</h2>
-											<p><a href="https://www.zhaoj.in">glzjin</a></p>
+											<p><a href="https://www.zhaoj.in">（曾经的）glzjin</a></p>
 									</div>
 								</div>
 							</div>
@@ -112,7 +110,7 @@
 									<div class="card-inner">
 											<h2 class="content-sub-heading">作画</h2>
 											<p><a href="https://github.com/Daemonite/">Daemonite</a></p>
-											<p><a href="https://www.zhaoj.in">glzjin</a></p>
+											<p><a href="https://www.zhaoj.in">（曾经的）glzjin</a></p>
 									</div>
 								</div>
 							</div>
@@ -123,7 +121,7 @@
 								<div class="card-main">
 									<div class="card-inner">
 											<h2 class="content-sub-heading">出演</h2>
-											<p><a href="https://www.zhaoj.in">glzjin</a></p>
+											<p><a href="https://www.zhaoj.in">（曾经的）glzjin</a></p>
 											<p><a href="http://mengyang.wang/">mengyang</a></p>
 											<p><a href="http://tony.ecy.ren/">tony</a></p>
 									</div>

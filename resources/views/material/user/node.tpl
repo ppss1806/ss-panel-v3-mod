@@ -9,8 +9,8 @@
 {include file='user/main.tpl'}
 
 
-<script src="//cdn.bootcss.com/canvasjs/1.7.0/canvasjs.js"></script>
-<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/canvasjs/1.7.0/canvasjs.js"></script>
+<script src="//cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
 
 	<main class="content">
 		<div class="content-header ui-content-header">
@@ -165,7 +165,7 @@
 																			
 																			{$has_taken_up = false}
 																			{foreach $node_relay as $match_node_relay}
-																				{if ($match_node_relay['rule']->source_node_id == $node->id || $match_node_relay['rule']->source_node_id == 0) && $single_muport['user']['port'] == $match_node_relay['rule']->port}
+																				{if ($match_node_relay['rule']->source_node_id == $node->id || ($match_node_relay['rule']->source_node_id == 0 && $node->sort == 10)) && $single_muport['user']['port'] == $match_node_relay['rule']->port}
 																					{$has_taken_up = true}
 																				{/if}
 																			{/foreach}
@@ -199,18 +199,22 @@
 																					<p>协议：<span class="label label-brand-accent"> 
 																						{$single_muport['user']['protocol']}
 																					</span></p>
-																					
-																					<p>协议参数：<span class="label label-red"> 
-																						{$single_muport['user']['protocol_param']}
+
+																					{if $single_muport['user']['is_multi_user'] != 0}
+																					<p>协议参数：<span class="label label-green"> 
+																						{$user->id}:{$user->passwd}
 																					</span></p>
+																					{/if}
 																					
 																					<p>混淆方式：<span class="label label-brand"> 
 																						{$single_muport['user']['obfs']}
 																					</span></p>
 																					
+																					{if $single_muport['user']['is_multi_user'] == 1}
 																					<p>混淆参数：<span class="label label-green"> 
 																						{$single_muport['user']['obfs_param']}
 																					</span></p>
+																					{/if}
 																					
 																					<p>流量比例：<span class="label label-red"> 
 																						{$node->traffic_rate}
@@ -391,17 +395,27 @@
 																											{$single_muport['user']['protocol']}
 																										</span></p>
 																										
-																										<p>协议参数：<span class="label label-red"> 
-																											{$single_muport['user']['protocol_param']}
-																										</span></p>
+																										{if $single_muport['user']['is_multi_user'] != 0}
+
+<p>协议参数：<span class="label label-green"> 
+
+{$user->id}:{$user->passwd}
+
+</span></p>
+
+{/if}
 																										
 																										<p>混淆方式：<span class="label label-brand"> 
 																											{$single_muport['user']['obfs']}
 																										</span></p>
 																										
+
+{if $single_muport['user']['is_multi_user'] == 1}
 																										<p>混淆参数：<span class="label label-green"> 
 																											{$single_muport['user']['obfs_param']}
 																										</span></p>
+
+{/if}
 																										
 																										<p>流量比例：<span class="label label-red"> 
 																											{$single_muport['server']->traffic_rate + $relay_node->traffic_rate}
@@ -447,18 +461,27 @@
 																											{$single_muport['user']['protocol']}
 																										</span></p>
 																										
-																										<p>协议参数：<span class="label label-red"> 
-																											{$single_muport['user']['protocol_param']}
-																										</span></p>
+																										{if $single_muport['user']['is_multi_user'] != 0}
+
+<p>协议参数：<span class="label label-green"> 
+
+{$user->id}:{$user->passwd}
+
+</span></p>
+
+{/if}
 																										
 																										<p>混淆方式：<span class="label label-brand"> 
 																											{$single_muport['user']['obfs']}
 																										</span></p>
 																										
+
+{if $single_muport['user']['is_multi_user'] == 1}
 																										<p>混淆参数：<span class="label label-green"> 
 																											{$single_muport['user']['obfs_param']}
 																										</span></p>
-																										
+
+{/if}																										
 																										<p>流量比例：<span class="label label-red"> 
 																										{$single_muport['server']->traffic_rate + $single_node_relay['rule']->Source_Node()->traffic_rate}
 																										</span></p>

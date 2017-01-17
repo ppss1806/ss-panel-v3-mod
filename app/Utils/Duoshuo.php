@@ -28,7 +28,7 @@ Class Duoshuo
 			$data['users'][] = array(
 				'user_key' => $user->id,
 				'name' => $user->user_name,
-				'avatar_url' => "https://avatar.zhaojin97.cn/avatar/".md5($user->email)."&r=X&s=80",
+				'avatar_url' => "https://secure.gravatar.com/avatar/".md5($user->email)."&r=X&s=80",
 				'email' => $user->email,
 				'role' => $role
 				);

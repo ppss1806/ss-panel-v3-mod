@@ -160,7 +160,7 @@ class Tools
 		
 		foreach($ruleset as $single_rule)
 		{
-			if($rule->port == $single_rule->port && $rule->priority <= $single_rule->priority && ($node_id == $single_rule->source_node_id || $single_rule->source_node_id == 0) && $rule->id < $single_rule->id)
+			if($rule->port == $single_rule->port && ($node_id == $single_rule->source_node_id || $single_rule->source_node_id == 0) && (($rule->id != $single_rule->id && $rule->priority < $single_rule->priority)||($rule->id < $single_rule->id && $rule->priority == $single_rule->priority)))
 			{
 				$cur_id = $single_rule->id;
 			}
