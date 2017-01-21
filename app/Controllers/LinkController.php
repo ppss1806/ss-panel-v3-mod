@@ -150,7 +150,12 @@ class LinkController extends BaseController
 					return null;
 				}
 				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
-				$newResponse->getBody()->write(LinkController::GetIosConf(Node::where('sort', 0)->where("type","1")->where(
+				$newResponse->getBody()->write(LinkController::GetIosConf(Node::where(
+						function ($query) {
+							$query->Where("sort","=",0)
+								->orWhere("sort","=",10);
+						}
+					)->where("type","1")->where(
 					function ($query) use ($user) {
 						$query->where("node_group","=",$user->node_group)
 							->orWhere("node_group","=",0);
@@ -534,8 +539,39 @@ class LinkController extends BaseController
 		$proxy_group="";
 		foreach($nodes as $node)
 		{
-			$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
-			$proxy_name.=",".$node->name;
+			if($node->sort == 0)
+			{
+				$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
+				$proxy_name.=",".$node->name;
+			}
+			else
+			{
+				$relay_rules = Relay::where('user_id', $user->id)->where('port', $user->port)->where(
+					function ($query) use ($node){
+						$query->Where("source_node_id","=",$node->id)
+							->orWhere("source_node_id","=",0);
+					}
+				)->get();
+
+				if(count($relay_rules) != 0)
+				{
+					foreach($relay_rules as $relay_rule)
+					{
+						if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $node->id))
+						{
+							continue;
+						}
+					
+						$proxy_group.=$node->name." 中转至 ".$relay_rule->Dist_Node()->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
+						$proxy_name.=",".$node->name." 中转至 ".$relay_rule->Dist_Node()->name;
+					}
+				}
+				else
+				{
+					$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
+					$proxy_name.=",".$node->name;
+				}
+			}
 		}
 		
 		
