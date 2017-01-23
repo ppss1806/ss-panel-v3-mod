@@ -214,7 +214,7 @@ class LinkController extends BaseController
         return $newResponse;
 	}
 	
-	public static function GetPcConf($nodes,$user){
+	public static function GetPcConf($nodes,$user,$without_mu = 0){
 		$string='
 	{	
 	"index" : 0,
@@ -356,7 +356,7 @@ class LinkController extends BaseController
 				}
 			}
 			
-			if($node->custom_rss == 1)
+			if($node->custom_rss == 1 && $without_mu == 0)
 			{
 				foreach($mu_nodes as $mu_node)
 				{
@@ -481,7 +481,7 @@ class LinkController extends BaseController
 											"enable"=>true));
 			}
 			
-			if($node->custom_rss == 1)
+			if($node->custom_rss == 1&& $without_mu == 0)
 			{
 				foreach($mu_nodes as $mu_node)
 				{

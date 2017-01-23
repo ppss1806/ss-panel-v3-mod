@@ -94,6 +94,8 @@ $app->group('/user', function () {
 
 	$this->get('/detect', 'App\Controllers\UserController:detect_index');
 	$this->get('/detect/log', 'App\Controllers\UserController:detect_log');
+	
+	$this->get('/disable', 'App\Controllers\UserController:disable');
 
 	$this->get('/shop', 'App\Controllers\UserController:shop');
 	$this->post('/coupon_check', 'App\Controllers\UserController:CouponCheck');

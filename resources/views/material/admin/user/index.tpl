@@ -112,7 +112,7 @@
 								{$user->im_value}
 								{/if}</th>
 								<th>{$user->reg_date}<br>{$user->reg_ip}　{$regloc[$user->id]}</th>
-                                <th>{$user->ref_by}</th>
+                                <th>{$user->ref_by} {$user->ref_by_user()->user_name}</th>
                                 
                             </tr>
                             {/foreach}

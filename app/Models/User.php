@@ -203,5 +203,11 @@ class User extends Model
         $uid = $this->attributes['id'];
         return InviteCode::where('user_id', $uid)->get();
     }
+    
+    public function ref_by_user()
+    {
+        $uid = $this->attributes['ref_by'];
+        return User::where('id', $uid)->first();
+    }
 
 }

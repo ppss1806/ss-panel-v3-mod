@@ -170,7 +170,7 @@ class Job
 
 		#https://github.com/shuax/QQWryUpdate/blob/master/update.php
 
-		$copywrite = file_get_contents("http://update.cz88.net/ip/copywrite.rar");
+		$copywrite = file_get_contents("https://github.com/esdeathlove/qqwry-download/raw/master/copywrite.rar");
 
 		$adminUser = User::where("is_admin","=","1")->get();
 
@@ -180,7 +180,7 @@ class Job
 		if($newmd5 != $oldmd5)
 		{
 			file_put_contents(BASE_PATH."/storage/qqwry.md5",$newmd5);
-			$qqwry = file_get_contents("http://update.cz88.net/ip/qqwry.rar");
+			$qqwry = file_get_contents("https://github.com/esdeathlove/qqwry-download/raw/master/qqwry.rar");
 			if($qqwry != "")
 			{
 				$key = unpack("V6", $copywrite)[6];
@@ -411,7 +411,7 @@ class Job
 
 		$adminUser = User::where("is_admin","=","1")->get();
 
-		$latest_content = file_get_contents("https://github.com/glzjin/ss-panel-v3-mod/raw/master/bootstrap.php");
+		$latest_content = file_get_contents("https://github.com/esdeathlove/ss-panel-v3-mod/raw/master/bootstrap.php");
 		$newmd5 = md5($latest_content);
 		$oldmd5 = md5(file_get_contents(BASE_PATH."/bootstrap.php"));
 
@@ -433,7 +433,7 @@ class Job
 						echo "Send mail to user: ".$user->id;
 						$subject = Config::get('appName')."-系统提示";
 						$to = $user->email;
-						$text = "管理员您好，系统发现有了新版本，您可以到 <a href=\"https://github.com/glzjin/ss-panel-v3-mod/issues\">https://github.com/glzjin/ss-panel-v3-mod/issues</a> 按照步骤进行升级。" ;
+						$text = "管理员您好，系统发现有了新版本，您可以到 <a href=\"https://github.com/esdeathlove/ss-panel-v3-mod/issues\">https://github.com/esdeathlove/ss-panel-v3-mod/issues</a> 按照步骤进行升级。" ;
 						try {
 							Mail::send($to, $subject, 'news/warn.tpl', [
 								"user" => $user,"text" => $text

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\RadiusRadCheck;
 use App\Models\RadiusRadUserGroup;
 use App\Models\RadiusNas;
+use App\Models\RadiusBan;
 use App\Services\Config;
 
 
@@ -28,6 +29,12 @@ Class Radius
 			
 			if($exists==NULL)
 			{
+				$rb = RadiusBan::where('userid', $user->id)->first();
+				if($rb != null)
+				{
+					return;
+				}
+				
 				$newRad=new RadiusRadCheck();
 				$newRad->username=$email;
 				$newRad->attribute="Cleartext-Password";
@@ -95,6 +102,12 @@ Class Radius
 			}
 			else
 			{
+				$rb = RadiusBan::where('userid', $user->id)->first();
+				if($rb != null)
+				{
+					return;
+				}
+				
 				$newRad=new RadiusRadCheck();
 				$newRad->username=$email2;
 				$newRad->attribute="Cleartext-Password";
