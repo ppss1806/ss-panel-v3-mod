@@ -181,7 +181,7 @@ class XCat
 		$copywrite = file_get_contents("https://github.com/esdeathlove/qqwry-download/raw/master/copywrite.rar");
 		$newmd5 = md5($copywrite);
 		file_put_contents(BASE_PATH."/storage/qqwry.md5",$newmd5);
-		$qqwry = file_get_contents("ttps://github.com/esdeathlove/qqwry-download/raw/master/qqwry.rar");
+		$qqwry = file_get_contents("https://github.com/esdeathlove/qqwry-download/raw/master/qqwry.rar");
 		if($qqwry != "")
 		{
 			$key = unpack("V6", $copywrite)[6];
