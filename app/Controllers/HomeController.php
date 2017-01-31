@@ -254,12 +254,7 @@ class HomeController extends BaseController
         return $newResponse;
     }
 	
-	public function pmw_pingback($request, $response, $args)
-    {
-		Pay::callback();
-    }
-
-	public function alipay_callback($request, $response, $args)
+	public function pay_callback($request, $response, $args)
 	{
 		Pay::callback($request);
 	}
