@@ -47,6 +47,12 @@
 										<p><i class="icon icon-lg">laptop_mac</i>&nbsp;iOS 强烈推荐下载<a href="https://itunes.apple.com/cn/app/shadowrocket/id932747118?mt=8">Shadowrocket</a>，然后在 Safari 中点击<a id="android_add" href="{$android_add}">这个</a>或者<a id="android_add_without_mu" href="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后点击确定，就可以批量添加节点。</p>
 										<STRIKE><p><i class="icon icon-lg">laptop_mac</i>&nbsp;iOS 下载<a href="/link/{$ios_token}">这个</a>，导入到 Surge 中，然后就可以随意切换服务器上网了。</p></STRIKE>
 										<p><i class="icon icon-lg">android</i>&nbsp;<a href="/ssr-download/ssr-android.apk">Android下载 Android 版</a>，安装，然后在手机上默认浏览器中点击<a id="android_add" href="{$android_add}">这个</a>或者<a id="android_add_without_mu" href="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后点击确定，批量添加完节点，然后路由选择绕过大陆，右上角开启就可以上网了。同时提供一个 ACL 地址，<a href="/link/{$acl_token}">长按复制地址</a>到客户端里应用即可。</p>
+										
+										<p><i class="icon icon-lg">router</i>&nbsp;路由器 刷入<a href="http://www.right.com.cn/forum/thread-161324-1-1.html">这个固件</a>，然后 SSH 登陆路由器，执行以下命令<br>
+										<code>wget -O- {$baseUrl}/link/{$router_token} | bash && echo -e "\n0 */3 * * * wget -O- {$baseUrl}/link/{$router_token} | bash\n">> /etc/storage/cron/crontabs/admin && killall crond && crond </code><br>
+										或者这个不含单端口多用户的<br>
+										<code>wget -O- {$baseUrl}/link/{$router_token_without_mu} | bash && echo -e "\n0 */3 * * * wget -O- {$baseUrl}/link/{$router_token_without_mu} | bash\n">> /etc/storage/cron/crontabs/admin && killall crond && crond </code><br>
+										执行完毕以后就可以到路由器的设置面板里随意选择 Shadowsocks 服务器进行连接了。</p>
 									</div>
 									
 								</div>

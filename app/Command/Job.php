@@ -14,6 +14,8 @@ use App\Models\NodeInfoLog;
 use App\Models\NodeOnlineLog;
 use App\Models\TrafficLog;
 use App\Models\DetectLog;
+use App\Models\BlockIp;
+use App\Models\TelegramSession;
 use App\Services\Config;
 use App\Utils\Radius;
 use App\Utils\Wecenter;
@@ -25,6 +27,7 @@ use App\Utils\GA;
 use App\Utils\Telegram;
 use CloudXNS\Api;
 use App\Models\Disconnect;
+use App\Models\UnblockIp;
 
 class Job
 {
@@ -407,11 +410,14 @@ class Job
 		}
 
 		Ip::where("datetime","<",time()-300)->delete();
+		UnblockIp::where("datetime","<",time()-300)->delete();
+		BlockIp::where("datetime","<",time()-86400)->delete();
+		TelegramSession::where("datetime","<",time()-900)->delete();
 
 
 		$adminUser = User::where("is_admin","=","1")->get();
 
-		$latest_content = file_get_contents("https://github.com/esdeathlove/ss-panel-v3-mod/raw/master/bootstrap.php");
+		$latest_content = file_get_contents("https://github.com/esdeathlove/ss-panel-v3-mod/raw/new_master/bootstrap.php");
 		$newmd5 = md5($latest_content);
 		$oldmd5 = md5(file_get_contents(BASE_PATH."/bootstrap.php"));
 

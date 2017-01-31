@@ -19,14 +19,30 @@ use App\Services\Config;
  */
 class LinkController extends BaseController
 {
-    public function __construct()
-    {
-        
-    }
+	public function __construct()
+	{
+		
+	}
+	
+	public static function GenerateRandomLink()
+	{
+		$i =0;
+		for($i = 0; $i < 10; $i++)
+		{
+			$token = Tools::genRandomChar(16);
+			$Elink = Link::where("token","=",$token)->first();
+			if($Elink == null)
+			{
+				return $token;
+			}
+		}
+		
+		return "couldn't alloc token";
+	}
 
-    public static function GenerateCode($type,$address,$port,$ios,$userid)
-    {
-        $Elink = Link::where("type","=",$type)->where("address","=",$address)->where("port","=",$port)->where("ios","=",$ios)->where("userid","=",$userid)->first();
+	public static function GenerateCode($type,$address,$port,$ios,$userid)
+	{
+		$Elink = Link::where("type","=",$type)->where("address","=",$address)->where("port","=",$port)->where("ios","=",$ios)->where("userid","=",$userid)->first();
 		if($Elink != null)
 		{
 			return $Elink->token;
@@ -37,19 +53,19 @@ class LinkController extends BaseController
 		$NLink->port = $port;
 		$NLink->ios = $ios;
 		$NLink->userid = $userid;
-		$NLink->token = Tools::genRandomChar(8);
+		$NLink->token = LinkController::GenerateRandomLink();
 		$NLink->save();
 		
 		return $NLink->token;
-    }
+	}
 	
 	
 	
 	
 	
 	public static function GenerateApnCode($isp,$address,$port,$userid)
-    {
-        $Elink = Link::where("type","=",6)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("isp","=",$isp)->first();
+	{
+		$Elink = Link::where("type","=",6)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("isp","=",$isp)->first();
 		if($Elink != null)
 		{
 			return $Elink->token;
@@ -61,16 +77,16 @@ class LinkController extends BaseController
 		$NLink->ios = 1;
 		$NLink->isp = $isp;
 		$NLink->userid = $userid;
-		$NLink->token = Tools::genRandomChar(8);
+		$NLink->token = LinkController::GenerateRandomLink();
 		$NLink->save();
 		
 		return $NLink->token;
-    }
+	}
 	
 	
 	public static function GenerateSurgeCode($address,$port,$userid,$geo,$method)
-    {
-        $Elink = Link::where("type","=",0)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
+	{
+		$Elink = Link::where("type","=",0)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
 		if($Elink != null)
 		{
 			return $Elink->token;
@@ -83,15 +99,15 @@ class LinkController extends BaseController
 		$NLink->geo = $geo;
 		$NLink->method = $method;
 		$NLink->userid = $userid;
-		$NLink->token = Tools::genRandomChar(8);
+		$NLink->token = LinkController::GenerateRandomLink();
 		$NLink->save();
 		
 		return $NLink->token;
-    }
+	}
 	
 	public static function GenerateIosCode($address,$port,$userid,$geo,$method)
-    {
-        $Elink = Link::where("type","=",-1)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
+	{
+		$Elink = Link::where("type","=",-1)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
 		if($Elink != null)
 		{
 			return $Elink->token;
@@ -104,14 +120,14 @@ class LinkController extends BaseController
 		$NLink->geo = $geo;
 		$NLink->method = $method;
 		$NLink->userid = $userid;
-		$NLink->token = Tools::genRandomChar(8);
+		$NLink->token = LinkController::GenerateRandomLink();
 		$NLink->save();
 		
 		return $NLink->token;
-    }
+	}
 	
 	public static function GenerateAclCode($address,$port,$userid,$geo,$method)
-    {
+	{
 		$Elink = Link::where("type","=",9)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
 		if($Elink != null)
 		{
@@ -125,16 +141,37 @@ class LinkController extends BaseController
 		$NLink->geo = $geo;
 		$NLink->method = $method;
 		$NLink->userid = $userid;
-		$NLink->token = Tools::genRandomChar(8);
+		$NLink->token = LinkController::GenerateRandomLink();
+		$NLink->save();
+		
+		return $NLink->token;
+	}
+	
+	public static function GenerateRouterCode($userid, $without_mu)
+	{
+		$Elink = Link::where("type", "=" ,10)->where("userid", "=", $userid)->where("geo", $without_mu)->first();
+		if($Elink != null)
+		{
+			return $Elink->token;
+		}
+		$NLink = new Link();
+		$NLink->type = 10;
+		$NLink->address = "";
+		$NLink->port = 0;
+		$NLink->ios = 0;
+		$NLink->geo = $without_mu;
+		$NLink->method = "";
+		$NLink->userid = $userid;
+		$NLink->token = LinkController::GenerateRandomLink();
 		$NLink->save();
 		
 		return $NLink->token;
 	}
 	
 	public static function GetContent($request, $response, $args){
-        $token = $args['token'];
-        
-        //$builder->getPhrase();
+		$token = $args['token'];
+		
+		//$builder->getPhrase();
 		$Elink = Link::where("token","=",$token)->first();
 		if($Elink == null)
 		{
@@ -199,19 +236,39 @@ class LinkController extends BaseController
 				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.acl');//->getBody()->write($builder->output());
 				$newResponse->getBody()->write(LinkController::GetAcl(User::where("id","=",$Elink->userid)->first()));
 				return $newResponse;
+			case 10:
+				$user=User::where("id",$Elink->userid)->first();
+				if($user == null)
+				{
+					return null;
+				}
+				
+				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.sh');//->getBody()->write($builder->output());
+				$newResponse->getBody()->write(LinkController::GetRouter(Node::where(
+					function ($query) {
+						$query->where('sort', 0)
+							->orWhere('sort', 10);
+					}
+				)->where("type","1")->where(
+					function ($query) use ($user) {
+						$query->where("node_group","=",$user->node_group)
+							->orWhere("node_group","=",0);
+					}
+				)->where("node_class","<=",$user->class)->get(), User::where("id","=",$Elink->userid)->first(), $Elink->geo));
+				return $newResponse;
 			default:
 				break;
 		}
-        $newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate');//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetPac($type,$Elink->address,$Elink->port,User::where("id","=",$Elink->userid)->first()->pac));
-        return $newResponse;
-    }
+		$newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate');//->getBody()->write($builder->output());
+		$newResponse->getBody()->write(LinkController::GetPac($type,$Elink->address,$Elink->port,User::where("id","=",$Elink->userid)->first()->pac));
+		return $newResponse;
+	}
 	
 	
 	public static function GetGfwlistJs($request, $response, $args){
-        $newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=gfwlist.js');;//->getBody()->write($builder->output());
-        $newResponse->getBody()->write(LinkController::GetMacPac());
-        return $newResponse;
+		$newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=gfwlist.js');;//->getBody()->write($builder->output());
+		$newResponse->getBody()->write(LinkController::GetMacPac());
+		return $newResponse;
 	}
 	
 	public static function GetPcConf($nodes,$user,$without_mu = 0){
@@ -264,27 +321,32 @@ class LinkController extends BaseController
 			}
 		)->get();
 		
-		$relay_nodes = Node::where(
-			function ($query) use ($user){
-				$query->Where("node_group","=",$user->node_group)
-					->orWhere("node_group","=",0);
-			}
-		)->where('type', 1)->where('sort', 10)->where("node_class","<=",$user->class)->orderBy('name')->get();
-
-		$relay_rules = Relay::where('user_id', $user->id)->orderBy('id', 'asc')->get();
+		$relay_rules = Relay::where('user_id', $user->id)->orWhere('user_id', 0)->orderBy('id', 'asc')->get();
 		
 		
 		foreach($nodes as $node)
 		{
 			if($node->mu_only == 0)
 			{
-				array_push($temparray,array("remarks"=>$node->name,
+				
+				$node_name = $node->name;
+				
+				if($node->sort == 10)
+				{
+					$relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
+					if($relay_rule != null)
+					{
+						$node_name .= " - ".$relay_rule->dist_node()->name;
+					}
+				}
+				
+				array_push($temparray,array("remarks"=>$node_name,
 											"server"=>$node->server,
 											"server_port"=>$user->port,
 											"method"=>($node->custom_method==1?$user->method:$node->method),
 											"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
 											"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
-											"remarks_base64"=>base64_encode($node->name),
+											"remarks_base64"=>base64_encode($node_name),
 											"password"=>$user->passwd,
 											"tcp_over_udp"=>false,
 											"udp_over_tcp"=>false,
@@ -293,67 +355,6 @@ class LinkController extends BaseController
 											"obfs_udp"=>false,
 											"enable"=>true));
 											
-				
-				foreach($relay_rules as $relay_rule)
-				{
-					if(!($relay_rule->dist_node_id == $node->id && $relay_rule->port == $user->port))
-					{
-						continue;
-					}
-					
-					if($relay_rule->source_node_id == 0)
-					{
-						foreach($relay_nodes as $relay_node)
-						{
-							if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $relay_node->id))
-							{
-								continue;
-							}
-							
-							array_push($temparray,array("remarks"=>$node->name." - ".$relay_node->name,
-														"server"=>$relay_node->server,
-														"server_port"=>$user->port,
-														"method"=>($node->custom_method==1?$user->method:$node->method),
-														"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
-														"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
-														"remarks_base64"=>base64_encode($node->name." - ".$relay_node->name),
-														"password"=>$user->passwd,
-														"tcp_over_udp"=>false,
-														"udp_over_tcp"=>false,
-														"group"=>Config::get('appName'),
-														"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
-														"obfs_udp"=>false,
-														"enable"=>true));
-						}
-					}
-					else
-					{
-						$relay_node = $relay_rule->Source_Node();
-						
-						if($relay_node != NULL)
-						{
-							if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $relay_node->id))
-							{
-								continue;
-							}
-							
-							array_push($temparray,array("remarks"=>$node->name." - ".$relay_node->name,
-														"server"=>$relay_node->server,
-														"server_port"=>$user->port,
-														"method"=>($node->custom_method==1?$user->method:$node->method),
-														"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
-														"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
-														"remarks_base64"=>base64_encode($node->name." - ".$relay_node->name),
-														"password"=>$user->passwd,
-														"tcp_over_udp"=>false,
-														"udp_over_tcp"=>false,
-														"group"=>Config::get('appName'),
-														"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
-														"obfs_udp"=>false,
-														"enable"=>true));
-						}
-					}
-				}
 			}
 			
 			if($node->custom_rss == 1 && $without_mu == 0)
@@ -372,14 +373,26 @@ class LinkController extends BaseController
 						$mu_user->protocol_param = $user->id.":".$user->passwd;
 					}
 					
-					array_push($temparray,array("remarks"=>$node->name."- ".$mu_node->server." 端口单端口多用户",
+					$node_name = $node->name;
+					
+					if($node->sort == 10 && $mu_user->is_multi_user != 2)
+					{
+						$relay_rule = Tools::pick_out_relay_rule($node->id, $mu_user->port, $relay_rules);
+						
+						if($relay_rule != null)
+						{
+							$node_name .= " - ".$relay_rule->dist_node()->name;
+						}
+					}
+					
+					array_push($temparray,array("remarks"=>$node_name."- ".$mu_node->server." 端口单端口多用户",
 												"server"=>$node->server,
 												"server_port"=>$mu_user->port,
 												"method"=>$mu_user->method,
 												"group"=>Config::get('appName'),
 												"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
 												"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
-												"remarks_base64"=>base64_encode($node->name."- ".$mu_node->server." 端口单端口多用户"),
+												"remarks_base64"=>base64_encode($node_name."- ".$mu_node->server." 端口单端口多用户"),
 												"password"=>$mu_user->passwd,
 												"tcp_over_udp"=>false,
 												"udp_over_tcp"=>false,
@@ -388,150 +401,14 @@ class LinkController extends BaseController
 												"obfs_udp"=>false,
 												"enable"=>true));
 												
-					foreach($relay_rules as $relay_rule)
-					{
-						if(!($relay_rule->dist_node_id == $node->id && $relay_rule->port == $mu_user->port))
-						{
-							continue;
-						}
-							
-						if($relay_rule->source_node_id == 0)
-						{
-							foreach($relay_nodes as $relay_node)
-							{
-								if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $relay_node->id))
-								{
-									continue;
-								}
-								
-								array_push($temparray,array("remarks"=>$node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name,
-															"server"=>$relay_node->server,
-															"server_port"=>$mu_user->port,
-															"method"=>$mu_user->method,
-															"group"=>Config::get('appName'),
-															"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
-															"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
-															"remarks_base64"=>base64_encode($node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name),
-															"password"=>$mu_user->passwd,
-															"tcp_over_udp"=>false,
-															"udp_over_tcp"=>false,
-															"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
-															"protocolparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
-															"obfs_udp"=>false,
-															"enable"=>true));
-							}
-						}
-						else
-						{
-							$relay_node = $relay_rule->Source_Node();
-							
-							if($relay_node != NULL)
-							{
-								if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $relay_node->id))
-								{
-									continue;
-								}
-								
-								array_push($temparray,array("remarks"=>$node->name." - ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name,
-															"server"=>$relay_node->server,
-															"server_port"=>$mu_user->port,
-															"method"=>$mu_user->method,
-															"group"=>Config::get('appName'),
-															"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
-															"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
-															"remarks_base64"=>base64_encode($node->name."- ".$mu_node->server." 端口单端口多用户 - ".$relay_node->name),
-															"password"=>$mu_user->passwd,
-															"tcp_over_udp"=>false,
-															"udp_over_tcp"=>false,
-															"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
-															"protocolparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
-															"obfs_udp"=>false,
-															"enable"=>true));
-							}
-						}
-					}
 				}
 			}
 		}
-		
-		
-		foreach($relay_nodes as $node)
-		{
-			$rules = Relay::where(
-				function ($query) use ($node){
-					$query->Where("source_node_id","=",$node->id)
-						->orWhere("source_node_id","=",0);
-				}
-			)->where('port', $user->port)->where('user_id', $user->id)->first();
-			if($rules == NULL)
-			{
-				array_push($temparray,array("remarks"=>$node->name,
-											"server"=>$node->server,
-											"server_port"=>$user->port,
-											"method"=>($node->custom_method==1?$user->method:$node->method),
-											"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
-											"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
-											"remarks_base64"=>base64_encode($node->name),
-											"password"=>$user->passwd,
-											"tcp_over_udp"=>false,
-											"udp_over_tcp"=>false,
-											"group"=>Config::get('appName'),
-											"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
-											"obfs_udp"=>false,
-											"enable"=>true));
-			}
-			
-			if($node->custom_rss == 1&& $without_mu == 0)
-			{
-				foreach($mu_nodes as $mu_node)
-				{
-					$mu_user = User::where('port','=',$mu_node->server)->first();
-					if($mu_user->is_multi_user == 1)
-					{
-						$mu_user->obfs_param = $user->getMuMd5();
-						$mu_user->protocol_param = $user->id.":".$user->passwd;
-					}
-					else
-					{
-						$mu_user->obfs_param = "";
-						$mu_user->protocol_param = $user->id.":".$user->passwd;
-					}
-					
-					$rules = Relay::where(
-						function ($query) use ($node){
-							$query->Where("source_node_id","=",$node->id)
-								->orWhere("source_node_id","=",0);
-						}
-					)->where('port', $mu_user->port)->where('user_id', $user->id)->first();
-					if($rules == NULL)
-					{
-						array_push($temparray,array("remarks"=>$node->name."- ".$mu_node->server." 端口单端口多用户",
-													"server"=>$node->server,
-													"server_port"=>$mu_user->port,
-													"method"=>$mu_user->method,
-													"group"=>Config::get('appName'),
-													"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
-													"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
-													"remarks_base64"=>base64_encode($node->name."- ".$mu_node->server." 端口单端口多用户"),
-													"password"=>$mu_user->passwd,
-													"tcp_over_udp"=>false,
-													"udp_over_tcp"=>false,
-													"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
-													"protocolparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
-													"obfs_udp"=>false,
-													"enable"=>true));
-												
-					}
-					
-				}
-			}
-		}
-		
 		
 		
 		$json["configs"]=$temparray;
-        return json_encode($json,JSON_PRETTY_PRINT);
-    }
+		return json_encode($json,JSON_PRETTY_PRINT);
+	}
 	
 	
 	public static function GetIosConf($nodes,$user){
@@ -935,7 +812,7 @@ GEOIP,CN,DIRECT
 
 FINAL,Proxy';
 		
-    }
+	}
 	
 	private static function GetSurge($passwd,$method,$server,$port,$defined)
 	{
@@ -1982,6 +1859,92 @@ FINAL,Proxy';
 	  return $pac_content;  
 	}  
 	
+	public static function GetRouter($nodes,$user,$without_mu = 0){
+		$bash = '#!/bin/sh'."\n";
+		$bash .= 'export PATH=\'/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin\''."\n";
+		$bash .= 'export LD_LIBRARY_PATH=/lib:/opt/lib'."\n";
+		$bash .= 'nvram set ss_type=1'."\n";
+		
+		$count = 0;
+		
+		$mu_nodes = Node::where('sort',9)->where('node_class','<=',$user->class)->where("type","1")->where(
+			function ($query) use ($user) {
+				$query->where("node_group","=",$user->node_group)
+					->orWhere("node_group","=",0);
+			}
+		)->get();
+		
+		$relay_rules = Relay::where('user_id', $user->id)->where('user_id', 0)->orderBy('id', 'asc')->get();
+		
+		foreach($nodes as $node)
+		{
+			if($node->mu_only == 0)
+			{
+				$node_name = $node->name;
+				
+				if($node->sort == 10)
+				{
+					$relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
+					
+					if($relay_rule != null)
+					{
+						$node_name .= " - ".$relay_rule->dist_node()->name;
+					}
+				}
+				
+				$bash .= 'nvram set rt_ss_name_x'.$count.'="'.$node_name."\"\n";
+				$bash .= 'nvram set rt_ss_port_x'.$count.'='.$user->port."\n";
+				$bash .= 'nvram set rt_ss_password_x'.$count.'="'.$user->passwd."\"\n";
+				$bash .= 'nvram set rt_ss_server_x'.$count.'='.$node->server."\n";
+				$bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain"))." ".((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?($user->obfs_param == NULL || $user->obfs_param == "" ?  ""  : "-g ".$user->obfs_param):"")." -O ".str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin"))."\"\n";
+				$bash .= 'nvram set rt_ss_method_x'.$count.'='.($node->custom_method==1?$user->method:$node->method)."\n";
+				$count += 1;
+			}
+			
+			if($node->custom_rss == 1 && $without_mu == 0)
+			{
+				foreach($mu_nodes as $mu_node)
+				{
+					$mu_user = User::where('port','=',$mu_node->server)->first();
+					if($mu_user->is_multi_user == 1)
+					{
+						$mu_user->obfs_param = $user->getMuMd5();
+						$mu_user->protocol_param = $user->id.":".$user->passwd;
+					}
+					else
+					{
+						$mu_user->obfs_param = "";
+						$mu_user->protocol_param = $user->id.":".$user->passwd;
+					}
+					
+					$node_name = $node->name;
+					
+					if($node->sort == 10 && $mu_user->is_multi_user != 2)
+					{
+						$relay_rule = Tools::pick_out_relay_rule($node->id, $mu_user->port, $relay_rules);
+						
+						if($relay_rule != null)
+						{
+							$node_name .= " - ".$relay_rule->dist_node()->name;
+						}
+					}
+					
+					$bash .= 'nvram set rt_ss_name_x'.$count.'="'.$node_name." - ".$mu_node->server." 端口单端口多用户"."\"\n";
+					$bash .= 'nvram set rt_ss_port_x'.$count.'='.$mu_user->port."\n";
+					$bash .= 'nvram set rt_ss_password_x'.$count.'="'.$mu_user->passwd."\"\n";
+					$bash .= 'nvram set rt_ss_server_x'.$count.'='.$node->server."\n";
+					$bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain"))." ".((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->obfs_param == NULL || $mu_user->obfs_param == "" ?  ""  : "-g ".$mu_user->obfs_param):"")." -O ".str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin"))." ".((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->protocol_param == NULL || $mu_user->protocol_param == "" ?  ""  : "-G ".$mu_user->protocol_param):"")."\"\n";
+					$bash .= 'nvram set rt_ss_method_x'.$count.'='.($node->custom_method==1?$mu_user->method:$node->method)."\n";
+					$count += 1;
+				}
+			}
+		}
+		
+		
+		$bash .= "nvram set rt_ssnum_x=".$count."\n";
+		
+		return $bash;
+	}
 
 
 

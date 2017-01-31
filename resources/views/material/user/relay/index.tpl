@@ -42,8 +42,8 @@
 							{foreach $rules as $rule}
 								<tr>
 								<td>
-									<a class="btn btn-brand" href="/user/relay/{$rule->id}/edit">编辑</a>
-									<a class="btn btn-brand-accent" id="delete" value="{$rule->id}" href="javascript:void(0);" onClick="delete_modal_show('{$rule->id}')">删除</a>
+									<a class="btn btn-brand" {if $rule->user_id == 0}disabled{else}href="/user/relay/{$rule->id}/edit"{/if}>编辑</a>
+									<a class="btn btn-brand-accent" id="delete" value="{$rule->id}" {if $rule->user_id == 0}disabled{else}href="javascript:void(0);" onClick="delete_modal_show('{$rule->id}')"{/if}>删除</a>
 								</td>
 								<td>#{$rule->id}</td>
 								{if $rule->source_node_id == 0}
@@ -52,7 +52,7 @@
 									<td>{$rule->Source_Node()->name}</td>
 								{/if}
 								<td>{$rule->Dist_Node()->name}</td>
-								<td>{$rule->port}</td>
+								<td>{if $rule->port == 0}所有端口{else}{$rule->port}{/if}</td>
 								<td>{$rule->priority}</td>
 						        </tr>
 						    {/foreach}
@@ -86,7 +86,7 @@
 					
 					{include file='dialog.tpl'}
 
-							
+					
 			</div>
 			
 			

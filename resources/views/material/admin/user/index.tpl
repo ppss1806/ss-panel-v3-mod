@@ -112,7 +112,7 @@
 								{$user->im_value}
 								{/if}</th>
 								<th>{$user->reg_date}<br>{$user->reg_ip}　{$regloc[$user->id]}</th>
-                                <th>{$user->ref_by} {$user->ref_by_user()->user_name}</th>
+                                <th>{$user->ref_by} {if $user->ref_by_user() != null}{$user->ref_by_user()->user_name}{else}此用户已注销。{/if}</th>
                                 
                             </tr>
                             {/foreach}

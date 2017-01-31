@@ -9,9 +9,9 @@ use App\Services\Config;
 Class Duoshuo
 {
 
-    static function Add($user)
-    {
-        if(Config::get('duoshuo_shortname')!='')
+	static function Add($user)
+	{
+		if(Config::get('duoshuo_shortname')!='')
 		{
 			if($user->is_admin==1)
 			{
@@ -45,6 +45,6 @@ Class Duoshuo
 			$sock->query('/users/import.json',$param);
 			
 		}
-    }
+	}
 	
 }

@@ -24,9 +24,6 @@
 		<div class="container">
 			<section class="content-inner margin-top-no">
 				<div class="row">
-				
-					
-					
 					<div class="col-lg-12 col-md-12">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
@@ -49,12 +46,12 @@
 						</div>
 					</div>
 					
-					{if $pmw!='0'}
+					{if $pmw!=''}
 					<div class="col-lg-12 col-md-12">
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
-									<div class="card-inner" style="height:{$pmw_height}">
+									<div class="card-inner">
 										{$pmw}
 									</div>
 									
@@ -141,34 +138,34 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("#code-update").click(function () {
-            $.ajax({
-                type: "POST",
-                url: "code",
-                dataType: "json",
-                data: {
-                    code: $("#code").val()
-                },
-                success: function (data) {
-                    if (data.ret) {
-                        $("#result").modal();
+	$(document).ready(function () {
+		$("#code-update").click(function () {
+			$.ajax({
+				type: "POST",
+				url: "code",
+				dataType: "json",
+				data: {
+					code: $("#code").val()
+				},
+				success: function (data) {
+					if (data.ret) {
+						$("#result").modal();
 						$("#msg").html(data.msg);
 						window.setTimeout("location.href=window.location.href", {$config['jump_delay']});
-                    } else {
-                        $("#result").modal();
+					} else {
+						$("#result").modal();
 						$("#msg").html(data.msg);
 						window.setTimeout("location.href=window.location.href", {$config['jump_delay']});
-                    }
-                },
-                error: function (jqXHR) {
+					}
+				},
+				error: function (jqXHR) {
 					$("#result").modal();
 					$("#msg").html("发生错误：" + jqXHR.status);
-                }
-            })
-        })
-
-	
+				}
+			})
+		})
+		
+		
 	timestamp = {time()}; 
 		
 		

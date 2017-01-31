@@ -3,7 +3,7 @@
     "slim/slim": "*",
     "slim/twig-view": "*",
     "slim/csrf": "*",
-    "smarty/smarty": "~3.1",
+    "smarty/smarty": "3.*",
     "mailgun/mailgun-php": "~1.7.2",
     "predis/predis": "~1.0",
     "phpmailer/phpmailer": "~5.2",
@@ -18,7 +18,9 @@
     "paymentwall/paymentwall-php": "^2.1",
     "telegram-bot/api": "^2.2",
     "illuminate/pagination": "5.2.*",
-    "illuminate/database": "5.2.*"
+    "illuminate/database": "5.2.*",
+    "libern/qr-code-reader": "^1.0",
+    "sendgrid/sendgrid": "^5.1"
   },
   "autoload": {
     "classmap": [

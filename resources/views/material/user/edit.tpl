@@ -390,8 +390,34 @@
 								</div>
 							</div>
 						</div>
-					</div>
+						
+						{if $config['enable_telegram'] == 'true'}
+						<div class="card margin-bottom-no">
+							<div class="card-main">
+								<div class="card-inner">
+									<div class="card-inner">
+										<p class="card-heading">Telegram 绑定</p>
+										<p>添加机器人账号 <a href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a>，拍下下面这张二维码发给它。</p>
+										<div class="form-group form-group-label">
+											<div class="text-center">
+												<div id="telegram-qr"></div>
+												{if $user->telegram_id != 0}当前绑定：<a href="https://t.me/{$user->im_value}">@{$user->im_value}</a>{/if}
+											</div>
+										</div>
 
+									</div>
+									<div class="card-action">
+										<div class="card-action-btn pull-left">
+											<a class="btn btn-brand-accent btn-flat waves-attach" href="/user/telegram_reset" ><span class="icon">format_color_reset</span>&nbsp;解绑</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{/if}
+					</div>
+					
+					
 
 
 					{include file='dialog.tpl'}
@@ -502,6 +528,13 @@
 	jQuery('#ga-qr').qrcode({
 		"text": ga_qrcode
 	});
+	
+	{if $config['enable_telegram'] == 'true'}
+	var telegram_qrcode = 'mod://bind/{$bind_token}';
+	jQuery('#telegram-qr').qrcode({
+		"text": telegram_qrcode
+	});
+	{/if}
 </script>
 
 

@@ -49,7 +49,7 @@
 								</td>
 								<td>#{$rule->id}</td>
 								<td>{$rule->user_id}</td>
-								<td>{$rule->User()->user_name}</td>
+								<td>{if $rule->user_id == 0}全体用户{else}{$rule->User()->user_name}{/if}</td>
 								{if $rule->source_node_id == 0}
 									<td>所有节点</td>
 								{else}

@@ -11,6 +11,7 @@ use App\Utils\Hash;
 use App\Models\InviteCode;
 use App\Services\Config;
 use App\Utils\GA;
+use App\Models\Link;
 
 
 class User extends Model
@@ -208,6 +209,12 @@ class User extends Model
     {
         $uid = $this->attributes['ref_by'];
         return User::where('id', $uid)->first();
+    }
+    
+    public function clean_link()
+    {
+        $uid = $this->attributes['id'];
+        Link::where('userid', $uid)->delete();
     }
 
 }

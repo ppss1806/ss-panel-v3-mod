@@ -160,7 +160,7 @@ class Tools
 		
 		foreach($ruleset as $single_rule)
 		{
-			if($rule->port == $single_rule->port && ($node_id == $single_rule->source_node_id || $single_rule->source_node_id == 0) && (($rule->id != $single_rule->id && $rule->priority < $single_rule->priority)||($rule->id < $single_rule->id && $rule->priority == $single_rule->priority)))
+			if(($rule->port == $single_rule->port || $single_rule->port == 0) && ($node_id == $single_rule->source_node_id || $single_rule->source_node_id == 0) && (($rule->id != $single_rule->id && $rule->priority < $single_rule->priority) || ($rule->id < $single_rule->id && $rule->priority == $single_rule->priority)))
 			{
 				$cur_id = $single_rule->id;
 			}
@@ -172,6 +172,55 @@ class Tools
 		}
 		
 		return True;
+	}
+	
+	public static function pick_out_relay_rule($relay_node_id, $port, $ruleset)
+	{
+		
+		/* 
+		for id in self.relay_rule_list:
+			if ((self.relay_rule_list[id]['user_id'] == user_id or self.relay_rule_list[id]['user_id'] == 0) or row['is_multi_user'] != 0) and (self.relay_rule_list[id]['port'] == 0 or self.relay_rule_list[id]['port'] == port):
+				has_higher_priority = False
+				for priority_id in self.relay_rule_list:
+					if ((self.relay_rule_list[priority_id]['priority'] > self.relay_rule_list[id]['priority'] and self.relay_rule_list[id]['id'] != self.relay_rule_list[priority_id]['id']) or (self.relay_rule_list[priority_id]['priority'] == self.relay_rule_list[id]['priority'] and self.relay_rule_list[id]['id'] > self.relay_rule_list[priority_id]['id'])) and (self.relay_rule_list[id]['user_id'] == self.relay_rule_list[priority_id]['user_id'] or self.relay_rule_list[priority_id]['user_id'] == 0) and (self.relay_rule_list[id]['port'] == self.relay_rule_list[priority_id]['port'] or self.relay_rule_list[priority_id]['port'] == 0):
+						has_higher_priority = True
+						continue
+
+				if has_higher_priority:
+					continue
+
+			temp_relay_rules[id] = self.relay_rule_list[id] 
+		*/
+		
+		$match_rule = null;
+		
+		foreach($ruleset as $single_rule)
+		{
+			if(($single_rule->port == $port || $single_rule->port == 0) && ($single_rule->source_node_id == 0 || $single_rule->source_node_id == $relay_node_id))
+			{
+				$has_higher_priority = False;
+				foreach($ruleset as $priority_rule)
+				{
+					if(($priority_rule->port == $port || $priority_rule->port == 0) && ($priority_rule->source_node_id == 0 || $priority_rule->source_node_id == $relay_node_id))
+					{
+						if(($priority_rule->priority > $single_rule->priority && $priority_rule->id != $single_rule->id) || ($priority_rule->priority == $single_rule->priority && $priority_rule->id < $single_rule->id))
+						{
+							$has_higher_priority = True;
+							continue;
+						}
+					}
+				}
+				
+				if($has_higher_priority)
+				{
+					continue;
+				}
+				
+				$match_rule = $single_rule;
+			}
+		}
+		
+		return $match_rule;
 	}
 	
 }

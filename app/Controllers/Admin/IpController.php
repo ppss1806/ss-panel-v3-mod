@@ -105,35 +105,26 @@ class IpController extends AdminController
     }
 	
 	public function doUnblock($request, $response, $args)
-    {
-        $ip = $request->getParam('ip');
+	{
+		$ip = $request->getParam('ip');
 		
 		$user = Auth::getUser();
-		$BIP = BlockIp::where("ip",$ip)->first();
-        if ($BIP == NULL) {
-            $res['ret'] = 0;
-            $res['msg'] = "没有被封";
-            return $response->getBody()->write(json_encode($res));
-        }
-		
 		$BIP = BlockIp::where("ip",$ip)->get();
 		foreach($BIP as $bi)
 		{
 			$bi->delete();
-		
-			$UIP = new UnblockIp();
-			$UIP->userid = $user->id;
-			$UIP->ip = $ip;
-			$UIP->datetime = time();
-			$UIP->save();
 		}
 		
-        
-
+		$UIP = new UnblockIp();
+		$UIP->userid = $user->id;
+		$UIP->ip = $ip;
+		$UIP->datetime = time();
+		$UIP->save();
 		
-        $res['ret'] = 1;
-        $res['msg'] = "解封 ".$ip." 成功";
-        return $this->echoJson($response, $res);
-    }
+		
+		$res['ret'] = 1;
+		$res['msg'] = "发送解封命令解封 ".$ip." 成功";
+		return $this->echoJson($response, $res);
+	}
 
 }

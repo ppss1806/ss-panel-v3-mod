@@ -54,17 +54,9 @@ class RelayController extends AdminController
 			return $response->getBody()->write(json_encode($rs));
 		}
 		
-		$user = User::where('id', $user_id)->first();
-		if($user == NULL)
-		{
-			$rs['ret'] = 0;
-			$rs['msg'] = "你们还要提高自己的姿势水平啊";
-			return $response->getBody()->write(json_encode($rs));
-		}
-		
 		
 		$rule = new Relay();
-		$rule->user_id = $user->id;
+		$rule->user_id = $user_id;
 		$rule->dist_node_id = $dist_node_id;
 		$rule->dist_ip = $dist_node->node_ip;
 		$rule->source_node_id = $source_node_id;
@@ -131,16 +123,8 @@ class RelayController extends AdminController
 			return $response->getBody()->write(json_encode($rs));
 		}
 		
-		$user = User::where('id', $user_id)->first();
-		if($user == NULL)
-		{
-			$rs['ret'] = 0;
-			$rs['msg'] = "你们还要提高自己的姿势水平啊";
-			return $response->getBody()->write(json_encode($rs));
-		}
 		
-		
-		$rule->user_id = $user->id;
+		$rule->user_id = $user_id;
 		$rule->dist_node_id = $dist_node_id;
 		$rule->dist_ip = $dist_node->node_ip;
 		$rule->source_node_id = $source_node_id;

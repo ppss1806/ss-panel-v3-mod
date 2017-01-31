@@ -10,12 +10,12 @@ namespace App\Command;
 use App\Models\User;
 use App\Utils\Hash,App\Utils\Tools,App\Services\Config;
 
-use App\Utils\GA;
+use App\Utils\GA,App\Utils\QRcode;
 
 class XCat
 {
 
-    	public $argv;
+	public $argv;
 
 	public function __construct($argv)
 	{
@@ -69,14 +69,15 @@ class XCat
 				return $this->initdownload();
 			case("updatedownload"):
 				return Job::updatedownload();
-		    	default:
-		        	return $this->defaultAction();
+			default:
+				return $this->defaultAction();
 		}
 	}
 
 	public function defaultAction()
 	{
 		echo "Memo";
+		echo QRcode::decode("https://api.telegram.org/file/bot262913199:AAHK-fQ9Ijio3UyzplrhLnMo8XVngExsfKM/photo/file_258.jpg");
 	}
 
 	public function install()

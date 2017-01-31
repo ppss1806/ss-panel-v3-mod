@@ -16,7 +16,7 @@ class RelayController extends UserController
 		if (isset($request->getQueryParams()["page"])) {
 			$pageNum = $request->getQueryParams()["page"];
 		}
-		$logs = Relay::where('user_id', $user->id)->paginate(15, ['*'], 'page', $pageNum);
+		$logs = Relay::where('user_id', $user->id)->orwhere('user_id', 0)->paginate(15, ['*'], 'page', $pageNum);
 		$logs->setPath('/user/relay');
 		return $this->view()->assign('rules',$logs)->display('user/relay/index.tpl');
 	}
@@ -113,7 +113,7 @@ class RelayController extends UserController
 		$rule->dist_ip = $dist_node->node_ip;
 		$rule->source_node_id = $source_node_id;
 		$rule->port = $port;
-		$rule->priority = $priority;
+		$rule->priority = min($priority, 99998);
 
 		if(!$rule->save()){
 			$rs['ret'] = 0;
@@ -234,7 +234,7 @@ class RelayController extends UserController
 		$rule->dist_ip = $dist_node->node_ip;
 		$rule->source_node_id = $source_node_id;
 		$rule->port = $port;
-		$rule->priority = $priority;
+		$rule->priority = min($priority, 99998);
 		
 		
 		if(!$rule->save()){

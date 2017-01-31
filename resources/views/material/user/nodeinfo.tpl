@@ -154,10 +154,6 @@
 											
 														<div class="col-md-12">
 															<p>您要先安装 surge 。</p>
-															以下安装方法来源于互联网。
-															<p>1、电脑上安装 PP 助手 <a href="http://pro.25pp.com"/>http://pro.25pp.com</a>。</p>
-															<p>2、然后 手机连电脑，然后信任 PP助手。</p>
-															<p>3、下载 surge(<a href="/downloads/Surge_pp.ipa">Surge_pp.ipa</a>)，用 PP 助手安装。</p>
 															<p>配置的话，直接下载生成好的配置文件，然后在 APP 里添加设置时选择 Download configuration from URL ，把地址粘贴进去添加。</p>
 															<p>第一种分流方式，按照域名的文件下载地址，点击直接下载：<a href="{$link1}">{$link1}</a></p>
 

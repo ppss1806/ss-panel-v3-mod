@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d0188d4caa349997db80cc23bb6c0301",
-    "content-hash": "64ca5f5315b2b3ed224ac51805c7d729",
+    "hash": "8078d1cb9f5b716b16a9d63604a76880",
+    "content-hash": "45f0aec1cf1402bf2dd7b5bd635d372f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.20.16",
+            "version": "3.20.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c10322e883ee4c35058798dfbb860e1397f46d99"
+                "reference": "8725e67cb77b057b55596b4468ce9a1a95c5fe96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c10322e883ee4c35058798dfbb860e1397f46d99",
-                "reference": "c10322e883ee4c35058798dfbb860e1397f46d99",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8725e67cb77b057b55596b4468ce9a1a95c5fe96",
+                "reference": "8725e67cb77b057b55596b4468ce9a1a95c5fe96",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-01-16 23:35:48"
+            "time": "2016-12-30 00:41:36"
         },
         {
             "name": "cloudxns/cloud-xns-api-sdk-php",
@@ -462,6 +462,7 @@
                 "rest",
                 "web service"
             ],
+            "abandoned": "guzzlehttp/guzzle",
             "time": "2015-03-18 18:23:50"
         },
         {
@@ -917,31 +918,28 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v5.2.45",
+            "version": "v5.2.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "510230ab62a7d85dc70203f4fdca6fb71a19e08a"
+                "reference": "6749fab3f3d38d8b15427536a8e7bbdc57497c9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/510230ab62a7d85dc70203f4fdca6fb71a19e08a",
-                "reference": "510230ab62a7d85dc70203f4fdca6fb71a19e08a",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/6749fab3f3d38d8b15427536a8e7bbdc57497c9e",
+                "reference": "6749fab3f3d38d8b15427536a8e7bbdc57497c9e",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "~1.0",
                 "ext-mbstring": "*",
                 "illuminate/contracts": "5.2.*",
-                "paragonie/random_compat": "~1.4",
                 "php": ">=5.5.9"
-            },
-            "replace": {
-                "tightenco/collect": "self.version"
             },
             "suggest": {
                 "illuminate/filesystem": "Required to use the composer class (5.2.*).",
                 "jeremeamia/superclosure": "Required to be able to serialize closures (~2.2).",
+                "paragonie/random_compat": "Provides a compatible interface like PHP7's random_bytes() in PHP 5 projects (~1.1).",
                 "symfony/polyfill-php56": "Required to use the hash_equals function on PHP 5.5 (~1.0).",
                 "symfony/process": "Required to use the composer class (2.8.*|3.0.*).",
                 "symfony/var-dumper": "Improves the dd function (2.8.*|3.0.*)."
@@ -967,12 +965,12 @@
             "authors": [
                 {
                     "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
+                    "email": "taylorotwell@gmail.com"
                 }
             ],
             "description": "The Illuminate Support package.",
             "homepage": "http://laravel.com",
-            "time": "2016-08-05 14:49:58"
+            "time": "2016-02-22 20:29:02"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -1015,6 +1013,48 @@
                 "password"
             ],
             "time": "2014-11-20 16:49:30"
+        },
+        {
+            "name": "libern/qr-code-reader",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/libern/qr-code-reader.git",
+                "reference": "7f922162865320c76848a763b1a203c271b3975e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/libern/qr-code-reader/zipball/7f922162865320c76848a763b1a203c271b3975e",
+                "reference": "7f922162865320c76848a763b1a203c271b3975e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Libern\\QRCodeReader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Libern Lin",
+                    "email": "libernlin@gmail.com"
+                }
+            ],
+            "description": "Simple PHP QR Code Reader / Decoder",
+            "homepage": "https://github.com/libern/qr-code-reader",
+            "keywords": [
+                "laravel",
+                "qr code decoder",
+                "qr code reader"
+            ],
+            "time": "2017-01-26 11:30:53"
         },
         {
             "name": "mailgun/mailgun-php",
@@ -1113,32 +1153,26 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.22.1",
+            "version": "1.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc"
+                "reference": "7b08ec6f75791e130012f206e3f7b0e76e18e3d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc",
-                "reference": "7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7b08ec6f75791e130012f206e3f7b0e76e18e3d7",
+                "reference": "7b08ec6f75791e130012f206e3f7b0e76e18e3d7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "symfony/translation": "~2.6 || ~3.0"
+                "symfony/translation": "~2.6|~3.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2",
-                "phpunit/phpunit": "~4.0 || ~5.0"
+                "phpunit/phpunit": "~4.0|~5.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.23-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Carbon\\": "src/Carbon/"
@@ -1162,7 +1196,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2017-01-16 07:55:07"
+            "time": "2015-11-04 20:07:17"
         },
         {
             "name": "nikic/fast-route",
@@ -1209,16 +1243,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.4.1",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774"
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c7e26a21ba357863de030f0b9e701c7d04593774",
-                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
                 "shasum": ""
             },
             "require": {
@@ -1253,7 +1287,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-03-18 20:34:03"
+            "time": "2016-11-07 23:38:38"
         },
         {
             "name": "paymentwall/paymentwall-php",
@@ -1310,16 +1344,16 @@
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "v5.2.22",
+            "version": "v5.2.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "b18cb98131bd83103ccb26a888fdfe3177b8a663"
+                "reference": "1d51856b76c06fc687fcd9180efa7a0bed0d761e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/b18cb98131bd83103ccb26a888fdfe3177b8a663",
-                "reference": "b18cb98131bd83103ccb26a888fdfe3177b8a663",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/1d51856b76c06fc687fcd9180efa7a0bed0d761e",
+                "reference": "1d51856b76c06fc687fcd9180efa7a0bed0d761e",
                 "shasum": ""
             },
             "require": {
@@ -1366,7 +1400,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2017-01-09 09:33:47"
+            "time": "2016-12-28 15:35:48"
         },
         {
             "name": "pimple/pimple",
@@ -1556,6 +1590,104 @@
                 "promises"
             ],
             "time": "2016-12-22 14:09:01"
+        },
+        {
+            "name": "sendgrid/php-http-client",
+            "version": "3.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sendgrid/php-http-client.git",
+                "reference": "3c4c35eafd364ebcfdbb0a37f655417beed8ee0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sendgrid/php-http-client/zipball/3c4c35eafd364ebcfdbb0a37f655417beed8ee0f",
+                "reference": "3c4c35eafd364ebcfdbb0a37f655417beed8ee0f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SendGrid\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bernier",
+                    "email": "dx@sendgrid.com"
+                },
+                {
+                    "name": "Elmer Thomas",
+                    "email": "elmer@thinkingserious.com"
+                }
+            ],
+            "description": "HTTP REST client, simplified for PHP",
+            "homepage": "http://github.com/sendgrid/php-http-client",
+            "keywords": [
+                "api",
+                "fluent",
+                "http",
+                "rest",
+                "sendgrid"
+            ],
+            "time": "2016-11-17 22:45:31"
+        },
+        {
+            "name": "sendgrid/sendgrid",
+            "version": "5.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sendgrid/sendgrid-php.git",
+                "reference": "46f85e69ec6a36d4674e7131e442fbecdaa5d183"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sendgrid/sendgrid-php/zipball/46f85e69ec6a36d4674e7131e442fbecdaa5d183",
+                "reference": "46f85e69ec6a36d4674e7131e442fbecdaa5d183",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6",
+                "sendgrid/php-http-client": "~3.5"
+            },
+            "replace": {
+                "sendgrid/sendgrid-php": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/SendGrid.php",
+                    "lib/helpers/mail/Mail.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This library allows you to quickly and easily send emails through SendGrid using PHP.",
+            "homepage": "http://github.com/sendgrid/sendgrid-php",
+            "keywords": [
+                "email",
+                "grid",
+                "send",
+                "sendgrid"
+            ],
+            "time": "2016-11-17 23:05:01"
         },
         {
             "name": "slim/csrf",
@@ -1782,16 +1914,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.8.16",
+            "version": "v2.8.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "74877977f90fb9c3e46378d5764217c55f32df34"
+                "reference": "25c576abd4e0f212e678fe8b2bd9a9a98c7ea934"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/74877977f90fb9c3e46378d5764217c55f32df34",
-                "reference": "74877977f90fb9c3e46378d5764217c55f32df34",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/25c576abd4e0f212e678fe8b2bd9a9a98c7ea934",
+                "reference": "25c576abd4e0f212e678fe8b2bd9a9a98c7ea934",
                 "shasum": ""
             },
             "require": {
@@ -1838,20 +1970,20 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:30:24"
+            "time": "2016-10-13 01:43:15"
         },
         {
             "name": "symfony/intl",
-            "version": "v3.2.2",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "6102349d68bb6b5a1e02593714189fdf8656ab62"
+                "reference": "8050d05b9285febdcf2135bdd06678b93d64fde8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/6102349d68bb6b5a1e02593714189fdf8656ab62",
-                "reference": "6102349d68bb6b5a1e02593714189fdf8656ab62",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/8050d05b9285febdcf2135bdd06678b93d64fde8",
+                "reference": "8050d05b9285febdcf2135bdd06678b93d64fde8",
                 "shasum": ""
             },
             "require": {
@@ -1913,7 +2045,7 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2017-01-02 20:32:22"
+            "time": "2016-11-18 21:17:59"
         },
         {
             "name": "symfony/polyfill",
@@ -2004,16 +2136,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.2.2",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "6520f3d4cce604d9dd1e86cac7af954984dd9bda"
+                "reference": "5fd18eca88f4d187807a1eba083bc99feaa8635b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/6520f3d4cce604d9dd1e86cac7af954984dd9bda",
-                "reference": "6520f3d4cce604d9dd1e86cac7af954984dd9bda",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/5fd18eca88f4d187807a1eba083bc99feaa8635b",
+                "reference": "5fd18eca88f4d187807a1eba083bc99feaa8635b",
                 "shasum": ""
             },
             "require": {
@@ -2064,7 +2196,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:32:22"
+            "time": "2016-11-30 14:40:17"
         },
         {
             "name": "telegram-bot/api",
@@ -2123,16 +2255,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.31.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "ddc9e3e20ee9c0b6908f401ac8353635b750eca7"
+                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ddc9e3e20ee9c0b6908f401ac8353635b750eca7",
-                "reference": "ddc9e3e20ee9c0b6908f401ac8353635b750eca7",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/c6ff71094fde15d12398eaba029434b013dc5e59",
+                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59",
                 "shasum": ""
             },
             "require": {
@@ -2140,12 +2272,12 @@
             },
             "require-dev": {
                 "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.2"
+                "symfony/phpunit-bridge": "~3.2@dev"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.31-dev"
+                    "dev-master": "1.30-dev"
                 }
             },
             "autoload": {
@@ -2180,7 +2312,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-01-11 19:36:15"
+            "time": "2016-12-23 11:06:22"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -2361,26 +2493,26 @@
         },
         {
             "name": "zeuxisoo/slim-whoops",
-            "version": "0.5.2",
+            "version": "0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zeuxisoo/php-slim-whoops.git",
-                "reference": "888bf2f6403ee9d7fac22fe52a8b4baacea72ef6"
+                "reference": "58fdbf79a55f4b0bbbcba81b55fb8e7a7336cd3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zeuxisoo/php-slim-whoops/zipball/888bf2f6403ee9d7fac22fe52a8b4baacea72ef6",
-                "reference": "888bf2f6403ee9d7fac22fe52a8b4baacea72ef6",
+                "url": "https://api.github.com/repos/zeuxisoo/php-slim-whoops/zipball/58fdbf79a55f4b0bbbcba81b55fb8e7a7336cd3a",
+                "reference": "58fdbf79a55f4b0bbbcba81b55fb8e7a7336cd3a",
                 "shasum": ""
             },
             "require": {
-                "filp/whoops": "2.1.*",
+                "filp/whoops": "2.*",
                 "php": ">=5.5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "4.8.*",
-                "slim/slim": "3.6.*",
-                "slim/twig-view": "2.1.*"
+                "slim/slim": "3.3.*",
+                "slim/twig-view": "2.*"
             },
             "type": "library",
             "autoload": {
@@ -2408,7 +2540,7 @@
                 "slim",
                 "whoops"
             ],
-            "time": "2017-01-09 05:24:59"
+            "time": "2016-04-19 03:41:06"
         }
     ],
     "packages-dev": [],

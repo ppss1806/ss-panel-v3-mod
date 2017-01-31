@@ -11,7 +11,7 @@ $System_Config['timeZone'] = 'PRC';        // RPC 天朝时间  UTC 格林时间
 $System_Config['pwdMethod'] = 'sha256';       // 密码加密   可选 md5,sha256
 $System_Config['salt'] = '';               // 密码加密用，从旧版升级请留空
 $System_Config['theme']    = 'material';   // 主题
-$System_Config['authDriver'] = 'cookie';   // 登录验证存储方式,推荐使用Redis   可选: cookie,redis
+$System_Config['authDriver'] = 'cookie';   // 登录验证存储方式 可选: cookie,redis
 $System_Config['sessionDriver'] = 'cookie';
 $System_Config['cacheDriver'] = 'cookie';
 $System_Config['tokenDriver'] = 'db';
@@ -150,15 +150,6 @@ $System_Config['code_payback']='20';
 $System_Config['reg_auto_reset_day']='0';
 $System_Config['reg_auto_reset_bandwidth']='100';
 
-
-
-#PaymentWall
-$System_Config['pmw_publickey']='';
-$System_Config['pmw_privatekey']='';
-$System_Config['pmw_widget']='m2_1';
-$System_Config['pmw_height']='350px';
-
-
 #Cloudxns
 $System_Config['cloudxns_apikey']='';#自己去 cloudxns.net 申请
 $System_Config['cloudxns_apisecret']='';
@@ -263,15 +254,9 @@ $System_Config['enable_auto_clean_unused_days']='30';
 
 #是否夹带统计代码，自己在 resources/views/{主题名} 下创建一个 analytics.tpl ，如果有必要就用 literal 界定符
 $System_Config['enable_analytics_code']='false';
-$System_Config['enable_alipay']='true';
 
 #是否启用捐赠相关功能
 $System_Config['enable_donate']='true';
-
-
-
-
-
 
 #telegram bot,是否启用
 $System_Config['enable_telegram']='false';
@@ -287,3 +272,38 @@ $System_Config['mu_suffix']='baidu.com';
 
 #多用户混淆参数表达式，%5m代表取用户特征 md5 的前五位，%id 代表用户id,%suffix 代表上面这个后缀。
 $System_Config['mu_regex']='%5m%id.%suffix';
+
+
+#图灵机器人
+$System_Config['enable_tuling']='false';
+$System_Config['tuling_apikey']='';
+$System_Config['tuling_apisecert']='';
+$System_Config['telegram_bot']='_bot';
+
+#二维码解码方式，online，qrcodereader，phpzbar
+$System_Config['telegram_qrcode']='online';
+
+# sendgrid
+$System_Config['sendgrid_key'] = '';
+$System_Config['sendgrid_sender'] = '';
+
+
+#支付系统
+
+#取值 paymentwall,zfbjk,spay,none
+$System_Config['payment_system']='none';
+
+#PaymentWall
+$System_Config['pmw_publickey']='';
+$System_Config['pmw_privatekey']='';
+$System_Config['pmw_widget']='m2_1';
+$System_Config['pmw_height']='350px';
+
+#alipay,spay
+$System_Config['alipay_id']='';
+$System_Config['alipay_key']='';
+
+#alipay,zfbjk.com
+$System_Config['zfbjk_pid']='';
+$System_Config['zfbjk_key']='';
+$System_Config['zfbjk_qrcodeurl']='https://www.zhaojin97.cn/wp-content/uploads/2016/01/630c50ab52bc139b2a33af8cc64e47ad2016010111570425541.jpg';

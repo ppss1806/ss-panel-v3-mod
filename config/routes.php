@@ -71,6 +71,7 @@ $app->get('/404', 'App\Controllers\HomeController:page404');
 $app->get('/405', 'App\Controllers\HomeController:page405');
 $app->get('/500', 'App\Controllers\HomeController:page500');
 $app->get('/pwm_pingback', 'App\Controllers\HomeController:pmw_pingback');
+$app->post('/alipay_callback', 'App\Controllers\HomeController:alipay_callback');
 $app->get('/code', 'App\Controllers\HomeController:code');
 $app->get('/tos', 'App\Controllers\HomeController:tos');
 $app->get('/staff', 'App\Controllers\HomeController:staff');
@@ -132,11 +133,13 @@ $app->group('/user', function () {
 	$this->post('/kill', 'App\Controllers\UserController:handleKill');
 	$this->get('/logout', 'App\Controllers\UserController:logout');
 	$this->get('/code', 'App\Controllers\UserController:code');
+	$this->get('/alipay', 'App\Controllers\UserController:alipay');
 	$this->get('/code_check', 'App\Controllers\UserController:code_check');
 	$this->post('/code', 'App\Controllers\UserController:codepost');
 	$this->post('/gacheck', 'App\Controllers\UserController:GaCheck');
 	$this->post('/gaset', 'App\Controllers\UserController:GaSet');
 	$this->get('/gareset', 'App\Controllers\UserController:GaReset');
+	$this->get('/telegram_reset', 'App\Controllers\UserController:telegram_reset');
 	$this->post('/resetport', 'App\Controllers\UserController:ResetPort');
 	$this->post('/pacset', 'App\Controllers\UserController:PacSet');
 	$this->get('/getpcconf', 'App\Controllers\UserController:GetPcConf');
@@ -150,7 +153,9 @@ $app->group('/user', function () {
 // Auth
 $app->group('/auth', function () {
 	$this->get('/login', 'App\Controllers\AuthController:login');
+	$this->get('/qrcode_check', 'App\Controllers\AuthController:qrcode_check');
 	$this->post('/login', 'App\Controllers\AuthController:loginHandle');
+	$this->post('/qrcode_login', 'App\Controllers\AuthController:qrcode_loginHandle');
 	$this->get('/register', 'App\Controllers\AuthController:register');
 	$this->post('/register', 'App\Controllers\AuthController:registerHandle');
 	$this->post('/send', 'App\Controllers\AuthController:sendVerify');
