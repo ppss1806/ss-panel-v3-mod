@@ -182,6 +182,7 @@ return '
 						exit("success");
 					}
 					
+					$trade->tradeno = $trade_no;
 					$trade->status = 1;
 					$trade->save();
 
@@ -426,8 +427,9 @@ return '
 				$pl = new Paylist();
 				$pl->userid=$title;
 				$pl->tradeno=$tradeNo;
-				$pl->money=$Money;
-				$pl->paytime=date("Y-m-d H:i:s");
+				$pl->total=$Money;
+				$pl->datetime=time();
+				$pl->status=1;
 				$pl->save();
 				$user->money=$user->money+$Money;
 				$user->save();

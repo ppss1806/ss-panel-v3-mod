@@ -276,8 +276,10 @@ $(document).ready(function () {
 				}
 			},
 			error: function (jqXHR) {
-				$("#result").modal();
-				$("#msg").html("发生错误：" + jqXHR.status);
+				if(jqXHR.status != 200 && jqXHR.status != 0) {}
+					$("#result").modal();
+					$("#msg").html("发生错误：" + jqXHR.status);
+				}
 			}
 		});
 		tid = setTimeout(f, 1000); //循环调用触发setTimeout
