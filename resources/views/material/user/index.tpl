@@ -246,7 +246,7 @@
 
 {include file='user/footer.tpl'}
 
-<script src="theme/material/js/shake.js/shake.js"></script>
+<script src="/theme/material/js/shake.js/shake.js"></script>
 
 
 <script>
