@@ -21,7 +21,7 @@ $System_Config['tokenDriver'] = 'db';
 // mu key 用于校验ss-go mu的请求,半角逗号分隔
 $System_Config['muKey'] = '';
 // 邮件
-$System_Config['mailDriver'] = 'mailgun';   // mailgun or smtp
+$System_Config['mailDriver'] = 'mailgun';   // mailgun or smtp or sendgrid
 
 // 用户签到设置
 $System_Config['checkinMin'] = '1989';       // 签到最少流量 单位MB
