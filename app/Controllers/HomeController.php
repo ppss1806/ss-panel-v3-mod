@@ -104,7 +104,7 @@ class HomeController extends BaseController
 									$user = User::where('id', $uid)->first();
 									$user->telegram_id = $message->getFrom()->getId();
 									$user->im_type = 3;
-									$user->im_type = $message->getFrom()->getUsername();
+									$user->im_value = $message->getFrom()->getUsername();
 									$user->save();
 									$bot->sendMessage($message->getChat()->getId(), "绑定成功。邮箱：".$user->email);
 								}
