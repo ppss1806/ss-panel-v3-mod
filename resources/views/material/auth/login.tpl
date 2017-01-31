@@ -276,7 +276,7 @@ $(document).ready(function () {
 				}
 			},
 			error: function (jqXHR) {
-				if(jqXHR.status != 200 && jqXHR.status != 0) {}
+				if(jqXHR.status != 200 && jqXHR.status != 0) {
 					$("#result").modal();
 					$("#msg").html("发生错误：" + jqXHR.status);
 				}
