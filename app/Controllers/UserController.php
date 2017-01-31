@@ -286,7 +286,12 @@ class UserController extends BaseController
 				foreach($mu_nodes as $mu_node)
 				{
 					$mu_user = User::where('port','=',$mu_node->server)->first();
-					$mu_user->obfs_param = $user->getMuMd5();
+					if($mu_user->is_multi_user == 1)
+					{
+						$mu_user->obfs_param = $user->getMuMd5();
+					}
+					
+					$mu_user->protocol_param = $user->id.":".$user->passwd;
 					
 					$rules = Relay::where(
 						function ($query) use ($node){
