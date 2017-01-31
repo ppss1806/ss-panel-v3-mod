@@ -667,4 +667,32 @@ ALTER TABLE `relay`
 CREATE TABLE `telegram_session` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `user_id` BIGINT NOT NULL , `type` INT NOT NULL , `session_content` TEXT NOT NULL , `datetime` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 ALTER TABLE `user` ADD `telegram_id` BIGINT NULL AFTER `is_multi_user`; 
-ALTER TABLE `paylist` ADD `tradeno` TEXT NULL AFTER `status`, ADD `datetime` BIGINT NOT NULL DEFAULT '0' AFTER `tradeno`;
+
+CREATE TABLE IF NOT EXISTS `paylist` (
+  `id` bigint(20) NOT NULL,
+  `userid` bigint(20) NOT NULL,
+  `total` decimal(12,2) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `tradeno` text,
+  `datetime` bigint(20) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `paylist`
+--
+ALTER TABLE `paylist`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `paylist`
+--
+ALTER TABLE `paylist`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
