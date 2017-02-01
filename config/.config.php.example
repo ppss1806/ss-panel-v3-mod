@@ -283,6 +283,9 @@ $System_Config['telegram_bot']='_bot';
 #二维码解码方式，online，qrcodereader，phpzbar
 $System_Config['telegram_qrcode']='online';
 
+#Telegram 机器人请求Key，随意设置，复杂一些，用于校验请求，更新这个参数之后请 php xcat setTelegram
+$System_Config['telegram_request_token']='';
+
 # sendgrid
 $System_Config['sendgrid_key'] = '';
 $System_Config['sendgrid_sender'] = '';

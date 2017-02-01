@@ -173,7 +173,10 @@ class XCat
 	public function setTelegram()
 	{
 		$bot = new \TelegramBot\Api\BotApi(Config::get('telegram_token'));
-		echo $bot->setWebhook(Config::get('baseUrl')."/telegram_callback");
+		if($bot->setWebhook(Config::get('baseUrl')."/telegram_callback?token=".Config::get('telegram_request_token')) == 1)
+		{
+			echo("设置成功！");
+		}
 	}
 	
 	public function initQQWry()

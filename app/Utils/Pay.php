@@ -85,11 +85,10 @@ return '
 	
 	private static function spay_gen($user, $amount)
 	{
-		require_once(BASE_PATH."/alipay/alipay.config.php");
-		require_once(BASE_PATH."/alipay/lib/alipay_submit.class.php");
 		
 		/**************************请求参数**************************/
 		
+		$alipay_config = Spay_tool::getConfig();
 		
 		$pl = new Paylist();
 		$pl->userid = $user->id;
@@ -120,7 +119,7 @@ return '
 		);
 
 		//建立请求
-		$alipaySubmit = new \SPAYSubmit($alipay_config);
+		$alipaySubmit = new Spay_submit($alipay_config);
 		$html_text = $alipaySubmit->buildRequestForm($parameter,"get", "确认");
 		echo $html_text;
 		exit(0);
@@ -145,14 +144,11 @@ return '
 	
 	private static function spay_callback()
 	{
-		require_once(BASE_PATH."/alipay/alipay.config.php");
-		require_once(BASE_PATH."/alipay/lib/alipay_notify.class.php");
-		
 		
 		if(Config::get('enable_alipay')!='false')
 		{
 			//计算得出通知验证结果
-			$alipayNotify = new \SPAYNotify($alipay_config);
+			$alipayNotify = new Spay_notify(Spay_tool::getConfig());
 			$verify_result = $alipayNotify->verifyNotify();
 
 			if($verify_result) {//验证成功
