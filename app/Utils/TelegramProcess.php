@@ -66,6 +66,9 @@ Class TelegramProcess
 				case 'traffic':
 					TelegramProcess::needbind_method($bot, $message, $command, $user);
 					break;
+				case 'checkin':
+					TelegramProcess::needbind_method($bot, $message, $command, $user, $message->getMessageId());
+					break;
 				case 'help':
 					$help_list = "命令列表：
 						/ping  获取群组ID
