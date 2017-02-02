@@ -223,4 +223,30 @@ class Tools
 		return $match_rule;
 	}
 	
+	public static function get_middle_text($origin_text, $begin_text, $end_text)
+	{
+		$begin_pos = strpos($origin_text, $begin_text);
+		if($begin_pos == FALSE)
+		{
+			return null;
+		}
+		
+		$end_pos = strpos($origin_text, $end_text, $begin_pos + strlen($begin_text));
+		if($end_pos == FALSE)
+		{
+			return null;
+		}
+		
+		return substr($origin_text, $begin_pos + strlen($begin_text), $end_pos - $begin_pos - strlen($begin_text));
+	}
+	
+	public static function is_param_validate($type, $str)
+	{
+		$list = Config::getSupportParam($type);
+		if (in_array($str, $list))
+		{
+			return true;
+		}
+		return false;
+	}
 }

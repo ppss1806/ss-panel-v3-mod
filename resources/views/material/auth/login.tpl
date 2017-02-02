@@ -16,6 +16,10 @@
 								<li>
 									<a class="waves-attach" data-toggle="tab" href="#qrcode_login">扫码登录</a>
 								</li>
+								
+								<li>
+									<a class="waves-attach" data-toggle="tab" href="#number_login">数字登录</a>
+								</li>
 								{/if}
 							</ul>
 						</nav>
@@ -112,6 +116,26 @@
 												<div class="form-group form-group-label">
 													<div class="text-center">
 														<div id="telegram-qr"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="tab-pane fade" id="number_login">
+									<div class="card">
+										<div class="card-main">
+											<div class="card-header">
+												<div class="card-inner">
+													<h1 class="card-heading">数字登录</h1>
+												</div>
+											</div>
+											<div class="card-inner">
+												<p>添加机器人账号 <a href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a>，发送下面的数字给它。</p>
+												<div class="form-group form-group-label">
+													<div class="text-center">
+														<h1><code id="code_number">{$login_number}</code></h1>
 													</div>
 												</div>
 											</div>
@@ -238,7 +262,8 @@ $(document).ready(function () {
 			url: "qrcode_check",
 			dataType: "json",
 			data: {
-				token:"{$login_token}"
+				token:"{$login_token}",
+				number:"{$login_number}"
 			},
 			success: function (data) {
 				if (data.ret > 0) {
@@ -250,7 +275,8 @@ $(document).ready(function () {
 						url: "/auth/qrcode_login",
 						dataType: "json",
 						data: {
-							token:"{$login_token}"
+							token:"{$login_token}",
+							number:"{$login_number}"
 						},
 						success: function (data) {
 							if (data.ret) {
@@ -272,6 +298,7 @@ $(document).ready(function () {
 					if(data.ret == -1)
 					{
 						jQuery('#telegram-qr').replaceWith('此二维码已经过期，请刷新页面后重试。');
+						jQuery('#code_number').replaceWith('<code id="code_number">此数字已经过期，请刷新页面后重试。</code>');
 					}
 				}
 			},

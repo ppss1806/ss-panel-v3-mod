@@ -13,10 +13,12 @@ Class QRcode
 	{
 		switch(Config::get('telegram_qrcode'))
 		{
-			case 'qrcodereader':
-				return QRcode::QRCodeReader_decode($url);
 			case 'phpzbar':
 				return QRcode::phpzbar_decode($url);
+			case 'zxing_online':
+				return QRcode::zxing_decode($url);
+			case 'zxing_local':
+				return QRcode::zxing_local_decode($url);
 			default:
 				return QRcode::online_decode($url);
 		}
@@ -35,14 +37,11 @@ Class QRcode
 		
 		$raw_text = $sock->fetch_body();
 		$result_array = json_decode($raw_text, TRUE);
-		return $result_array[0]['symbol'][0]['data'];
-	}
-	
-	static function QRCodeReader_decode($url)
-	{
-		$QRCodeReader = new \Libern\QRCodeReader\QRCodeReader();
-		$qrcode_text = $QRCodeReader->decode($url);
-		return $qrcode_text;
+		if(isset($result_array[0]))
+		{
+			return $result_array[0]['symbol'][0]['data'];
+		}
+		return null;
 	}
 	
 	static function phpzbar_decode($url)
@@ -65,4 +64,28 @@ Class QRcode
 		return (isset($barcode[0]['data']) ? $barcode[0]['data'] : null);
 	}
 	
+	static function zxing_local_decode($url)
+	{
+		$filepath = BASE_PATH."/storage/".time().rand(1, 100).".png";
+		$img = file_get_contents($url);
+		file_put_contents($filepath, $img);
+		
+		$qrcode = new \QrReader($filepath);
+		$text = $qrcode->text(); //return decoded text from QR Code
+		
+		unlink($filepath);
+		
+		if($text == null || $text == "")
+		{
+			return null;
+		}
+		
+		return $text;
+	}
+	
+	static function zxing_decode($url)
+	{
+		$raw_text = file_get_contents("https://zxing.org/w/decode?u=".urlencode($url));
+		return Tools::get_middle_text($raw_text, "<tr><td>Raw text</td><td><pre>", "</pre></td></tr><tr><td>Raw bytes</td><td><pre>");
+	}
 }

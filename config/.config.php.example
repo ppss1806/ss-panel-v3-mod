@@ -280,8 +280,8 @@ $System_Config['tuling_apikey']='';
 $System_Config['tuling_apisecert']='';
 $System_Config['telegram_bot']='_bot';
 
-#二维码解码方式，online，qrcodereader，phpzbar
-$System_Config['telegram_qrcode']='online';
+#二维码解码方式，online，phpzbar，zxing_online，zxing_local
+$System_Config['telegram_qrcode']='zxing_local';
 
 #Telegram 机器人请求Key，随意设置，由大小写英文和数字组成，复杂一些，用于校验请求，更新这个参数之后请 php xcat setTelegram
 $System_Config['telegram_request_token']='sjhueAMAndnenw2k2k1mmsJSJWMWiwiwthgfhgfh';

@@ -26,35 +26,35 @@ class XCat
 	{
 		switch($this->argv[1]){
 			case("install"):
-		        	return $this->install();
-		    	case("createAdmin"):
-		        	return $this->createAdmin();
-		    	case("resetTraffic"):
-		        	return $this->resetTraffic();
+					return $this->install();
+				case("createAdmin"):
+					return $this->createAdmin();
+				case("resetTraffic"):
+					return $this->resetTraffic();
 			case("setTelegram"):
-		        	return $this->setTelegram();
+					return $this->setTelegram();
 			case("initQQWry"):
-		        	return $this->initQQWry();
-		    	case("sendDiaryMail"):
-		        	return DailyMail::sendDailyMail();
+					return $this->initQQWry();
+				case("sendDiaryMail"):
+					return DailyMail::sendDailyMail();
 			case("reall"):
-		        	return DailyMail::reall();
+					return DailyMail::reall();
 			case("syncusers"):
-		        	return SyncRadius::syncusers();
+					return SyncRadius::syncusers();
 			case("synclogin"):
-		        	return SyncRadius::synclogin();
+					return SyncRadius::synclogin();
 			case("syncvpn"):
 				return SyncRadius::syncvpn();
 			case("nousers"):
-		        	return ExtMail::sendNoMail();
+					return ExtMail::sendNoMail();
 			case("oldusers"):
-		        	return ExtMail::sendOldMail();
+					return ExtMail::sendOldMail();
 			case("syncnode"):
-		        	return Job::syncnode();
+					return Job::syncnode();
 			case("syncnasnode"):
-		        	return Job::syncnasnode();
+					return Job::syncnasnode();
 			case("syncnas"):
-		        	return SyncRadius::syncnas();
+					return SyncRadius::syncnas();
 			case("dailyjob"):
 				return Job::DailyJob();
 			case("checkjob"):
@@ -77,7 +77,6 @@ class XCat
 	public function defaultAction()
 	{
 		echo "Memo";
-		echo QRcode::decode("https://api.telegram.org/file/bot262913199:AAHK-fQ9Ijio3UyzplrhLnMo8XVngExsfKM/photo/file_258.jpg");
 	}
 
 	public function install()

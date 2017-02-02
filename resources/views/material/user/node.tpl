@@ -150,6 +150,10 @@
 																	{if ($node->sort == 0 || $node->sort == 10) && $node->custom_rss == 1}
 																		{foreach $node_muport as $single_muport}
 																			
+																			{if !($single_muport['server']->node_class <= $user->class && ($single_muport['server']->node_group == 0 || $single_muport['server']->node_group == $user->node_group))}
+																				{continue}
+																			{/if}
+																			
 																			{$relay_rule = null}
 																			{if $node->sort == 10 && $single_muport['user']['is_multi_user'] != 2}
 																				{$relay_rule = $tools->pick_out_relay_rule($node->id, $single_muport['server']->server, $relay_rules)}

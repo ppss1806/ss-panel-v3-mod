@@ -46,14 +46,18 @@ class AuthController extends BaseController
 		
 		if(Config::get('enable_telegram') == 'true')
 		{
-			$login_token = TelegramSessionManager::add_login_session();
+			$login_text = TelegramSessionManager::add_login_session();
+			$login = explode("|", $login_text);
+			$login_token = $login[0];
+			$login_number = $login[1];
 		}
 		else
 		{
 			$login_token = '';
+			$login_number = '';
 		}
 		
-        return $this->view()->assign('geetest_html',$GtSdk)->assign('login_token', $login_token)->assign('telegram_bot', Config::get('telegram_bot'))->display('auth/login.tpl');
+        return $this->view()->assign('geetest_html',$GtSdk)->assign('login_token', $login_token)->assign('login_number', $login_number)->assign('telegram_bot', Config::get('telegram_bot'))->display('auth/login.tpl');
     }
 
     public function loginHandle($request, $response, $args)
@@ -137,8 +141,9 @@ class AuthController extends BaseController
 	{
 		// $data = $request->post('sdf');
 		$token =  $request->getParam('token');
+		$number =  $request->getParam('number');
 		
-		$ret = TelegramSessionManager::step2_verify_login_session($token);
+		$ret = TelegramSessionManager::step2_verify_login_session($token, $number);
 		if (!$ret) {
 			$res['ret'] = 0;
 			$res['msg'] = "此令牌无法被使用。";
@@ -437,9 +442,11 @@ class AuthController extends BaseController
 	public function qrcode_check($request, $response, $args)
     {
 		$token = $request->getQueryParams()["token"];
+		$number = $request->getQueryParams()["number"];
+		
 		if(Config::get('enable_telegram') == 'true')
 		{
-			$ret = TelegramSessionManager::check_login_session($token);
+			$ret = TelegramSessionManager::check_login_session($token, $number);
 			$res['ret'] = $ret;
 			return $response->getBody()->write(json_encode($res));
 		}

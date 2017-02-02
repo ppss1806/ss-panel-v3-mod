@@ -19,7 +19,6 @@
     "telegram-bot/api": "^2.2",
     "illuminate/pagination": "5.2.*",
     "illuminate/database": "5.2.*",
-    "libern/qr-code-reader": "^1.0",
     "sendgrid/sendgrid": "^5.1"
   },
   "autoload": {
@@ -33,5 +32,9 @@
 
  "config": {
         "secure-http": false
- }
+ },
+ "minimum-stability": "dev",
+  "require-dev": {
+    "khanamiryan/qrcode-detector-decoder": "*"
+  }
 }

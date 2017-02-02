@@ -1045,7 +1045,9 @@ class UserController extends BaseController
 		
 		$bind_token = TelegramSessionManager::add_bind_session($this->user);
 		
-		return $this->view()->assign('user',$this->user)->assign('themes',$themes)->assign('isBlock',$isBlock)->assign('Block',$Block)->assign('bind_token', $bind_token)->assign('telegram_bot', Config::get('telegram_bot'))->display('user/edit.tpl');
+		$config_service = new Config();
+		
+		return $this->view()->assign('user',$this->user)->assign('themes',$themes)->assign('isBlock',$isBlock)->assign('Block',$Block)->assign('bind_token', $bind_token)->assign('telegram_bot', Config::get('telegram_bot'))->assign('config_service', $config_service)->display('user/edit.tpl');
     }
 
 
@@ -1566,40 +1568,40 @@ class UserController extends BaseController
 	
 	
 	public function updateRss($request, $response, $args)
-    {
+	{
 		$protocol = $request->getParam('protocol');
 		$obfs = $request->getParam('obfs');
-        
-        $user = $this->user;
+		
+		$user = $this->user;
 		
 		if ( $obfs == ""||$protocol == "") {
-            $res['ret'] = 0;
-            $res['msg'] = "请填好";
-            return $response->getBody()->write(json_encode($res));
-        }
+			$res['ret'] = 0;
+			$res['msg'] = "请填好";
+			return $response->getBody()->write(json_encode($res));
+		}
 		
-		if (!Tools::is_validate($obfs)) {
-            $res['ret'] = 0;
-            $res['msg'] = "悟空别闹";
-            return $response->getBody()->write(json_encode($res));
-        }
+		if (!Tools::is_param_validate('obfs', $obfs)) {
+			$res['ret'] = 0;
+			$res['msg'] = "悟空别闹";
+			return $response->getBody()->write(json_encode($res));
+		}
 		
-		if (!Tools::is_validate($protocol)) {
-            $res['ret'] = 0;
-            $res['msg'] = "悟空别闹";
-            return $response->getBody()->write(json_encode($res));
-        }
+		if (!Tools::is_param_validate('protocol', $protocol)) {
+			$res['ret'] = 0;
+			$res['msg'] = "悟空别闹";
+			return $response->getBody()->write(json_encode($res));
+		}
 		
-        $antiXss = new AntiXSS();
+		$antiXss = new AntiXSS();
 		
 		$user->protocol = $antiXss->xss_clean($protocol);
-        $user->obfs = $antiXss->xss_clean($obfs);
-        $user->save();
+		$user->obfs = $antiXss->xss_clean($obfs);
+		$user->save();
 
-        $res['ret'] = 1;
-        $res['msg'] = "修改成功";
-        return $this->echoJson($response, $res);
-    }
+		$res['ret'] = 1;
+		$res['msg'] = "修改成功";
+		return $this->echoJson($response, $res);
+	}
 	
 	public function updateTheme($request, $response, $args)
     {
@@ -1707,7 +1709,7 @@ class UserController extends BaseController
             return $response->getBody()->write(json_encode($res));
         }
 
-	if (!Tools::is_validate($method)) {
+        if (!Tools::is_param_validate('method', $method)) {
             $res['ret'] = 0;
             $res['msg'] = "悟空别闹";
             return $response->getBody()->write(json_encode($res));
