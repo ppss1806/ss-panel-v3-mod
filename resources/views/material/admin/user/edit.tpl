@@ -311,11 +311,6 @@
 					protocol_param: $("#protocol_param").val(),
 					obfs: $("#obfs").val(),
 					obfs_param: $("#obfs_param").val(),
-					protocol: 'origin',
-					protocol_param: '',
-					obfs: 'plain',
-					obfs_param: ''
-					{/if}
                 },
                 success: function (data) {
                     if (data.ret) {
