@@ -79,6 +79,11 @@ class UserController extends BaseController
 		
 		$relay_rules = Relay::where('user_id', $this->user->id)->orwhere('user_id', 0)->orderBy('id', 'asc')->get();
 		
+		if(!Tools::is_protocol_relay($user))
+		{
+			$relay_rules = array();
+		}
+		
 		foreach($nodes as $node)
 		{
 			$ary['server'] = $node->server;
@@ -89,49 +94,39 @@ class UserController extends BaseController
 				$ary['method'] = $this->user->method;
 			}
 			
-			if(Config::get('enable_rss')=='true')
+			if($node->mu_only == 0)
 			{
-				if($node->mu_only == 0)
+				if($node->custom_rss == 1)
 				{
-					if($node->custom_rss == 1)
+					
+					$node_name = $node->name;
+					
+					if($node->sort == 10)
 					{
+						$relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
 						
-						$node_name = $node->name;
-						
-						if($node->sort == 10)
+						if($relay_rule != null)
 						{
-							$relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
-							
-							if($relay_rule != null)
-							{
-								$node_name .= " - ".$relay_rule->dist_node()->name;
-							}
+							$node_name .= " - ".$relay_rule->dist_node()->name;
 						}
-						
-						$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node_name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
-						$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
-						$android_add .= $ssqr_s_new." ";
-						$android_add_without_mu .= $ssqr_s_new." ";
 					}
-					else
-					{
-						$ssurl = ($node->custom_method==1?$user->method:$node->method) . ":" . $user->passwd . "@" . $node->server . ":" . $user->port;
-						$ssqr = "ss://" . base64_encode($ssurl);
-						$android_add .= $ssqr." ";
-						$android_add_without_mu .= $ssqr_s_new." ";
-					}
+					
+					$ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible","",$user->protocol).":".$ary['method'].":".str_replace("_compatible","",$user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node_name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+					$ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+					$android_add .= $ssqr_s_new." ";
+					$android_add_without_mu .= $ssqr_s_new." ";
+				}
+				else
+				{
+					$ssurl = ($node->custom_method==1?$user->method:$node->method) . ":" . $user->passwd . "@" . $node->server . ":" . $user->port;
+					$ssqr = "ss://" . base64_encode($ssurl);
+					$android_add .= $ssqr." ";
+					$android_add_without_mu .= $ssqr_s_new." ";
 				}
 			}
-			else
-			{
-				$ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
-				$ssqr = "ss://" . base64_encode($ssurl);
-				$android_add .= $ssqr." ";
-				$android_add_without_mu .= $ssqr_s_new." ";
-			}
 			
 			
-			if($node->custom_rss == 1 && Config::get('enable_rss')=='true')
+			if($node->custom_rss == 1)
 			{
 				foreach($mu_nodes as $mu_node)
 				{
@@ -483,6 +478,11 @@ class UserController extends BaseController
 		)->where('type', 1)->where("node_class","<=",$this->user->class)->orderBy('name')->get();
 	
 	$relay_rules = Relay::where('user_id', $this->user->id)->orwhere('user_id', 0)->orderBy('id', 'asc')->get();
+	
+	if(!Tools::is_protocol_relay($user))
+	{
+		$relay_rules = array();
+	}
 	
 	$node_prefix=Array();
 	$node_method=Array();
@@ -974,23 +974,7 @@ class UserController extends BaseController
 		$paybacks = Payback::where("ref_by",$this->user->id)->orderBy("datetime","desc")->paginate(15, ['*'], 'page', $pageNum);
 		$paybacks->setPath('/user/profile');
 
-		$userip=array();
-		
-		$total = Ip::where("datetime",">=",time()-300)->where('userid', '=',$this->user->id)->get();
-		
 		$iplocation = new QQWry(); 
-		foreach($total as $single)
-		{
-			//if(isset($useripcount[$single->userid]))
-			{
-				if(!isset($userip[$single->ip()]))
-				{
-					//$useripcount[$single->userid]=$useripcount[$single->userid]+1;
-					$location=$iplocation->getlocation($single->ip());
-					$userip[$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
-				}
-			}
-		}
 		
 		$totallogin = LoginIp::where('userid', '=',$this->user->id)->where("type","=",0)->orderBy("datetime","desc")->take(10)->get();
 		
@@ -1011,7 +995,7 @@ class UserController extends BaseController
 		
 		
 		
-        return $this->view()->assign("userip",$userip)->assign("userloginip",$userloginip)->assign("paybacks",$paybacks)->display('user/profile.tpl');
+        return $this->view()->assign("userloginip",$userloginip)->assign("paybacks",$paybacks)->display('user/profile.tpl');
     }
 	
 	
@@ -1567,7 +1551,7 @@ class UserController extends BaseController
     }
 	
 	
-	public function updateRss($request, $response, $args)
+	public function updateSSR($request, $response, $args)
 	{
 		$protocol = $request->getParam('protocol');
 		$obfs = $request->getParam('obfs');

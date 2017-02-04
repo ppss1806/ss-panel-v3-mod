@@ -97,7 +97,7 @@
 																					{/if}
 																				</span></p>
 																				
-																				{if ($node->sort==0||$node->sort==10)&&$node->custom_rss==1&&$config['enable_rss']=='true'}
+																				{if ($node->sort==0||$node->sort==10)&&$node->custom_rss==1}
 																					<p>协议：<span class="label label-brand-accent"> 
 																						{$user->protocol}
 																					</span></p>

@@ -26,7 +26,6 @@ class Config
 			"checkinMax" => self::get("checkinMax"),
 			"wecenter_url" => self::get("wecenter_url"),
 			"enable_wecenter" => self::get("enable_wecenter"),
-			"enable_rss" => self::get("enable_rss"),
 			"jump_delay" => self::get("jump_delay"),
 			"enable_analytics_code" => self::get("enable_analytics_code"),
 			"enable_donate" => self::get("enable_donate"),

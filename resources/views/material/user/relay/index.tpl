@@ -26,7 +26,7 @@
 							</div>
 						</div>
 					</div>
-					
+					{if $is_relay_able}
 					<div class="table-responsive">
 						{$rules->render()}
 						<table class="table">
@@ -59,6 +59,7 @@
 						</table>
 						{$rules->render()}
 					</div>
+					{/if}
 					
 					<div class="fbtn-container">
 						<div class="fbtn-inner">
@@ -112,6 +113,12 @@ function delete_modal_show(id) {
 
 
 $(document).ready(function(){
+	
+	{if !$is_relay_able}
+	$("#result").modal();
+	$("#msg").html("为了中转的稳定，您需要在<a href='/user/edit'>资料编辑</a>处设置协议为 auth_aes128_md5 或 auth_aes128_sha1 后方可设置中转规则！");
+	{/if}
+	
 	function delete_id(){
 		$.ajax({
 			type:"DELETE",

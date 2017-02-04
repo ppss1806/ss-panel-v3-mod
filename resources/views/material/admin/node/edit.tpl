@@ -52,7 +52,6 @@
 										</div>
 									</div>
 									
-									{if $config['enable_rss']=='true'}
 									<div class="form-group form-group-label">
 										<div class="checkbox switch">
 											<label for="custom_rss">
@@ -68,8 +67,6 @@
 											</label>
 										</div>
 									</div>
-									
-									{/if}
 									
 									
 								</div>
@@ -222,7 +219,6 @@
 				var type=0;
 			}
 			{/literal}
-			{if $config['enable_rss']=='true'}
 			if(document.getElementById('custom_rss').checked)
 			{
 				var custom_rss=1;
@@ -240,8 +236,6 @@
 			{
 				var mu_only=0;
 			}
-			
-			{/if}
 			
 			
 			
@@ -265,12 +259,9 @@
 					node_speedlimit: $("#node_speedlimit").val(),
 					class: $("#class").val(),
 					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
-					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val(){/literal}{if $config['enable_rss']=='true'},
+					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val(){/literal},
 					custom_rss: custom_rss,
-					mu_only: mu_only{else},
-					custom_rss: 0,
-					mu_only: 0
-					{/if}
+					mu_only: mu_only
 					{literal}
                 },
                 success: function (data) {

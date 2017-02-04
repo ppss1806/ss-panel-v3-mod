@@ -269,7 +269,6 @@ $(document).ready(function () {
 				if (data.ret > 0) {
 					clearTimeout(tid);
 					
-					
 					$.ajax({
 						type: "POST",
 						url: "/auth/qrcode_login",
@@ -283,9 +282,6 @@ $(document).ready(function () {
 								$("#result").modal();
 								$("#msg").html("登录成功！");
 								window.setTimeout("location.href=/user/", {$config['jump_delay']});
-							} else {
-								$("#result").modal();
-								$("#msg").html("登录失败！");
 							}
 						},
 						error: function (jqXHR) {

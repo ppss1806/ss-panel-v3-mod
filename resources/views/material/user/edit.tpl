@@ -147,7 +147,6 @@
 
 
 
-						{if $config['enable_rss']=='true'}
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
@@ -183,14 +182,12 @@
 
 									<div class="card-action">
 										<div class="card-action-btn pull-left">
-											<button class="btn btn-flat waves-attach" id="rss-update" ><span class="icon">check</span>&nbsp;提交</button>
+											<button class="btn btn-flat waves-attach" id="ssr-update" ><span class="icon">check</span>&nbsp;提交</button>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
-						{/if}
 
 
 
@@ -534,13 +531,12 @@
     })
 </script>
 
-{if $config['enable_rss']=='true'}
 <script>
     $(document).ready(function () {
-        $("#rss-update").click(function () {
+        $("#ssr-update").click(function () {
             $.ajax({
                 type: "POST",
-                url: "rss",
+                url: "ssr",
                 dataType: "json",
                 data: {
                     protocol: $("#protocol").val(),
@@ -563,7 +559,6 @@
         })
     })
 </script>
-{/if}
 
 
 <script>

@@ -58,7 +58,7 @@
 								<th>今日流量</th>
                                 <th>最后在线时间</th>
                                 <th>最后签到时间</th>
-								<th>在线 IP</th>
+								<th>在线 IP 数</th>
 								<th>联络方式</th>
 								<th>注册时间和IP</th>
                                 <th>邀请者</th>
@@ -89,7 +89,7 @@
 								<td>{(($user->u+$user->d)-$user->last_day_t)/1024/1024}MB</td>
                                 <td>{$user->lastSsTime()}</td>
                                 <td>{$user->lastCheckInTime()}</td>
-								<td>{foreach $userip[$user->id] as $singleip => $location}{$singleip} {$location}<br>{/foreach}</td>
+								<td>{$user->online_ip_count()}</td>
 								<th>
 								{if $user->im_type==1}
 								微信

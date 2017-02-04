@@ -323,6 +323,10 @@ class LinkController extends BaseController
 		
 		$relay_rules = Relay::where('user_id', $user->id)->orWhere('user_id', 0)->orderBy('id', 'asc')->get();
 		
+		if(!Tools::is_protocol_relay($user))
+		{
+			$relay_rules = array();
+		}
 		
 		foreach($nodes as $node)
 		{
@@ -344,14 +348,14 @@ class LinkController extends BaseController
 											"server"=>$node->server,
 											"server_port"=>$user->port,
 											"method"=>($node->custom_method==1?$user->method:$node->method),
-											"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
-											"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
+											"obfs"=>str_replace("_compatible","",(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
+											"obfsparam"=>(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
 											"remarks_base64"=>base64_encode($node_name),
 											"password"=>$user->passwd,
 											"tcp_over_udp"=>false,
 											"udp_over_tcp"=>false,
 											"group"=>Config::get('appName'),
-											"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
+											"protocol"=>str_replace("_compatible","",(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
 											"obfs_udp"=>false,
 											"enable"=>true));
 											
@@ -390,14 +394,14 @@ class LinkController extends BaseController
 												"server_port"=>$mu_user->port,
 												"method"=>$mu_user->method,
 												"group"=>Config::get('appName'),
-												"obfs"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
-												"obfsparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
+												"obfs"=>str_replace("_compatible","",(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
+												"obfsparam"=>(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
 												"remarks_base64"=>base64_encode($node_name."- ".$mu_node->server." 端口单端口多用户"),
 												"password"=>$mu_user->passwd,
 												"tcp_over_udp"=>false,
 												"udp_over_tcp"=>false,
-												"protocol"=>str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
-												"protocolparam"=>((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
+												"protocol"=>str_replace("_compatible","",(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
+												"protocolparam"=>(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
 												"obfs_udp"=>false,
 												"enable"=>true));
 												
@@ -429,7 +433,12 @@ class LinkController extends BaseController
 							->orWhere("source_node_id","=",0);
 					}
 				)->get();
-
+				
+				if(!Tools::is_protocol_relay($user))
+				{
+					$relay_rules = array();
+				}
+				
 				if(count($relay_rules) != 0)
 				{
 					foreach($relay_rules as $relay_rule)
@@ -1876,6 +1885,11 @@ FINAL,Proxy';
 		
 		$relay_rules = Relay::where('user_id', $user->id)->where('user_id', 0)->orderBy('id', 'asc')->get();
 		
+		if(!Tools::is_protocol_relay($user))
+		{
+			$relay_rules = array();
+		}
+		
 		foreach($nodes as $node)
 		{
 			if($node->mu_only == 0)
@@ -1896,7 +1910,7 @@ FINAL,Proxy';
 				$bash .= 'nvram set rt_ss_port_x'.$count.'='.$user->port."\n";
 				$bash .= 'nvram set rt_ss_password_x'.$count.'="'.$user->passwd."\"\n";
 				$bash .= 'nvram set rt_ss_server_x'.$count.'='.$node->server."\n";
-				$bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain"))." ".((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?($user->obfs_param == NULL || $user->obfs_param == "" ?  ""  : "-g ".$user->obfs_param):"")." -O ".str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin"))."\"\n";
+				$bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible","",(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain"))." ".(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?($user->obfs_param == NULL || $user->obfs_param == "" ?  ""  : "-g ".$user->obfs_param):"")." -O ".str_replace("_compatible","",(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin"))."\"\n";
 				$bash .= 'nvram set rt_ss_method_x'.$count.'='.($node->custom_method==1?$user->method:$node->method)."\n";
 				$count += 1;
 			}
@@ -1933,7 +1947,7 @@ FINAL,Proxy';
 					$bash .= 'nvram set rt_ss_port_x'.$count.'='.$mu_user->port."\n";
 					$bash .= 'nvram set rt_ss_password_x'.$count.'="'.$mu_user->passwd."\"\n";
 					$bash .= 'nvram set rt_ss_server_x'.$count.'='.$node->server."\n";
-					$bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain"))." ".((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->obfs_param == NULL || $mu_user->obfs_param == "" ?  ""  : "-g ".$mu_user->obfs_param):"")." -O ".str_replace("_compatible","",((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin"))." ".((Config::get('enable_rss')=='true'&&$node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->protocol_param == NULL || $mu_user->protocol_param == "" ?  ""  : "-G ".$mu_user->protocol_param):"")."\"\n";
+					$bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible","",(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain"))." ".(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->obfs_param == NULL || $mu_user->obfs_param == "" ?  ""  : "-g ".$mu_user->obfs_param):"")." -O ".str_replace("_compatible","",(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin"))." ".(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->protocol_param == NULL || $mu_user->protocol_param == "" ?  ""  : "-G ".$mu_user->protocol_param):"")."\"\n";
 					$bash .= 'nvram set rt_ss_method_x'.$count.'='.($node->custom_method==1?$mu_user->method:$node->method)."\n";
 					$count += 1;
 				}

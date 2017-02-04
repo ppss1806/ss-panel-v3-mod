@@ -52,7 +52,6 @@ class HomeController extends BaseController
 	
 	public function telegram($request, $response, $args)
 	{
-		Spay_tool::logResult(file_get_contents("php://input"));
 		$token = "";
 		if(isset($request->getQueryParams()["token"]))
 		{

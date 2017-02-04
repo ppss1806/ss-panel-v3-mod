@@ -76,8 +76,6 @@ $System_Config['enable_wecenter']='false';
 $System_Config['enable_radius']='false';
 $System_Config['enable_cloudxns']='false';
 $System_Config['enable_duoshuo']='false';
-$System_Config['enable_rss']='true';
-$System_Config['enable_paymentwall']='false';
 
 
 
@@ -278,7 +276,12 @@ $System_Config['mu_regex']='%5m%id.%suffix';
 $System_Config['enable_tuling']='false';
 $System_Config['tuling_apikey']='';
 $System_Config['tuling_apisecert']='';
+
+#Telegram 机器人账号
 $System_Config['telegram_bot']='_bot';
+
+#Telegram 机器人在群组中不回应
+$System_Config['telegram_group_quiet']='false';
 
 #二维码解码方式，online，phpzbar，zxing_online，zxing_local
 $System_Config['telegram_qrcode']='zxing_local';

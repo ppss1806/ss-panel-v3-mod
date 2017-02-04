@@ -40,7 +40,7 @@ Class TelegramProcess
 		}
 		else
 		{
-			$bot->sendMessage($message->getChat()->getId(), "您未绑定本站账号。");
+			$bot->sendMessage($message->getChat()->getId(), "您未绑定本站账号。", $parseMode = null, $disablePreview = false, $replyToMessageId = $reply_to);
 		}
 	}
 	
@@ -205,6 +205,11 @@ Class TelegramProcess
 		else
 		{
 			//群组
+			if(Config::get('telegram_group_quiet') == 'true')
+			{
+				return;
+			}
+			
 			switch($command)
 			{
 				case 'ping':

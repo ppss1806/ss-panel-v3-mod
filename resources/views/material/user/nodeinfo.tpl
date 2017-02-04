@@ -39,12 +39,10 @@
 										服务器端口：{$ary['server_port']}<br>
 										加密方式：{$ary['method']}<br>
 										密码：{$ary['password']}<br>
-										{if $config['enable_rss']=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin')}
 										协议：{$user->protocol}<br>
 										协议参数：{$user->protocol_param}<br>
 										混淆：{$user->obfs}<br>
 										混淆参数：{$user->obfs_param}<br>
-										{/if}
 										
 										</p>
 									</div>
@@ -88,10 +86,8 @@
 										{if $mu == 0}
 										<p><a href="{$ssqr}"/>Android 手机上用默认浏览器打开点我就可以直接添加了(给 原版/SSR APP)</a></p>
 										{/if}
-										{if $config['enable_rss']=='true'&&$node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin')}
 										<p><a href="{$ssqr_s_new}"/>Android 手机上用默认浏览器打开点我就可以直接添加了(给 SSR)</a></p>
 										<p><a href="{$ssqr_s_new}"/>iOS 上用 Safari 打开点我就可以直接添加了(给 Shadowrocket)</a></p>
-										{/if}
 									</div>
 									
 								</div>

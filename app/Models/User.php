@@ -216,5 +216,21 @@ class User extends Model
         $uid = $this->attributes['id'];
         Link::where('userid', $uid)->delete();
     }
+    
+    public function online_ip_count()
+    {
+        $uid = $this->attributes['id'];
+        $total = Ip::where("datetime",">=",time()-90)->where('userid', $uid)->orderBy('userid', 'desc')->get();
+        $unique_ip_list = array();
+        foreach($total as $single_record)
+        {
+            if(!in_array($single_record->ip, $unique_ip_list))
+            {
+                array_push($unique_ip_list, $single_record->ip);
+            }
+        }
+        
+        return count($unique_ip_list);
+    }
 
 }

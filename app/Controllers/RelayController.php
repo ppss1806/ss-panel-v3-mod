@@ -7,6 +7,7 @@ use App\Models\Node;
 use App\Models\User;
 use App\Services\Auth;
 use App\Controllers\UserController;
+use App\Utils\Tools;
 
 class RelayController extends UserController
 {
@@ -18,7 +19,10 @@ class RelayController extends UserController
 		}
 		$logs = Relay::where('user_id', $user->id)->orwhere('user_id', 0)->paginate(15, ['*'], 'page', $pageNum);
 		$logs->setPath('/user/relay');
-		return $this->view()->assign('rules',$logs)->display('user/relay/index.tpl');
+		
+		$is_relay_able = Tools::is_protocol_relay($user);
+		
+		return $this->view()->assign('rules',$logs)->assign('is_relay_able', $is_relay_able)->display('user/relay/index.tpl');
 	}
 
 	public function create($request, $response, $args){
@@ -103,6 +107,13 @@ class RelayController extends UserController
 		{
 			$rs['ret'] = 0;
 			$rs['msg'] = "我和他谈笑风生";
+			return $response->getBody()->write(json_encode($rs));
+		}
+		
+		if(!Tools::is_protocol_relay($user))
+		{
+			$rs['ret'] = 0;
+			$rs['msg'] = "为了中转的稳定，您需要在<a href='/user/edit'>资料编辑</a>处设置协议为 auth_aes128_md5 或 auth_aes128_sha1 后方可设置中转规则！";
 			return $response->getBody()->write(json_encode($rs));
 		}
 		
@@ -228,6 +239,12 @@ class RelayController extends UserController
 			return $response->getBody()->write(json_encode($rs));
 		}
 		
+		if(!Tools::is_protocol_relay($user))
+		{
+			$rs['ret'] = 0;
+			$rs['msg'] = "为了中转的稳定，您需要在<a href='/user/edit'>资料编辑</a>处设置协议为 auth_aes128_md5 或 auth_aes128_sha1 后方可设置中转规则！";
+			return $response->getBody()->write(json_encode($rs));
+		}
 		
 		$rule->user_id = $user->id;
 		$rule->dist_node_id = $dist_node_id;

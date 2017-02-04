@@ -15,12 +15,12 @@ Class QRcode
 		{
 			case 'phpzbar':
 				return QRcode::phpzbar_decode($url);
-			case 'zxing_online':
-				return QRcode::zxing_decode($url);
+			case 'online':
+				return QRcode::online_decode($url);
 			case 'zxing_local':
 				return QRcode::zxing_local_decode($url);
 			default:
-				return QRcode::online_decode($url);
+				return QRcode::zxing_decode($url);
 		}
 	}
 	

@@ -84,7 +84,6 @@
 									<input class="form-control" id="method" type="text" value="{$edit_user->method}">
 								</div>
 								
-								{if $config['enable_rss']=='true'}
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="protocol">自定义协议</label>
 									<input class="form-control" id="protocol" type="text" value="{$edit_user->protocol}">
@@ -104,7 +103,6 @@
 									<label class="floating-label" for="obfs_param">自定义混淆参数</label>
 									<input class="form-control" id="obfs_param" type="text" value="{$edit_user->obfs_param}">
 								</div>
-								{/if}
 							</div>
 						</div>
 					</div>	
@@ -308,12 +306,11 @@
 					class: $("#class").val(),
 					class_expire: $("#class_expire").val(),
 					expire_in: $("#expire_in").val(),
-					node_connector: $("#node_connector").val(){if $config['enable_rss']=='true'},
+					node_connector: $("#node_connector").val(),
 					protocol: $("#protocol").val(),
 					protocol_param: $("#protocol_param").val(),
 					obfs: $("#obfs").val(),
-					obfs_param: $("#obfs_param").val()
-					{else},
+					obfs_param: $("#obfs_param").val(),
 					protocol: 'origin',
 					protocol_param: '',
 					obfs: 'plain',

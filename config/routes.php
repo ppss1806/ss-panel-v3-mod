@@ -123,7 +123,7 @@ $app->group('/user', function () {
 	$this->get('/edit', 'App\Controllers\UserController:edit');
 	$this->post('/password', 'App\Controllers\UserController:updatePassword');
 	$this->post('/wechat', 'App\Controllers\UserController:updateWechat');
-	$this->post('/rss', 'App\Controllers\UserController:updateRss');
+	$this->post('/ssr', 'App\Controllers\UserController:updateSSR');
 	$this->post('/theme', 'App\Controllers\UserController:updateTheme');
 	$this->post('/mail', 'App\Controllers\UserController:updateMail');
 	$this->post('/sspwd', 'App\Controllers\UserController:updateSsPwd');
