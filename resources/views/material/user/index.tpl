@@ -63,21 +63,21 @@
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">帐号使用情况</p>
 										<dl class="dl-horizontal">
-											<dt>帐号等级</dt>
-											<dd>{$user->class}</dd>
+											<p><dt>帐号等级</dt>
+											<dd>{$user->class}</dd></p>
 
-											<dt>等级过期时间</dt>
-											<dd>{$user->class_expire}</dd>
+											<p><dt>等级过期时间</dt>
+											<dd>{$user->class_expire}</dd></p>
 
-											<dt>帐号过期时间</dt>
+											<p><dt>帐号过期时间</dt>
 											<dd>{$user->expire_in}</dd>
 											
-											<dt>速度限制</dt>
+											<p><dt>速度限制</dt>
 											{if $user->node_speedlimit!=0}
 											<dd>{$user->node_speedlimit}Mbps</dd>
 											{else}
 											<dd>不限速</dd>
-											{/if}
+											{/if}</p>
 										</dl>
 									</div>
 									
@@ -189,12 +189,23 @@
 									<div class="card-inner margin-bottom-no">
 										<p class="card-heading">连接信息</p>
 											<dl class="dl-horizontal">
-												<dt>端口</dt>
-												<dd>{$user->port}</dd>
-												<dt>密码</dt>
-												<dd>{$user->passwd}</dd>
-												<dt>上次使用</dt>
-												<dd>{$user->lastSsTime()}</dd>
+												<p><dt>端口</dt>
+												<dd>{$user->port}</dd></p>
+												
+												<p><dt>密码</dt>
+												<dd>{$user->passwd}</dd></p>
+												
+												<p><dt>自定义加密</dt>
+												<dd>{$user->method}</dd></p>
+												
+												<p><dt>自定义协议</dt>
+												<dd>{$user->protocol}</dd></p>
+												
+												<p><dt>自定义混淆</dt>
+												<dd>{$user->obfs}</dd></p>
+												
+												<p><dt>上次使用</dt>
+												<dd>{$user->lastSsTime()}</dd></p>
 											</dl>
 									</div>
 									

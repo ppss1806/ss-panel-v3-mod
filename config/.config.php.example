@@ -313,3 +313,6 @@ $System_Config['alipay_key']='';
 $System_Config['zfbjk_pid']='';
 $System_Config['zfbjk_key']='';
 $System_Config['zfbjk_qrcodeurl']='https://www.zhaojin97.cn/wp-content/uploads/2016/01/630c50ab52bc139b2a33af8cc64e47ad2016010111570425541.jpg';
+
+#不安全中转模式，这个开启之后使用除了 auth_aes128_md5 或者 auth_aes128_sha1 以外的协议地用户也可以设置和使用中转，但是，强烈推荐不开启。
+$System_Config['relay_insecure_mode']='false';

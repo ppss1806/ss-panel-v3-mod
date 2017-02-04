@@ -254,7 +254,7 @@ class Tools
 	{
 		$relay_able_list = array('auth_aes128_md5', 'auth_aes128_sha1');
 		
-		if(in_array($user->protocol, $relay_able_list))
+		if(in_array($user->protocol, $relay_able_list) || Config::get('relay_insecure_mode') == 'true')
 		{
 			return true;
 		}

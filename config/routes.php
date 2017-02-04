@@ -238,11 +238,10 @@ $app->group('/admin', function () {
 
 
 	// IP Mange
-	$this->get('/alive', 'App\Controllers\Admin\IpController:index');
 	$this->get('/block', 'App\Controllers\Admin\IpController:block');
 	$this->get('/unblock', 'App\Controllers\Admin\IpController:unblock');
 	$this->post('/unblock', 'App\Controllers\Admin\IpController:doUnblock');
-	$this->get('/login', 'App\Controllers\Admin\IpController:index1');
+	$this->get('/login', 'App\Controllers\Admin\IpController:index');
 
 	// Code Mange
 	$this->get('/code', 'App\Controllers\Admin\CodeController:index');

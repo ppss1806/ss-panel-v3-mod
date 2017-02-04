@@ -53,7 +53,7 @@
 								<th>邮箱</th>
                                 <th>端口</th>
                                 <th>状态</th>
-                                <th>加密方式</th>
+                                <th>加密<br>协议<br>混淆</th>
                                 <th>已用流量/总流量</th>
 								<th>今日流量</th>
                                 <th>最后在线时间</th>
@@ -84,7 +84,7 @@
 								{else}
 								<td>禁用</td>
 								{/if}
-                                <td>{$user->method}</td>
+                                <td>{$user->method}<br>{$user->protocol}<br>{$user->obfs}</td>
                                 <td>{$user->usedTraffic()}/{$user->enableTraffic()}</td>
 								<td>{(($user->u+$user->d)-$user->last_day_t)/1024/1024}MB</td>
                                 <td>{$user->lastSsTime()}</td>
