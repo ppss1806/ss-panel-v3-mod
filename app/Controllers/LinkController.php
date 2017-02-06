@@ -327,6 +327,16 @@ class LinkController extends BaseController
 		{
 			$relay_rules = array();
 		}
+
+		if($user->obfs_param == NULL)
+		{
+			$user->obfs_param = "";
+		}
+		
+		if($user->protocol_param == NULL)
+		{
+			$user->protocol_param = "";
+		}
 		
 		foreach($nodes as $node)
 		{

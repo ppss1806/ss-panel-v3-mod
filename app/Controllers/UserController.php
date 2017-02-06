@@ -649,7 +649,16 @@ class UserController extends BaseController
 					}
 					else
 					{
-						$mu_user = User::where('port','=',$mu)->first();
+						$mu_user = User::where('port','=',$mu)->where("is_multi_user", "<>", 0)->where(
+								function ($query) use ($user) {
+									$query->Where("node_group","=",$user->node_group)
+										->orWhere("node_group","=",0);
+								}
+							)->where("class","<=",$user->class)->first();
+						if($mu_user == null)
+						{
+							return;
+						}
 						$mu_user->obfs_param = $this->user->getMuMd5();
 						$mu_user->protocol_param = $user->id.":".$user->passwd;
 						$user = $mu_user;
