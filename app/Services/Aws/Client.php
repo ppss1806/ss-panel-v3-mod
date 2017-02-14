@@ -6,7 +6,8 @@ use Aws\Sdk;
 
 class Client
 {
-    public function getClient(){
+    public function getClient()
+    {
         $sdk = new Sdk([
             'region'   => 'us-west-2',
             'version'  => 'latest',

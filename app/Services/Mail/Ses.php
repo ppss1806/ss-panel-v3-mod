@@ -21,7 +21,6 @@ class Ses extends Base
 
     public function send($to, $subject, $text)
     {
-
         $this->client->sendEmail([
             'Destination' => [ // REQUIRED
                 'ToAddresses' => [$to],

@@ -1,4 +1,4 @@
-﻿
+
 
 
 {include file='admin/main.tpl'}
@@ -18,7 +18,7 @@
 		<div class="container">
 			<div class="col-lg-12 col-md-12">
 				<section class="content-inner margin-top-no">
-					
+
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
@@ -26,7 +26,23 @@
 							</div>
 						</div>
 					</div>
-					
+
+					<div class="card">
+						<div class="card-main">
+							<div class="card-inner">
+								<div class="form-group form-group-label">
+									<label class="floating-label" for="search"> 输入用户 ID 进行搜索链路搜索 </label>
+									<input class="form-control" id="search" type="text">
+								</div>
+							</div>
+							<div class="card-action">
+								<div class="card-action-btn pull-left">
+									<a class="btn btn-flat waves-attach waves-light" id="search_button"><span class="icon">search</span>&nbsp;搜索</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
 					<div class="table-responsive">
 						{$rules->render()}
 						<table class="table">
@@ -39,7 +55,7 @@
 							<th>目标节点</th>
 							<th>端口</th>
 							<th>优先级</th>
-							
+
 							</tr>
 							{foreach $rules as $rule}
 								<tr>
@@ -55,7 +71,11 @@
 								{else}
 									<td>{$rule->Source_Node()->name}</td>
 								{/if}
-								<td>{$rule->Dist_Node()->name}</td>
+								{if $rule->Dist_Node() == null}
+									<td>不进行中转</td>
+								{else}
+									<td>{$rule->Dist_Node()->name}</td>
+								{/if}
 								<td>{$rule->port}</td>
 								<td>{$rule->priority}</td>
 						        </tr>
@@ -63,14 +83,14 @@
 						</table>
 						{$rules->render()}
 					</div>
-					
+
 					<div class="fbtn-container">
 						<div class="fbtn-inner">
 							<a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-circle waves-light" href="/admin/relay/create">+</a>
-							
+
 						</div>
 					</div>
-					
+
 					<div aria-hidden="true" class="modal modal-va-middle fade" id="delete_modal" role="dialog" tabindex="-1">
 						<div class="modal-dialog modal-xs">
 							<div class="modal-content">
@@ -87,14 +107,14 @@
 							</div>
 						</div>
 					</div>
-					
+
 					{include file='dialog.tpl'}
 
-							
+
 			</div>
-			
-			
-			
+
+
+
 		</div>
 	</main>
 
@@ -140,16 +160,21 @@ $(document).ready(function(){
 			}
 		});
 	}
+
 	$("#delete_input").click(function(){
 		delete_id();
 	});
+
+	function search(){
+		window.location="/admin/relay/path_search/"+$("#search").val();
+	}
+
+	$("#search_button").click(function(){
+		if($("#search").val()!="")
+		{
+			search();
+		}
+	});
 })
-	
+
 </script>
-
-
-
-
-
-
-

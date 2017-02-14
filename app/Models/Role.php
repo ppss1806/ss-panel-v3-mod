@@ -7,9 +7,7 @@ namespace App\Models;
  */
 
 class Role extends Model
-
 {
-	protected $connection = "default";
+    protected $connection = "default";
     protected $table = "user_role";
-
 }

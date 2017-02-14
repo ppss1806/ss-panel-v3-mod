@@ -76,18 +76,20 @@ class GA
      * @param string $title
      * @return string
      */
-    public function getQRCodeGoogleUrl($name, $secret, $title = null) {
+    public function getQRCodeGoogleUrl($name, $secret, $title = null)
+    {
         $urlencoded = urlencode('otpauth://totp/'.$name.'?secret='.$secret.'');
-		if(isset($title)) {
-                $urlencoded .= urlencode('&issuer='.urlencode($title));
+        if (isset($title)) {
+            $urlencoded .= urlencode('&issuer='.urlencode($title));
         }
         return 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl='.$urlencoded.'';
     }
-	
-	public function getUrl($name, $secret, $title = null) {
+    
+    public function getUrl($name, $secret, $title = null)
+    {
         $urlencoded = 'otpauth://totp/'.$name.'?secret='.$secret.'';
-		if(isset($title)) {
-                $urlencoded .= '&issuer='.urlencode($title);
+        if (isset($title)) {
+            $urlencoded .= '&issuer='.urlencode($title);
         }
         return $urlencoded;
     }
@@ -109,7 +111,7 @@ class GA
 
         for ($i = -$discrepancy; $i <= $discrepancy; $i++) {
             $calculatedCode = $this->getCode($secret, $currentTimeSlice + $i);
-            if ($calculatedCode == $code ) {
+            if ($calculatedCode == $code) {
                 return true;
             }
         }
@@ -137,30 +139,38 @@ class GA
      */
     protected function _base32Decode($secret)
     {
-        if (empty($secret)) return '';
+        if (empty($secret)) {
+            return '';
+        }
 
         $base32chars = $this->_getBase32LookupTable();
         $base32charsFlipped = array_flip($base32chars);
 
         $paddingCharCount = substr_count($secret, $base32chars[32]);
         $allowedValues = array(6, 4, 3, 1, 0);
-        if (!in_array($paddingCharCount, $allowedValues)) return false;
-        for ($i = 0; $i < 4; $i++){
-            if ($paddingCharCount == $allowedValues[$i] &&
-                substr($secret, -($allowedValues[$i])) != str_repeat($base32chars[32], $allowedValues[$i])) return false;
+        if (!in_array($paddingCharCount, $allowedValues)) {
+            return false;
         }
-        $secret = str_replace('=','', $secret);
+        for ($i = 0; $i < 4; $i++) {
+            if ($paddingCharCount == $allowedValues[$i] &&
+                substr($secret, -($allowedValues[$i])) != str_repeat($base32chars[32], $allowedValues[$i])) {
+                return false;
+            }
+        }
+        $secret = str_replace('=', '', $secret);
         $secret = str_split($secret);
         $binaryString = "";
         for ($i = 0; $i < count($secret); $i = $i+8) {
             $x = "";
-            if (!in_array($secret[$i], $base32chars)) return false;
+            if (!in_array($secret[$i], $base32chars)) {
+                return false;
+            }
             for ($j = 0; $j < 8; $j++) {
                 $x .= str_pad(base_convert(@$base32charsFlipped[@$secret[$i + $j]], 10, 2), 5, '0', STR_PAD_LEFT);
             }
             $eightBits = str_split($x, 8);
             for ($z = 0; $z < count($eightBits); $z++) {
-                $binaryString .= ( ($y = chr(base_convert($eightBits[$z], 2, 10))) || ord($y) == 48 ) ? $y:"";
+                $binaryString .= (($y = chr(base_convert($eightBits[$z], 2, 10))) || ord($y) == 48) ? $y:"";
             }
         }
         return $binaryString;
@@ -175,7 +185,9 @@ class GA
      */
     protected function _base32Encode($secret, $padding = true)
     {
-        if (empty($secret)) return '';
+        if (empty($secret)) {
+            return '';
+        }
 
         $base32chars = $this->_getBase32LookupTable();
 
@@ -192,10 +204,15 @@ class GA
             $i++;
         }
         if ($padding && ($x = strlen($binaryString) % 40) != 0) {
-            if ($x == 8) $base32 .= str_repeat($base32chars[32], 6);
-            elseif ($x == 16) $base32 .= str_repeat($base32chars[32], 4);
-            elseif ($x == 24) $base32 .= str_repeat($base32chars[32], 3);
-            elseif ($x == 32) $base32 .= $base32chars[32];
+            if ($x == 8) {
+                $base32 .= str_repeat($base32chars[32], 6);
+            } elseif ($x == 16) {
+                $base32 .= str_repeat($base32chars[32], 4);
+            } elseif ($x == 24) {
+                $base32 .= str_repeat($base32chars[32], 3);
+            } elseif ($x == 32) {
+                $base32 .= $base32chars[32];
+            }
         }
         return $base32;
     }

@@ -4,6 +4,7 @@ namespace App\Services\Token;
 
 use App\Models\User;
 use App\Services\Aws\Factory;
+
 class Dynamodb extends Base
 {
     protected $client;

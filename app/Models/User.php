@@ -12,10 +12,10 @@ use App\Models\InviteCode;
 use App\Services\Config;
 use App\Utils\GA;
 use App\Models\Link;
-
+use App\Utils\Wecenter;
+use App\Utils\Radius;
 
 class User extends Model
-
 {
     protected $connection = "default";
     protected $table = "user";
@@ -58,11 +58,10 @@ class User extends Model
         $str = str_replace("%id", $this->attributes['id'], Config::get('mu_regex'));
         $str = str_replace("%suffix", Config::get('mu_suffix'), $str);
         preg_match_all("|%-?[1-9]\d*m|U", $str, $matches, PREG_PATTERN_ORDER);
-        foreach($matches[0] as $key)
-        {
-            $key_match = str_replace("%", "",$key);
-            $key_match = str_replace("m", "",$key_match);
-            $md5 = substr(MD5($this->attributes['id'].$this->attributes['passwd'].$this->attributes['method'].$this->attributes['obfs'].$this->attributes['protocol']), 
+        foreach ($matches[0] as $key) {
+            $key_match = str_replace("%", "", $key);
+            $key_match = str_replace("m", "", $key_match);
+            $md5 = substr(MD5($this->attributes['id'].$this->attributes['passwd'].$this->attributes['method'].$this->attributes['obfs'].$this->attributes['protocol']),
             ($key_match < 0 ? $key_match : 0),
             abs($key_match));
             $str = str_replace($key, $md5, $str);
@@ -88,7 +87,7 @@ class User extends Model
         $this->pass = Hash::passwordHash($pwd);
         $this->save();
     }
-    
+
     public function get_forbidden_ip()
     {
         return str_replace(",", PHP_EOL, $this->attributes['forbidden_ip']);
@@ -161,13 +160,13 @@ class User extends Model
         $transfer_enable = $this->attributes['transfer_enable'];
         return Tools::flowAutoShow($transfer_enable - $total);
     }
-    
+
     public function TodayusedTraffic()
     {
         $total = $this->attributes['u'] + $this->attributes['d']-$this->attributes['last_day_t'];
         return Tools::flowAutoShow($total);
     }
-    
+
     public function LastusedTraffic()
     {
         $total = $this->attributes['last_day_t'];
@@ -177,9 +176,9 @@ class User extends Model
     public function isAbleToCheckin()
     {
         $last = $this->attributes['last_check_in_time'];
-    
-        $now = time(); 
-        if(date("Ymd", $now)!= date("Ymd", $last) ){
+
+        $now = time();
+        if (date("Ymd", $now)!= date("Ymd", $last)) {
             return true;
         }
         return false;
@@ -191,11 +190,11 @@ class User extends Model
     public function addTraffic($traffic)
     {
     }
-    
+
     public function getGAurl()
     {
         $ga = new GA();
-        $url = $ga->getUrl(urlencode(Config::get('appName')."-".$this->attributes['user_name']."-两步验证码"),$this->attributes['ga_token']);
+        $url = $ga->getUrl(urlencode(Config::get('appName')."-".$this->attributes['user_name']."-两步验证码"), $this->attributes['ga_token']);
         return $url;
     }
 
@@ -204,33 +203,60 @@ class User extends Model
         $uid = $this->attributes['id'];
         return InviteCode::where('user_id', $uid)->get();
     }
-    
+
     public function ref_by_user()
     {
         $uid = $this->attributes['ref_by'];
         return User::where('id', $uid)->first();
     }
-    
+
     public function clean_link()
     {
         $uid = $this->attributes['id'];
         Link::where('userid', $uid)->delete();
     }
-    
+
     public function online_ip_count()
     {
         $uid = $this->attributes['id'];
-        $total = Ip::where("datetime",">=",time()-90)->where('userid', $uid)->orderBy('userid', 'desc')->get();
+        $total = Ip::where("datetime", ">=", time()-90)->where('userid', $uid)->orderBy('userid', 'desc')->get();
         $unique_ip_list = array();
-        foreach($total as $single_record)
-        {
-            if(!in_array($single_record->ip, $unique_ip_list))
-            {
+        foreach ($total as $single_record) {
+            if (!in_array($single_record->ip, $unique_ip_list)) {
                 array_push($unique_ip_list, $single_record->ip);
             }
         }
-        
+
         return count($unique_ip_list);
     }
 
+    public function kill_user()
+    {
+        $uid = $this->attributes['id'];
+        $email = $this->attributes['email'];
+
+        Radius::Delete($email);
+
+        RadiusBan::where('userid', '=', $uid)->delete();
+        Disconnect::where('userid', '=', $uid)->delete();
+        Bought::where('userid', '=', $uid)->delete();
+        Bought::where('userid', '=', $uid)->delete();
+        Ip::where('userid', '=', $uid)->delete();
+        Code::where('userid', '=', $uid)->delete();
+        DetectLog::where('user_id', '=', $uid)->delete();
+        Link::where('userid', '=', $uid)->delete();
+        LoginIp::where('userid', '=', $uid)->delete();
+        InviteCode::where('user_id', '=', $uid)->delete();
+        TelegramSession::where('user_id', '=', $uid)->delete();
+        UnblockIp::where('userid', '=', $uid)->delete();
+        TrafficLog::where('user_id', '=', $uid)->delete();
+        Token::where('user_id', '=', $uid)->delete();
+        PasswordReset::where('email', '=', $email)->delete();
+
+        Wecenter::Delete($email);
+
+        $this->delete();
+
+        return true;
+    }
 }

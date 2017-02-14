@@ -12,7 +12,6 @@ use App\Services\Mail\Smtp;
 use App\Services\Mail\SendGrid;
 use Smarty;
 
-
 class Mail
 {
     /**

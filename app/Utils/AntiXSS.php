@@ -1603,7 +1603,7 @@ class AntiXSS
    */
   public function __construct()
   {
-    $this->_never_allowed_str = array(
+      $this->_never_allowed_str = array(
         'document.cookie' => $this->_replacement,
         'document.write'  => $this->_replacement,
         '.parentNode'     => $this->_replacement,
@@ -1618,7 +1618,7 @@ class AntiXSS
         '<comment>'       => '&lt;comment&gt;',
     );
 
-    $this->_never_allowed_str_afterwards = array(
+      $this->_never_allowed_str_afterwards = array(
         'FSCommand',
         'onAbort',
         'onActivate',
@@ -1867,17 +1867,17 @@ class AntiXSS
    */
   public function xss_clean($str, $is_image = false)
   {
-    if (is_array($str)) {
-      foreach ($str as &$value) {
-        $value = $this->xss_clean($value);
+      if (is_array($str)) {
+          foreach ($str as &$value) {
+              $value = $this->xss_clean($value);
+          }
+
+          return $str;
       }
 
-      return $str;
-    }
-
-    $str = (string)$str;
-    $strInt = (int)$str;
-    $strFloat = (float)$str;
+      $str = (string)$str;
+      $strInt = (int)$str;
+      $strFloat = (float)$str;
     /** @noinspection TypeUnsafeComparisonInspection */
     if (
         !$str
@@ -1890,7 +1890,7 @@ class AntiXSS
         ||
         "$strFloat" == $str || is_float($str)
     ) {
-      return $str;
+        return $str;
     }
 
     // removes all non-UTF-8 characters
@@ -1906,13 +1906,13 @@ class AntiXSS
 
     // capture converted string for later comparison
     if ($is_image === true) {
-      $converted_string = $str;
+        $converted_string = $str;
     }
 
-    do {
-      $old_str = $str;
-      $str = $this->_do($str, $is_image);
-    } while ($old_str !== $str);
+      do {
+          $old_str = $str;
+          $str = $this->_do($str, $is_image);
+      } while ($old_str !== $str);
 
     /*
      * images are Handled in a special way
@@ -1927,11 +1927,11 @@ class AntiXSS
      * code found and removed/changed during processing.
      */
     if ($is_image === true) {
-      /** @noinspection PhpUndefinedVariableInspection */
+        /** @noinspection PhpUndefinedVariableInspection */
       return ($str === $converted_string);
     }
 
-    return $str;
+      return $str;
   }
 
   /**
@@ -1942,7 +1942,7 @@ class AntiXSS
    */
   protected function _do($str, $is_image)
   {
-    // remove strings that are never allowed
+      // remove strings that are never allowed
     $str = $this->_do_never_allowed($str);
 
     // make php tags safe for displaying
@@ -1968,9 +1968,9 @@ class AntiXSS
     // This adds a bit of extra precaution in case
     // something got through the above filters.
     $str = $this->_do_never_allowed($str);
-    $str = $this->_do_never_allowed_afterwards($str);
+      $str = $this->_do_never_allowed_afterwards($str);
 
-    return $str;
+      return $str;
   }
 
   /**
@@ -1982,8 +1982,8 @@ class AntiXSS
    */
   protected function decode_string($str)
   {
-    if (preg_match('/<\w+.*/si', $str, $matches) === 1) {
-      $str = preg_replace_callback(
+      if (preg_match('/<\w+.*/si', $str, $matches) === 1) {
+          $str = preg_replace_callback(
           '/<\w+.*/si',
           array(
               $this,
@@ -1991,11 +1991,11 @@ class AntiXSS
           ),
           $str
       );
-    } else {
-      $str = UTF8::urldecode($str);
-    }
+      } else {
+          $str = UTF8::urldecode($str);
+      }
 
-    return $str;
+      return $str;
   }
 
   /**
@@ -2007,17 +2007,17 @@ class AntiXSS
    */
   protected function _do_never_allowed($str)
   {
-    static $neverAllowedRegex;
+      static $neverAllowedRegex;
 
-    if (null === $neverAllowedRegex) {
-      $neverAllowedRegex = implode('|', self::$_never_allowed_regex);
-    }
+      if (null === $neverAllowedRegex) {
+          $neverAllowedRegex = implode('|', self::$_never_allowed_regex);
+      }
 
-    $str = str_ireplace(array_keys($this->_never_allowed_str), $this->_never_allowed_str, $str);
+      $str = str_ireplace(array_keys($this->_never_allowed_str), $this->_never_allowed_str, $str);
 
-    $str = preg_replace('#' . $neverAllowedRegex . '#is', $this->_replacement, $str);
+      $str = preg_replace('#' . $neverAllowedRegex . '#is', $this->_replacement, $str);
 
-    return (string)$str;
+      return (string)$str;
   }
 
   /*
@@ -2036,13 +2036,13 @@ class AntiXSS
    */
   public function make_php_tags_safe($str, $is_image)
   {
-    if ($is_image === true) {
-      // Images have a tendency to have the PHP short opening and
+      if ($is_image === true) {
+          // Images have a tendency to have the PHP short opening and
       // closing tags every so often so we skip those and only
       // do the long opening tags.
       $str = preg_replace('/<\?(php)/i', '&lt;?\\1', $str);
-    } else {
-      $str = str_replace(
+      } else {
+          $str = str_replace(
           array(
               '<?',
               '?>',
@@ -2053,9 +2053,9 @@ class AntiXSS
           ),
           $str
       );
-    }
+      }
 
-    return (string)$str;
+      return (string)$str;
   }
 
   /**
@@ -2070,9 +2070,9 @@ class AntiXSS
    */
   public function compact_exploded_javascript($str)
   {
-    static $wordsCache;
+      static $wordsCache;
 
-    $words = array(
+      $words = array(
         'javascript',
         'expression',
         'vbscript',
@@ -2092,13 +2092,12 @@ class AntiXSS
         'eval',
     );
 
-    foreach ($words as $word) {
-
-      if (!isset($wordsCache[$word])) {
-        $word = $wordsCache[$word] = chunk_split($word, 1, '\s*');
-      } else {
-        $word = $wordsCache[$word];
-      }
+      foreach ($words as $word) {
+          if (!isset($wordsCache[$word])) {
+              $word = $wordsCache[$word] = chunk_split($word, 1, '\s*');
+          } else {
+              $word = $wordsCache[$word];
+          }
 
       // We only want to do this when it is followed by a non-word character
       // That way valid stuff like "dealer to" does not become "dealerto".
@@ -2110,9 +2109,9 @@ class AntiXSS
           ),
           $str
       );
-    }
+      }
 
-    return (string)$str;
+      return (string)$str;
   }
 
   /**
@@ -2133,11 +2132,11 @@ class AntiXSS
    */
   public function remove_disallowed_javascript($str)
   {
-    do {
-      $original = $str;
+      do {
+          $original = $str;
 
-      if (preg_match('/<a/i', $str)) {
-        $str = preg_replace_callback(
+          if (preg_match('/<a/i', $str)) {
+              $str = preg_replace_callback(
             '#<a[^a-z0-9>]+([^>]*?)(?:>|$)#i',
             array(
                 $this,
@@ -2145,10 +2144,10 @@ class AntiXSS
             ),
             $str
         );
-      }
+          }
 
-      if (preg_match('/<img/i', $str)) {
-        $str = preg_replace_callback(
+          if (preg_match('/<img/i', $str)) {
+              $str = preg_replace_callback(
             '#<img[^a-z0-9]+([^>]*?)(?:\s?/?>|$)#i',
             array(
                 $this,
@@ -2156,14 +2155,14 @@ class AntiXSS
             ),
             $str
         );
-      }
+          }
 
-      if (preg_match('/script|xss/i', $str)) {
-        $str = preg_replace('#</*(?:script|xss).*?>#si', $this->_replacement, $str);
-      }
-    } while ($original !== $str);
+          if (preg_match('/script|xss/i', $str)) {
+              $str = preg_replace('#</*(?:script|xss).*?>#si', $this->_replacement, $str);
+          }
+      } while ($original !== $str);
 
-    return (string)$str;
+      return (string)$str;
   }
 
   /**
@@ -2190,7 +2189,7 @@ class AntiXSS
    */
   public function remove_evil_attributes($str, $is_image)
   {
-    // https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet#Event_Handlers
+      // https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet#Event_Handlers
 
     $evil_attributes = array(
         'on\w*',
@@ -2204,29 +2203,29 @@ class AntiXSS
         'eval',
     );
 
-    if ($is_image === true) {
-      /*
+      if ($is_image === true) {
+          /*
        * Adobe Photoshop puts XML metadata into JFIF images,
        * including namespacing, so we have to allow this for images.
        */
       unset($evil_attributes[array_search('xmlns', $evil_attributes, true)]);
-    }
+      }
 
-    $evil_attributes_string = implode('|', $evil_attributes);
+      $evil_attributes_string = implode('|', $evil_attributes);
 
-    do {
-      $count = $temp_count = 0;
+      do {
+          $count = $temp_count = 0;
 
       // replace occurrences of illegal attribute strings with quotes (042 and 047 are octal quotes)
       $str = preg_replace('/(<[^>]+)(?<!\w)(' . $evil_attributes_string . ')\s*=\s*(\042|\047)([^\\2]*?)(\\2)/is', '$1' . $this->_replacement, $str, -1, $temp_count);
-      $count += $temp_count;
+          $count += $temp_count;
 
       // find occurrences of illegal attribute strings without quotes
       $str = preg_replace('/(<[^>]+)(?<!\w)(' . $evil_attributes_string . ')\s*=\s*([^\s>]*)/is', '$1' . $this->_replacement, $str, -1, $temp_count);
-      $count += $temp_count;
-    } while ($count);
+          $count += $temp_count;
+      } while ($count);
 
-    return (string)$str;
+      return (string)$str;
   }
 
   /**
@@ -2244,8 +2243,8 @@ class AntiXSS
    */
   public function sanitize_naughty_html($str)
   {
-    $naughty = 'alert|prompt|confirm|applet|audio|basefont|base|behavior|bgsound|blink|body|embed|expression|form|frameset|frame|head|html|ilayer|iframe|input|button|select|isindex|layer|link|meta|keygen|object|plaintext|style|script|textarea|title|math|video|svg|xml|xss|eval';
-    $str = preg_replace_callback(
+      $naughty = 'alert|prompt|confirm|applet|audio|basefont|base|behavior|bgsound|blink|body|embed|expression|form|frameset|frame|head|html|ilayer|iframe|input|button|select|isindex|layer|link|meta|keygen|object|plaintext|style|script|textarea|title|math|video|svg|xml|xss|eval';
+      $str = preg_replace_callback(
         '#<(/*\s*)(' . $naughty . ')([^><]*)([><]*)#is',
         array(
             $this,
@@ -2254,7 +2253,7 @@ class AntiXSS
         $str
     );
 
-    return (string)$str;
+      return (string)$str;
   }
 
   /**
@@ -2275,13 +2274,13 @@ class AntiXSS
    */
   public function sanitize_naughty_javascript($str)
   {
-    $str = preg_replace(
+      $str = preg_replace(
         '#(alert|eval|prompt|confirm|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)\((.*?)\)#si',
         '\\1\\2&#40;\\3&#41;',
         $str
     );
 
-    return (string)$str;
+      return (string)$str;
   }
 
   /**
@@ -2295,20 +2294,20 @@ class AntiXSS
    */
   protected function _do_never_allowed_afterwards($str)
   {
-    static $neverAllowedStrAfterwardsRegex;
+      static $neverAllowedStrAfterwardsRegex;
 
-    if (null === $neverAllowedStrAfterwardsRegex) {
-      foreach ($this->_never_allowed_str_afterwards as &$neverAllowedStr) {
-        $neverAllowedStr .= '.*=';
+      if (null === $neverAllowedStrAfterwardsRegex) {
+          foreach ($this->_never_allowed_str_afterwards as &$neverAllowedStr) {
+              $neverAllowedStr .= '.*=';
+          }
+          unset($neverAllowedStr);
+
+          $neverAllowedStrAfterwardsRegex = implode('|', $this->_never_allowed_str_afterwards);
       }
-      unset($neverAllowedStr);
 
-      $neverAllowedStrAfterwardsRegex = implode('|', $this->_never_allowed_str_afterwards);
-    }
+      $str = preg_replace('#' . $neverAllowedStrAfterwardsRegex . '#isU', $this->_replacement, $str);
 
-    $str = preg_replace('#' . $neverAllowedStrAfterwardsRegex . '#isU', $this->_replacement, $str);
-
-    return (string)$str;
+      return (string)$str;
   }
 
   /**
@@ -2318,7 +2317,7 @@ class AntiXSS
    */
   public function setReplacement($string)
   {
-    $this->_replacement = (string)$string;
+      $this->_replacement = (string)$string;
   }
 
   /**
@@ -2333,7 +2332,7 @@ class AntiXSS
    */
   protected function _compact_exploded_words($matches)
   {
-    return preg_replace('/\s+/', '', $matches[1]) . $matches[2];
+      return preg_replace('/\s+/', '', $matches[1]) . $matches[2];
   }
 
   /**
@@ -2347,7 +2346,7 @@ class AntiXSS
    */
   protected function _sanitize_naughty_html($matches)
   {
-    return '&lt;' . $matches[1] . $matches[2] . $matches[3] // encode opening brace
+      return '&lt;' . $matches[1] . $matches[2] . $matches[3] // encode opening brace
            // encode captured opening or closing brace to prevent recursive vectors:
            . str_replace(
                array(
@@ -2377,7 +2376,7 @@ class AntiXSS
    */
   protected function _js_img_removal($match)
   {
-    return $this->_js_removal($match, 'src');
+      return $this->_js_removal($match, 'src');
   }
 
   /**
@@ -2396,17 +2395,17 @@ class AntiXSS
    */
   protected function _js_removal($match, $search)
   {
-    if (!$match[0]) {
-      return '';
-    }
+      if (!$match[0]) {
+          return '';
+      }
 
-    $replacer = preg_replace(
+      $replacer = preg_replace(
         '#' . $search . '=.*?(?:(?:alert|prompt|confirm)(?:\((\')*|&\#40;)|javascript:|livescript:|wscript:|vbscript:|mocha:|charset=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si',
         '',
         $this->_filter_attributes(str_replace(array('<', '>',), '', $match[1]))
     );
 
-    return str_ireplace($match[1], $replacer, $match[0]);
+      return str_ireplace($match[1], $replacer, $match[0]);
   }
 
   /**
@@ -2420,18 +2419,18 @@ class AntiXSS
    */
   protected function _filter_attributes($str)
   {
-    if ($str === '') {
-      return '';
-    }
-
-    $out = '';
-    if (preg_match_all('#\s*[a-z\-]+\s*=\s*(\042|\047)([^\\1]*?)\\1#i', $str, $matches)) {
-      foreach ($matches[0] as $match) {
-        $out .= preg_replace('#/\*.*?\*/#s', '', $match);
+      if ($str === '') {
+          return '';
       }
-    }
 
-    return $out;
+      $out = '';
+      if (preg_match_all('#\s*[a-z\-]+\s*=\s*(\042|\047)([^\\1]*?)\\1#i', $str, $matches)) {
+          foreach ($matches[0] as $match) {
+              $out .= preg_replace('#/\*.*?\*/#s', '', $match);
+          }
+      }
+
+      return $out;
   }
 
   /**
@@ -2449,7 +2448,7 @@ class AntiXSS
    */
   protected function _js_link_removal($match)
   {
-    return $this->_js_removal($match, 'href');
+      return $this->_js_removal($match, 'href');
   }
 
   /**
@@ -2461,7 +2460,7 @@ class AntiXSS
    */
   protected function _decode_entity($match)
   {
-    $hash = $this->xss_hash();
+      $hash = $this->xss_hash();
 
     // protect GET variables in URLs
     // 901119URL5918AMP18930PROTECT8198
@@ -2480,17 +2479,17 @@ class AntiXSS
    */
   public function xss_hash()
   {
-    if ($this->_xss_hash === null) {
-      $rand = Bootup::get_random_bytes(16);
+      if ($this->_xss_hash === null) {
+          $rand = Bootup::get_random_bytes(16);
 
-      if (!$rand) {
-        $this->_xss_hash = md5(uniqid(mt_rand(), true));
-      } else {
-        $this->_xss_hash = bin2hex($rand);
+          if (!$rand) {
+              $this->_xss_hash = md5(uniqid(mt_rand(), true));
+          } else {
+              $this->_xss_hash = bin2hex($rand);
+          }
       }
-    }
 
-    return $this->_xss_hash;
+      return $this->_xss_hash;
   }
 
   /**
@@ -2500,21 +2499,20 @@ class AntiXSS
    */
   protected function _entity_decode($str)
   {
-    static $entities;
+      static $entities;
 
-    $flags = Bootup::is_php('5.4') ? ENT_QUOTES | ENT_HTML5 : ENT_QUOTES;
+      $flags = Bootup::is_php('5.4') ? ENT_QUOTES | ENT_HTML5 : ENT_QUOTES;
 
     // decode
     if (strpos($str, $this->xss_hash()) !== false) {
-      $str = UTF8::html_entity_decode($str, $flags);
+        $str = UTF8::html_entity_decode($str, $flags);
     } else {
-      $str = UTF8::urldecode($str);
+        $str = UTF8::urldecode($str);
     }
 
     // decode-again, for e.g. HHVM, PHP 5.3, miss configured applications ...
     if (preg_match_all('/&[a-z]{2,}[;]{0}/i', $str, $matches)) {
-
-      if (null === $entities) {
+        if (null === $entities) {
 
         // links:
         // - http://dev.w3.org/html5/html-author/charref
@@ -2576,30 +2574,29 @@ class AntiXSS
             '&#9;'               => "\n",
         );
 
-        $entitiesTmp = get_html_translation_table(HTML_ENTITIES, $flags);
-        $entitiesTmp = array_merge(self::$entitiesFallback, $entitiesTmp);
+            $entitiesTmp = get_html_translation_table(HTML_ENTITIES, $flags);
+            $entitiesTmp = array_merge(self::$entitiesFallback, $entitiesTmp);
 
-        $entities = array_merge(
+            $entities = array_merge(
             $entitiesSecurity,
             array_map('strtolower', array_flip($entitiesTmp))
         );
-      }
-
-      $replace = array();
-      $matches = array_unique(array_map('strtolower', $matches[0]));
-      foreach ($matches as $match) {
-        $match .= ';';
-        if (array_key_exists($match, $entities) === true) {
-          $replace[$match] = $entities[$match];
         }
-      }
 
-      if (count($replace) > 0) {
-        $str = str_ireplace(array_keys($replace), array_values($replace), $str);
-      }
+        $replace = array();
+        $matches = array_unique(array_map('strtolower', $matches[0]));
+        foreach ($matches as $match) {
+            $match .= ';';
+            if (array_key_exists($match, $entities) === true) {
+                $replace[$match] = $entities[$match];
+            }
+        }
+
+        if (count($replace) > 0) {
+            $str = str_ireplace(array_keys($replace), array_values($replace), $str);
+        }
     }
 
-    return $str;
+      return $str;
   }
-
 }

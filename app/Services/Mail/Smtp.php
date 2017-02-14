@@ -8,8 +8,8 @@ use App\Services\Config;
 
 class Smtp extends Base
 {
-
-    private $mail, $config;
+    private $mail;
+    private $config;
 
     public function __construct()
     {
@@ -21,10 +21,9 @@ class Smtp extends Base
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
         $mail->Username = $this->config['username'];                 // SMTP username
         $mail->Password = $this->config['passsword'];                    // SMTP password
-	if(Config::get('smtp_ssl') == 'true')
-	{
-        	$mail->SMTPSecure = (Config::get('smtp_port') =='587'?'tls':'ssl');                            // Enable TLS encryption, `ssl` also accepted
-	}
+    if (Config::get('smtp_ssl') == 'true') {
+        $mail->SMTPSecure = (Config::get('smtp_port') =='587'?'tls':'ssl');                            // Enable TLS encryption, `ssl` also accepted
+    }
         $mail->Port = $this->config['port'];                                    // TCP port to connect to
         $mail->setFrom($this->config['sender'], $this->config['name']);
         $mail->CharSet = 'UTF-8';
@@ -50,15 +49,13 @@ class Smtp extends Base
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $text;
-		foreach($files as $file)
-		{
-			$mail->addAttachment($file);
-		}
+        foreach ($files as $file) {
+            $mail->addAttachment($file);
+        }
         // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
         if (!$mail->send()) {
             return true;
         }
         return false;
     }
-
 }

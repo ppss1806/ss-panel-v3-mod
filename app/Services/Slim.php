@@ -19,10 +19,11 @@ class Slim
 {
     public $app;
 
-    public function newApp(){
+    public function newApp()
+    {
         // config
         $debug = false;
-        if (defined("DEBUG")){
+        if (defined("DEBUG")) {
             $debug = true;
         }
 
@@ -37,7 +38,8 @@ class Slim
         $this->app = $app;
     }
 
-    public function run(){
+    public function run()
+    {
         $this->app->run();
     }
 }

@@ -14,7 +14,7 @@ class Token extends Base
         $this->storage = Factory::createTokenStorage();
     }
 
-    public function  login($uid,$time)
+    public function login($uid, $time)
     {
         // TODO: Implement getUser() method.
     }
@@ -24,8 +24,8 @@ class Token extends Base
         // TODO: Implement logout() method.
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         $token = Cookie::get('token');
-        
     }
 }

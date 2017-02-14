@@ -24,39 +24,39 @@
 										<label class="floating-label" for="name">节点名称</label>
 										<input class="form-control" id="name" type="text" name="name">
 									</div>
-									
-									
+
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="server">节点地址</label>
 										<input class="form-control" id="server" type="text" name="server">
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="method">加密方式</label>
 										<input class="form-control" id="method" type="text" name="method">
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="rate">流量比例</label>
 										<input class="form-control" id="rate" type="text" name="rate">
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<div class="checkbox switch">
 											<label for="custom_method">
-												<input  class="access-hide" id="custom_method" type="checkbox" name="custom_method"><span class="switch-toggle"></span>自定义加密
+												<input  class="access-hide" id="custom_method" type="checkbox" name="custom_method" checked="checked" disabled><span class="switch-toggle"></span>自定义加密
 											</label>
 										</div>
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<div class="checkbox switch">
 											<label for="custom_rss">
-												<input  class="access-hide" id="custom_rss" type="checkbox" name="custom_rss"><span class="switch-toggle"></span>自定义协议&混淆
+												<input  class="access-hide" id="custom_rss" type="checkbox" name="custom_rss" checked="checked" disabled><span class="switch-toggle"></span>自定义协议&混淆
 											</label>
 										</div>
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<div class="checkbox switch">
 											<label for="mu_only">
@@ -64,8 +64,8 @@
 											</label>
 										</div>
 									</div>
-									
-									
+
+
 								</div>
 							</div>
 						</div>
@@ -80,13 +80,13 @@
 											</label>
 										</div>
 									</div>
-									
-									
+
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="status">节点状态</label>
 										<input class="form-control" id="status" type="text" name="status">
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<div class="form-group form-group-label">
 												<label class="floating-label" for="sort">节点类型</label>
@@ -105,48 +105,48 @@
 												</select>
 											</div>
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="info">节点描述</label>
 										<input class="form-control" id="info" type="text" name="info">
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="class">节点等级（不分级请填0，分级为数字）</label>
 										<input class="form-control" id="class" type="text" value="0" name="class">
 									</div>
-									
-									
+
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="group">节点群组（分组为数字，不分组请填0）</label>
 										<input class="form-control" id="group" type="text" value="0" name="group">
 									</div>
-									
-									
+
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="node_bandwidth_limit">节点流量上限（不使用的话请填0）（GB）</label>
 										<input class="form-control" id="node_bandwidth_limit" type="text" value="0" name="node_bandwidth_limit">
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="bandwidthlimit_resetday">节点流量上限清空日</label>
 										<input class="form-control" id="bandwidthlimit_resetday" type="text" value="0" name="bandwidthlimit_resetday">
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="node_speedlimit">节点限速(对于每个用户端口)（Mbps）</label>
 										<input class="form-control" id="node_speedlimit" type="text" value="0" name="node_speedlimit">
 									</div>
 								</div>
 							</div>
-						</div>	
-						
-						
-						
+						</div>
+
+
+
 						<div class="card">
 							<div class="card-main">
 								<div class="card-inner">
-									
+
 									<div class="form-group">
 										<div class="row">
 											<div class="col-md-10 col-md-push-1">
@@ -160,21 +160,21 @@
 
 					</form>
 					{include file='dialog.tpl'}
-					
-					
-					
-	
+
+
+
+
 			</div>
-			
-			
-			
+
+
+
 		</div>
 	</main>
 
-	
-	
-	
-	
+
+
+
+
 
 
 
@@ -211,7 +211,7 @@
 			{
 				var custom_method=0;
 			}
-			
+
 			if(document.getElementById('type').checked)
 			{
 				var type=1;
@@ -229,7 +229,7 @@
 			{
 				var custom_rss=0;
 			}
-			
+
 			if(document.getElementById('mu_only').checked)
 			{
 				var mu_only=1;
@@ -238,8 +238,8 @@
 			{
 				var mu_only=0;
 			}
-			
-			
+
+
             $.ajax({
                 type: "POST",
                 url: "/admin/node",
@@ -281,5 +281,3 @@
 	});
 
 </script>
-
-

@@ -42,7 +42,5 @@ class Password
 
     public static function resetBy($token, $password)
     {
-
     }
-
 }

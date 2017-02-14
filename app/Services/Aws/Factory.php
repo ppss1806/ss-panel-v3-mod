@@ -7,7 +7,8 @@ use App\Services\Config;
 
 class Factory
 {
-    public static function createAwsClient(){
+    public static function createAwsClient()
+    {
         $sdk = new Sdk([
             'credentials' => array(
                 'key'    => Config::get('aws_access_key_id'),
@@ -22,11 +23,12 @@ class Factory
         return $sdk;
     }
 
-    public static function createDynamodb(){
+    public static function createDynamodb()
+    {
         return self::createAwsClient()->createDynamoDb();
     }
 
-    public static function createSes(){
-
+    public static function createSes()
+    {
     }
 }

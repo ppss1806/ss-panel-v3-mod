@@ -2,14 +2,18 @@
 
 namespace App\Services;
 
-use App\Services\Auth\Cookie,App\Services\Auth\Redis,App\Services\Auth\JwtToken;
-use App\Services\Token\DB,App\Services\Token\Dynamodb;
+use App\Services\Auth\Cookie;
+use App\Services\Auth\Redis;
+use App\Services\Auth\JwtToken;
+use App\Services\Token\DB;
+use App\Services\Token\Dynamodb;
 
 class Factory
 {
-    public static function createAuth(){
+    public static function createAuth()
+    {
         $method = Config::get('authDriver');
-        switch($method){
+        switch ($method) {
             case 'cookie':
                 return new Cookie();
             case 'redis':
@@ -20,16 +24,17 @@ class Factory
         return new Redis();
     }
 
-    public static function createCache(){
-
+    public static function createCache()
+    {
     }
 
-    public static function createMail(){
-
+    public static function createMail()
+    {
     }
 
-    public static function createTokenStorage(){
-        switch(Config::get('tokenDriver')){
+    public static function createTokenStorage()
+    {
+        switch (Config::get('tokenDriver')) {
             case 'db':
                 return new DB();
             case 'dynamodb':

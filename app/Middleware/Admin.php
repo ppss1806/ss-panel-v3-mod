@@ -7,22 +7,22 @@ use Psr\Http\Message\ResponseInterface;
 use App\Services\Auth as AuthService;
 use App\Services\Config;
 
-class Admin{
-
-    public function __invoke(ServerRequestInterface $request,ResponseInterface $response, $next)
+class Admin
+{
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         //$response->getBody()->write('BEFORE');
         $user = AuthService::getUser();
-        if(!$user->isLogin){
+        if (!$user->isLogin) {
             $newResponse = $response->withStatus(302)->withHeader('Location', '/auth/login');
             return $newResponse;
         }
 
-        if(!$user->isAdmin()){
+        if (!$user->isAdmin()) {
             $newResponse = $response->withStatus(302)->withHeader('Location', '/user');
             return $newResponse;
         }
-		
+        
         $response = $next($request, $response);
         return $response;
     }

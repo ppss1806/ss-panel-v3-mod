@@ -9,25 +9,23 @@ use App\Services\Config;
 
 use App\Services\Jwt;
 
-class Auth{
-
-    public function __invoke(ServerRequestInterface $request,ResponseInterface $response, $next)
+class Auth
+{
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         $user = AuthService::getUser();
-        if(!$user->isLogin){
+        if (!$user->isLogin) {
             $newResponse = $response->withStatus(302)->withHeader('Location', '/auth/login');
             return $newResponse;
         }
         
         
-        if($user->enable == 0 && $_SERVER["REQUEST_URI"] != "/user/disable"){
+        if ($user->enable == 0 && $_SERVER["REQUEST_URI"] != "/user/disable") {
             $newResponse = $response->withStatus(302)->withHeader('Location', '/user/disable');
             return $newResponse;
         }
         
-        if(Config::get('enable_duoshuo')=='true')
-        {
-        
+        if (Config::get('enable_duoshuo')=='true') {
             $token = array(
                 "short_name"=>Config::get('duoshuo_shortname'),
                 "user_key"=>$user->id,
@@ -39,8 +37,7 @@ class Auth{
             
             $duoshuoToken = JWT::encode_withkey($token, Config::get('duoshuo_apptoken'));
             
-            setcookie('duoshuo_token',  $duoshuoToken);
-        
+            setcookie('duoshuo_token', $duoshuoToken);
         }
         
         $response = $next($request, $response);

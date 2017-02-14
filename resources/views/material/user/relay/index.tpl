@@ -1,4 +1,4 @@
-﻿
+
 
 
 {include file='user/main.tpl'}
@@ -18,56 +18,108 @@
 		<div class="container">
 			<div class="col-lg-12 col-md-12">
 				<section class="content-inner margin-top-no">
-					
+
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
 								<p>系统中您所有的中转规则。</p>
+								<p>在这里，您可以设置您的中转规则，从而将数据从一个服务器重定向到另外一个服务器。</p>
+								<p>优先级越大，代表其在多个符合条件的规则并存时会被优先采用，当优先级一致时，后添加的规则会被采用。</p>
+								<p>对某个节点不设置中转时，这个节点就可以当作一个普通的节点来做代理使用。</p>
 							</div>
 						</div>
 					</div>
-					{if $is_relay_able}
-					<div class="table-responsive">
-						{$rules->render()}
-						<table class="table">
-						    <tr>
-							<th>操作</th>
-							<th>ID</th>
-							<th>起源节点</th>
-							<th>目标节点</th>
-							<th>端口</th>
-							<th>优先级</th>
-							
-							</tr>
-							{foreach $rules as $rule}
-								<tr>
-								<td>
-									<a class="btn btn-brand" {if $rule->user_id == 0}disabled{else}href="/user/relay/{$rule->id}/edit"{/if}>编辑</a>
-									<a class="btn btn-brand-accent" id="delete" value="{$rule->id}" {if $rule->user_id == 0}disabled{else}href="javascript:void(0);" onClick="delete_modal_show('{$rule->id}')"{/if}>删除</a>
-								</td>
-								<td>#{$rule->id}</td>
-								{if $rule->source_node_id == 0}
-									<td>所有节点</td>
-								{else}
-									<td>{$rule->Source_Node()->name}</td>
+					<div class="card">
+						<div class="card-main">
+							<div class="card-inner">
+								{if $is_relay_able}
+								<nav class="tab-nav margin-top-no">
+									<ul class="nav nav-justified">
+										<li class="active">
+											<a class="waves-attach" data-toggle="tab" href="#rule_table">规则表</a>
+										</li>
+										<li>
+											<a class="waves-attach" data-toggle="tab" href="#link_table">链路表</a>
+										</li>
+									</ul>
+								</nav>
+								<div class="card-inner">
+									<div class="tab-content">
+										<div class="tab-pane fade active in" id="rule_table">
+											<div class="table-responsive">
+												{$rules->render()}
+												<table class="table">
+											    <tr>
+													<th>操作</th>
+													<th>ID</th>
+													<th>起源节点</th>
+													<th>目标节点</th>
+													<th>端口</th>
+													<th>优先级</th>
+
+													</tr>
+													{foreach $rules as $rule}
+														<tr>
+														<td>
+															<a class="btn btn-brand" {if $rule->user_id == 0}disabled{else}href="/user/relay/{$rule->id}/edit"{/if}>编辑</a>
+															<a class="btn btn-brand-accent" id="delete" value="{$rule->id}" {if $rule->user_id == 0}disabled{else}href="javascript:void(0);" onClick="delete_modal_show('{$rule->id}')"{/if}>删除</a>
+														</td>
+														<td>#{$rule->id}</td>
+														{if $rule->source_node_id == 0}
+															<td>所有节点</td>
+														{else}
+															<td>{$rule->Source_Node()->name}</td>
+														{/if}
+														{if $rule->Dist_Node() == null}
+															<td>不进行中转</td>
+														{else}
+															<td>{$rule->Dist_Node()->name}</td>
+														{/if}
+														<td>{if $rule->port == 0}所有端口{else}{$rule->port}{/if}</td>
+														<td>{$rule->priority}</td>
+												        </tr>
+												    {/foreach}
+												</table>
+												{$rules->render()}
+											</div>
+										</div>
+										<div class="tab-pane fade" id="link_table">
+											<div class="table-responsive">
+												<table class="table">
+											    <tr>
+													<th>端口</th>
+													<th>始发节点</th>
+													<th>终点节点</th>
+													<th>途径节点</th>
+													<th>状态</th>
+													</tr>
+
+													{foreach $pathset as $path}
+													<tr>
+													<td>{$path->port}</td>
+													<td>{$path->begin_node->name}</td>
+													<td>{$path->end_node->name}</td>
+													<td>{$path->path}</td>
+													<td>{$path->status}</td>
+									        </tr>
+											    {/foreach}
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
 								{/if}
-								<td>{$rule->Dist_Node()->name}</td>
-								<td>{if $rule->port == 0}所有端口{else}{$rule->port}{/if}</td>
-								<td>{$rule->priority}</td>
-						        </tr>
-						    {/foreach}
-						</table>
-						{$rules->render()}
+							</div>
+						</div>
 					</div>
-					{/if}
-					
+
 					<div class="fbtn-container">
 						<div class="fbtn-inner">
 							<a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-circle waves-light" href="/user/relay/create">+</a>
-							
+
 						</div>
 					</div>
-					
+
 					<div aria-hidden="true" class="modal modal-va-middle fade" id="delete_modal" role="dialog" tabindex="-1">
 						<div class="modal-dialog modal-xs">
 							<div class="modal-content">
@@ -84,14 +136,14 @@
 							</div>
 						</div>
 					</div>
-					
+
 					{include file='dialog.tpl'}
 
-					
+
 			</div>
-			
-			
-			
+
+
+
 		</div>
 	</main>
 
@@ -113,12 +165,12 @@ function delete_modal_show(id) {
 
 
 $(document).ready(function(){
-	
+
 	{if !$is_relay_able}
 	$("#result").modal();
 	$("#msg").html("为了中转的稳定，您需要在<a href='/user/edit'>资料编辑</a>处设置协议为 auth_aes128_md5 或 auth_aes128_sha1 后方可设置中转规则！");
 	{/if}
-	
+
 	function delete_id(){
 		$.ajax({
 			type:"DELETE",
@@ -147,12 +199,5 @@ $(document).ready(function(){
 		delete_id();
 	});
 })
-	
+
 </script>
-
-
-
-
-
-
-

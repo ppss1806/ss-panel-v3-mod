@@ -18,7 +18,7 @@ class JwtToken extends Base
         Utils\Cookie::set([
             //"uid" => $uid,
             "token" => $decode
-        ],$expireTime);
+        ], $expireTime);
     }
 
     public function logout()
@@ -26,7 +26,7 @@ class JwtToken extends Base
         Utils\Cookie::set([
             //"uid" => $uid,
             "token" => ""
-        ],time()-3600);
+        ], time()-3600);
     }
 
     public function getUser()

@@ -7,7 +7,10 @@ use Mailgun\Mailgun as MailgunService;
 
 class Mailgun extends Base
 {
-    private $config, $mg, $domain, $sender;
+    private $config;
+    private $mg;
+    private $domain;
+    private $sender;
 
     public function __construct()
     {

@@ -10,14 +10,14 @@ use App\Services\Factory;
 use App\Utils\Helper;
 use App\Models\Node;
 
-class Mu
+class Mod_Mu
 {
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         $key = Helper::getMuKeyFromReq($request);
         if ($key == null) {
             $res['ret'] = 0;
-            $res['msg'] = "key is null";
+            $res['data'] = "key is null";
             $response->getBody()->write(json_encode($res));
             return $response;
         }
@@ -33,7 +33,7 @@ class Mu
 
         if ($auth==false) {
             $res['ret'] = 0;
-            $res['msg'] = "token or source is invalid";
+            $res['data'] = "token or source is invalid";
             $response->getBody()->write(json_encode($res));
             return $response;
         }
@@ -41,7 +41,7 @@ class Mu
         $node = Node::where("node_ip", "=", $_SERVER["REMOTE_ADDR"])->first();
         if ($node==null) {
             $res['ret'] = 0;
-            $res['msg'] = "token or source is invalid";
+            $res['data'] = "token or source is invalid";
             $response->getBody()->write(json_encode($res));
             return $response;
         }

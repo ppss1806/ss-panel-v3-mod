@@ -7,9 +7,7 @@ namespace App\Models;
  */
 
 class Disconnect extends Model
-
 {
-	protected $connection = "default";
+    protected $connection = "default";
     protected $table = "disconnect_ip";
-
 }

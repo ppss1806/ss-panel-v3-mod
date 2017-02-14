@@ -4,29 +4,32 @@ namespace App\Services;
 
 use App\Utils\Wecenter;
 
-
 class Auth
 {
-   protected  $driver;
+    protected $driver;
 
-   public function __construct(){
+    public function __construct()
+    {
+    }
 
-   }
+    private static function getDriver()
+    {
+        return Factory::createAuth();
+    }
 
-   private static  function getDriver(){
-       return Factory::createAuth();
-   }
+    public static function login($uid, $time)
+    {
+        self::getDriver()->login($uid, $time);
+    }
 
-   public static function login($uid,$time){
-       self::getDriver()->login($uid,$time);
-   }
+    public static function getUser()
+    {
+        return self::getDriver()->getUser();
+    }
 
-   public static function getUser(){
-       return self::getDriver()->getUser();
-   }
-
-   public static function logout(){
-       self::getDriver()->logout();
-	   Wecenter::Loginout();
-   }
+    public static function logout()
+    {
+        self::getDriver()->logout();
+        Wecenter::Loginout();
+    }
 }

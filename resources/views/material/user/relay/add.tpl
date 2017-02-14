@@ -25,24 +25,23 @@
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="source_node">起源节点</label>
 										<select id="source_node" class="form-control" name="source_node">
-											<option value="0">所有中转节点</option>
 											{foreach $source_nodes as $source_node}
 												<option value="{$source_node->id}">{$source_node->name}</option>
 											{/foreach}
 										</select>
 									</div>
-									
-									
+
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="dist_node">目标节点</label>
 										<select id="dist_node" class="form-control" name="dist_node">
-											<option value="0">无</option>
+											<option value="-1">不进行中转</option>
 											{foreach $dist_nodes as $dist_node}
 												<option value="{$dist_node->id}">{$dist_node->name}</option>
 											{/foreach}
 										</select>
 									</div>
-									
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="port">端口</label>
 										<select id="port" class="form-control" name="port">
@@ -51,24 +50,24 @@
 											{/foreach}
 										</select>
 									</div>
-									
-									
-									
+
+
+
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="priority">优先级</label>
 										<input class="form-control" id="priority" name="priority" type="text" value="0">
 									</div>
-									
-									
+
+
 								</div>
 							</div>
 						</div>
-						
-						
+
+
 						<div class="card">
 							<div class="card-main">
 								<div class="card-inner">
-									
+
 									<div class="form-group">
 										<div class="row">
 											<div class="col-md-10 col-md-push-1">
@@ -79,21 +78,21 @@
 								</div>
 							</div>
 						</div>
-					</form>	
+					</form>
 					{include file='dialog.tpl'}
 				<section>
 
 			</div>
-			
-			
-			
+
+
+
 		</div>
 	</main>
 
-	
-	
-	
-	
+
+
+
+
 
 
 
@@ -113,9 +112,9 @@
 
 
 		submitHandler: function() {
-			
-			
-			
+
+
+
 		$.ajax({
 
 				type: "POST",
@@ -152,4 +151,3 @@
 </script>
 
 {/literal}
-

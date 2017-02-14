@@ -9,12 +9,11 @@ namespace App\Models;
 use App\Utils\Tools;
 
 class Node extends Model
-
 {
-	protected $connection = "default";
+    protected $connection = "default";
     protected $table = "ss_node";
-	
-	public function getLastNodeInfoLog()
+
+    public function getLastNodeInfoLog()
     {
         $id = $this->attributes['id'];
         $log = NodeInfoLog::where('node_id', $id)->orderBy('id', 'desc')->first();
@@ -32,85 +31,136 @@ class Node extends Model
         }
         return Tools::secondsToTime((int)$log->uptime);
     }
-	
-	
-	public function getNodeUpRate()
+
+
+    public function getNodeUpRate()
     {
         $id = $this->attributes['id'];
-        $log = NodeOnlineLog::where('node_id', $id)->where('log_time', '>=',time()-86400)->count();
-		
-		return $log/1440;
+        $log = NodeOnlineLog::where('node_id', $id)->where('log_time', '>=', time()-86400)->count();
+
+        return $log/1440;
     }
 
     public function getNodeLoad()
     {
-		$id = $this->attributes['id'];
+        $id = $this->attributes['id'];
         $log = NodeInfoLog::where('node_id', $id)->orderBy('id', 'desc')->whereRaw('`log_time`%1800<60')->limit(48)->get();
         return $log;
     }
-	
-	public function getNodeAlive()
+
+    public function getNodeAlive()
     {
-		$id = $this->attributes['id'];
+        $id = $this->attributes['id'];
         $log = NodeOnlineLog::where('node_id', $id)->orderBy('id', 'desc')->whereRaw('`log_time`%1800<60')->limit(48)->get();
         return $log;
     }
-	
-    function getOnlineUserCount(){
+
+    public function getOnlineUserCount()
+    {
         $id = $this->attributes['id'];
-        $log = NodeOnlineLog::where('node_id',$id)->orderBy('id', 'desc')->first();
-        if($log == null){
+        $log = NodeOnlineLog::where('node_id', $id)->orderBy('id', 'desc')->first();
+        if ($log == null) {
             return "暂无数据";
         }
         return $log->online_user;
     }
-	
-	function getSpeedtest(){
+
+    public function getSpeedtest()
+    {
         $id = $this->attributes['id'];
-        $log = Speedtest::where('nodeid',$id)->orderBy('datetime', 'desc')->first();
-        if($log == null){
+        $log = Speedtest::where('nodeid', $id)->orderBy('datetime', 'desc')->first();
+        if ($log == null) {
             return "暂无数据";
         }
-		
-		
+
+
         return "电信延迟：".$log->telecomping." 下载：".$log->telecomeupload." 上传：".$log->telecomedownload."<br>
 		联通延迟：".$log->unicomping." 下载：".$log->unicomupload." 上传：".$log->unicomdownload."<br>
 		移动延迟：".$log->cmccping." 下载：".$log->cmccupload." 上传：".$log->cmccdownload."<br>定时测试，仅供参考";
     }
-	
-	
-	function getSpeedtestResult(){
+
+    public function getSpeedtestResult()
+    {
         $id = $this->attributes['id'];
-        $log = Speedtest::where('nodeid',$id)->orderBy('id', 'desc')->limit(48)->get();
-        if($log == null){
+        $log = Speedtest::where('nodeid', $id)->orderBy('id', 'desc')->limit(48)->get();
+        if ($log == null) {
             return "暂无数据";
         }
-		
-		
+
+
         return $log;
     }
 
+    public function getTrafficFromLogs()
+    {
+        $id = $this->attributes['id'];
 
+        $traffic = TrafficLog::where('node_id', $id)->sum('u') + TrafficLog::where('node_id', $id)->sum('d');
 
-	function getTrafficFromLogs()
-	{
+        if ($traffic == 0) {
+            return "暂无数据";
+        }
 
-		$id = $this->attributes['id'];
+        return Tools::flowAutoShow($traffic);
+    }
 
-		$traffic = TrafficLog::where('node_id', $id)->sum('u') + TrafficLog::where('node_id', $id)->sum('d');
+    public function isNodeOnline()
+    {
+        $node_heartbeat = $this->attributes['node_heartbeat'];
+        $sort = $this->attributes['sort'];
 
-		if ($traffic == 0) {
+        if (!($sort == 0 || $sort == 7 || $sort == 8 || $sort==10)) {
+            return null;
+        }
 
-			return "暂无数据";
+        if ($node_heartbeat == 0) {
+            return null;
+        }
 
-		}
+        if (time() - $node_heartbeat > 300) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-		return Tools::flowAutoShow($traffic);
+    public function isNodeTrafficOut()
+    {
+        $node_bandwidth = $this->attributes['node_bandwidth'];
+        $node_bandwidth_limit = $this->attributes['node_bandwidth_limit'];
 
-	}
+        if ($node_bandwidth_limit == 0 || $node_bandwidth < $node_bandwidth_limit) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
+    public function isNodeAccessable()
+    {
+        if ($this->isNodeTrafficOut() == false && $this->isNodeOnline() == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    public function changeNodeIp($server_name)
+    {
+        $ip = gethostbyname($server_name);
+        $node_id = $this->attributes['id'];
 
+        if ($ip == "") {
+            return false;
+        }
 
+        $relay_rules = Relay::where('dist_node_id', $node_id)->get();
+        foreach ($relay_rules as $relay_rule) {
+            $relay_rule->dist_ip = $ip;
+            $relay_rule->save();
+        }
 
+        $this->attributes['node_ip'] = $ip;
+        return true;
+    }
 }

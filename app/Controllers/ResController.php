@@ -7,7 +7,8 @@ use Gregwar\Captcha\CaptchaBuilder;
 
 class ResController
 {
-    public function captcha($request, $response, $args){
+    public function captcha($request, $response, $args)
+    {
         $id = $args['id'];
         $builder = new CaptchaBuilder;
         $builder->build();

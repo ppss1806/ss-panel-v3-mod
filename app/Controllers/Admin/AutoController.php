@@ -7,28 +7,31 @@ use App\Controllers\AdminController;
 
 class autoController extends AdminController
 {
-    public function index($request, $response, $args){
-		$pageNum = 1;
+    public function index($request, $response, $args)
+    {
+        $pageNum = 1;
         if (isset($request->getQueryParams()["page"])) {
             $pageNum = $request->getQueryParams()["page"];
         }
         $logs = Auto::orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
-		$logs->setPath('/admin/auto');
-        return $this->view()->assign('logs',$logs)->display('admin/auto/index.tpl');
+        $logs->setPath('/admin/auto');
+        return $this->view()->assign('logs', $logs)->display('admin/auto/index.tpl');
     }
 
-    public function create($request, $response, $args){
+    public function create($request, $response, $args)
+    {
         return $this->view()->display('admin/auto/add.tpl');
     }
 
-    public function add($request, $response, $args){
+    public function add($request, $response, $args)
+    {
         $auto = new Auto();
         $auto->datetime =  time();
-		$auto->value =  $request->getParam('content');
-		$auto->sign =  $request->getParam('sign');
-		$auto->type =  1;
+        $auto->value =  $request->getParam('content');
+        $auto->sign =  $request->getParam('sign');
+        $auto->type =  1;
         
-        if(!$auto->save()){
+        if (!$auto->save()) {
             $rs['ret'] = 0;
             $rs['msg'] = "添加失败";
             return $response->getBody()->write(json_encode($rs));
@@ -39,10 +42,11 @@ class autoController extends AdminController
     }
 
 
-	public function delete($request, $response, $args){
+    public function delete($request, $response, $args)
+    {
         $id = $request->getParam('id');
         $auto = Auto::find($id);
-        if(!$auto->delete()){
+        if (!$auto->delete()) {
             $rs['ret'] = 0;
             $rs['msg'] = "删除失败";
             return $response->getBody()->write(json_encode($rs));
@@ -51,5 +55,4 @@ class autoController extends AdminController
         $rs['msg'] = "删除成功";
         return $response->getBody()->write(json_encode($rs));
     }
-
 }

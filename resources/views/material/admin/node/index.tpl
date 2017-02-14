@@ -18,7 +18,7 @@
 		<div class="container">
 			<div class="col-lg-12 col-sm-12">
 				<section class="content-inner margin-top-no">
-					
+
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
@@ -26,7 +26,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="table-responsive">
 						{$nodes->render()}
 						<table class="table ">
@@ -38,10 +38,10 @@
                                 <th>加密</th>
                                 <th>描述</th>
                                 <th>类型</th>
-                                
+
                             </tr>
                             {foreach $nodes as $node}
-                            <tr {if $node->node_heartbeat!=0 && time()-$node->node_heartbeat>90}bgcolor="#e482a3"{/if}>
+                            <tr {if $node->isNodeOnline() === false}bgcolor="#e482a3"{/if}>
 								<td>
                                     <a class="btn btn-brand"  {if $node->sort==999}disabled{else}href="/admin/node/{$node->id}/edit"{/if}>编辑</a>
                                     <a class="btn btn-brand-accent" id="delete"  {if $node->sort==999}disabled{else}href="javascript:void(0);" onClick="delete_modal_show('{$node->id}')"{/if}>删除</a>
@@ -54,64 +54,64 @@
 								{if $node->sort==0}
                                 <td>Shadowsocks</td>
 								{/if}
-								
+
                                 {if $node->sort==1}
                                 <td>VPN/Radius基础</td>
 								{/if}
-								
+
                                 {if $node->sort==2}
                                 <td>SSH</td>
 								{/if}
-								
+
                                 {if $node->sort==3}
                                 <td>PAC</td>
 								{/if}
-								
+
                                 {if $node->sort==4}
                                 <td>APN文件外链</td>
 								{/if}
-								
+
                                 {if $node->sort==5}
                                 <td>Anyconnect</td>
 								{/if}
-								
+
                                 {if $node->sort==6}
                                 <td>APN</td>
 								{/if}
-								
+
                                 {if $node->sort==7}
                                 <td>PAC PLUS(Socks 代理生成 PAC文件)</td>
-								{/if} 
-								
+								{/if}
+
 								{if $node->sort==8}
                                 <td>PAC PLUS PLUS(HTTPS 代理生成 PAC文件)</td>
 								{/if}
-								
+
 								{if $node->sort==9}
                                 <td>Shadowsocks - 单端口多用户</td>
 								{/if}
-								
+
 								{if $node->sort==10}
                                 <td>Shadowsocks - 中转</td>
 								{/if}
-								
+
 								{if $node->sort==999}
                                 <td>系统保留，请勿删除</td>
 								{/if}
-                                
+
                             </tr>
                             {/foreach}
                         </table>
 						{$nodes->render()}
 					</div>
-					
+
 					<div class="fbtn-container">
 						<div class="fbtn-inner">
 							<a class="fbtn fbtn-lg fbtn-brand-accent waves-attach waves-circle waves-light" href="/admin/node/create">+</a>
-							
+
 						</div>
 					</div>
-					
+
 					<div aria-hidden="true" class="modal modal-va-middle fade" id="delete_modal" role="dialog" tabindex="-1">
 						<div class="modal-dialog modal-xs">
 							<div class="modal-content">
@@ -128,14 +128,14 @@
 							</div>
 						</div>
 					</div>
-					
+
 					{include file='dialog.tpl'}
 
-							
+
 			</div>
-			
-			
-			
+
+
+
 		</div>
 	</main>
 
@@ -185,12 +185,5 @@ $(document).ready(function(){
 		delete_id();
 	});
 })
-	
+
 </script>
-
-
-
-
-
-
-

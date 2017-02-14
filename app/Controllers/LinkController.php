@@ -4,7 +4,6 @@
 
 namespace App\Controllers;
 
-
 use App\Models\Link;
 use App\Models\User;
 use App\Models\Node;
@@ -13,267 +12,251 @@ use App\Models\Smartline;
 use App\Utils\Tools;
 use App\Services\Config;
 
-
 /**
  *  HomeController
  */
 class LinkController extends BaseController
 {
-	public function __construct()
-	{
-		
-	}
-	
-	public static function GenerateRandomLink()
-	{
-		$i =0;
-		for($i = 0; $i < 10; $i++)
-		{
-			$token = Tools::genRandomChar(16);
-			$Elink = Link::where("token","=",$token)->first();
-			if($Elink == null)
-			{
-				return $token;
-			}
-		}
-		
-		return "couldn't alloc token";
-	}
+    public function __construct()
+    {
+    }
 
-	public static function GenerateCode($type,$address,$port,$ios,$userid)
+    public static function GenerateRandomLink()
+    {
+        $i =0;
+        for ($i = 0; $i < 10; $i++) {
+            $token = Tools::genRandomChar(16);
+            $Elink = Link::where("token", "=", $token)->first();
+            if ($Elink == null) {
+                return $token;
+            }
+        }
+
+        return "couldn't alloc token";
+    }
+
+    public static function GenerateCode($type, $address, $port, $ios, $userid)
+    {
+        $Elink = Link::where("type", "=", $type)->where("address", "=", $address)->where("port", "=", $port)->where("ios", "=", $ios)->where("userid", "=", $userid)->first();
+        if ($Elink != null) {
+            return $Elink->token;
+        }
+        $NLink = new Link();
+        $NLink->type = $type;
+        $NLink->address = $address;
+        $NLink->port = $port;
+        $NLink->ios = $ios;
+        $NLink->userid = $userid;
+        $NLink->token = LinkController::GenerateRandomLink();
+        $NLink->save();
+
+        return $NLink->token;
+    }
+
+
+
+
+
+    public static function GenerateApnCode($isp, $address, $port, $userid)
+    {
+        $Elink = Link::where("type", "=", 6)->where("address", "=", $address)->where("port", "=", $port)->where("userid", "=", $userid)->where("isp", "=", $isp)->first();
+        if ($Elink != null) {
+            return $Elink->token;
+        }
+        $NLink = new Link();
+        $NLink->type = 6;
+        $NLink->address = $address;
+        $NLink->port = $port;
+        $NLink->ios = 1;
+        $NLink->isp = $isp;
+        $NLink->userid = $userid;
+        $NLink->token = LinkController::GenerateRandomLink();
+        $NLink->save();
+
+        return $NLink->token;
+    }
+
+
+    public static function GenerateSurgeCode($address, $port, $userid, $geo, $method)
+    {
+        $Elink = Link::where("type", "=", 0)->where("address", "=", $address)->where("port", "=", $port)->where("userid", "=", $userid)->where("geo", "=", $geo)->where("method", "=", $method)->first();
+        if ($Elink != null) {
+            return $Elink->token;
+        }
+        $NLink = new Link();
+        $NLink->type = 0;
+        $NLink->address = $address;
+        $NLink->port = $port;
+        $NLink->ios = 1;
+        $NLink->geo = $geo;
+        $NLink->method = $method;
+        $NLink->userid = $userid;
+        $NLink->token = LinkController::GenerateRandomLink();
+        $NLink->save();
+
+        return $NLink->token;
+    }
+
+    public static function GenerateIosCode($address, $port, $userid, $geo, $method)
+    {
+        $Elink = Link::where("type", "=", -1)->where("address", "=", $address)->where("port", "=", $port)->where("userid", "=", $userid)->where("geo", "=", $geo)->where("method", "=", $method)->first();
+        if ($Elink != null) {
+            return $Elink->token;
+        }
+        $NLink = new Link();
+        $NLink->type = -1;
+        $NLink->address = $address;
+        $NLink->port = $port;
+        $NLink->ios = 1;
+        $NLink->geo = $geo;
+        $NLink->method = $method;
+        $NLink->userid = $userid;
+        $NLink->token = LinkController::GenerateRandomLink();
+        $NLink->save();
+
+        return $NLink->token;
+    }
+
+    public static function GenerateAclCode($address, $port, $userid, $geo, $method)
+    {
+        $Elink = Link::where("type", "=", 9)->where("address", "=", $address)->where("port", "=", $port)->where("userid", "=", $userid)->where("geo", "=", $geo)->where("method", "=", $method)->first();
+        if ($Elink != null) {
+            return $Elink->token;
+        }
+        $NLink = new Link();
+        $NLink->type = 9;
+        $NLink->address = $address;
+        $NLink->port = $port;
+        $NLink->ios = 0;
+        $NLink->geo = $geo;
+        $NLink->method = $method;
+        $NLink->userid = $userid;
+        $NLink->token = LinkController::GenerateRandomLink();
+        $NLink->save();
+
+        return $NLink->token;
+    }
+
+    public static function GenerateRouterCode($userid, $without_mu)
+    {
+        $Elink = Link::where("type", "=", 10)->where("userid", "=", $userid)->where("geo", $without_mu)->first();
+        if ($Elink != null) {
+            return $Elink->token;
+        }
+        $NLink = new Link();
+        $NLink->type = 10;
+        $NLink->address = "";
+        $NLink->port = 0;
+        $NLink->ios = 0;
+        $NLink->geo = $without_mu;
+        $NLink->method = "";
+        $NLink->userid = $userid;
+        $NLink->token = LinkController::GenerateRandomLink();
+        $NLink->save();
+
+        return $NLink->token;
+    }
+
+    public static function GetContent($request, $response, $args)
+    {
+        $token = $args['token'];
+
+        //$builder->getPhrase();
+        $Elink = Link::where("token", "=", $token)->first();
+        if ($Elink == null) {
+            return null;
+        }
+
+        switch ($Elink->type) {
+            case -1:
+                $user=User::where("id", $Elink->userid)->first();
+                if ($user == null) {
+                    return null;
+                }
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
+                $newResponse->getBody()->write(LinkController::GetIosConf(Node::where(
+                        function ($query) {
+                            $query->Where("sort", "=", 0)
+                                ->orWhere("sort", "=", 10);
+                        }
+                    )->where("type", "1")->where(
+                    function ($query) use ($user) {
+                        $query->where("node_group", "=", $user->node_group)
+                            ->orWhere("node_group", "=", 0);
+                    }
+                )->where("node_class", "<=", $user->class)->get(), $user));
+                return $newResponse;
+            case 3:
+                $type = "PROXY";
+                break;
+            case 7:
+                $type = "PROXY";
+                break;
+            case 6:
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.mobileconfig');//->getBody()->write($builder->output());
+                $newResponse->getBody()->write(LinkController::GetApn($Elink->isp, $Elink->address, $Elink->port, User::where("id", "=", $Elink->userid)->first()->pac));
+                return $newResponse;
+            case 0:
+                if ($Elink->geo==0) {
+                    $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.conf');//->getBody()->write($builder->output());
+                    $newResponse->getBody()->write(LinkController::GetSurge(User::where("id", "=", $Elink->userid)->first()->passwd, $Elink->method, $Elink->address, $Elink->port, User::where("id", "=", $Elink->userid)->first()->pac));
+                    return $newResponse;
+                } else {
+                    $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.conf');//->getBody()->write($builder->output());
+                    $newResponse->getBody()->write(LinkController::GetSurgeGeo(User::where("id", "=", $Elink->userid)->first()->passwd, $Elink->method, $Elink->address, $Elink->port));
+                    return $newResponse;
+                }
+            case 8:
+                if ($Elink->ios==0) {
+                    $type = "SOCKS5";
+                } else {
+                    $type = "SOCKS";
+                }
+                break;
+            case 9:
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.acl');//->getBody()->write($builder->output());
+                $newResponse->getBody()->write(LinkController::GetAcl(User::where("id", "=", $Elink->userid)->first()));
+                return $newResponse;
+            case 10:
+                $user=User::where("id", $Elink->userid)->first();
+                if ($user == null) {
+                    return null;
+                }
+
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.sh');//->getBody()->write($builder->output());
+                $newResponse->getBody()->write(LinkController::GetRouter(Node::where(
+                    function ($query) {
+                        $query->where('sort', 0)
+                            ->orWhere('sort', 10);
+                    }
+                )->where("type", "1")->where(
+                    function ($query) use ($user) {
+                        $query->where("node_group", "=", $user->node_group)
+                            ->orWhere("node_group", "=", 0);
+                    }
+                )->where("node_class", "<=", $user->class)->get(), User::where("id", "=", $Elink->userid)->first(), $Elink->geo));
+                return $newResponse;
+            default:
+                break;
+        }
+        $newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate');//->getBody()->write($builder->output());
+        $newResponse->getBody()->write(LinkController::GetPac($type, $Elink->address, $Elink->port, User::where("id", "=", $Elink->userid)->first()->pac));
+        return $newResponse;
+    }
+
+
+    public static function GetGfwlistJs($request, $response, $args)
+    {
+        $newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=gfwlist.js');
+        ;//->getBody()->write($builder->output());
+        $newResponse->getBody()->write(LinkController::GetMacPac());
+        return $newResponse;
+    }
+
+    public static function GetPcConf($nodes, $user, $without_mu = 0)
+    {
+        $string='
 	{
-		$Elink = Link::where("type","=",$type)->where("address","=",$address)->where("port","=",$port)->where("ios","=",$ios)->where("userid","=",$userid)->first();
-		if($Elink != null)
-		{
-			return $Elink->token;
-		}
-		$NLink = new Link();
-		$NLink->type = $type;
-		$NLink->address = $address;
-		$NLink->port = $port;
-		$NLink->ios = $ios;
-		$NLink->userid = $userid;
-		$NLink->token = LinkController::GenerateRandomLink();
-		$NLink->save();
-		
-		return $NLink->token;
-	}
-	
-	
-	
-	
-	
-	public static function GenerateApnCode($isp,$address,$port,$userid)
-	{
-		$Elink = Link::where("type","=",6)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("isp","=",$isp)->first();
-		if($Elink != null)
-		{
-			return $Elink->token;
-		}
-		$NLink = new Link();
-		$NLink->type = 6;
-		$NLink->address = $address;
-		$NLink->port = $port;
-		$NLink->ios = 1;
-		$NLink->isp = $isp;
-		$NLink->userid = $userid;
-		$NLink->token = LinkController::GenerateRandomLink();
-		$NLink->save();
-		
-		return $NLink->token;
-	}
-	
-	
-	public static function GenerateSurgeCode($address,$port,$userid,$geo,$method)
-	{
-		$Elink = Link::where("type","=",0)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
-		if($Elink != null)
-		{
-			return $Elink->token;
-		}
-		$NLink = new Link();
-		$NLink->type = 0;
-		$NLink->address = $address;
-		$NLink->port = $port;
-		$NLink->ios = 1;
-		$NLink->geo = $geo;
-		$NLink->method = $method;
-		$NLink->userid = $userid;
-		$NLink->token = LinkController::GenerateRandomLink();
-		$NLink->save();
-		
-		return $NLink->token;
-	}
-	
-	public static function GenerateIosCode($address,$port,$userid,$geo,$method)
-	{
-		$Elink = Link::where("type","=",-1)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
-		if($Elink != null)
-		{
-			return $Elink->token;
-		}
-		$NLink = new Link();
-		$NLink->type = -1;
-		$NLink->address = $address;
-		$NLink->port = $port;
-		$NLink->ios = 1;
-		$NLink->geo = $geo;
-		$NLink->method = $method;
-		$NLink->userid = $userid;
-		$NLink->token = LinkController::GenerateRandomLink();
-		$NLink->save();
-		
-		return $NLink->token;
-	}
-	
-	public static function GenerateAclCode($address,$port,$userid,$geo,$method)
-	{
-		$Elink = Link::where("type","=",9)->where("address","=",$address)->where("port","=",$port)->where("userid","=",$userid)->where("geo","=",$geo)->where("method","=",$method)->first();
-		if($Elink != null)
-		{
-			return $Elink->token;
-		}
-		$NLink = new Link();
-		$NLink->type = 9;
-		$NLink->address = $address;
-		$NLink->port = $port;
-		$NLink->ios = 0;
-		$NLink->geo = $geo;
-		$NLink->method = $method;
-		$NLink->userid = $userid;
-		$NLink->token = LinkController::GenerateRandomLink();
-		$NLink->save();
-		
-		return $NLink->token;
-	}
-	
-	public static function GenerateRouterCode($userid, $without_mu)
-	{
-		$Elink = Link::where("type", "=" ,10)->where("userid", "=", $userid)->where("geo", $without_mu)->first();
-		if($Elink != null)
-		{
-			return $Elink->token;
-		}
-		$NLink = new Link();
-		$NLink->type = 10;
-		$NLink->address = "";
-		$NLink->port = 0;
-		$NLink->ios = 0;
-		$NLink->geo = $without_mu;
-		$NLink->method = "";
-		$NLink->userid = $userid;
-		$NLink->token = LinkController::GenerateRandomLink();
-		$NLink->save();
-		
-		return $NLink->token;
-	}
-	
-	public static function GetContent($request, $response, $args){
-		$token = $args['token'];
-		
-		//$builder->getPhrase();
-		$Elink = Link::where("token","=",$token)->first();
-		if($Elink == null)
-		{
-			return null;
-		}
-		
-		switch($Elink->type)
-		{
-			case -1:
-				$user=User::where("id",$Elink->userid)->first();
-				if($user == null)
-				{
-					return null;
-				}
-				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
-				$newResponse->getBody()->write(LinkController::GetIosConf(Node::where(
-						function ($query) {
-							$query->Where("sort","=",0)
-								->orWhere("sort","=",10);
-						}
-					)->where("type","1")->where(
-					function ($query) use ($user) {
-						$query->where("node_group","=",$user->node_group)
-							->orWhere("node_group","=",0);
-					}
-				)->where("node_class","<=",$user->class)->get(),$user));
-				return $newResponse;
-			case 3:
-				$type = "PROXY";
-				break;
-			case 7:
-				$type = "PROXY";
-				break;
-			case 6:
-				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.mobileconfig');//->getBody()->write($builder->output());
-				$newResponse->getBody()->write(LinkController::GetApn($Elink->isp,$Elink->address,$Elink->port,User::where("id","=",$Elink->userid)->first()->pac));
-				return $newResponse;
-			case 0:
-				if($Elink->geo==0)
-				{
-					$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.conf');//->getBody()->write($builder->output());
-					$newResponse->getBody()->write(LinkController::GetSurge(User::where("id","=",$Elink->userid)->first()->passwd,$Elink->method,$Elink->address,$Elink->port,User::where("id","=",$Elink->userid)->first()->pac));
-					return $newResponse;
-				}
-				else
-				{
-					$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.conf');//->getBody()->write($builder->output());
-					$newResponse->getBody()->write(LinkController::GetSurgeGeo(User::where("id","=",$Elink->userid)->first()->passwd,$Elink->method,$Elink->address,$Elink->port));
-					return $newResponse;
-				}
-			case 8:
-				if($Elink->ios==0)
-				{
-					$type = "SOCKS5";
-				}
-				else
-				{
-					$type = "SOCKS";
-				}
-				break;
-			case 9:
-				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.acl');//->getBody()->write($builder->output());
-				$newResponse->getBody()->write(LinkController::GetAcl(User::where("id","=",$Elink->userid)->first()));
-				return $newResponse;
-			case 10:
-				$user=User::where("id",$Elink->userid)->first();
-				if($user == null)
-				{
-					return null;
-				}
-				
-				$newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.sh');//->getBody()->write($builder->output());
-				$newResponse->getBody()->write(LinkController::GetRouter(Node::where(
-					function ($query) {
-						$query->where('sort', 0)
-							->orWhere('sort', 10);
-					}
-				)->where("type","1")->where(
-					function ($query) use ($user) {
-						$query->where("node_group","=",$user->node_group)
-							->orWhere("node_group","=",0);
-					}
-				)->where("node_class","<=",$user->class)->get(), User::where("id","=",$Elink->userid)->first(), $Elink->geo));
-				return $newResponse;
-			default:
-				break;
-		}
-		$newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate');//->getBody()->write($builder->output());
-		$newResponse->getBody()->write(LinkController::GetPac($type,$Elink->address,$Elink->port,User::where("id","=",$Elink->userid)->first()->pac));
-		return $newResponse;
-	}
-	
-	
-	public static function GetGfwlistJs($request, $response, $args){
-		$newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=gfwlist.js');;//->getBody()->write($builder->output());
-		$newResponse->getBody()->write(LinkController::GetMacPac());
-		return $newResponse;
-	}
-	
-	public static function GetPcConf($nodes,$user,$without_mu = 0){
-		$string='
-	{	
 	"index" : 0,
 	"random" : false,
 	"sysProxyMode" : 0,
@@ -309,169 +292,161 @@ class LinkController extends BaseController
 	}
 	}
 		';
-		
-		
-		$json=json_decode($string,TRUE);
-		$temparray=array();
-		
-		$mu_nodes = Node::where('sort',9)->where('node_class','<=',$user->class)->where("type","1")->where(
-			function ($query) use ($user) {
-				$query->where("node_group","=",$user->node_group)
-					->orWhere("node_group","=",0);
-			}
-		)->get();
-		
-		$relay_rules = Relay::where('user_id', $user->id)->orWhere('user_id', 0)->orderBy('id', 'asc')->get();
-		
-		if(!Tools::is_protocol_relay($user))
-		{
-			$relay_rules = array();
-		}
 
-		if($user->obfs_param == NULL)
-		{
-			$user->obfs_param = "";
-		}
-		
-		if($user->protocol_param == NULL)
-		{
-			$user->protocol_param = "";
-		}
-		
-		foreach($nodes as $node)
-		{
-			if($node->mu_only == 0)
-			{
-				
-				$node_name = $node->name;
-				
-				if($node->sort == 10)
-				{
-					$relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
-					if($relay_rule != null)
-					{
-						$node_name .= " - ".$relay_rule->dist_node()->name;
-					}
-				}
-				
-				array_push($temparray,array("remarks"=>$node_name,
-											"server"=>$node->server,
-											"server_port"=>$user->port,
-											"method"=>($node->custom_method==1?$user->method:$node->method),
-											"obfs"=>str_replace("_compatible","",(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
-											"obfsparam"=>(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
-											"remarks_base64"=>base64_encode($node_name),
-											"password"=>$user->passwd,
-											"tcp_over_udp"=>false,
-											"udp_over_tcp"=>false,
-											"group"=>Config::get('appName'),
-											"protocol"=>str_replace("_compatible","",(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
-											"obfs_udp"=>false,
-											"enable"=>true));
-											
-			}
-			
-			if($node->custom_rss == 1 && $without_mu == 0)
-			{
-				foreach($mu_nodes as $mu_node)
-				{
-					$mu_user = User::where('port','=',$mu_node->server)->first();
-					if($mu_user->is_multi_user == 1)
-					{
-						$mu_user->obfs_param = $user->getMuMd5();
-						$mu_user->protocol_param = $user->id.":".$user->passwd;
-					}
-					else
-					{
-						$mu_user->obfs_param = "";
-						$mu_user->protocol_param = $user->id.":".$user->passwd;
-					}
-					
-					$node_name = $node->name;
-					
-					if($node->sort == 10 && $mu_user->is_multi_user != 2)
-					{
-						$relay_rule = Tools::pick_out_relay_rule($node->id, $mu_user->port, $relay_rules);
-						
-						if($relay_rule != null)
-						{
-							$node_name .= " - ".$relay_rule->dist_node()->name;
-						}
-					}
-					
-					array_push($temparray,array("remarks"=>$node_name."- ".$mu_node->server." 端口单端口多用户",
-												"server"=>$node->server,
-												"server_port"=>$mu_user->port,
-												"method"=>$mu_user->method,
-												"group"=>Config::get('appName'),
-												"obfs"=>str_replace("_compatible","",(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
-												"obfsparam"=>(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
-												"remarks_base64"=>base64_encode($node_name."- ".$mu_node->server." 端口单端口多用户"),
-												"password"=>$mu_user->passwd,
-												"tcp_over_udp"=>false,
-												"udp_over_tcp"=>false,
-												"protocol"=>str_replace("_compatible","",(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
-												"protocolparam"=>(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
-												"obfs_udp"=>false,
-												"enable"=>true));
-												
-				}
-			}
-		}
-		
-		
-		$json["configs"]=$temparray;
-		return json_encode($json,JSON_PRETTY_PRINT);
-	}
-	
-	
-	public static function GetIosConf($nodes,$user){
-		$proxy_name="";
-		$proxy_group="";
-		foreach($nodes as $node)
-		{
-			if($node->sort == 0)
-			{
-				$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
-				$proxy_name.=",".$node->name;
-			}
-			else
-			{
-				$relay_rules = Relay::where('user_id', $user->id)->where('port', $user->port)->where(
-					function ($query) use ($node){
-						$query->Where("source_node_id","=",$node->id)
-							->orWhere("source_node_id","=",0);
-					}
-				)->get();
-				
-				if(!Tools::is_protocol_relay($user))
-				{
-					$relay_rules = array();
-				}
-				
-				if(count($relay_rules) != 0)
-				{
-					foreach($relay_rules as $relay_rule)
-					{
-						if(!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $node->id))
-						{
-							continue;
-						}
-					
-						$proxy_group.=$node->name." 中转至 ".$relay_rule->Dist_Node()->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
-						$proxy_name.=",".$node->name." 中转至 ".$relay_rule->Dist_Node()->name;
-					}
-				}
-				else
-				{
-					$proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
-					$proxy_name.=",".$node->name;
-				}
-			}
-		}
-		
-		
-		return '
+
+        $json=json_decode($string, true);
+        $temparray=array();
+
+        $mu_nodes = Node::where('sort', 9)->where('node_class', '<=', $user->class)->where("type", "1")->where(
+            function ($query) use ($user) {
+                $query->where("node_group", "=", $user->node_group)
+                    ->orWhere("node_group", "=", 0);
+            }
+        )->get();
+
+        $relay_rules = Relay::where('user_id', $user->id)->orWhere('user_id', 0)->orderBy('id', 'asc')->get();
+
+        if (!Tools::is_protocol_relay($user)) {
+            $relay_rules = array();
+        }
+
+        if ($user->obfs_param == null) {
+            $user->obfs_param = "";
+        }
+
+        if ($user->protocol_param == null) {
+            $user->protocol_param = "";
+        }
+
+        foreach ($nodes as $node) {
+            if ($node->mu_only == 0) {
+                $node_name = $node->name;
+
+                if ($node->sort == 10) {
+                    $relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
+                    if ($relay_rule != null) {
+                        if ($relay_rule->dist_node() != null) {
+                            $node_name .= " - ".$relay_rule->dist_node()->name;
+                        }
+                    }
+                }
+
+                array_push($temparray, array("remarks"=>$node_name,
+                                            "server"=>$node->server,
+                                            "server_port"=>$user->port,
+                                            "method"=>($node->custom_method==1?$user->method:$node->method),
+                                            "obfs"=>str_replace("_compatible", "", (($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain")),
+                                            "obfsparam"=>(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs_param:""),
+                                            "remarks_base64"=>base64_encode($node_name),
+                                            "password"=>$user->passwd,
+                                            "tcp_over_udp"=>false,
+                                            "udp_over_tcp"=>false,
+                                            "group"=>Config::get('appName'),
+                                            "protocol"=>str_replace("_compatible", "", (($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin")),
+                                            "obfs_udp"=>false,
+                                            "enable"=>true));
+            }
+
+            if ($node->custom_rss == 1 && $without_mu == 0) {
+                foreach ($mu_nodes as $mu_node) {
+                    $mu_user = User::where('port', '=', $mu_node->server)->first();
+
+                    if ($mu_user == null) {
+                        continue;
+                    }
+
+                    if (!($mu_user->class >= $node->node_class && ($node->node_group == 0 || $node->node_group == $mu_user->node_group))) {
+                        continue;
+                    }
+
+                    if ($mu_user->is_multi_user == 1) {
+                        $mu_user->obfs_param = $user->getMuMd5();
+                        $mu_user->protocol_param = $user->id.":".$user->passwd;
+                    } else {
+                        $mu_user->obfs_param = "";
+                        $mu_user->protocol_param = $user->id.":".$user->passwd;
+                    }
+
+                    $node_name = $node->name;
+
+                    if ($node->sort == 10 && $mu_user->is_multi_user != 2) {
+                        $relay_rule = Tools::pick_out_relay_rule($node->id, $mu_user->port, $relay_rules);
+
+                        if ($relay_rule != null) {
+                            if ($relay_rule->dist_node() != null) {
+                                $node_name .= " - ".$relay_rule->dist_node()->name;
+                            }
+                        }
+                    }
+
+                    array_push($temparray, array("remarks"=>$node_name."- ".$mu_node->server." 端口单端口多用户",
+                                                "server"=>$node->server,
+                                                "server_port"=>$mu_user->port,
+                                                "method"=>$mu_user->method,
+                                                "group"=>Config::get('appName'),
+                                                "obfs"=>str_replace("_compatible", "", (($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain")),
+                                                "obfsparam"=>(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs_param:""),
+                                                "remarks_base64"=>base64_encode($node_name."- ".$mu_node->server." 端口单端口多用户"),
+                                                "password"=>$mu_user->passwd,
+                                                "tcp_over_udp"=>false,
+                                                "udp_over_tcp"=>false,
+                                                "protocol"=>str_replace("_compatible", "", (($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin")),
+                                                "protocolparam"=>(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol_param:""),
+                                                "obfs_udp"=>false,
+                                                "enable"=>true));
+                }
+            }
+        }
+
+
+        $json["configs"]=$temparray;
+        return json_encode($json, JSON_PRETTY_PRINT);
+    }
+
+
+    public static function GetIosConf($nodes, $user)
+    {
+        $proxy_name="";
+        $proxy_group="";
+        foreach ($nodes as $node) {
+            if ($node->sort == 0) {
+                $proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
+                $proxy_name.=",".$node->name;
+            } else {
+                $relay_rules = Relay::where('user_id', $user->id)->where('port', $user->port)->where(
+                    function ($query) use ($node) {
+                        $query->Where("source_node_id", "=", $node->id)
+                            ->orWhere("source_node_id", "=", 0);
+                    }
+                )->get();
+
+                if (!Tools::is_protocol_relay($user)) {
+                    $relay_rules = array();
+                }
+
+                if (count($relay_rules) != 0) {
+                    foreach ($relay_rules as $relay_rule) {
+                        if (!Tools::is_relay_rule_avaliable($relay_rule, $relay_rules, $node->id)) {
+                            continue;
+                        }
+
+                        if ($relay_rule->dist_node() != null) {
+                            $proxy_group.=$node->name." 中转至 ".$relay_rule->Dist_Node()->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
+                            $proxy_name.=",".$node->name." 中转至 ".$relay_rule->Dist_Node()->name;
+                        } else {
+                            $proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
+                            $proxy_name.=",".$node->name;
+                        }
+                    }
+                } else {
+                    $proxy_group.=$node->name.' = custom,'.$node->server.','.$user->port.','.($node->custom_method==1?$user->method:$node->method).','.$user->passwd.','.Config::get('baseUrl').'/downloads/SSEncrypt.module'."\n";
+                    $proxy_name.=",".$node->name;
+                }
+            }
+        }
+
+
+        return '
 [General]
 
 skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local
@@ -830,17 +805,16 @@ IP-CIDR,192.168.0.0/16,DIRECT
 GEOIP,CN,DIRECT
 
 FINAL,Proxy';
-		
-	}
-	
-	private static function GetSurge($passwd,$method,$server,$port,$defined)
-	{
-		$rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$defined;  
-		$gfwlist = explode("\n", $rulelist);  
-	  
-		$count = 0;  
-		$pac_content = '';   
-		$find_function_content = '
+    }
+
+    private static function GetSurge($passwd, $method, $server, $port, $defined)
+    {
+        $rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$defined;
+        $gfwlist = explode("\n", $rulelist);
+
+        $count = 0;
+        $pac_content = '';
+        $find_function_content = '
 [General]
 skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local
 bypass-tun = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12
@@ -884,190 +858,162 @@ DOMAIN-SUFFIX,umeng.co,REJECT
 DOMAIN-SUFFIX,umeng.com,REJECT
 DOMAIN-SUFFIX,umtrack.com,REJECT
 DOMAIN-SUFFIX,uyunad.com,REJECT
-DOMAIN-SUFFIX,youmi.net,REJECT'."\n";  
-$isget=array();
-		foreach($gfwlist as $index=>$rule) {  
-			if (empty($rule))  
-				continue;  
-			else if (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[')  
-				continue;  
-			
-			if (substr($rule, 0, 2) == '@@') {  
-			  	// ||开头表示前面还有路径  
-				if (substr($rule, 2, 2) =='||') {  
-					//$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
-					$host = substr($rule, 4);
-					//preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
-					if(isset($isget[$host]))
-					{
-						continue;
-					}
-					$isget[$host]=1;
-					$find_function_content.="DOMAIN,".$host.",DIRECT,force-remote-dns\n";
-					continue;					
-				// !开头相当于正则表达式^  
-				} else if (substr($rule, 2, 1) == '|') {  
-					preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 3), $matches); 
-					if(!isset($matches[0]))
-					{
-						continue;
-					}
-					
-					$host = $matches[0];
-					if($host != "")
-					{
-						if(isset($isget[$host]))
-						{
-							continue;
-						}
-						$isget[$host]=1;
-						$find_function_content.="IP-CIDR,".$host."/32,DIRECT,no-resolve \n";  
-						continue;
-					}
-					else
-					{
-						preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,3), $matches);  
-						
-						if(!isset($matches[4][0]))
-						{
-							continue;
-						}
-						
-						$host = $matches[4][0];
-						if($host != "")
-						{
-							if(isset($isget[$host]))
-							{
-								continue;
-							}
-							$isget[$host]=1;
-							$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns\n";  
-							continue;
-						}
-					}
-				} else if (substr($rule, 2, 1) == '.') {
-					$host = substr($rule, 3);
-					if($host != "")
-					{
-						if(isset($isget[$host]))
-						{
-							continue;
-						}
-						$isget[$host]=1;
-						$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns \n";  
-						continue;
-					}
-				}
-			} 
-			
-			// ||开头表示前面还有路径  
-			if (substr($rule, 0, 2) =='||') {  
-				//$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
-				$host = substr($rule, 2);
-				//preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
-				
-				if(strpos($host,"*")!==FALSE)
-				{
-					$host = substr($host,strpos($host,"*")+1);
-					if(strpos($host,".")!==FALSE)
-					{
-						$host = substr($host,strpos($host,".")+1);
-					}
-					if(isset($isget[$host]))
-					{
-						continue;
-					}
-					$isget[$host]=1;
-					$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n";  
-					continue;
-				}
-					
-				if(isset($isget[$host]))
-				{
-					continue;
-				}
-				$isget[$host]=1;
-				$find_function_content.="DOMAIN,".$host.",Proxy,force-remote-dns\n";  
-			// !开头相当于正则表达式^  
-			} else if (substr($rule, 0, 1) == '|') {  
-				preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 1), $matches);  
-				
-				if(!isset($matches[0]))
-				{
-					continue;
-				}
-				
-				$host = $matches[0];
-				if($host != "")
-				{
-					if(isset($isget[$host]))
-					{
-						continue;
-					}
-					$isget[$host]=1;
-					$find_function_content.="IP-CIDR,".$host."/32,Proxy,no-resolve \n";  
-					continue;
-				}
-				else
-				{
-					preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,1), $matches);  
-					
-					if(!isset($matches[4][0]))
-					{
-						continue;
-					}
-					
-					$host = $matches[4][0];
-					if(strpos($host,"*")!==FALSE)
-					{
-						$host = substr($host,strpos($host,"*")+1);
-						if(strpos($host,".")!==FALSE)
-						{
-							$host = substr($host,strpos($host,".")+1);
-						}
-						if(isset($isget[$host]))
-						{
-							continue;
-						}
-						$isget[$host]=1;
-						$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n";  
-						continue;
-					}
-					
-					if($host != "")
-					{
-						if(isset($isget[$host]))
-						{
-							continue;
-						}
-						$isget[$host]=1;
-						$find_function_content.="DOMAIN-SUFFIX,".$host.",Proxy,force-remote-dns\n";  
-						continue;
-					}
-				}
-			} else {
-				$host = substr($rule, 0);
-				if(strpos($host,"/")!==FALSE)
-				{
-					$host = substr($host,0,strpos($host,"/"));
-				}
-				
-				if($host != "")
-				{
-					if(isset($isget[$host]))
-					{
-						continue;
-					}
-					$isget[$host]=1;
-					$find_function_content.="DOMAIN-KEYWORD,".$host.",PROXY,force-remote-dns \n";  
-					continue;
-				}
-			}
-			
-			
-			$count = $count + 1;  
-	  }  
-	  $find_function_content.='
+DOMAIN-SUFFIX,youmi.net,REJECT'."\n";
+        $isget=array();
+        foreach ($gfwlist as $index=>$rule) {
+            if (empty($rule)) {
+                continue;
+            } elseif (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[') {
+                continue;
+            }
+
+            if (substr($rule, 0, 2) == '@@') {
+                // ||开头表示前面还有路径
+                if (substr($rule, 2, 2) =='||') {
+                    //$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);
+                    $host = substr($rule, 4);
+                    //preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
+                    if (isset($isget[$host])) {
+                        continue;
+                    }
+                    $isget[$host]=1;
+                    $find_function_content.="DOMAIN,".$host.",DIRECT,force-remote-dns\n";
+                    continue;
+                // !开头相当于正则表达式^
+                } elseif (substr($rule, 2, 1) == '|') {
+                    preg_match("/(\d{1,3}\.){3}\d{1,3}/", substr($rule, 3), $matches);
+                    if (!isset($matches[0])) {
+                        continue;
+                    }
+
+                    $host = $matches[0];
+                    if ($host != "") {
+                        if (isset($isget[$host])) {
+                            continue;
+                        }
+                        $isget[$host]=1;
+                        $find_function_content.="IP-CIDR,".$host."/32,DIRECT,no-resolve \n";
+                        continue;
+                    } else {
+                        preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i", substr($rule, 3), $matches);
+
+                        if (!isset($matches[4][0])) {
+                            continue;
+                        }
+
+                        $host = $matches[4][0];
+                        if ($host != "") {
+                            if (isset($isget[$host])) {
+                                continue;
+                            }
+                            $isget[$host]=1;
+                            $find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns\n";
+                            continue;
+                        }
+                    }
+                } elseif (substr($rule, 2, 1) == '.') {
+                    $host = substr($rule, 3);
+                    if ($host != "") {
+                        if (isset($isget[$host])) {
+                            continue;
+                        }
+                        $isget[$host]=1;
+                        $find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns \n";
+                        continue;
+                    }
+                }
+            }
+
+            // ||开头表示前面还有路径
+            if (substr($rule, 0, 2) =='||') {
+                //$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);
+                $host = substr($rule, 2);
+                //preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
+
+                if (strpos($host, "*")!==false) {
+                    $host = substr($host, strpos($host, "*")+1);
+                    if (strpos($host, ".")!==false) {
+                        $host = substr($host, strpos($host, ".")+1);
+                    }
+                    if (isset($isget[$host])) {
+                        continue;
+                    }
+                    $isget[$host]=1;
+                    $find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n";
+                    continue;
+                }
+
+                if (isset($isget[$host])) {
+                    continue;
+                }
+                $isget[$host]=1;
+                $find_function_content.="DOMAIN,".$host.",Proxy,force-remote-dns\n";
+            // !开头相当于正则表达式^
+            } elseif (substr($rule, 0, 1) == '|') {
+                preg_match("/(\d{1,3}\.){3}\d{1,3}/", substr($rule, 1), $matches);
+
+                if (!isset($matches[0])) {
+                    continue;
+                }
+
+                $host = $matches[0];
+                if ($host != "") {
+                    if (isset($isget[$host])) {
+                        continue;
+                    }
+                    $isget[$host]=1;
+                    $find_function_content.="IP-CIDR,".$host."/32,Proxy,no-resolve \n";
+                    continue;
+                } else {
+                    preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i", substr($rule, 1), $matches);
+
+                    if (!isset($matches[4][0])) {
+                        continue;
+                    }
+
+                    $host = $matches[4][0];
+                    if (strpos($host, "*")!==false) {
+                        $host = substr($host, strpos($host, "*")+1);
+                        if (strpos($host, ".")!==false) {
+                            $host = substr($host, strpos($host, ".")+1);
+                        }
+                        if (isset($isget[$host])) {
+                            continue;
+                        }
+                        $isget[$host]=1;
+                        $find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n";
+                        continue;
+                    }
+
+                    if ($host != "") {
+                        if (isset($isget[$host])) {
+                            continue;
+                        }
+                        $isget[$host]=1;
+                        $find_function_content.="DOMAIN-SUFFIX,".$host.",Proxy,force-remote-dns\n";
+                        continue;
+                    }
+                }
+            } else {
+                $host = substr($rule, 0);
+                if (strpos($host, "/")!==false) {
+                    $host = substr($host, 0, strpos($host, "/"));
+                }
+
+                if ($host != "") {
+                    if (isset($isget[$host])) {
+                        continue;
+                    }
+                    $isget[$host]=1;
+                    $find_function_content.="DOMAIN-KEYWORD,".$host.",PROXY,force-remote-dns \n";
+                    continue;
+                }
+            }
+
+
+            $count = $count + 1;
+        }
+        $find_function_content.='
 DOMAIN-KEYWORD,google,Proxy,force-remote-dns
 IP-CIDR,91.108.4.0/22,Proxy,no-resolve
 IP-CIDR,91.108.56.0/22,Proxy,no-resolve
@@ -1079,15 +1025,15 @@ IP-CIDR,172.16.0.0/12,DIRECT
 IP-CIDR,192.168.0.0/16,DIRECT
 GEOIP,CN,DIRECT
 FINAL,DIRECT
-	  ';  
-	  $pac_content.=$find_function_content;   
-	  return $pac_content;  
-	}
-	
-	
-	private static function GetSurgeGeo($passwd,$method,$server,$port)
-	{
-		return '
+	  ';
+        $pac_content.=$find_function_content;
+        return $pac_content;
+    }
+
+
+    private static function GetSurgeGeo($passwd, $method, $server, $port)
+    {
+        return '
 [General]
 
 skip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local
@@ -1444,11 +1390,11 @@ IP-CIDR,192.168.0.0/16,DIRECT
 GEOIP,CN,DIRECT
 
 FINAL,Proxy';
-	}
-	
-	private static function GetApn($apn,$server,$port)
-	{
-		return '
+    }
+
+    private static function GetApn($apn, $server, $port)
+    {
+        return '
 		<?xml version="1.0" encoding="UTF-8"?>
 		<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 		<plist version="1.0">
@@ -1488,7 +1434,7 @@ FINAL,Proxy';
 					<key>PayloadType</key>
 					<string>com.apple.apn.managed</string>
 					<key>PayloadUUID</key>
-					<string>7AC1FC00-7670-41CA-9EE1-4A5882DBD'.rand(100,999).'D</string>
+					<string>7AC1FC00-7670-41CA-9EE1-4A5882DBD'.rand(100, 999).'D</string>
 					<key>PayloadVersion</key>
 					<integer>1</integer>
 				</dict>
@@ -1506,40 +1452,36 @@ FINAL,Proxy';
 			<key>PayloadType</key>
 			<string>Configuration</string>
 			<key>PayloadUUID</key>
-			<string>4C355D66-E72E-4DC8-864F-62C416015'.rand(100,999).'D</string>
+			<string>4C355D66-E72E-4DC8-864F-62C416015'.rand(100, 999).'D</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
 		</plist>
 		';
-	}
-	
-	
-	private static function GetPac($type,$address,$port,$defined)
-	{
-		
-		header('Content-type: application/x-ns-proxy-autoconfig');
-		return LinkController::get_pac($type,$address,$port,true,$defined);
+    }
 
-	}
-	
-	private static function GetMacPac()
-	{
-		
-		header('Content-type: application/x-ns-proxy-autoconfig');
-		return LinkController::get_mac_pac();
 
-	}
-	
-	
-	private static function GetAcl($user)
-	{
-		$rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$user->pac;  
-		$gfwlist = explode("\n", $rulelist);  
-	  
-		$count = 0;  
-		$acl_content = '';   
-		$find_function_content = '
+    private static function GetPac($type, $address, $port, $defined)
+    {
+        header('Content-type: application/x-ns-proxy-autoconfig');
+        return LinkController::get_pac($type, $address, $port, true, $defined);
+    }
+
+    private static function GetMacPac()
+    {
+        header('Content-type: application/x-ns-proxy-autoconfig');
+        return LinkController::get_mac_pac();
+    }
+
+
+    private static function GetAcl($user)
+    {
+        $rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$user->pac;
+        $gfwlist = explode("\n", $rulelist);
+
+        $count = 0;
+        $acl_content = '';
+        $find_function_content = '
 #Generated by sspanel-glzjin-mod v3
 #Time:'.date('Y-m-d H:i:s').'
 
@@ -1547,430 +1489,402 @@ FINAL,Proxy';
 
 ';
 
-		$proxy_list = '[proxy_list]
+        $proxy_list = '[proxy_list]
 
 ';
-		$bypass_list = '[bypass_list]
+        $bypass_list = '[bypass_list]
 
 ';
-		$outbound_block_list = '[outbound_block_list]
+        $outbound_block_list = '[outbound_block_list]
 
 ';
-		
-		$isget=array();
-		foreach($gfwlist as $index=>$rule) {  
-			if (empty($rule))  
-				continue;  
-			else if (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[')  
-				continue;  
-			
-			if (substr($rule, 0, 2) == '@@') {  
-			  	// ||开头表示前面还有路径  
-				if (substr($rule, 2, 2) =='||') {  
-					//$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
-					$host = substr($rule, 4);
-					//preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
-					if(isset($isget[$host]))
-					{
-						continue;
-					}
-					$isget[$host]=1;
-					//$find_function_content.="DOMAIN,".$host.",DIRECT,force-remote-dns\n";
-					$bypass_list .= $host."\n";
-					continue;
-				// !开头相当于正则表达式^  
-				} else if (substr($rule, 2, 1) == '|') {  
-					preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 3), $matches); 
-					if(!isset($matches[0]))
-					{
-						continue;
-					}
-					
-					$host = $matches[0];
-					if($host != "")
-					{
-						if(isset($isget[$host]))
-						{
-							continue;
-						}
-						$isget[$host]=1;
-						//$find_function_content.="IP-CIDR,".$host."/32,DIRECT,no-resolve \n"; 
-						$bypass_list .= $host."/32\n";
-						continue;
-					}
-					else
-					{
-						preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,3), $matches);  
-						
-						if(!isset($matches[4][0]))
-						{
-							continue;
-						}
-						
-						$host = $matches[4][0];
-						if($host != "")
-						{
-							if(isset($isget[$host]))
-							{
-								continue;
-							}
-							$isget[$host]=1;
-							//$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns\n";
-							$bypass_list .= $host."\n";
-							continue;
-						}
-					}
-				} else if (substr($rule, 2, 1) == '.') {
-					$host = substr($rule, 3);
-					if($host != "")
-					{
-						if(isset($isget[$host]))
-						{
-							continue;
-						}
-						$isget[$host]=1;
-						//$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns \n"; 
-						$bypass_list .= $host."\n";
-						continue;
-					}
-				}
-			} 
-			
-			// ||开头表示前面还有路径  
-			if (substr($rule, 0, 2) =='||') {  
-				//$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);  
-				$host = substr($rule, 2);
-				//preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
-				
-				if(strpos($host,"*")!==FALSE)
-				{
-					$host = substr($host,strpos($host,"*")+1);
-					if(strpos($host,".")!==FALSE)
-					{
-						$host = substr($host,strpos($host,".")+1);
-					}
-					if(isset($isget[$host]))
-					{
-						continue;
-					}
-					$isget[$host]=1;
-					//$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n"; 
-					$proxy_list .= $host."\n";
-					continue;
-				}
-					
-				if(isset($isget[$host]))
-				{
-					continue;
-				}
-				$isget[$host]=1;
-				//$find_function_content.="DOMAIN,".$host.",Proxy,force-remote-dns\n";  
-				$proxy_list .= $host."\n";
-			// !开头相当于正则表达式^  
-			} else if (substr($rule, 0, 1) == '|') {  
-				preg_match("/(\d{1,3}\.){3}\d{1,3}/",substr($rule, 1), $matches);  
-				
-				if(!isset($matches[0]))
-				{
-					continue;
-				}
-				
-				$host = $matches[0];
-				if($host != "")
-				{
-					if(isset($isget[$host]))
-					{
-						continue;
-					}
-					$isget[$host]=1;
-					
-					preg_match("/(\d{1,3}\.){3}\d{1,3}\/\d{1,2}/",substr($rule, 1), $matches_ips);
-					
-					if(!isset($matches_ips[0]))
-					{
-						$proxy_list .= $host."/32\n";
-					}
-					else
-					{
-						$host = $matches_ips[0];
-						$proxy_list .= $host."\n";
-					}
-					
-					//$find_function_content.="IP-CIDR,".$host."/32,Proxy,no-resolve \n";  
-					
-					continue;
-				}
-				else
-				{
-					preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i",substr($rule,1), $matches);  
-					
-					if(!isset($matches[4][0]))
-					{
-						continue;
-					}
-					
-					$host = $matches[4][0];
-					if(strpos($host,"*")!==FALSE)
-					{
-						$host = substr($host,strpos($host,"*")+1);
-						if(strpos($host,".")!==FALSE)
-						{
-							$host = substr($host,strpos($host,".")+1);
-						}
-						if(isset($isget[$host]))
-						{
-							continue;
-						}
-						$isget[$host]=1;
-						//$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n"; 
-						$proxy_list .= $host."\n";
-						continue;
-					}
-					
-					if($host != "")
-					{
-						if(isset($isget[$host]))
-						{
-							continue;
-						}
-						$isget[$host]=1;
-						//$find_function_content.="DOMAIN-SUFFIX,".$host.",Proxy,force-remote-dns\n"; 
-						$proxy_list .= $host."\n";
-						continue;
-					}
-				}
-			} else {
-				$host = substr($rule, 0);
-				if(strpos($host,"/")!==FALSE)
-				{
-					$host = substr($host,0,strpos($host,"/"));
-				}
-				
-				if($host != "")
-				{
-					if(isset($isget[$host]))
-					{
-						continue;
-					}
-					$isget[$host]=1;
-					//$find_function_content.="DOMAIN-KEYWORD,".$host.",PROXY,force-remote-dns \n";  
-					$proxy_list .= $host."\n";
-					continue;
-				}
-			}
-			
-			
-			$count = $count + 1;  
-		}
-		
-		$acl_content .= $find_function_content."\n".$proxy_list."\n".$bypass_list."\n".$outbound_block_list;   
-		return $acl_content;  
-	}
-	
-	
-	
-	/** 
-	 * This is a php implementation of autoproxy2pac 
-	 */  
-	private static function reg_encode($str) {  
-	  $tmp_str = $str;  
-	  $tmp_str = str_replace('/', "\\/", $tmp_str);  
-	  $tmp_str = str_replace('.', "\\.", $tmp_str);  
-	  $tmp_str = str_replace(':', "\\:", $tmp_str);  
-	  $tmp_str = str_replace('%', "\\%", $tmp_str);  
-	  $tmp_str = str_replace('*', ".*", $tmp_str);  
-	  $tmp_str = str_replace('-', "\\-", $tmp_str);  
-	  $tmp_str = str_replace('&', "\\&", $tmp_str);  
-	  $tmp_str = str_replace('?', "\\?", $tmp_str);  
-	  $tmp_str = str_replace('+', "\\+", $tmp_str);  
-	  
-	  return $tmp_str;  
-	}  
-	  
-	private static function get_pac($proxy_type, $proxy_host, $proxy_port, $proxy_google,$defined) {  
-	  $rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$defined;  
-	  $gfwlist = explode("\n", $rulelist);  
-	  if ($proxy_google == "true") {  
-		$gfwlist[] = ".google.com";  
-	  }  
-	  
-	  $count = 0;  
-	  $pac_content = '';   
-	  $find_function_content = 'function FindProxyForURL(url, host) { var PROXY = "'.$proxy_type.' '.$proxy_host.':'.$proxy_port.'; DIRECT"; var DEFAULT = "DIRECT";'."\n";  
-	  foreach($gfwlist as $index=>$rule) {  
-		if (empty($rule))  
-		  continue;  
-		else if (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[')  
-		  continue;  
-		$return_proxy = 'PROXY';  
-		// @@开头表示默认是直接访问  
-		if (substr($rule, 0, 2) == '@@') {  
-		  $rule = substr($rule, 2);  
-		  $return_proxy = "DEFAULT";  
-		}  
-	  
-		// ||开头表示前面还有路径  
-		if (substr($rule, 0, 2) =='||') {  
-		  $rule_reg = "^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?".LinkController::reg_encode(substr($rule, 2));  
-		// !开头相当于正则表达式^  
-		} else if (substr($rule, 0, 1) == '|') {  
-		  $rule_reg = "^" . LinkController::reg_encode(substr($rule, 1));  
-		// 前后匹配的/表示精确匹配  
-		} else if (substr($rule, 0, 1) == '/' && substr($rule, -1) == '/') {  
-		  $rule_reg = substr($rule, 1, strlen($rule) - 2);  
-		} else {  
-		  $rule_reg = LinkController::reg_encode($rule);  
-		}  
-		// 以|结尾，替换为$结尾  
-		if (preg_match("/\|$/i", $rule_reg)) {  
-		  $rule_reg = substr($rule_reg, 0, strlen($rule_reg) - 1)."$";  
-		}  
-		$find_function_content.='if (/' . $rule_reg . '/i.test(url)) return '.$return_proxy.';'."\n";  
-		$count = $count + 1;  
-	  }  
-	  $find_function_content.='return DEFAULT;'."}";  
-	  $pac_content.=$find_function_content;   
-	  return $pac_content;  
-	}  
-	
-	
-	private static function get_mac_pac() {  
-	  $rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"));  
-	  $gfwlist = explode("\n", $rulelist);  
-	  $gfwlist[] = ".google.com";  
-	  
-	  $count = 0;  
-	  $pac_content = '';   
-	  $find_function_content = 'function FindProxyForURL(url, host) { var PROXY = "SOCKS5 127.0.0.1:1080; SOCKS 127.0.0.1:1080; DIRECT;"; var DEFAULT = "DIRECT";'."\n";  
-	  foreach($gfwlist as $index=>$rule) {  
-		if (empty($rule))  
-		  continue;  
-		else if (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[')  
-		  continue;  
-		$return_proxy = 'PROXY';  
-		// @@开头表示默认是直接访问  
-		if (substr($rule, 0, 2) == '@@') {  
-		  $rule = substr($rule, 2);  
-		  $return_proxy = "DEFAULT";  
-		}  
-	  
-		// ||开头表示前面还有路径  
-		if (substr($rule, 0, 2) =='||') {  
-		  $rule_reg = "^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?".LinkController::reg_encode(substr($rule, 2));  
-		// !开头相当于正则表达式^  
-		} else if (substr($rule, 0, 1) == '|') {  
-		  $rule_reg = "^" . LinkController::reg_encode(substr($rule, 1));  
-		// 前后匹配的/表示精确匹配  
-		} else if (substr($rule, 0, 1) == '/' && substr($rule, -1) == '/') {  
-		  $rule_reg = substr($rule, 1, strlen($rule) - 2);  
-		} else {  
-		  $rule_reg = LinkController::reg_encode($rule);  
-		}  
-		// 以|结尾，替换为$结尾  
-		if (preg_match("/\|$/i", $rule_reg)) {  
-		  $rule_reg = substr($rule_reg, 0, strlen($rule_reg) - 1)."$";  
-		}  
-		$find_function_content.='if (/' . $rule_reg . '/i.test(url)) return '.$return_proxy.';'."\n";  
-		$count = $count + 1;  
-	  }  
-	  $find_function_content.='return DEFAULT;'."}";  
-	  $pac_content.=$find_function_content;   
-	  return $pac_content;  
-	}  
-	
-	public static function GetRouter($nodes,$user,$without_mu = 0){
-		$bash = '#!/bin/sh'."\n";
-		$bash .= 'export PATH=\'/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin\''."\n";
-		$bash .= 'export LD_LIBRARY_PATH=/lib:/opt/lib'."\n";
-		$bash .= 'nvram set ss_type=1'."\n";
-		
-		$count = 0;
-		
-		$mu_nodes = Node::where('sort',9)->where('node_class','<=',$user->class)->where("type","1")->where(
-			function ($query) use ($user) {
-				$query->where("node_group","=",$user->node_group)
-					->orWhere("node_group","=",0);
-			}
-		)->get();
-		
-		$relay_rules = Relay::where('user_id', $user->id)->where('user_id', 0)->orderBy('id', 'asc')->get();
-		
-		if(!Tools::is_protocol_relay($user))
-		{
-			$relay_rules = array();
-		}
-		
-		foreach($nodes as $node)
-		{
-			if($node->mu_only == 0)
-			{
-				$node_name = $node->name;
-				
-				if($node->sort == 10)
-				{
-					$relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
-					
-					if($relay_rule != null)
-					{
-						$node_name .= " - ".$relay_rule->dist_node()->name;
-					}
-				}
-				
-				$bash .= 'nvram set rt_ss_name_x'.$count.'="'.$node_name."\"\n";
-				$bash .= 'nvram set rt_ss_port_x'.$count.'='.$user->port."\n";
-				$bash .= 'nvram set rt_ss_password_x'.$count.'="'.$user->passwd."\"\n";
-				$bash .= 'nvram set rt_ss_server_x'.$count.'='.$node->server."\n";
-				$bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible","",(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain"))." ".(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?($user->obfs_param == NULL || $user->obfs_param == "" ?  ""  : "-g ".$user->obfs_param):"")." -O ".str_replace("_compatible","",(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin"))."\"\n";
-				$bash .= 'nvram set rt_ss_method_x'.$count.'='.($node->custom_method==1?$user->method:$node->method)."\n";
-				$count += 1;
-			}
-			
-			if($node->custom_rss == 1 && $without_mu == 0)
-			{
-				foreach($mu_nodes as $mu_node)
-				{
-					$mu_user = User::where('port','=',$mu_node->server)->first();
-					if($mu_user->is_multi_user == 1)
-					{
-						$mu_user->obfs_param = $user->getMuMd5();
-						$mu_user->protocol_param = $user->id.":".$user->passwd;
-					}
-					else
-					{
-						$mu_user->obfs_param = "";
-						$mu_user->protocol_param = $user->id.":".$user->passwd;
-					}
-					
-					$node_name = $node->name;
-					
-					if($node->sort == 10 && $mu_user->is_multi_user != 2)
-					{
-						$relay_rule = Tools::pick_out_relay_rule($node->id, $mu_user->port, $relay_rules);
-						
-						if($relay_rule != null)
-						{
-							$node_name .= " - ".$relay_rule->dist_node()->name;
-						}
-					}
-					
-					$bash .= 'nvram set rt_ss_name_x'.$count.'="'.$node_name." - ".$mu_node->server." 端口单端口多用户"."\"\n";
-					$bash .= 'nvram set rt_ss_port_x'.$count.'='.$mu_user->port."\n";
-					$bash .= 'nvram set rt_ss_password_x'.$count.'="'.$mu_user->passwd."\"\n";
-					$bash .= 'nvram set rt_ss_server_x'.$count.'='.$node->server."\n";
-					$bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible","",(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain"))." ".(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->obfs_param == NULL || $mu_user->obfs_param == "" ?  ""  : "-g ".$mu_user->obfs_param):"")." -O ".str_replace("_compatible","",(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin"))." ".(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->protocol_param == NULL || $mu_user->protocol_param == "" ?  ""  : "-G ".$mu_user->protocol_param):"")."\"\n";
-					$bash .= 'nvram set rt_ss_method_x'.$count.'='.($node->custom_method==1?$mu_user->method:$node->method)."\n";
-					$count += 1;
-				}
-			}
-		}
-		
-		
-		$bash .= "nvram set rt_ssnum_x=".$count."\n";
-		
-		return $bash;
-	}
+
+        $isget=array();
+        foreach ($gfwlist as $index=>$rule) {
+            if (empty($rule)) {
+                continue;
+            } elseif (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[') {
+                continue;
+            }
+
+            if (substr($rule, 0, 2) == '@@') {
+                // ||开头表示前面还有路径
+                if (substr($rule, 2, 2) =='||') {
+                    //$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);
+                    $host = substr($rule, 4);
+                    //preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
+                    if (isset($isget[$host])) {
+                        continue;
+                    }
+                    $isget[$host]=1;
+                    //$find_function_content.="DOMAIN,".$host.",DIRECT,force-remote-dns\n";
+                    $bypass_list .= $host."\n";
+                    continue;
+                // !开头相当于正则表达式^
+                } elseif (substr($rule, 2, 1) == '|') {
+                    preg_match("/(\d{1,3}\.){3}\d{1,3}/", substr($rule, 3), $matches);
+                    if (!isset($matches[0])) {
+                        continue;
+                    }
+
+                    $host = $matches[0];
+                    if ($host != "") {
+                        if (isset($isget[$host])) {
+                            continue;
+                        }
+                        $isget[$host]=1;
+                        //$find_function_content.="IP-CIDR,".$host."/32,DIRECT,no-resolve \n";
+                        $bypass_list .= $host."/32\n";
+                        continue;
+                    } else {
+                        preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i", substr($rule, 3), $matches);
+
+                        if (!isset($matches[4][0])) {
+                            continue;
+                        }
+
+                        $host = $matches[4][0];
+                        if ($host != "") {
+                            if (isset($isget[$host])) {
+                                continue;
+                            }
+                            $isget[$host]=1;
+                            //$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns\n";
+                            $bypass_list .= $host."\n";
+                            continue;
+                        }
+                    }
+                } elseif (substr($rule, 2, 1) == '.') {
+                    $host = substr($rule, 3);
+                    if ($host != "") {
+                        if (isset($isget[$host])) {
+                            continue;
+                        }
+                        $isget[$host]=1;
+                        //$find_function_content.="DOMAIN-SUFFIX,".$host.",DIRECT,force-remote-dns \n";
+                        $bypass_list .= $host."\n";
+                        continue;
+                    }
+                }
+            }
+
+            // ||开头表示前面还有路径
+            if (substr($rule, 0, 2) =='||') {
+                //$rule_reg = preg_match("/^((http|https):\/\/)?([^\/]+)/i",substr($rule, 2), $matches);
+                $host = substr($rule, 2);
+                //preg_match("/[^\.\/]+\.[^\.\/]+$/", $host, $matches);
+
+                if (strpos($host, "*")!==false) {
+                    $host = substr($host, strpos($host, "*")+1);
+                    if (strpos($host, ".")!==false) {
+                        $host = substr($host, strpos($host, ".")+1);
+                    }
+                    if (isset($isget[$host])) {
+                        continue;
+                    }
+                    $isget[$host]=1;
+                    //$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n";
+                    $proxy_list .= $host."\n";
+                    continue;
+                }
+
+                if (isset($isget[$host])) {
+                    continue;
+                }
+                $isget[$host]=1;
+                //$find_function_content.="DOMAIN,".$host.",Proxy,force-remote-dns\n";
+                $proxy_list .= $host."\n";
+            // !开头相当于正则表达式^
+            } elseif (substr($rule, 0, 1) == '|') {
+                preg_match("/(\d{1,3}\.){3}\d{1,3}/", substr($rule, 1), $matches);
+
+                if (!isset($matches[0])) {
+                    continue;
+                }
+
+                $host = $matches[0];
+                if ($host != "") {
+                    if (isset($isget[$host])) {
+                        continue;
+                    }
+                    $isget[$host]=1;
+
+                    preg_match("/(\d{1,3}\.){3}\d{1,3}\/\d{1,2}/", substr($rule, 1), $matches_ips);
+
+                    if (!isset($matches_ips[0])) {
+                        $proxy_list .= $host."/32\n";
+                    } else {
+                        $host = $matches_ips[0];
+                        $proxy_list .= $host."\n";
+                    }
+
+                    //$find_function_content.="IP-CIDR,".$host."/32,Proxy,no-resolve \n";
+
+                    continue;
+                } else {
+                    preg_match_all("~^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?~i", substr($rule, 1), $matches);
+
+                    if (!isset($matches[4][0])) {
+                        continue;
+                    }
+
+                    $host = $matches[4][0];
+                    if (strpos($host, "*")!==false) {
+                        $host = substr($host, strpos($host, "*")+1);
+                        if (strpos($host, ".")!==false) {
+                            $host = substr($host, strpos($host, ".")+1);
+                        }
+                        if (isset($isget[$host])) {
+                            continue;
+                        }
+                        $isget[$host]=1;
+                        //$find_function_content.="DOMAIN-KEYWORD,".$host.",Proxy,force-remote-dns\n";
+                        $proxy_list .= $host."\n";
+                        continue;
+                    }
+
+                    if ($host != "") {
+                        if (isset($isget[$host])) {
+                            continue;
+                        }
+                        $isget[$host]=1;
+                        //$find_function_content.="DOMAIN-SUFFIX,".$host.",Proxy,force-remote-dns\n";
+                        $proxy_list .= $host."\n";
+                        continue;
+                    }
+                }
+            } else {
+                $host = substr($rule, 0);
+                if (strpos($host, "/")!==false) {
+                    $host = substr($host, 0, strpos($host, "/"));
+                }
+
+                if ($host != "") {
+                    if (isset($isget[$host])) {
+                        continue;
+                    }
+                    $isget[$host]=1;
+                    //$find_function_content.="DOMAIN-KEYWORD,".$host.",PROXY,force-remote-dns \n";
+                    $proxy_list .= $host."\n";
+                    continue;
+                }
+            }
+
+
+            $count = $count + 1;
+        }
+
+        $acl_content .= $find_function_content."\n".$proxy_list."\n".$bypass_list."\n".$outbound_block_list;
+        return $acl_content;
+    }
 
 
 
+    /**
+     * This is a php implementation of autoproxy2pac
+     */
+    private static function reg_encode($str)
+    {
+        $tmp_str = $str;
+        $tmp_str = str_replace('/', "\\/", $tmp_str);
+        $tmp_str = str_replace('.', "\\.", $tmp_str);
+        $tmp_str = str_replace(':', "\\:", $tmp_str);
+        $tmp_str = str_replace('%', "\\%", $tmp_str);
+        $tmp_str = str_replace('*', ".*", $tmp_str);
+        $tmp_str = str_replace('-', "\\-", $tmp_str);
+        $tmp_str = str_replace('&', "\\&", $tmp_str);
+        $tmp_str = str_replace('?', "\\?", $tmp_str);
+        $tmp_str = str_replace('+', "\\+", $tmp_str);
 
+        return $tmp_str;
+    }
+
+    private static function get_pac($proxy_type, $proxy_host, $proxy_port, $proxy_google, $defined)
+    {
+        $rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"))."\n".$defined;
+        $gfwlist = explode("\n", $rulelist);
+        if ($proxy_google == "true") {
+            $gfwlist[] = ".google.com";
+        }
+
+        $count = 0;
+        $pac_content = '';
+        $find_function_content = 'function FindProxyForURL(url, host) { var PROXY = "'.$proxy_type.' '.$proxy_host.':'.$proxy_port.'; DIRECT"; var DEFAULT = "DIRECT";'."\n";
+        foreach ($gfwlist as $index=>$rule) {
+            if (empty($rule)) {
+                continue;
+            } elseif (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[') {
+                continue;
+            }
+            $return_proxy = 'PROXY';
+        // @@开头表示默认是直接访问
+        if (substr($rule, 0, 2) == '@@') {
+            $rule = substr($rule, 2);
+            $return_proxy = "DEFAULT";
+        }
+
+        // ||开头表示前面还有路径
+        if (substr($rule, 0, 2) =='||') {
+            $rule_reg = "^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?".LinkController::reg_encode(substr($rule, 2));
+        // !开头相当于正则表达式^
+        } elseif (substr($rule, 0, 1) == '|') {
+            $rule_reg = "^" . LinkController::reg_encode(substr($rule, 1));
+        // 前后匹配的/表示精确匹配
+        } elseif (substr($rule, 0, 1) == '/' && substr($rule, -1) == '/') {
+            $rule_reg = substr($rule, 1, strlen($rule) - 2);
+        } else {
+            $rule_reg = LinkController::reg_encode($rule);
+        }
+        // 以|结尾，替换为$结尾
+        if (preg_match("/\|$/i", $rule_reg)) {
+            $rule_reg = substr($rule_reg, 0, strlen($rule_reg) - 1)."$";
+        }
+            $find_function_content.='if (/' . $rule_reg . '/i.test(url)) return '.$return_proxy.';'."\n";
+            $count = $count + 1;
+        }
+        $find_function_content.='return DEFAULT;'."}";
+        $pac_content.=$find_function_content;
+        return $pac_content;
+    }
+
+
+    private static function get_mac_pac()
+    {
+        $rulelist = base64_decode(file_get_contents("https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"));
+        $gfwlist = explode("\n", $rulelist);
+        $gfwlist[] = ".google.com";
+
+        $count = 0;
+        $pac_content = '';
+        $find_function_content = 'function FindProxyForURL(url, host) { var PROXY = "SOCKS5 127.0.0.1:1080; SOCKS 127.0.0.1:1080; DIRECT;"; var DEFAULT = "DIRECT";'."\n";
+        foreach ($gfwlist as $index=>$rule) {
+            if (empty($rule)) {
+                continue;
+            } elseif (substr($rule, 0, 1) == '!' || substr($rule, 0, 1) == '[') {
+                continue;
+            }
+            $return_proxy = 'PROXY';
+        // @@开头表示默认是直接访问
+        if (substr($rule, 0, 2) == '@@') {
+            $rule = substr($rule, 2);
+            $return_proxy = "DEFAULT";
+        }
+
+        // ||开头表示前面还有路径
+        if (substr($rule, 0, 2) =='||') {
+            $rule_reg = "^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?".LinkController::reg_encode(substr($rule, 2));
+        // !开头相当于正则表达式^
+        } elseif (substr($rule, 0, 1) == '|') {
+            $rule_reg = "^" . LinkController::reg_encode(substr($rule, 1));
+        // 前后匹配的/表示精确匹配
+        } elseif (substr($rule, 0, 1) == '/' && substr($rule, -1) == '/') {
+            $rule_reg = substr($rule, 1, strlen($rule) - 2);
+        } else {
+            $rule_reg = LinkController::reg_encode($rule);
+        }
+        // 以|结尾，替换为$结尾
+        if (preg_match("/\|$/i", $rule_reg)) {
+            $rule_reg = substr($rule_reg, 0, strlen($rule_reg) - 1)."$";
+        }
+            $find_function_content.='if (/' . $rule_reg . '/i.test(url)) return '.$return_proxy.';'."\n";
+            $count = $count + 1;
+        }
+        $find_function_content.='return DEFAULT;'."}";
+        $pac_content.=$find_function_content;
+        return $pac_content;
+    }
+
+    public static function GetRouter($nodes, $user, $without_mu = 0)
+    {
+        $bash = '#!/bin/sh'."\n";
+        $bash .= 'export PATH=\'/opt/usr/sbin:/opt/usr/bin:/opt/sbin:/opt/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin\''."\n";
+        $bash .= 'export LD_LIBRARY_PATH=/lib:/opt/lib'."\n";
+        $bash .= 'nvram set ss_type=1'."\n";
+
+        $count = 0;
+
+        $mu_nodes = Node::where('sort', 9)->where('node_class', '<=', $user->class)->where("type", "1")->where(
+            function ($query) use ($user) {
+                $query->where("node_group", "=", $user->node_group)
+                    ->orWhere("node_group", "=", 0);
+            }
+        )->get();
+
+        $relay_rules = Relay::where('user_id', $user->id)->where('user_id', 0)->orderBy('id', 'asc')->get();
+
+        if (!Tools::is_protocol_relay($user)) {
+            $relay_rules = array();
+        }
+
+        foreach ($nodes as $node) {
+            if ($node->mu_only == 0) {
+                $node_name = $node->name;
+
+                if ($node->sort == 10) {
+                    $relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
+
+                    if ($relay_rule != null) {
+                        if ($relay_rule->dist_node() != null) {
+                            $node_name .= " - ".$relay_rule->dist_node()->name;
+                        }
+                    }
+                }
+
+                $bash .= 'nvram set rt_ss_name_x'.$count.'="'.$node_name."\"\n";
+                $bash .= 'nvram set rt_ss_port_x'.$count.'='.$user->port."\n";
+                $bash .= 'nvram set rt_ss_password_x'.$count.'="'.$user->passwd."\"\n";
+                $bash .= 'nvram set rt_ss_server_x'.$count.'='.$node->server."\n";
+                $bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible", "", (($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->obfs:"plain"))." ".(($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?($user->obfs_param == null || $user->obfs_param == "" ?  ""  : "-g ".$user->obfs_param):"")." -O ".str_replace("_compatible", "", (($node->custom_rss==1&&!($user->obfs=='plain'&&$user->protocol=='origin'))?$user->protocol:"origin"))."\"\n";
+                $bash .= 'nvram set rt_ss_method_x'.$count.'='.($node->custom_method==1?$user->method:$node->method)."\n";
+                $count += 1;
+            }
+
+            if ($node->custom_rss == 1 && $without_mu == 0) {
+                foreach ($mu_nodes as $mu_node) {
+                    $mu_user = User::where('port', '=', $mu_node->server)->first();
+                    
+                    if ($mu_user == null) {
+                        continue;
+                    }
+
+                    if (!($mu_user->class >= $node->node_class && ($node->node_group == 0 || $node->node_group == $mu_user->node_group))) {
+                        continue;
+                    }
+
+                    if ($mu_user->is_multi_user == 1) {
+                        $mu_user->obfs_param = $user->getMuMd5();
+                        $mu_user->protocol_param = $user->id.":".$user->passwd;
+                    } else {
+                        $mu_user->obfs_param = "";
+                        $mu_user->protocol_param = $user->id.":".$user->passwd;
+                    }
+
+                    $node_name = $node->name;
+
+                    if ($node->sort == 10 && $mu_user->is_multi_user != 2) {
+                        $relay_rule = Tools::pick_out_relay_rule($node->id, $mu_user->port, $relay_rules);
+
+                        if ($relay_rule != null) {
+                            if ($relay_rule->dist_node() != null) {
+                                $node_name .= " - ".$relay_rule->dist_node()->name;
+                            }
+                        }
+                    }
+
+                    $bash .= 'nvram set rt_ss_name_x'.$count.'="'.$node_name." - ".$mu_node->server." 端口单端口多用户"."\"\n";
+                    $bash .= 'nvram set rt_ss_port_x'.$count.'='.$mu_user->port."\n";
+                    $bash .= 'nvram set rt_ss_password_x'.$count.'="'.$mu_user->passwd."\"\n";
+                    $bash .= 'nvram set rt_ss_server_x'.$count.'='.$node->server."\n";
+                    $bash .= 'nvram set rt_ss_usage_x'.$count.'="'."-o ".str_replace("_compatible", "", (($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->obfs:"plain"))." ".(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->obfs_param == null || $mu_user->obfs_param == "" ?  ""  : "-g ".$mu_user->obfs_param):"")." -O ".str_replace("_compatible", "", (($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?$mu_user->protocol:"origin"))." ".(($node->custom_rss==1&&!($mu_user->obfs=='plain'&&$mu_user->protocol=='origin'))?($mu_user->protocol_param == null || $mu_user->protocol_param == "" ?  ""  : "-G ".$mu_user->protocol_param):"")."\"\n";
+                    $bash .= 'nvram set rt_ss_method_x'.$count.'='.($node->custom_method==1?$mu_user->method:$node->method)."\n";
+                    $count += 1;
+                }
+            }
+        }
+
+
+        $bash .= "nvram set rt_ssnum_x=".$count."\n";
+
+        return $bash;
+    }
 }

@@ -6,7 +6,7 @@
 			<div class="row">
 				<div class="col-lg-4 col-lg-push-4 col-sm-6 col-sm-push-3">
 					<section class="content-inner">
-						
+
 						<nav class="tab-nav margin-top-no">
 							<ul class="nav nav-justified">
 								<li class="active">
@@ -16,7 +16,7 @@
 								<li>
 									<a class="waves-attach" data-toggle="tab" href="#qrcode_login">扫码登录</a>
 								</li>
-								
+
 								<li>
 									<a class="waves-attach" data-toggle="tab" href="#number_login">数字登录</a>
 								</li>
@@ -40,12 +40,12 @@
 															<img alt="Login" src="/theme/material/images/users/avatar-001.jpg">
 														</span>
 													</p>
-												
+
 													<div class="form-group form-group-label">
 														<div class="row">
 															<div class="col-md-10 col-md-push-1">
 																<label class="floating-label" for="email">邮箱</label>
-																<input class="form-control" id="email" type="text">
+																<input class="form-control" id="email" type="text" name="Email">
 															</div>
 														</div>
 													</div>
@@ -53,11 +53,11 @@
 														<div class="row">
 															<div class="col-md-10 col-md-push-1">
 																<label class="floating-label" for="passwd">密码</label>
-																<input class="form-control" id="passwd" type="password">
+																<input class="form-control" id="passwd" type="password" name="Password">
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="form-group form-group-label">
 														<div class="row">
 															<div class="col-md-10 col-md-push-1">
@@ -66,7 +66,7 @@
 															</div>
 														</div>
 													</div>
-													
+
 													{if $geetest_html != null}
 														<div class="form-group form-group-label">
 															<div class="row">
@@ -76,7 +76,7 @@
 															</div>
 														</div>
 													{/if}
-													
+
 													<div class="form-group">
 														<div class="row">
 															<div class="col-md-10 col-md-push-1">
@@ -84,7 +84,7 @@
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="form-group">
 														<div class="row">
 															<div class="col-md-10 col-md-push-1">
@@ -122,7 +122,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="tab-pane fade" id="number_login">
 									<div class="card">
 										<div class="card-main">
@@ -145,26 +145,26 @@
 								{/if}
 							</div>
 						</div>
-						
-						
+
+
 						<div class="clearfix">
 							<p class="margin-no-top pull-left"><a class="btn btn-flat btn-brand waves-attach" href="/password/reset">忘记密码</a></p>
 							<p class="margin-no-top pull-right"><a class="btn btn-flat btn-brand waves-attach" href="/auth/register">注册个帐号</a></p>
 						</div>
-						
-						
+
+
 						{include file='dialog.tpl'}
-						
-						
-						
-						
-						
+
+
+
+
+
 					</section>
 				</div>
 			</div>
 		</div>
 	</main>
-	
+
 {include file='footer.tpl'}
 
 <script>
@@ -177,17 +177,17 @@
                 $("#msg").html("请滑动验证码来完成验证。");
 				return;
 			}
-			
+
 			if (!validate) {
 				$("#result").modal();
                 $("#msg").html("请滑动验证码来完成验证。");
 				return;
 			}
-			
+
 			{/if}
-			
-			document.getElementById("login").disabled = true; 
-			
+
+			document.getElementById("login").disabled = true;
+
             $.ajax({
                 type:"POST",
                 url:"/auth/login",
@@ -212,14 +212,14 @@
 			document.getElementById("login").disabled = false;
 			{if $geetest_html != null}
 			captcha.refresh();
-			{/if} 
+			{/if}
                     }
                 },
                 error:function(jqXHR){
 			$("#msg-error").hide(10);
 			$("#msg-error").show(100);
 			$("#msg-error-p").html("发生错误："+jqXHR.status);
-					document.getElementById("login").disabled = false; 
+					document.getElementById("login").disabled = false;
 			{if $geetest_html != null}
 			captcha.refresh();
 			{/if}
@@ -234,11 +234,11 @@
         $("#login").click(function(){
             login();
         });
-		
+
 		$('div.modal').on('shown.bs.modal', function() {
 			$("div.gt_slider_knob").hide();
 		});
-		
+
 		$('div.modal').on('hidden.bs.modal', function() {
 			$("div.gt_slider_knob").show();
 		});
@@ -268,7 +268,7 @@ $(document).ready(function () {
 			success: function (data) {
 				if (data.ret > 0) {
 					clearTimeout(tid);
-					
+
 					$.ajax({
 						type: "POST",
 						url: "/auth/qrcode_login",
@@ -289,7 +289,7 @@ $(document).ready(function () {
 							$("#msg").html("发生错误：" + jqXHR.status);
 						}
 					});
-					
+
 				} else {
 					if(data.ret == -1)
 					{
@@ -317,17 +317,17 @@ $(document).ready(function () {
 <script>
 	var handlerEmbed = function (captchaObj) {
         // 将验证码加到id为captcha的元素里
-		
+
 		captchaObj.onSuccess(function () {
             		validate = captchaObj.getValidate();
 		});
-		
+
 		captchaObj.appendTo("#embed-captcha");
 
 		captcha = captchaObj;
 		// 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
     };
-	
+
 	initGeetest({
 		gt: "{$geetest_html->gt}",
 		challenge: "{$geetest_html->challenge}",
@@ -337,11 +337,3 @@ $(document).ready(function () {
 </script>
 
 {/if}
-
-
-
-
-
-
-
-	

@@ -12,96 +12,91 @@ use App\Services\Auth;
 
 class IpController extends AdminController
 {
-    public function index($request, $response, $args){
-		$pageNum = 1;
+    public function index($request, $response, $args)
+    {
+        $pageNum = 1;
         if (isset($request->getQueryParams()["page"])) {
             $pageNum = $request->getQueryParams()["page"];
         }
         $logs = LoginIp::orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
-		$loc=array();
-		
-		$iplocation = new QQWry(); 
-		foreach($logs as $log)
-		{
-			if(!isset($loc[$log->ip]))
-			{
-				$location=$iplocation->getlocation($log->ip);
-				$loc[$log->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
-			}
-		}
-		
-		
-		$logs->setPath('/admin/login');
-        return $this->view()->assign("loc",$loc)->assign('logs',$logs)->display('admin/ip/login.tpl');
+        $loc=array();
+        
+        $iplocation = new QQWry();
+        foreach ($logs as $log) {
+            if (!isset($loc[$log->ip])) {
+                $location=$iplocation->getlocation($log->ip);
+                $loc[$log->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+            }
+        }
+        
+        
+        $logs->setPath('/admin/login');
+        return $this->view()->assign("loc", $loc)->assign('logs', $logs)->display('admin/ip/login.tpl');
     }
-	
-	public function block($request, $response, $args){
-		$pageNum = 1;
+    
+    public function block($request, $response, $args)
+    {
+        $pageNum = 1;
         if (isset($request->getQueryParams()["page"])) {
             $pageNum = $request->getQueryParams()["page"];
         }
         $logs = BlockIp::orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
-		$loc=array();
-		
-		$iplocation = new QQWry(); 
-		foreach($logs as $log)
-		{
-			if(!isset($loc[$log->ip]))
-			{
-				$location=$iplocation->getlocation($log->ip);
-				$loc[$log->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
-			}
-		}
-		
-		
-		$logs->setPath('/admin/block');
-        return $this->view()->assign("loc",$loc)->assign('logs',$logs)->display('admin/ip/block.tpl');
+        $loc=array();
+        
+        $iplocation = new QQWry();
+        foreach ($logs as $log) {
+            if (!isset($loc[$log->ip])) {
+                $location=$iplocation->getlocation($log->ip);
+                $loc[$log->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+            }
+        }
+        
+        
+        $logs->setPath('/admin/block');
+        return $this->view()->assign("loc", $loc)->assign('logs', $logs)->display('admin/ip/block.tpl');
     }
-	
-	public function unblock($request, $response, $args){
-		$pageNum = 1;
+    
+    public function unblock($request, $response, $args)
+    {
+        $pageNum = 1;
         if (isset($request->getQueryParams()["page"])) {
             $pageNum = $request->getQueryParams()["page"];
         }
         $logs = UnblockIp::orderBy('id', 'desc')->paginate(15, ['*'], 'page', $pageNum);
-		$loc=array();
-		
-		$iplocation = new QQWry(); 
-		foreach($logs as $log)
-		{
-			if(!isset($loc[$log->ip]))
-			{
-				$location=$iplocation->getlocation($log->ip);
-				$loc[$log->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
-			}
-		}
-		
-		
-		$logs->setPath('/admin/unblock');
-        return $this->view()->assign("loc",$loc)->assign('logs',$logs)->display('admin/ip/unblock.tpl');
+        $loc=array();
+        
+        $iplocation = new QQWry();
+        foreach ($logs as $log) {
+            if (!isset($loc[$log->ip])) {
+                $location=$iplocation->getlocation($log->ip);
+                $loc[$log->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+            }
+        }
+        
+        
+        $logs->setPath('/admin/unblock');
+        return $this->view()->assign("loc", $loc)->assign('logs', $logs)->display('admin/ip/unblock.tpl');
     }
-	
-	public function doUnblock($request, $response, $args)
-	{
-		$ip = $request->getParam('ip');
-		
-		$user = Auth::getUser();
-		$BIP = BlockIp::where("ip",$ip)->get();
-		foreach($BIP as $bi)
-		{
-			$bi->delete();
-		}
-		
-		$UIP = new UnblockIp();
-		$UIP->userid = $user->id;
-		$UIP->ip = $ip;
-		$UIP->datetime = time();
-		$UIP->save();
-		
-		
-		$res['ret'] = 1;
-		$res['msg'] = "发送解封命令解封 ".$ip." 成功";
-		return $this->echoJson($response, $res);
-	}
-
+    
+    public function doUnblock($request, $response, $args)
+    {
+        $ip = $request->getParam('ip');
+        
+        $user = Auth::getUser();
+        $BIP = BlockIp::where("ip", $ip)->get();
+        foreach ($BIP as $bi) {
+            $bi->delete();
+        }
+        
+        $UIP = new UnblockIp();
+        $UIP->userid = $user->id;
+        $UIP->ip = $ip;
+        $UIP->datetime = time();
+        $UIP->save();
+        
+        
+        $res['ret'] = 1;
+        $res['msg'] = "发送解封命令解封 ".$ip." 成功";
+        return $this->echoJson($response, $res);
+    }
 }
