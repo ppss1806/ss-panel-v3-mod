@@ -589,12 +589,7 @@ class UserController extends BaseController
                             $ary['protocol'] = str_replace("_compatible", "", $this->user->protocol);
                         }
                     } else {
-                        $mu_user = User::where('port', '=', $mu)->where("is_multi_user", "<>", 0)->where(
-                            function ($query) use ($user) {
-                                $query->Where("node_group", "=", $user->node_group)
-                                    ->orWhere("node_group", "=", 0);
-                            }
-                        )->where("class", "<=", $user->class)->first();
+                        $mu_user = User::where('port', '=', $mu)->where("is_multi_user", "<>", 0)->first();
 
                         if ($mu_user == null) {
                             return;
@@ -795,12 +790,7 @@ class UserController extends BaseController
                             $ary['protocol'] = str_replace("_compatible", "", $this->user->protocol);
                         }
                     } else {
-                        $mu_user = User::where('port', '=', $mu)->where("is_multi_user", "<>", 0)->where(
-                            function ($query) use ($user) {
-                                $query->Where("node_group", "=", $user->node_group)
-                                    ->orWhere("node_group", "=", 0);
-                            }
-                        )->where("class", "<=", $user->class)->first();
+                        $mu_user = User::where('port', '=', $mu)->where("is_multi_user", "<>", 0)->first();
 
                         if ($mu_user == null) {
                             return;
