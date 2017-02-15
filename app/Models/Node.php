@@ -13,6 +13,13 @@ class Node extends Model
     protected $connection = "default";
     protected $table = "ss_node";
 
+    protected $casts = [
+        'node_speedlimit' => 'float',
+        'traffic_rate' => 'float',
+        'mu_only' => 'int',
+        'sort' => 'int',
+    ];
+
     public function getLastNodeInfoLog()
     {
         $id = $this->attributes['id'];

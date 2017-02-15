@@ -23,7 +23,7 @@ class User extends Model
     public $isLogin;
 
     public $isAdmin;
-
+    
     protected $casts = [
         "t" => 'int',
         "u" => 'int',
@@ -32,6 +32,8 @@ class User extends Model
         "transfer_enable" => 'float',
         "enable" => 'int',
         'is_admin' => 'boolean',
+        'is_multi_user' => 'int',
+        'node_speedlimit' => 'float',
     ];
 
     public function getGravatarAttribute()
