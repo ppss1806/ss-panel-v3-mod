@@ -25,6 +25,7 @@
 									<div class="form-group form-group-label">
 										<label class="floating-label" for="source_node">起源节点</label>
 										<select id="source_node" class="form-control" name="source_node">
+											<option value="0">请选择起源节点</option>
 											{foreach $source_nodes as $source_node}
 												<option value="{$source_node->id}">{$source_node->name}</option>
 											{/foreach}
