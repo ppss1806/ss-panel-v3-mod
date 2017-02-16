@@ -84,13 +84,11 @@ class UserController extends BaseController
                 $d = $log['d'];
                 $user_id = $log['user_id'];
 
-                $this_time_total_bandwidth += ($u + $d)/$node->traffic_rate;
-
                 $user = User::find($user_id);
 
                 $user->t = time();
-                $user->u += $u;
-                $user->d += $d;
+                $user->u += $u * $node->traffic_rate;
+                $user->d += $d * $node->traffic_rate;
                 if (!$user->save()) {
                     $res = [
                         "ret" => 0,
@@ -106,7 +104,7 @@ class UserController extends BaseController
                 $traffic->d = $d;
                 $traffic->node_id = $node_id;
                 $traffic->rate = $node->traffic_rate;
-                $traffic->traffic = Tools::flowAutoShow($u + $d);
+                $traffic->traffic = Tools::flowAutoShow(($u + $d) * $node->traffic_rate);
                 $traffic->log_time = time();
                 $traffic->save();
             }
