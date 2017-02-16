@@ -38,6 +38,12 @@ class UserController extends BaseController
         if ($node->node_bandwidth_limit!=0) {
             if ($node->node_bandwidth_limit < $node->node_bandwidth) {
                 $users=null;
+
+                $res = [
+                    "ret" => 1,
+                    "data" => $users
+                ];
+                return $this->echoJson($response, $res);
             }
         }
 
