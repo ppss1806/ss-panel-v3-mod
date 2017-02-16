@@ -39,7 +39,7 @@ class Mu
         }
 
         $node = Node::where("node_ip", "=", $_SERVER["REMOTE_ADDR"])->first();
-        if ($node==null) {
+        if ($node==null && $_SERVER["REMOTE_ADDR"] != '127.0.0.1') {
             $res['ret'] = 0;
             $res['msg'] = "token or source is invalid";
             $response->getBody()->write(json_encode($res));
