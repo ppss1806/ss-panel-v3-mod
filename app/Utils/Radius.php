@@ -22,22 +22,22 @@ class Radius
             $email=str_replace("@", "", $email);
             $email=str_replace(".", "", $email);
 
-            
+
             $exists=RadiusRadCheck::where("username", $email)->first();
-            
+
             if ($exists==null) {
                 $rb = RadiusBan::where('userid', $user->id)->first();
                 if ($rb != null) {
                     return;
                 }
-                
+
                 $newRad=new RadiusRadCheck();
                 $newRad->username=$email;
                 $newRad->attribute="Cleartext-Password";
                 $newRad->op=":=";
                 $newRad->value=$pwd;
                 $newRad->save();
-                
+
                 $newRad=new RadiusRadUserGroup();
                 $newRad->username=$email;
                 $newRad->groupname="user";
@@ -50,34 +50,34 @@ class Radius
             }
         }
     }
-    
-    
+
+
     public static function Delete($email)
     {
         if (Config::get('enable_radius')=='true') {
             $email=str_replace("@", "", $email);
             $email=str_replace(".", "", $email);
 
-            
+
             $exists=RadiusRadCheck::where("username", $email)->first();
-            
+
             if ($exists!=null) {
                 RadiusRadCheck::where("username", $email)->delete();
                 RadiusRadUserGroup::where("username", $email)->delete();
             }
         }
     }
-    
-    public static function ChangeUserName($email1, $email2, $passwd)
+
+    public static function ChangeUserName($email, $email2, $passwd)
     {
         if (Config::get('enable_radius')=='true') {
-            $email1=str_replace("@", "", $email1);
-            $email1=str_replace(".", "", $email1);
+            $email1=str_replace("@", "", $email);
+            $email1=str_replace(".", "", $email);
             $email2=str_replace("@", "", $email2);
             $email2=str_replace(".", "", $email2);
-            
+
             $exists=RadiusRadCheck::where("username", $email1)->first();
-            
+
             if ($exists!=null) {
                 $exists->username=$email2;
                 $exists->value=$passwd;
@@ -87,19 +87,19 @@ class Radius
                 $exists->username=$email2;
                 $exists->save();
             } else {
-                $user = User::where('email', '=', $email1)->first();
+                $user = User::where('email', '=', $email)->first();
                 $rb = RadiusBan::where('userid', $user->id)->first();
                 if ($rb != null) {
                     return;
                 }
-                
+
                 $newRad=new RadiusRadCheck();
                 $newRad->username=$email2;
                 $newRad->attribute="Cleartext-Password";
                 $newRad->op=":=";
                 $newRad->value=$passwd;
                 $newRad->save();
-                
+
                 $newRad=new RadiusRadUserGroup();
                 $newRad->username=$email2;
                 $newRad->groupname="user";
@@ -108,7 +108,7 @@ class Radius
             }
         }
     }
-    
+
     public static function AddNas($ip, $name)
     {
         if (Config::get('enable_radius')=='true') {
@@ -124,14 +124,14 @@ class Radius
             }
         }
     }
-    
+
     public static function DelNas($ip)
     {
         if (Config::get('enable_radius')=='true') {
             RadiusNas::where("shortname", $ip)->delete();
         }
     }
-    
+
     public static function GetUserName($email)
     {
         $emailt=str_replace("@", "", $email);

@@ -54,7 +54,7 @@ class UserController extends BaseController
                 'is_multi_user', 'id', 'port', 'passwd', 'u', 'd');
 
         foreach ($users_raw as $user_raw) {
-            if ($user_raw->transfer_enable > $user_raw->t + $user_raw->d) {
+            if ($user_raw->transfer_enable > $user_raw->u + $user_raw->d) {
                 $user_raw = Tools::keyFilter($user_raw, $key_list);
                 array_push($users, $user_raw);
             }
