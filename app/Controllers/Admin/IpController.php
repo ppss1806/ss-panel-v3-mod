@@ -130,7 +130,7 @@ class IpController extends AdminController
         });
 
         $datatables->edit('type', function ($data) {
-            return $data['type'] == 1 ? '成功' : '失败';
+            return $data['type'] == 0 ? '成功' : '失败';
         });
 
         $body = $response->getBody();

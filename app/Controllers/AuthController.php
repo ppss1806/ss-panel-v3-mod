@@ -154,7 +154,7 @@ class AuthController extends BaseController
         $loginip->ip=$_SERVER["REMOTE_ADDR"];
         $loginip->userid=$user->id;
         $loginip->datetime=time();
-        $loginip->type=1;
+        $loginip->type=0;
         $loginip->save();
 
         return $response->getBody()->write(json_encode($rs));
