@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Models\Node;
 use App\Utils\Radius;
 use App\Utils\Telegram;
+use App\Utils\Tools;
 use App\Controllers\AdminController;
 
 use Ozdemir\Datatables\Datatables;
@@ -14,7 +15,7 @@ class NodeController extends AdminController
 {
     public function index($request, $response, $args)
     {
-        $table_config['total_column'] = array("op" => "操作", "id" => "ID", "name" => "节点名称",
+        $table_config['total_column'] = Array("op" => "操作", "id" => "ID", "name" => "节点名称",
                             "type" => "显示与隐藏", "sort" => "类型",
                             "server" => "节点地址", "node_ip" => "节点IP",
                             "info" => "节点信息",
@@ -24,7 +25,7 @@ class NodeController extends AdminController
                             "bandwidthlimit_resetday" => "流量重置日", "node_heartbeat" => "上一次活跃时间",
                             "custom_method" => "自定义加密", "custom_rss" => "自定义协议以及混淆",
                             "mu_only" => "只启用单端口多用户");
-        $table_config['default_show_column'] = array("op", "id", "name", "sort");
+        $table_config['default_show_column'] = Array("op", "id", "name", "sort");
         $table_config['ajax_url'] = 'node/ajax';
 
         return $this->view()->assign('table_config', $table_config)->display('admin/node/index.tpl');
@@ -176,7 +177,7 @@ class NodeController extends AdminController
         $datatables = new Datatables(new DatatablesHelper());
 
 
-        $total_column = array("op" => "操作", "id" => "ID", "name" => "节点名称",
+        $total_column = Array("op" => "操作", "id" => "ID", "name" => "节点名称",
                               "type" => "显示与隐藏", "sort" => "类型",
                               "server" => "节点地址", "node_ip" => "节点IP",
                               "info" => "节点信息",
@@ -187,8 +188,8 @@ class NodeController extends AdminController
                               "custom_method" => "自定义加密", "custom_rss" => "自定义协议以及混淆",
                               "mu_only" => "只启用单端口多用户");
         $key_str = '';
-        foreach ($total_column as $single_key => $single_value) {
-            if ($single_key == 'op') {
+        foreach($total_column as $single_key => $single_value) {
+            if($single_key == 'op') {
                 $key_str .= 'id as op';
                 continue;
             }
@@ -202,9 +203,13 @@ class NodeController extends AdminController
                     <a class="btn btn-brand-accent" '.($data['sort'] == 999 ? 'disabled' : 'id="delete" value="'.$data['id'].'" href="javascript:void(0);" onClick="delete_modal_show(\''.$data['id'].'\')"').'>删除</a>';
         });
 
+        $datatables->edit('node_bandwidth', function ($data) {
+            return Tools::flowToGB($data['node_bandwidth']);
+        });
+
         $datatables->edit('sort', function ($data) {
             $sort = '';
-            switch ($data['sort']) {
+            switch($data['sort']) {
                 case 0:
                   $sort = 'Shadowsocks';
                   break;
