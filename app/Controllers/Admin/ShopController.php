@@ -205,7 +205,7 @@ class ShopController extends AdminController
         });
 
         $datatables->edit('auto_reset_bandwidth', function ($data) {
-            return $data['auto_reset_bandwidth'] == 1 ? '不自动重置' : '自动重置';
+            return $data['auto_reset_bandwidth'] == 0 ? '不自动重置' : '自动重置';
         });
 
         $datatables->edit('status', function ($data) {
@@ -239,7 +239,7 @@ class ShopController extends AdminController
         });
 
         $datatables->edit('auto_reset_bandwidth', function ($data) {
-            return $data['auto_reset_bandwidth'] == 1 ? '不自动重置' : '自动重置';
+            return $data['auto_reset_bandwidth'] == 0 ? '不自动重置' : '自动重置';
         });
 
         $datatables->edit('datetime', function ($data) {

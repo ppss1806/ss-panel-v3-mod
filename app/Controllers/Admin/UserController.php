@@ -29,7 +29,7 @@ class UserController extends AdminController
                             "last_checkin_time" => "上次签到时间", "today_traffic" => "今日流量/MB",
                             "is_enable" => "是否启用", "reg_date" => "注册时间",
                             "reg_location" => "注册IP", "auto_reset_day" => "自动重置流量日",
-                            "auto_reset_bandwidth" => "自动重置流量", "ref_by" => "邀请人ID", "ref_by_user_name" => "邀请人用户名");
+                            "auto_reset_bandwidth" => "自动重置流量/GB", "ref_by" => "邀请人ID", "ref_by_user_name" => "邀请人用户名");
         $default_show_array = array("op", "id", "user_name", "remark", "email");
         return $this->view()->assign('default_show_array', $default_show_array)->assign('total_array', $total_array)->display('admin/user/index.tpl');
     }

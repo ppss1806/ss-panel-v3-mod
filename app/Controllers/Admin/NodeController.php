@@ -207,6 +207,10 @@ class NodeController extends AdminController
             return Tools::flowToGB($data['node_bandwidth']);
         });
 
+        $datatables->edit('node_bandwidth_limit', function ($data) {
+            return Tools::flowToGB($data['node_bandwidth_limit']);
+        });
+
         $datatables->edit('sort', function ($data) {
             $sort = '';
             switch($data['sort']) {
