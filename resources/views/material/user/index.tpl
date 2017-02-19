@@ -43,7 +43,7 @@
 										<p class="card-heading">All-in-One</p>
 										<p>这里为您提供了自动化地配置文件生成，包含了所有 Shadowsocks 服务器的信息，方便您在诸多的服务器中快速添加，快速切换。</p>
 										<nav class="tab-nav margin-top-no">
-											<ul class="nav nav-justified">
+											<ul class="nav nav-list">
 												<li class="active">
 													<a class="waves-attach" data-toggle="tab" href="#all_windows"><i class="icon icon-lg">desktop_windows</i>&nbsp;Windows</a>
 												</li>

@@ -35,7 +35,7 @@
 				</div>
 
 				<div class="table-responsive">
-					<table class="table" id="table_users">
+					<table class="table" id="table_users" cellspacing="0" width="100%">
 						<thead>
 							<tr>
 								{foreach $total_array as $key => $value}
