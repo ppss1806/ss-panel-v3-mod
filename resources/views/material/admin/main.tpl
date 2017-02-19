@@ -13,8 +13,8 @@
 	<link href="/theme/material/css/base.min.css" rel="stylesheet">
 	<link href="/theme/material/css/project.min.css" rel="stylesheet">
 	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet">
-	
+	<link href="//cdn.staticfile.org/datatables/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet">
+
 
 
 	<!-- favicon -->

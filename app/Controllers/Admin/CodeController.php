@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Models\Code;
+use App\Models\User;
 use App\Controllers\AdminController;
 use App\Utils\Tools;
 use App\Services\Auth;
@@ -86,7 +87,7 @@ class CodeController extends AdminController
     public function ajax_code($request, $response, $args)
     {
         $datatables = new Datatables(new DatatablesHelper());
-        $datatables->query('Select code.id,code.code,code.type,code.number,code.isused,code.userid,user.user_name,code.usedatetime from code,user where user.id = code.userid');
+        $datatables->query('Select code.id,code.code,code.type,code.number,code.isused,code.userid,code.userid as user_name,code.usedatetime from code');
 
         $datatables->edit('number', function ($data) {
             switch ($data['type']) {
@@ -99,6 +100,23 @@ class CodeController extends AdminController
               default:
                 return "已经废弃";
             }
+        });
+
+        $datatables->edit('isused', function ($data) {
+            return $data['isused'] == 1 ? '已使用' : '未使用';
+        });
+
+        $datatables->edit('userid', function ($data) {
+            return $data['userid'] == 0 ? '未使用' : $data['userid'];
+        });
+
+        $datatables->edit('user_name', function ($data) {
+            $user = User::find($data['user_name']);
+            if ($user == null) {
+                return "未使用";
+            }
+
+            return $user->user_name;
         });
 
         $datatables->edit('type', function ($data) {
@@ -115,11 +133,7 @@ class CodeController extends AdminController
         });
 
         $datatables->edit('usedatetime', function ($data) {
-            if (time($data['usedatetime']) < 946659661) {
-                return "未使用";
-            }
-
-            return $data['usedatetime'];
+            return $data['usedatetime'] > '2000-1-1 0:0:0' ? $data['usedatetime'] : "未使用";
         });
 
         $body = $response->getBody();
