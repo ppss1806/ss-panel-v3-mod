@@ -7,15 +7,16 @@
 	<meta name="theme-color" content="#f44336">
 	<title>{$config["appName"]}</title>
 
-	
-	
+
+
 	<!-- css -->
 	<link href="/theme/material/css/base.min.css" rel="stylesheet">
 	<link href="/theme/material/css/project.min.css" rel="stylesheet">
 	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet">
 	
 
-	
+
 	<!-- favicon -->
 	<!-- ... -->
 	<style>
@@ -122,10 +123,10 @@
 			background-color:#fff
 		}
 
-		
-		
-		
-		
+
+
+
+
 		.pagination>li>a,
 		.pagination>li>span {
 		  border: 1px solid white;
@@ -134,13 +135,13 @@
 		  background: #f50057;
 		  color: #fff;
 		}
-		
+
 		.pagination>li>a {
 		  background: white;
 		  color: #000;
 		}
-		
-		
+
+
 		.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
 			color: #fff;
 			background-color: #000;
@@ -152,23 +153,23 @@
 		  color: #fff;
 		  border-color: #fff;
 		}
-		
-		
-		
+
+
+
 		.pagination > .disabled > span {
 		  border-color: #fff;
 		}
-		
-		
+
+
 		pre {
 			white-space: pre-wrap;
 			word-wrap: break-word;
 		}
-		
+
 		.page-red .ui-content-header {
 			background-image: url(/theme/material/css/images/bg/red.jpg);
 		}
-		
+
 		.content-heading {
 			font-weight: 300;
 			color: #fff;
@@ -184,7 +185,7 @@
 				</a>
 			</div>
 		</ul>
-		
+
 		<ul class="nav nav-list pull-right">
 			<div class="dropdown margin-right">
 				<a class="dropdown-toggle padding-left-no padding-right-no" data-toggle="dropdown">
@@ -213,7 +214,7 @@
 						</li>
 					</ul>
 				{/if}
-					
+
 			</div>
 		</ul>
 	</header>
@@ -230,7 +231,7 @@
 							<li><a href="/admin/ticket"><i class="icon icon-lg">question_answer</i>&nbsp;工单管理</a></li>
 							<li><a href="/admin/auto"><i class="icon icon-lg">flash_auto</i>&nbsp;下发命令</a></li>
 						</ul>
-						
+
 						<a class="waves-attach" data-toggle="collapse" href="#ui_menu_node">节点</a>
 						<ul class="menu-collapse collapse in" id="ui_menu_node">
 							<li><a href="/admin/node"><i class="icon icon-lg">router</i>&nbsp;节点列表</a></li>
@@ -238,7 +239,7 @@
 							<li><a href="/admin/block"><i class="icon icon-lg">dialer_sip</i>&nbsp;已封禁IP</a></li>
 							<li><a href="/admin/unblock"><i class="icon icon-lg">dialer_sip</i>&nbsp;已解封IP</a></li>
 						</ul>
-						
+
 						<a class="waves-attach" data-toggle="collapse" href="#ui_menu_user">用户</a>
 						<ul class="menu-collapse collapse in" id="ui_menu_user">
 							<li><a href="/admin/user"><i class="icon icon-lg">supervisor_account</i>&nbsp;用户列表</a></li>
@@ -252,8 +253,8 @@
 							<li><a href="/admin/detect"><i class="icon icon-lg">account_balance</i>&nbsp;审计规则</a></li>
 							<li><a href="/admin/detect/log"><i class="icon icon-lg">assignment_late</i>&nbsp;审计记录</a></li>
 						</ul>
-						
-						
+
+
 						<a class="waves-attach" data-toggle="collapse" href="#ui_menu_trade">交易</a>
 						<ul class="menu-collapse collapse in" id="ui_menu_trade">
 							<li><a href="/admin/code"><i class="icon icon-lg">code</i>&nbsp;充值码{if $config['enable_donate']=='true'}与捐赠{/if}</a></li>
@@ -261,12 +262,12 @@
 							<li><a href="/admin/coupon"><i class="icon icon-lg">card_giftcard</i>&nbsp;优惠码</a></li>
 							<li><a href="/admin/bought"><i class="icon icon-lg">shopping_cart</i>&nbsp;购买记录</a></li>
 						</ul>
-						
+
 						<li><a href="/user"><i class="icon icon-lg">person</i>&nbsp;用户中心</a></li>
 					</li>
-				
-					
-					
+
+
+
 				</ul>
 			</div>
 		</div>

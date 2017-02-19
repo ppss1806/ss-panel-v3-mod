@@ -17,46 +17,21 @@ class UserController extends AdminController
 {
     public function index($request, $response, $args)
     {
-        $pageNum = 1;
-        if (isset($request->getQueryParams()["page"])) {
-            $pageNum = $request->getQueryParams()["page"];
-        }
-        $users = User::paginate(20, ['*'], 'page', $pageNum);
-        $users->setPath('/admin/user');
-
-
-
-        //Ip::where("datetime","<",time()-90)->get()->delete();
-        $total = Ip::where("datetime", ">=", time()-90)->orderBy('userid', 'desc')->get();
-
-
-        $userip=array();
-        $useripcount=array();
-        $regloc=array();
-
-        $iplocation = new QQWry();
-        foreach ($users as $user) {
-            $useripcount[$user->id]=0;
-            $userip[$user->id]=array();
-
-            $location=$iplocation->getlocation($user->reg_ip);
-            $regloc[$user->id]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
-        }
-
-
-
-        foreach ($total as $single) {
-            if (isset($useripcount[$single->userid])) {
-                if (!isset($userip[$single->userid][$single->ip])) {
-                    $useripcount[$single->userid]=$useripcount[$single->userid]+1;
-                    $location=$iplocation->getlocation($single->ip());
-                    $userip[$single->userid][$single->ip]=iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
-                }
-            }
-        }
-
-
-        return $this->view()->assign('users', $users)->assign("regloc", $regloc)->assign("useripcount", $useripcount)->assign("userip", $userip)->display('admin/user/index.tpl');
+        $total_array = array("op" => "操作", "id" => "ID", "user_name" => "用户名",
+                            "remark" => "备注", "email" => "邮箱", "money" => "金钱",
+                            "im_type" => "联络方式类型", "im_value" => "联络方式详情",
+                            "node_group" => "群组类型", "account_expire_in" => "账户过期时间",
+                            "class" => "等级", "class_expire" => "等级过期时间",
+                            "passwd" => "连接密码","port" => "连接端口", "method" => "加密方式",
+                            "protocol" => "连接协议", "obfs" => "连接混淆方式",
+                            "online_ip_count" => "在线IP数", "last_ss_time" => "上次使用时间",
+                            "used_traffic" => "已用流量/GB", "enable_traffic" => "总流量/GB",
+                            "last_checkin_time" => "上次签到时间", "today_traffic" => "今日流量/MB",
+                            "is_enable" => "是否启用", "reg_date" => "注册时间",
+                            "reg_location" => "注册IP", "auto_reset_day" => "自动重置流量日",
+                            "auto_reset_bandwidth" => "自动重置流量");
+        $default_show_array = array("op", "id", "user_name", "remark", "email");
+        return $this->view()->assign('default_show_array', $default_show_array)->assign('total_array', $total_array)->display('admin/user/index.tpl');
     }
 
     public function search($request, $response, $args)
@@ -234,7 +209,7 @@ class UserController extends AdminController
         $user = User::find($id);
 
         $email1=$user->email;
-        
+
         if (!$user->kill_user()) {
             $rs['ret'] = 0;
             $rs['msg'] = "删除失败";
@@ -243,5 +218,17 @@ class UserController extends AdminController
         $rs['ret'] = 1;
         $rs['msg'] = "删除成功";
         return $response->getBody()->write(json_encode($rs));
+    }
+
+    public function ajax($request, $response, $args)
+    {
+        $users = User::all();
+
+        $res['data'] = array();
+        foreach ($users as $user) {
+            array_push($res['data'], $user->get_table_json_array());
+        }
+
+        return $this->echoJson($response, $res);
     }
 }

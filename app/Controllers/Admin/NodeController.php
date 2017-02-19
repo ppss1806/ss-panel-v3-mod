@@ -7,18 +7,27 @@ use App\Utils\Radius;
 use App\Utils\Telegram;
 use App\Controllers\AdminController;
 
+use Ozdemir\Datatables\Datatables;
+use App\Utils\DatatablesHelper;
+
 class NodeController extends AdminController
 {
     public function index($request, $response, $args)
     {
-        $pageNum = 1;
-        if (isset($request->getQueryParams()["page"])) {
-            $pageNum = $request->getQueryParams()["page"];
-        }
-        $nodes = Node::paginate(15, ['*'], 'page', $pageNum);
-        $nodes->setPath('/admin/node');
+        $table_config['total_column'] = array("op" => "操作", "id" => "ID", "name" => "节点名称",
+                            "type" => "显示与隐藏", "sort" => "类型",
+                            "server" => "节点地址", "node_ip" => "节点IP",
+                            "info" => "节点信息",
+                            "status" => "状态", "traffic_rate" => "流量比率", "node_group" => "节点群组",
+                            "node_class" => "节点等级", "node_speedlimit" => "节点限速/Mbps",
+                            "node_bandwidth" => "已走流量/GB", "node_bandwidth_limit" => "流量限制/GB",
+                            "bandwidthlimit_resetday" => "流量重置日", "node_heartbeat" => "上一次活跃时间",
+                            "custom_method" => "自定义加密", "custom_rss" => "自定义协议以及混淆",
+                            "mu_only" => "只启用单端口多用户");
+        $table_config['default_show_column'] = array("op", "id", "name", "sort");
+        $table_config['ajax_url'] = 'node/ajax';
 
-        return $this->view()->assign('nodes', $nodes)->display('admin/node/index.tpl');
+        return $this->view()->assign('table_config', $table_config)->display('admin/node/index.tpl');
     }
 
     public function create($request, $response, $args)
@@ -160,5 +169,106 @@ class NodeController extends AdminController
         $rs['ret'] = 1;
         $rs['msg'] = "删除成功";
         return $response->getBody()->write(json_encode($rs));
+    }
+
+    public function ajax($request, $response, $args)
+    {
+        $datatables = new Datatables(new DatatablesHelper());
+
+
+        $total_column = array("op" => "操作", "id" => "ID", "name" => "节点名称",
+                              "type" => "显示与隐藏", "sort" => "类型",
+                              "server" => "节点地址", "node_ip" => "节点IP",
+                              "info" => "节点信息",
+                              "status" => "状态", "traffic_rate" => "流量比率", "node_group" => "节点群组",
+                              "node_class" => "节点等级", "node_speedlimit" => "节点限速/Mbps",
+                              "node_bandwidth" => "已走流量/GB", "node_bandwidth_limit" => "流量限制/GB",
+                              "bandwidthlimit_resetday" => "流量重置日", "node_heartbeat" => "上一次活跃时间",
+                              "custom_method" => "自定义加密", "custom_rss" => "自定义协议以及混淆",
+                              "mu_only" => "只启用单端口多用户");
+        $key_str = '';
+        foreach ($total_column as $single_key => $single_value) {
+            if ($single_key == 'op') {
+                $key_str .= 'id as op';
+                continue;
+            }
+
+            $key_str .= ','.$single_key;
+        }
+        $datatables->query('Select '.$key_str.' from ss_node');
+
+        $datatables->edit('op', function ($data) {
+            return '<a class="btn btn-brand" '.($data['sort'] == 999 ? 'disabled' : 'href="/admin/node/'.$data['id'].'/edit"').'>编辑</a>
+                    <a class="btn btn-brand-accent" '.($data['sort'] == 999 ? 'disabled' : 'id="delete" value="'.$data['id'].'" href="javascript:void(0);" onClick="delete_modal_show(\''.$data['id'].'\')"').'>删除</a>';
+        });
+
+        $datatables->edit('sort', function ($data) {
+            $sort = '';
+            switch ($data['sort']) {
+                case 0:
+                  $sort = 'Shadowsocks';
+                  break;
+                case 1:
+                  $sort = 'VPN/Radius基础';
+                  break;
+                case 2:
+                  $sort = 'SSH';
+                  break;
+                case 3:
+                  $sort = 'PAC';
+                  break;
+                case 4:
+                  $sort = 'APN文件外链';
+                  break;
+                case 5:
+                  $sort = 'Anyconnect';
+                  break;
+                case 6:
+                  $sort = 'APN';
+                  break;
+                case 7:
+                  $sort = 'PAC PLUS(Socks 代理生成 PAC文件)';
+                  break;
+                case 8:
+                  $sort = 'PAC PLUS PLUS(HTTPS 代理生成 PAC文件)';
+                  break;
+                case 9:
+                  $sort = 'Shadowsocks - 单端口多用户';
+                  break;
+                case 10:
+                  $sort = 'Shadowsocks - 中转';
+                  break;
+                default:
+                  $sort = '系统保留';
+            }
+            return $sort;
+        });
+
+        $datatables->edit('type', function ($data) {
+            return $data['type'] == 1 ? '显示' : '隐藏';
+        });
+
+        $datatables->edit('custom_method', function ($data) {
+            return $data['custom_method'] == 1 ? '启用' : '关闭';
+        });
+
+        $datatables->edit('custom_rss', function ($data) {
+            return $data['custom_rss'] == 1 ? '启用' : '关闭';
+        });
+
+        $datatables->edit('mu_only', function ($data) {
+            return $data['mu_only'] == 1 ? '启用' : '关闭';
+        });
+
+        $datatables->edit('node_heartbeat', function ($data) {
+            return date('Y-m-d H:i:s', $data['node_heartbeat']);
+        });
+
+        $datatables->edit('DT_RowId', function ($data) {
+            return 'row_1_'.$data['id'];
+        });
+
+        $body = $response->getBody();
+        $body->write($datatables->generate());
     }
 }

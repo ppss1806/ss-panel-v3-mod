@@ -38,7 +38,7 @@ class AuthController extends BaseController
         } else {
             $GtSdk = null;
         }
-        
+
         if (Config::get('enable_telegram') == 'true') {
             $login_text = TelegramSessionManager::add_login_session();
             $login = explode("|", $login_text);
@@ -48,7 +48,7 @@ class AuthController extends BaseController
             $login_token = '';
             $login_number = '';
         }
-        
+
         return $this->view()->assign('geetest_html', $GtSdk)->assign('login_token', $login_token)->assign('login_number', $login_number)->assign('telegram_bot', Config::get('telegram_bot'))->display('auth/login.tpl');
     }
 
@@ -60,7 +60,7 @@ class AuthController extends BaseController
         $passwd = $request->getParam('passwd');
         $code = $request->getParam('code');
         $rememberMe = $request->getParam('remember_me');
-        
+
         if (Config::get('enable_geetest_login') == 'true') {
             $ret = Geetest::verify($request->getParam('geetest_challenge'), $request->getParam('geetest_validate'), $request->getParam('geetest_seccode'));
             if (!$ret) {
@@ -82,15 +82,15 @@ class AuthController extends BaseController
         if (!Hash::checkPassword($user->pass, $passwd)) {
             $rs['ret'] = 0;
             $rs['msg'] = "402 邮箱或者密码错误";
-            
-            
+
+
             $loginip=new LoginIp();
             $loginip->ip=$_SERVER["REMOTE_ADDR"];
             $loginip->userid=$user->id;
             $loginip->datetime=time();
             $loginip->type=1;
             $loginip->save();
-            
+
             return $response->getBody()->write(json_encode($rs));
         }
         // @todo
@@ -98,65 +98,65 @@ class AuthController extends BaseController
         if ($rememberMe) {
             $time = 3600*24*7;
         }
-        
+
         if ($user->ga_enable==1) {
             $ga = new GA();
             $rcode = $ga->verifyCode($user->ga_token, $code);
-            
+
             if (!$rcode) {
                 $res['ret'] = 0;
                 $res['msg'] = "403 两步验证码错误，如果您是丢失了生成器或者错误地设置了这个选项，您可以尝试重置密码，即可取消这个选项。";
                 return $response->getBody()->write(json_encode($res));
             }
         }
-        
+
         Auth::login($user->id, $time);
         $rs['ret'] = 1;
         $rs['msg'] = "欢迎回来";
-        
+
         $loginip=new LoginIp();
         $loginip->ip=$_SERVER["REMOTE_ADDR"];
         $loginip->userid=$user->id;
         $loginip->datetime=time();
         $loginip->type=0;
         $loginip->save();
-        
+
         Wecenter::add($user, $passwd);
         Wecenter::Login($user, $passwd, $time);
-        
+
         return $response->getBody()->write(json_encode($rs));
     }
-    
+
     public function qrcode_loginHandle($request, $response, $args)
     {
         // $data = $request->post('sdf');
         $token =  $request->getParam('token');
         $number =  $request->getParam('number');
-        
+
         $ret = TelegramSessionManager::step2_verify_login_session($token, $number);
         if (!$ret) {
             $res['ret'] = 0;
             $res['msg'] = "此令牌无法被使用。";
             return $response->getBody()->write(json_encode($res));
         }
-        
-        
+
+
         // Handle Login
         $user = User::where('id', '=', $ret)->first();
         // @todo
         $time =  3600*24;
-        
+
         Auth::login($user->id, $time);
         $rs['ret'] = 1;
         $rs['msg'] = "欢迎回来";
-        
+
         $loginip=new LoginIp();
         $loginip->ip=$_SERVER["REMOTE_ADDR"];
         $loginip->userid=$user->id;
         $loginip->datetime=time();
-        $loginip->type=0;
+        $loginip->type=1;
         $loginip->save();
-        
+
         return $response->getBody()->write(json_encode($rs));
     }
 
@@ -167,73 +167,73 @@ class AuthController extends BaseController
         if (isset($ary['code'])) {
             $code = $ary['code'];
         }
-        
+
         $uid = time().rand(1, 10000) ;
-        
+
         if (Config::get('enable_geetest_reg') == 'true') {
             $GtSdk = Geetest::get($uid);
         } else {
             $GtSdk = null;
         }
-        
-        
-        
+
+
+
         return $this->view()->assign('enable_invite_code', Config::get('enable_invite_code'))->assign('geetest_html', $GtSdk)->assign('enable_email_verify', Config::get('enable_email_verify'))->assign('code', $code)->display('auth/register.tpl');
     }
-    
-    
+
+
     public function sendVerify($request, $response, $next)
     {
         if (Config::get('enable_email_verify')=='true') {
             $email = $request->getParam('email');
-            
+
             if ($email=="") {
                 $res['ret'] = 0;
                 $res['msg'] = "哦？你填了你的邮箱了吗？";
                 return $response->getBody()->write(json_encode($res));
             }
-            
+
             // check email format
             if (!Check::isEmailLegal($email)) {
                 $res['ret'] = 0;
                 $res['msg'] = "邮箱无效";
                 return $response->getBody()->write(json_encode($res));
             }
-            
-            
+
+
             $user = User::where('email', '=', $email)->first();
             if ($user!=null) {
                 $res['ret'] = 0;
                 $res['msg'] = "此邮箱已经注册";
                 return $response->getBody()->write(json_encode($res));
             }
-            
+
             $ipcount = EmailVerify::where('ip', '=', $_SERVER["REMOTE_ADDR"])->where('expire_in', '>', time())->count();
             if ($ipcount>=(int)Config::get('email_verify_iplimit')) {
                 $res['ret'] = 0;
                 $res['msg'] = "此IP请求次数过多";
                 return $response->getBody()->write(json_encode($res));
             }
-            
-            
+
+
             $mailcount = EmailVerify::where('email', '=', $email)->where('expire_in', '>', time())->count();
             if ($mailcount>=3) {
                 $res['ret'] = 0;
                 $res['msg'] = "此邮箱请求次数过多";
                 return $response->getBody()->write(json_encode($res));
             }
-            
+
             $code = Tools::genRandomChar(6);
-            
+
             $ev = new EmailVerify();
             $ev->expire_in = time() + Config::get('email_verify_ttl');
             $ev->ip = $_SERVER["REMOTE_ADDR"];
             $ev->email = $email;
             $ev->code = $code;
             $ev->save();
-            
+
             $subject = Config::get('appName')."- 验证邮件";
-            
+
             try {
                 Mail::send($email, $subject, 'auth/verify.tpl', [
                     "code" => $code,"expire" => date("Y-m-d H:i:s", time() + Config::get('email_verify_ttl'))
@@ -243,7 +243,7 @@ class AuthController extends BaseController
             } catch (Exception $e) {
                 return false;
             }
-            
+
             $res['ret'] = 1;
             $res['msg'] = "验证码发送成功，请查收邮件。";
             return $response->getBody()->write(json_encode($res));
@@ -262,7 +262,7 @@ class AuthController extends BaseController
         $emailcode = $request->getParam('emailcode');
         $wechat = $request->getParam('wechat');
         // check code
-        
+
         if (Config::get('enable_geetest_reg') == 'true') {
             $ret = Geetest::verify($request->getParam('geetest_challenge'), $request->getParam('geetest_validate'), $request->getParam('geetest_seccode'));
             if (!$ret) {
@@ -271,7 +271,7 @@ class AuthController extends BaseController
                 return $response->getBody()->write(json_encode($res));
             }
         }
-        
+
         if (Config::get('enable_invite_code')=='true') {
             $c = InviteCode::where('code', $code)->first();
             if ($c == null) {
@@ -287,7 +287,7 @@ class AuthController extends BaseController
             $res['msg'] = "邮箱无效";
             return $response->getBody()->write(json_encode($res));
         }
-        
+
         if (Config::get('enable_email_verify')=='true') {
             $mailcount = EmailVerify::where('email', '=', $email)->where('code', '=', $emailcode)->where('expire_in', '>', time())->first();
             if ($mailcount == null) {
@@ -297,7 +297,7 @@ class AuthController extends BaseController
             }
             EmailVerify::where('email', '=', $email)->delete();
         }
-        
+
         // check pwd length
         if (strlen($passwd)<8) {
             $res['ret'] = 0;
@@ -319,13 +319,13 @@ class AuthController extends BaseController
             $res['msg'] = "邮箱已经被注册了";
             return $response->getBody()->write(json_encode($res));
         }
-        
+
         if ($imtype==""||$wechat=="") {
             $res['ret'] = 0;
             $res['msg'] = "要填上你的联络方式哦";
             return $response->getBody()->write(json_encode($res));
         }
-        
+
         $user = User::where('im_value', $wechat)->where('im_type', $imtype)->first();
         if ($user != null) {
             $res['ret'] = 0;
@@ -335,10 +335,10 @@ class AuthController extends BaseController
 
         // do reg user
         $user = new User();
-        
+
         $antiXss = new AntiXSS();
-        
-        
+
+
         $user->user_name = $antiXss->xss_clean($name);
         $user->email = $email;
         $user->pass = Hash::passwordHash($passwd);
@@ -373,32 +373,32 @@ class AuthController extends BaseController
         $user->plan='A';
         $user->node_speedlimit=0;
         $user->theme=Config::get('theme');
-        
+
         $group=Config::get('ramdom_group');
         $Garray=explode(",", $group);
-        
+
         $user->node_group=$group[rand(0, count($group)-1)];
-        
+
         $ga = new GA();
         $secret = $ga->createSecret();
-        
+
         $user->ga_token=$secret;
         $user->ga_enable=0;
-        
+
 
         if ($user->save()) {
             $res['ret'] = 1;
             $res['msg'] = "注册成功";
 
             Duoshuo::add($user);
-        
-            
+
+
             Radius::Add($user, $user->passwd);
-            
+
             if (Config::get('enable_invite_code')=='true') {
                 $c->delete();
             }
-            
+
             return $response->getBody()->write(json_encode($res));
         }
         $res['ret'] = 0;
@@ -412,12 +412,12 @@ class AuthController extends BaseController
         $newResponse = $response->withStatus(302)->withHeader('Location', '/auth/login');
         return $newResponse;
     }
-    
+
     public function qrcode_check($request, $response, $args)
     {
         $token = $request->getQueryParams()["token"];
         $number = $request->getQueryParams()["number"];
-        
+
         if (Config::get('enable_telegram') == 'true') {
             $ret = TelegramSessionManager::check_login_session($token, $number);
             $res['ret'] = $ret;

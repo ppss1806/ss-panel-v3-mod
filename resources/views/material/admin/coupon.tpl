@@ -20,9 +20,9 @@
 		</div>
 		<div class="container">
 				<section class="content-inner margin-top-no">
-				
-					
-					
+
+
+
 					<div class="card">
 						<div class="card-main">
 							<div class="card-inner">
@@ -30,22 +30,22 @@
 									<label class="floating-label" for="prefix">优惠码前缀</label>
 									<input class="form-control" id="prefix" type="text">
 								</div>
-								
+
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="credit">优惠码额度(百分比，九折就填 10 )</label>
 									<input class="form-control" id="credit" type="text">
 								</div>
-								
+
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="expire">优惠码有效期(h)</label>
 									<input class="form-control" id="expire" type="number" value="1">
 								</div>
-								
+
 								<div class="form-group form-group-label">
 									<label class="floating-label" for="shop">优惠码可用商品ID，不填即为所有商品可用，多个的话用英文半角逗号分割</label>
 									<input class="form-control" id="shop" type="text">
 								</div>
-								
+
 								<div class="form-group form-group-label">
 									<div class="checkbox switch">
 										<label for="onetime">
@@ -53,8 +53,8 @@
 										</label>
 									</div>
 								</div>
-								
-								
+
+
 								<div class="form-group">
 									<div class="row">
 										<div class="col-md-10 col-md-push-1">
@@ -65,53 +65,30 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="card margin-bottom-no">
 						<div class="card-main">
 							<div class="card-inner">
 								<p class="card-heading">优惠码</p>
-									<div class="card-table">
-										<div class="table-responsive">
-											{$coupons->render()}
-											<table class="table">
-												<thead>
-												<tr>
-													<th>###</th>
-													<th>优惠码</th>
-													<th>额度</th>
-													<th>过期时间</th>
-													<th>可用商品ID</th>
-												</tr>
-												</thead>
-												<tbody>
-												{foreach $coupons as $code}
-													<tr>
-														<td><b>{$code->id}</b></td>
-														<td>{$code->code}
-														</td>
-														<td>{$code->credit} %</td>
-														<td>{$code->expire()}</td>
-														<td>{$code->shop}</td>
-													</tr>
-												{/foreach}
-												</tbody>
-											</table>
-											{$coupons->render()}
-										</div>
+								<p>显示表项:
+									{include file='table/checkbox.tpl'}
+								</p>
+								<div class="card-table">
+									<div class="table-responsive">
+										{include file='table/table.tpl'}
 									</div>
-								
-								
+								</div>
 							</div>
 						</div>
 					</div>
-					
+
 					{include file='dialog.tpl'}
 
-							
+
 			</div>
-			
-			
-			
+
+
+
 	</main>
 
 
@@ -132,42 +109,46 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("#coupon").click(function () {
-		
-			if(document.getElementById('onetime').checked)
-			{
-				var onetime=1;
-			}
-			else
-			{
-				var onetime=0;
-			}
-			
-            $.ajax({
-                type: "POST",
-                url: "/admin/coupon",
-                dataType: "json",
-                data: {
-                    prefix: $("#prefix").val(),
-                    credit: $("#credit").val(),
-					shop: $("#shop").val(),
-					onetime: onetime,
-                    expire: $("#expire").val()
-                },
-                success: function (data) {
-                    if (data.ret) {
-                        $("#result").modal();
-                        $("#msg").html(data.msg);
-                        window.setTimeout("location.href='/admin/coupon'", {$config['jump_delay']});
-                    }
-                    // window.location.reload();
-                },
-                error: function (jqXHR) {
-                    alert("发生错误：" + jqXHR.status);
-                }
-            })
-        })
-    })
-</script>
 
+{include file='table/js_1.tpl'}
+
+$(document).ready(function () {
+		{include file='table/js_2.tpl'}
+
+		$("#coupon").click(function () {
+
+				if(document.getElementById('onetime').checked)
+				{
+						var onetime=1;
+				}
+				else
+				{
+						var onetime=0;
+				}
+
+	      $.ajax({
+		          type: "POST",
+		          url: "/admin/coupon",
+		          dataType: "json",
+		          data: {
+		          prefix: $("#prefix").val(),
+		          credit: $("#credit").val(),
+							shop: $("#shop").val(),
+							onetime: onetime,
+		          expire: $("#expire").val()
+		          },
+		          success: function (data) {
+		              if (data.ret) {
+		                  $("#result").modal();
+		                  $("#msg").html(data.msg);
+		                  window.setTimeout("location.href='/admin/coupon'", {$config['jump_delay']});
+		              }
+		              // window.location.reload();
+		          },
+		          error: function (jqXHR) {
+		              alert("发生错误：" + jqXHR.status);
+		          }
+	      })
+		})
+})
+</script>

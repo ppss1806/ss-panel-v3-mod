@@ -44,24 +44,36 @@
 					</div>
 
           <div class="table-responsive">
-            <table class="table">
-              <tr>
-              <th>端口</th>
-              <th>始发节点</th>
-              <th>终点节点</th>
-              <th>途径节点</th>
-              <th>状态</th>
-              </tr>
-
-              {foreach $pathset as $path}
-              <tr>
-              <td>{$path->port}</td>
-              <td>{$path->begin_node->name}</td>
-              <td>{$path->end_node->name}</td>
-              <td>{$path->path}</td>
-              <td>{$path->status}</td>
-              </tr>
-              {/foreach}
+            <table class="table" id="table_1">
+							<thead>
+	              <tr>
+	              <th>端口</th>
+	              <th>始发节点</th>
+	              <th>终点节点</th>
+	              <th>途径节点</th>
+	              <th>状态</th>
+	              </tr>
+							</thead>
+							<tfoot>
+	              <tr>
+	              <th>端口</th>
+	              <th>始发节点</th>
+	              <th>终点节点</th>
+	              <th>途径节点</th>
+	              <th>状态</th>
+	              </tr>
+							</tfoot>
+							<tbody>
+	              {foreach $pathset as $path}
+	              <tr>
+	              <td>{$path->port}</td>
+	              <td>{$path->begin_node->name}</td>
+	              <td>{$path->end_node->name}</td>
+	              <td>{$path->path}</td>
+	              <td>{$path->status}</td>
+	              </tr>
+	              {/foreach}
+							</tbody>
             </table>
           </div>
 
@@ -87,6 +99,7 @@
 
 
 $(document).ready(function(){
+ 	table = $('#table_1').DataTable();
 
 	function search(){
 		window.location="/admin/relay/path_search/"+$("#search").val();

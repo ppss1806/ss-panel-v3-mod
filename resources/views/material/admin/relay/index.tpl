@@ -23,6 +23,9 @@
 						<div class="card-main">
 							<div class="card-inner">
 								<p>系统中所有的中转规则。</p>
+								<p>显示表项:
+	                {include file='table/checkbox.tpl'}
+	              </p>
 							</div>
 						</div>
 					</div>
@@ -44,44 +47,7 @@
 					</div>
 
 					<div class="table-responsive">
-						{$rules->render()}
-						<table class="table">
-						    <tr>
-							<th>操作</th>
-							<th>ID</th>
-							<th>用户ID</th>
-							<th>用户名</th>
-							<th>起源节点</th>
-							<th>目标节点</th>
-							<th>端口</th>
-							<th>优先级</th>
-
-							</tr>
-							{foreach $rules as $rule}
-								<tr>
-								<td>
-									<a class="btn btn-brand" href="/admin/relay/{$rule->id}/edit">编辑</a>
-									<a class="btn btn-brand-accent" id="delete" value="{$rule->id}" href="javascript:void(0);" onClick="delete_modal_show('{$rule->id}')">删除</a>
-								</td>
-								<td>#{$rule->id}</td>
-								<td>{$rule->user_id}</td>
-								<td>{if $rule->user_id == 0}全体用户{else}{$rule->User()->user_name}{/if}</td>
-								{if $rule->source_node_id == 0}
-									<td>所有节点</td>
-								{else}
-									<td>{$rule->Source_Node()->name}</td>
-								{/if}
-								{if $rule->Dist_Node() == null}
-									<td>不进行中转</td>
-								{else}
-									<td>{$rule->Dist_Node()->name}</td>
-								{/if}
-								<td>{$rule->port}</td>
-								<td>{$rule->priority}</td>
-						        </tr>
-						    {/foreach}
-						</table>
-						{$rules->render()}
+						{include file='table/table.tpl'}
 					</div>
 
 					<div class="fbtn-container">
@@ -134,8 +100,12 @@ function delete_modal_show(id) {
 	$("#delete_modal").modal();
 }
 
+{include file='table/js_1.tpl'}
 
 $(document).ready(function(){
+
+	{include file='table/js_2.tpl'}
+
 	function delete_id(){
 		$.ajax({
 			type:"DELETE",
@@ -148,7 +118,7 @@ $(document).ready(function(){
 				if(data.ret){
 					$("#result").modal();
 					$("#msg").html(data.msg);
-					window.setTimeout("location.href=window.location.href", {$config['jump_delay']});
+					{include file='table/js_delete.tpl'}
 				}else{
 					$("#result").modal();
 					$("#msg").html(data.msg);

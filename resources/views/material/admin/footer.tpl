@@ -9,6 +9,7 @@
 	<script src="//cdn.staticfile.org/jquery-validate/1.15.0/jquery.validate.min.js"></script>
 	<script src="/theme/material/js/base.min.js"></script>
 	<script src="/theme/material/js/project.min.js"></script>
-	
+	<script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
 </body>
 </html>

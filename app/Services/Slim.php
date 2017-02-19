@@ -31,7 +31,8 @@ class Slim
         $app = new App([
             'settings' => [
                 'debug'         => $debug,
-                'whoops.editor' => 'sublime'
+                'whoops.editor' => 'sublime',
+                'displayErrorDetails' => $debug
             ]
         ]);
         $app->add(new WhoopsMiddleware);

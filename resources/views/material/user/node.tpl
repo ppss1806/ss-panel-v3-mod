@@ -221,26 +221,27 @@
 
 
 
+																{if isset($point_node)}
+																	{if $point_node!=null}
 
-																{if $point_node!=null}
+																		<div class="card">
+																			<div class="card-main">
+																				<div class="card-inner" id="info{$id}">
 
-																	<div class="card">
-																		<div class="card-main">
-																			<div class="card-inner" id="info{$id}">
-
+																				</div>
 																			</div>
 																		</div>
-																	</div>
 
-																	<script>
-																	$().ready(function(){
-																		$('#heading{$node_order->$prefix}').on("shown.bs.tile", function() {
+																		<script>
+																		$().ready(function(){
+																			$('#heading{$node_order->$prefix}').on("shown.bs.tile", function() {
 
-																			$("#info{$id}").load("/user/node/{$point_node->id}/ajax");
+																				$("#info{$id}").load("/user/node/{$point_node->id}/ajax");
 
+																			});
 																		});
-																	});
-																	</script>
+																		</script>
+																	{/if}
 																{/if}
 
 																{$point_node=null}

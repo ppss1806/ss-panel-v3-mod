@@ -11,6 +11,7 @@ use App\Utils\Hash;
 use App\Models\InviteCode;
 use App\Services\Config;
 use App\Utils\GA;
+use App\Utils\QQWry;
 use App\Models\Link;
 use App\Utils\Wecenter;
 use App\Utils\Radius;
@@ -23,7 +24,7 @@ class User extends Model
     public $isLogin;
 
     public $isAdmin;
-    
+
     protected $casts = [
         "t" => 'int',
         "u" => 'int',
@@ -260,5 +261,55 @@ class User extends Model
         $this->delete();
 
         return true;
+    }
+
+    public function get_table_json_array()
+    {
+        $id = $this->attributes['id'];
+        $today_traffic = Tools::flowToMB($this->attributes['u'] + $this->attributes['d'] - $this->attributes['last_day_t']);
+        $is_enable = $this->attributes['enable'] == 1 ? "可用" : "禁用";
+        $reg_location = $this->attributes['reg_ip'];
+        $account_expire_in = $this->attributes['expire_in'];
+        $class_expire_in = $this->attributes['class_expire'];
+        $used_traffic = Tools::flowToGB($this->attributes['u'] + $this->attributes['d']);
+        $enable_traffic = Tools::flowToGB($this->attributes['transfer_enable']);
+
+        $im_type = '';
+        $im_value = $this->attributes['im_value'];
+        switch ($this->attributes['im_type']) {
+            case 1:
+              $im_type = 'QQ';
+              break;
+            case 2:
+              $im_type = '微信';
+              break;
+            case 3:
+              $im_type = 'Google+';
+              break;
+            default:
+              $im_type = 'Telegram';
+              $im_value = '<a href="https://telegram.me/'.$im_value.'">'.$im_value.'</a>';
+        }
+
+        $iplocation = new QQWry();
+        $location=$iplocation->getlocation($reg_location);
+        $reg_location .= "\n".iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
+
+        $return_array = array('DT_RowId' => 'row_user_'.$id, $id, $id,
+                              $this->attributes['user_name'], $this->attributes['remark'],
+                              $this->attributes['email'], $this->attributes['money'],
+                              $im_type, $im_value,
+                              $this->attributes['node_group'], $account_expire_in,
+                              $this->attributes['class'], $class_expire_in,
+                              $this->attributes['passwd'], $this->attributes['port'],
+                              $this->attributes['method'],
+                              $this->attributes['protocol'], $this->attributes['obfs'],
+                              $this->online_ip_count(), $this->lastSsTime(),
+                              $used_traffic, $enable_traffic,
+                              $this->lastCheckInTime(), $today_traffic,
+                              $is_enable, $this->attributes['reg_date'],
+                              $reg_location,
+                              $this->attributes['auto_reset_day'], $this->attributes['auto_reset_bandwidth']);
+        return $return_array;
     }
 }

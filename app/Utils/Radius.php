@@ -22,7 +22,6 @@ class Radius
             $email=str_replace("@", "", $email);
             $email=str_replace(".", "", $email);
 
-
             $exists=RadiusRadCheck::where("username", $email)->first();
 
             if ($exists==null) {
@@ -44,7 +43,6 @@ class Radius
                 $newRad->priority="0";
                 $newRad->save();
             } else {
-                $exists->username=$email;
                 $exists->value=$pwd;
                 $exists->save();
             }
@@ -68,12 +66,12 @@ class Radius
         }
     }
 
-    public static function ChangeUserName($email, $email2, $passwd)
+    public static function ChangeUserName($origin_email, $new_email, $passwd)
     {
         if (Config::get('enable_radius')=='true') {
-            $email1=str_replace("@", "", $email);
-            $email1=str_replace(".", "", $email);
-            $email2=str_replace("@", "", $email2);
+            $email1=str_replace("@", "", $origin_email);
+            $email1=str_replace(".", "", $email1);
+            $email2=str_replace("@", "", $new_email);
             $email2=str_replace(".", "", $email2);
 
             $exists=RadiusRadCheck::where("username", $email1)->first();
@@ -87,7 +85,7 @@ class Radius
                 $exists->username=$email2;
                 $exists->save();
             } else {
-                $user = User::where('email', '=', $email)->first();
+                $user = User::where('email', '=', $origin_email)->first();
                 $rb = RadiusBan::where('userid', $user->id)->first();
                 if ($rb != null) {
                     return;

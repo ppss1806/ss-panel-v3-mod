@@ -9,17 +9,22 @@ use App\Utils\Tools;
 use App\Services\Auth;
 use App\Controllers\AdminController;
 
+use Ozdemir\Datatables\Datatables;
+use App\Utils\DatatablesHelper;
+
 class RelayController extends AdminController
 {
     public function index($request, $response, $args)
     {
-        $pageNum = 1;
-        if (isset($request->getQueryParams()["page"])) {
-            $pageNum = $request->getQueryParams()["page"];
+        $table_config['total_column'] = array("op" => "操作", "id" => "ID", "user_id" => "用户ID",
+                          "user_name" => "用户名", "source_node_name" => "起源节点",
+                          "dist_node_name" => "目标节点", "port" => "端口", "priority" => "优先级");
+        $table_config['default_show_column'] = array();
+        foreach ($table_config['total_column'] as $column => $value) {
+            array_push($table_config['default_show_column'], $column);
         }
-        $logs = Relay::paginate(15, ['*'], 'page', $pageNum);
-        $logs->setPath('/admin/relay');
-        return $this->view()->assign('rules', $logs)->display('admin/relay/index.tpl');
+        $table_config['ajax_url'] = 'relay/ajax';
+        return $this->view()->assign('table_config', $table_config)->display('admin/relay/index.tpl');
     }
 
     public function create($request, $response, $args)
@@ -262,5 +267,19 @@ class RelayController extends AdminController
         }
 
         return $this->view()->assign('pathset', $pathset)->display('admin/relay/search.tpl');
+    }
+
+    public function ajax_relay($request, $response, $args)
+    {
+        $datatables = new Datatables(new DatatablesHelper());
+        $datatables->query('Select relay.id as op,relay.id,relay.user_id,user.user_name,source_node.name as source_node_name,dist_node.name as dist_node_name,relay.port,relay.priority from relay,user,ss_node as source_node,ss_node as dist_node WHERE relay.user_id = user.id and source_node.id = relay.source_node_id and dist_node.id = relay.dist_node_id');
+
+        $datatables->edit('op', function ($data) {
+            return '<a class="btn btn-brand" href="/admin/relay/'.$data['id'].'/edit">编辑</a>
+                    <a class="btn btn-brand-accent" id="delete" value="'.$data['id'].'" href="javascript:void(0);" onClick="delete_modal_show(\''.$data['id'].'\')">删除</a>';
+        });
+
+        $body = $response->getBody();
+        $body->write($datatables->generate());
     }
 }
