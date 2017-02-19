@@ -276,7 +276,7 @@ class User extends Model
 
         $im_type = '';
         $im_value = $this->attributes['im_value'];
-        switch ($this->attributes['im_type']) {
+        switch($this->attributes['im_type']) {
             case 1:
               $im_type = 'QQ';
               break;
@@ -291,11 +291,26 @@ class User extends Model
               $im_value = '<a href="https://telegram.me/'.$im_value.'">'.$im_value.'</a>';
         }
 
+        $ref_user = User::find($this->attributes['ref_by']);
+
+        if ($this->attributes['ref_by'] == 0) {
+            $ref_user_id = 0;
+            $ref_user_name = "系统邀请";
+        } else {
+            if ($ref_user == null) {
+                $ref_user_id = $this->attributes['ref_by'];
+                $ref_user_name = "邀请人已经被删除";
+            } else {
+                $ref_user_id = $this->attributes['ref_by'];
+                $ref_user_name = $ref_user->user_name;
+            }
+        }
+
         $iplocation = new QQWry();
         $location=$iplocation->getlocation($reg_location);
         $reg_location .= "\n".iconv('gbk', 'utf-8//IGNORE', $location['country'].$location['area']);
 
-        $return_array = array('DT_RowId' => 'row_user_'.$id, $id, $id,
+        $return_array = Array('DT_RowId' => 'row_user_'.$id, $id, $id,
                               $this->attributes['user_name'], $this->attributes['remark'],
                               $this->attributes['email'], $this->attributes['money'],
                               $im_type, $im_value,
@@ -309,7 +324,8 @@ class User extends Model
                               $this->lastCheckInTime(), $today_traffic,
                               $is_enable, $this->attributes['reg_date'],
                               $reg_location,
-                              $this->attributes['auto_reset_day'], $this->attributes['auto_reset_bandwidth']);
+                              $this->attributes['auto_reset_day'], $this->attributes['auto_reset_bandwidth'],
+                              $ref_user_id, $ref_user_name);
         return $return_array;
     }
 }

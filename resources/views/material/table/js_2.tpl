@@ -7,7 +7,8 @@ table_1 = $('#table_1').DataTable({
         {foreach $table_config['total_column'] as $key => $value}
           { "data": "{$key}" },
         {/foreach}
-    ]
+  ],
+  {include file='table/lang_chinese.tpl'}
 })
 
 {foreach $table_config['total_column'] as $key => $value}

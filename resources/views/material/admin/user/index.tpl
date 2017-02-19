@@ -35,7 +35,7 @@
 				</div>
 
 				<div class="table-responsive">
-					<table class="table" id="table_users" cellspacing="0" width="100%">
+					<table class="mdl-data-table" id="table_users" cellspacing="0" width="100%">
 						<thead>
 							<tr>
 								{foreach $total_array as $key => $value}
@@ -115,7 +115,8 @@ $(document).ready(function(){
 		      }
 		      return json.data;
 		    }
-			}
+			},
+			{include file='table/lang_chinese.tpl'}
   });
 
 	{foreach $total_array as $key => $value}

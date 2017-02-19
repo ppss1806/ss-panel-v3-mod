@@ -44,7 +44,7 @@
 					</div>
 
           <div class="table-responsive">
-            <table class="table" id="table_1">
+            <table class="mdl-data-table" id="table_1">
 							<thead>
 	              <tr>
 	              <th>端口</th>
@@ -99,7 +99,9 @@
 
 
 $(document).ready(function(){
- 	table = $('#table_1').DataTable();
+ 	table = $('#table_1').DataTable({
+		{include file='table/lang_chinese.tpl'}
+	});
 
 	function search(){
 		window.location="/admin/relay/path_search/"+$("#search").val();
