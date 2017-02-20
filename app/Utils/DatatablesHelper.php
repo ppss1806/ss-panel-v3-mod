@@ -9,7 +9,6 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 class DatatablesHelper implements DatabaseInterface
 {
-
     protected $escape = [];
     protected $connection;
     public function __construct($config = null)
@@ -17,7 +16,10 @@ class DatatablesHelper implements DatabaseInterface
         $capsule = new Capsule;
         $capsule->addConnection(Config::getDbConfig(), 'default');
         $this->connection = $capsule->getConnection('default');
-        $this->connection->select("set session sql_mode='';");
+        try {
+            $this->connection->select("set session sql_mode='';");
+        } catch (Exception $e) {
+        }
     }
     public function connect()
     {
