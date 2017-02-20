@@ -83,7 +83,8 @@ $(document).ready(function(){
 						'<a class="btn btn-brand-accent" id="delete" href="javascript:void(0);" onClick="delete_modal_show(\'' + json.data[i][0] + '\')">删除</a>';
 		      }
 		      return json.data;
-		    }
+		    },
+				type: "POST"
 			},
 			"stateSave": true,
 			"columnDefs": [

@@ -177,7 +177,7 @@ $app->group('/admin', function () {
     $this->get('', 'App\Controllers\AdminController:index');
     $this->get('/', 'App\Controllers\AdminController:index');
     $this->get('/trafficlog', 'App\Controllers\AdminController:trafficLog');
-    $this->get('/trafficlog/ajax', 'App\Controllers\AdminController:ajax_trafficLog');
+    $this->post('/trafficlog/ajax', 'App\Controllers\AdminController:ajax_trafficLog');
     // Node Mange
     $this->get('/node', 'App\Controllers\Admin\NodeController:index');
 
@@ -186,13 +186,13 @@ $app->group('/admin', function () {
     $this->get('/node/{id}/edit', 'App\Controllers\Admin\NodeController:edit');
     $this->put('/node/{id}', 'App\Controllers\Admin\NodeController:update');
     $this->delete('/node', 'App\Controllers\Admin\NodeController:delete');
-    $this->get('/node/ajax', 'App\Controllers\Admin\NodeController:ajax');
+    $this->post('/node/ajax', 'App\Controllers\Admin\NodeController:ajax');
 
 
     $this->get('/ticket', 'App\Controllers\Admin\TicketController:index');
     $this->get('/ticket/{id}/view', 'App\Controllers\Admin\TicketController:show');
     $this->put('/ticket/{id}', 'App\Controllers\Admin\TicketController:update');
-    $this->get('/ticket/ajax', 'App\Controllers\Admin\TicketController:ajax');
+    $this->post('/ticket/ajax', 'App\Controllers\Admin\TicketController:ajax');
 
     // Relay Mange
     $this->get('/relay', 'App\Controllers\Admin\RelayController:index');
@@ -202,15 +202,15 @@ $app->group('/admin', function () {
     $this->put('/relay/{id}', 'App\Controllers\Admin\RelayController:update');
     $this->delete('/relay', 'App\Controllers\Admin\RelayController:delete');
     $this->get('/relay/path_search/{id}', 'App\Controllers\Admin\RelayController:path_search');
-    $this->get('/relay/ajax', 'App\Controllers\Admin\RelayController:ajax_relay');
+    $this->post('/relay/ajax', 'App\Controllers\Admin\RelayController:ajax_relay');
 
     // Shop Mange
     $this->get('/shop', 'App\Controllers\Admin\ShopController:index');
-    $this->get('/shop/ajax', 'App\Controllers\Admin\ShopController:ajax_shop');
+    $this->post('/shop/ajax', 'App\Controllers\Admin\ShopController:ajax_shop');
 
     $this->get('/bought', 'App\Controllers\Admin\ShopController:bought');
     $this->delete('/bought', 'App\Controllers\Admin\ShopController:deleteBoughtGet');
-    $this->get('/bought/ajax', 'App\Controllers\Admin\ShopController:ajax_bought');
+    $this->post('/bought/ajax', 'App\Controllers\Admin\ShopController:ajax_bought');
 
     $this->get('/shop/create', 'App\Controllers\Admin\ShopController:create');
     $this->post('/shop', 'App\Controllers\Admin\ShopController:add');
@@ -225,7 +225,7 @@ $app->group('/admin', function () {
     $this->get('/announcement/{id}/edit', 'App\Controllers\Admin\AnnController:edit');
     $this->put('/announcement/{id}', 'App\Controllers\Admin\AnnController:update');
     $this->delete('/announcement', 'App\Controllers\Admin\AnnController:delete');
-    $this->get('/announcement/ajax', 'App\Controllers\Admin\AnnController:ajax');
+    $this->post('/announcement/ajax', 'App\Controllers\Admin\AnnController:ajax');
 
     // Detect Mange
     $this->get('/detect', 'App\Controllers\Admin\DetectController:index');
@@ -235,23 +235,23 @@ $app->group('/admin', function () {
     $this->put('/detect/{id}', 'App\Controllers\Admin\DetectController:update');
     $this->delete('/detect', 'App\Controllers\Admin\DetectController:delete');
     $this->get('/detect/log', 'App\Controllers\Admin\DetectController:log');
-    $this->get('/detect/ajax', 'App\Controllers\Admin\DetectController:ajax_rule');
-    $this->get('/detect/log/ajax', 'App\Controllers\Admin\DetectController:ajax_log');
+    $this->post('/detect/ajax', 'App\Controllers\Admin\DetectController:ajax_rule');
+    $this->post('/detect/log/ajax', 'App\Controllers\Admin\DetectController:ajax_log');
 
     $this->get('/auto', 'App\Controllers\Admin\AutoController:index');
     $this->get('/auto/create', 'App\Controllers\Admin\AutoController:create');
     $this->post('/auto', 'App\Controllers\Admin\AutoController:add');
     $this->delete('/auto', 'App\Controllers\Admin\AutoController:delete');
-    $this->get('/auto/ajax', 'App\Controllers\Admin\AutoController:ajax');
+    $this->post('/auto/ajax', 'App\Controllers\Admin\AutoController:ajax');
 
     // IP Mange
     $this->get('/block', 'App\Controllers\Admin\IpController:block');
     $this->get('/unblock', 'App\Controllers\Admin\IpController:unblock');
     $this->post('/unblock', 'App\Controllers\Admin\IpController:doUnblock');
     $this->get('/login', 'App\Controllers\Admin\IpController:index');
-    $this->get('/block/ajax', 'App\Controllers\Admin\IpController:ajax_block');
-    $this->get('/unblock/ajax', 'App\Controllers\Admin\IpController:ajax_unblock');
-    $this->get('/login/ajax', 'App\Controllers\Admin\IpController:ajax_login');
+    $this->post('/block/ajax', 'App\Controllers\Admin\IpController:ajax_block');
+    $this->post('/unblock/ajax', 'App\Controllers\Admin\IpController:ajax_unblock');
+    $this->post('/login/ajax', 'App\Controllers\Admin\IpController:ajax_login');
 
     // Code Mange
     $this->get('/code', 'App\Controllers\Admin\CodeController:index');
@@ -259,7 +259,7 @@ $app->group('/admin', function () {
     $this->post('/code', 'App\Controllers\Admin\CodeController:add');
     $this->get('/donate/create', 'App\Controllers\Admin\CodeController:donate_create');
     $this->post('/donate', 'App\Controllers\Admin\CodeController:donate_add');
-    $this->get('/code/ajax', 'App\Controllers\Admin\CodeController:ajax_code');
+    $this->post('/code/ajax', 'App\Controllers\Admin\CodeController:ajax_code');
 
     // User Mange
     $this->get('/user', 'App\Controllers\Admin\UserController:index');
@@ -267,19 +267,19 @@ $app->group('/admin', function () {
     $this->get('/user/{id}/edit', 'App\Controllers\Admin\UserController:edit');
     $this->put('/user/{id}', 'App\Controllers\Admin\UserController:update');
     $this->delete('/user', 'App\Controllers\Admin\UserController:delete');
-    $this->get('/user/ajax', 'App\Controllers\Admin\UserController:ajax');
+    $this->post('/user/ajax', 'App\Controllers\Admin\UserController:ajax');
 
 
     $this->get('/coupon', 'App\Controllers\AdminController:coupon');
     $this->post('/coupon', 'App\Controllers\AdminController:addCoupon');
-    $this->get('/coupon/ajax', 'App\Controllers\AdminController:ajax_coupon');
+    $this->post('/coupon/ajax', 'App\Controllers\AdminController:ajax_coupon');
 
     $this->get('/profile', 'App\Controllers\AdminController:profile');
     $this->get('/invite', 'App\Controllers\AdminController:invite');
     $this->post('/invite', 'App\Controllers\AdminController:addInvite');
     $this->get('/sys', 'App\Controllers\AdminController:sys');
     $this->get('/logout', 'App\Controllers\AdminController:logout');
-    $this->get('/payback/ajax', 'App\Controllers\AdminController:ajax_payback');
+    $this->post('/payback/ajax', 'App\Controllers\AdminController:ajax_payback');
 })->add(new Admin());
 
 // API

@@ -1,5 +1,8 @@
 table_1 = $('#table_1').DataTable({
-  ajax: '{$table_config['ajax_url']}',
+  ajax: {
+          url: '{$table_config['ajax_url']}',
+          type: "POST"
+        },
   processing: true,
   serverSide: true,
   order: [[ 0, 'desc' ]],
