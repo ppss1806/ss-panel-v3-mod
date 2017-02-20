@@ -44,7 +44,7 @@
 					</div>
 
           <div class="table-responsive">
-            <table class="mdl-data-table" id="table_1">
+            <table class="mdl-data-table" id="table_1" cellspacing="0" width="100%">
 							<thead>
 	              <tr>
 	              <th>端口</th>
@@ -100,6 +100,12 @@
 
 $(document).ready(function(){
  	table = $('#table_1').DataTable({
+		"columnDefs": [
+			{
+					targets: [ '_all' ],
+					className: 'mdl-data-table__cell--non-numeric'
+			}
+		],
 		{include file='table/lang_chinese.tpl'}
 	});
 

@@ -17,10 +17,10 @@ class UserController extends AdminController
 {
     public function index($request, $response, $args)
     {
-        $total_array = array("op" => "操作", "id" => "ID", "user_name" => "用户名",
+        $table_config['total_column'] = array("op" => "操作", "id" => "ID", "user_name" => "用户名",
                             "remark" => "备注", "email" => "邮箱", "money" => "金钱",
                             "im_type" => "联络方式类型", "im_value" => "联络方式详情",
-                            "node_group" => "群组类型", "account_expire_in" => "账户过期时间",
+                            "node_group" => "群组", "account_expire_in" => "账户过期时间",
                             "class" => "等级", "class_expire" => "等级过期时间",
                             "passwd" => "连接密码","port" => "连接端口", "method" => "加密方式",
                             "protocol" => "连接协议", "obfs" => "连接混淆方式",
@@ -30,8 +30,9 @@ class UserController extends AdminController
                             "is_enable" => "是否启用", "reg_date" => "注册时间",
                             "reg_location" => "注册IP", "auto_reset_day" => "自动重置流量日",
                             "auto_reset_bandwidth" => "自动重置流量/GB", "ref_by" => "邀请人ID", "ref_by_user_name" => "邀请人用户名");
-        $default_show_array = array("op", "id", "user_name", "remark", "email");
-        return $this->view()->assign('default_show_array', $default_show_array)->assign('total_array', $total_array)->display('admin/user/index.tpl');
+        $table_config['default_show_column'] = array("op", "id", "user_name", "remark", "email");
+        $table_config['ajax_url'] = 'user/ajax';
+        return $this->view()->assign('table_config', $table_config)->display('admin/user/index.tpl');
     }
 
     public function search($request, $response, $args)

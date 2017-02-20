@@ -20,37 +20,15 @@
 					<div class="card-main">
 						<div class="card-inner">
 							<p>系统中所有用户的列表。</p>
-							<p>显示表项：
-								{foreach $total_array as $key => $value}
-									<div class="checkbox checkbox-adv checkbox-inline">
-										<label for="checkbox_{$key}">
-											<input href="javascript:void(0);" onClick="modify_table_visible('checkbox_{$key}', '{$key}')" {if in_array($key, $default_show_array)}checked=""{/if} class="access-hide" id="checkbox_{$key}" name="checkbox_{$key}" type="checkbox">{$value}
-											<span class="checkbox-circle"></span><span class="checkbox-circle-check"></span><span class="checkbox-circle-icon icon">done</span>
-										</label>
-									</div>
-								{/foreach}
-							</p>
+							<p>显示表项:
+                {include file='table/checkbox.tpl'}
+              </p>
 						</div>
 					</div>
 				</div>
 
 				<div class="table-responsive">
-					<table class="mdl-data-table" id="table_users" cellspacing="0" width="100%">
-						<thead>
-							<tr>
-								{foreach $total_array as $key => $value}
-									<th class="{$key}">{$value}</th>
-								{/foreach}
-							</tr>
-						</thead>
-						<tfoot>
-							<tr>
-								{foreach $total_array as $key => $value}
-									<th class="{$key}">{$value}</th>
-								{/foreach}
-							</tr>
-						</tfoot>
-					</table>
+					{include file='table/table.tpl'}
 				</div>
 
 				<div aria-hidden="true" class="modal modal-va-middle fade" id="delete_modal" role="dialog" tabindex="-1">
@@ -93,19 +71,10 @@ function delete_modal_show(id) {
 	$("#delete_modal").modal();
 }
 
-function modify_table_visible(id, key) {
-	if(document.getElementById(id).checked)
-	{
-		table.columns( '.' + key ).visible( true );
-	}
-	else
-	{
-		table.columns( '.' + key ).visible( false );
-	}
-}
+{include file='table/js_1.tpl'}
 
 $(document).ready(function(){
- 	table = $('#table_users').DataTable({
+ 	table_1 = $('#table_1').DataTable({
       "ajax": {
 				"url": "user/ajax",
 				"dataSrc": function ( json ) {
@@ -116,11 +85,32 @@ $(document).ready(function(){
 		      return json.data;
 		    }
 			},
+			"stateSave": true,
+			"columnDefs": [
+				{
+						targets: [ '_all' ],
+						className: 'mdl-data-table__cell--non-numeric'
+				}
+			],
 			{include file='table/lang_chinese.tpl'}
   });
 
-	{foreach $total_array as $key => $value}
-		modify_table_visible('checkbox_{$key}', '{$key}');
+	var has_init = JSON.parse(localStorage.getItem(window.location.href + '-hasinit'));
+	if (has_init != true) {
+	    localStorage.setItem(window.location.href + '-hasinit', true);
+	} else {
+	    {foreach $table_config['total_column'] as $key => $value}
+	        var checked = JSON.parse(localStorage.getItem(window.location.href + '-haschecked-checkbox_{$key}'));
+	        if (checked == true) {
+	            document.getElementById('checkbox_{$key}').checked = true;
+	        } else {
+	            document.getElementById('checkbox_{$key}').checked = false;
+	        }
+	    {/foreach}
+	}
+
+	{foreach $table_config['total_column'] as $key => $value}
+	  modify_table_visible('checkbox_{$key}', '{$key}');
 	{/foreach}
 
 	function delete_id(){
@@ -135,10 +125,7 @@ $(document).ready(function(){
 				if(data.ret){
 					$("#result").modal();
 					$("#msg").html(data.msg);
-					table
-							.row('#row_user_' + deleteid)
-							.remove()
-							.draw();
+					{include file='table/js_delete.tpl'}
 				}else{
 					$("#result").modal();
 					$("#msg").html(data.msg);
