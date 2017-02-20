@@ -173,7 +173,7 @@ class LinkController extends BaseController
                 if ($user == null) {
                     return null;
                 }
-                $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
                 $newResponse->getBody()->write(LinkController::GetIosConf(Node::where(
                         function ($query) {
                             $query->Where("sort", "=", 0)
@@ -193,16 +193,16 @@ class LinkController extends BaseController
                 $type = "PROXY";
                 break;
             case 6:
-                $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.mobileconfig');//->getBody()->write($builder->output());
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.mobileconfig');//->getBody()->write($builder->output());
                 $newResponse->getBody()->write(LinkController::GetApn($Elink->isp, $Elink->address, $Elink->port, User::where("id", "=", $Elink->userid)->first()->pac));
                 return $newResponse;
             case 0:
                 if ($Elink->geo==0) {
-                    $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.conf');//->getBody()->write($builder->output());
+                    $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.conf');//->getBody()->write($builder->output());
                     $newResponse->getBody()->write(LinkController::GetSurge(User::where("id", "=", $Elink->userid)->first()->passwd, $Elink->method, $Elink->address, $Elink->port, User::where("id", "=", $Elink->userid)->first()->pac));
                     return $newResponse;
                 } else {
-                    $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.conf');//->getBody()->write($builder->output());
+                    $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.conf');//->getBody()->write($builder->output());
                     $newResponse->getBody()->write(LinkController::GetSurgeGeo(User::where("id", "=", $Elink->userid)->first()->passwd, $Elink->method, $Elink->address, $Elink->port));
                     return $newResponse;
                 }
@@ -214,7 +214,7 @@ class LinkController extends BaseController
                 }
                 break;
             case 9:
-                $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.acl');//->getBody()->write($builder->output());
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.acl');//->getBody()->write($builder->output());
                 $newResponse->getBody()->write(LinkController::GetAcl(User::where("id", "=", $Elink->userid)->first()));
                 return $newResponse;
             case 10:
@@ -223,7 +223,7 @@ class LinkController extends BaseController
                     return null;
                 }
 
-                $newResponse = $response->withHeader('Content-type', ' application/octet-stream')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.sh');//->getBody()->write($builder->output());
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.sh');//->getBody()->write($builder->output());
                 $newResponse->getBody()->write(LinkController::GetRouter(Node::where(
                     function ($query) {
                         $query->where('sort', 0)
@@ -239,7 +239,7 @@ class LinkController extends BaseController
             default:
                 break;
         }
-        $newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate');//->getBody()->write($builder->output());
+        $newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate');//->getBody()->write($builder->output());
         $newResponse->getBody()->write(LinkController::GetPac($type, $Elink->address, $Elink->port, User::where("id", "=", $Elink->userid)->first()->pac));
         return $newResponse;
     }
@@ -247,7 +247,7 @@ class LinkController extends BaseController
 
     public static function GetGfwlistJs($request, $response, $args)
     {
-        $newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=gfwlist.js');
+        $newResponse = $response->withHeader('Content-type', ' application/x-ns-proxy-autoconfig; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=gfwlist.js');
         ;//->getBody()->write($builder->output());
         $newResponse->getBody()->write(LinkController::GetMacPac());
         return $newResponse;
@@ -1463,13 +1463,13 @@ FINAL,Proxy';
 
     private static function GetPac($type, $address, $port, $defined)
     {
-        header('Content-type: application/x-ns-proxy-autoconfig');
+        header('Content-type: application/x-ns-proxy-autoconfig; charset=utf-8');
         return LinkController::get_pac($type, $address, $port, true, $defined);
     }
 
     private static function GetMacPac()
     {
-        header('Content-type: application/x-ns-proxy-autoconfig');
+        header('Content-type: application/x-ns-proxy-autoconfig; charset=utf-8');
         return LinkController::get_mac_pac();
     }
 
@@ -1842,7 +1842,7 @@ FINAL,Proxy';
             if ($node->custom_rss == 1 && $without_mu == 0) {
                 foreach ($mu_nodes as $mu_node) {
                     $mu_user = User::where('port', '=', $mu_node->server)->first();
-                    
+
                     if ($mu_user == null) {
                         continue;
                     }
