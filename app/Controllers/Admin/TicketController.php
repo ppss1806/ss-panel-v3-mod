@@ -108,7 +108,7 @@ class TicketController extends AdminController
     public function ajax($request, $response, $args)
     {
         $datatables = new Datatables(new DatatablesHelper());
-        $datatables->query('Select ticket.id as op,ticket.id,ticket.datetime,ticket.title,ticket.userid,user.user_name,ticket.status from ticket,user where ticket.userid = user.id');
+        $datatables->query('Select ticket.id as op,ticket.id,ticket.datetime,ticket.title,ticket.userid,user.user_name,ticket.status from ticket,user where ticket.userid = user.id and ticket.rootid = 0');
 
         $datatables->edit('op', function ($data) {
             return '<a class="btn btn-brand" href="/admin/ticket/'.$data['id'].'/view">查看</a>';
