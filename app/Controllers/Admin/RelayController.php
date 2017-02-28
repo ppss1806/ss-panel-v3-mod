@@ -272,11 +272,15 @@ class RelayController extends AdminController
     public function ajax_relay($request, $response, $args)
     {
         $datatables = new Datatables(new DatatablesHelper());
-        $datatables->query('Select relay.id as op,relay.id,relay.user_id,user.user_name,source_node.name as source_node_name,dist_node.name as dist_node_name,relay.port,relay.priority from relay,user,ss_node as source_node,ss_node as dist_node WHERE relay.user_id = user.id and source_node.id = relay.source_node_id and dist_node.id = relay.dist_node_id');
+        $datatables->query('Select relay.id as op,relay.id,relay.user_id,user.user_name,source_node.name as source_node_name,dist_node.name as dist_node_name,relay.port,relay.priority from relay,user,ss_node as source_node,ss_node as dist_node WHERE (relay.user_id = user.id or relay.user_id = 0) and source_node.id = relay.source_node_id and dist_node.id = relay.dist_node_id group by id');
 
         $datatables->edit('op', function ($data) {
             return '<a class="btn btn-brand" href="/admin/relay/'.$data['id'].'/edit">编辑</a>
                     <a class="btn btn-brand-accent" id="delete" value="'.$data['id'].'" href="javascript:void(0);" onClick="delete_modal_show(\''.$data['id'].'\')">删除</a>';
+        });
+
+        $datatables->edit('user_name', function ($data) {
+            return ($data['user_id'] == 0 ? '全体用户' : $data['user_name']);
         });
 
         $body = $response->getBody();
