@@ -170,4 +170,11 @@ class Node extends Model
         $this->attributes['node_ip'] = $ip;
         return true;
     }
+
+    public function getNodeIp()
+    {
+        $node_ip_str = $this->attributes['node_ip'];
+        $node_ip_array = explode(',', $node_ip_str);
+        return $node_ip_array[0];
+    }
 }

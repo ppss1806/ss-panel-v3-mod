@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Models\User;
 use App\Models\Node;
+use App\Models\Relay;
 use App\Services\Config;
 use DateTime;
 
@@ -371,5 +372,39 @@ class Tools
             }
         }
         return $object;
+    }
+
+    public static function getRelayNodeIp($source_node, $dist_node)
+    {
+        $dist_ip_str = $dist_node->node_ip;
+        $dist_ip_array = explode(',', $dist_ip_str);
+        $return_ip = NULL;
+        foreach ($dist_ip_array as $single_dist_ip_str) {
+            $child1_array = explode('#', $single_dist_ip_str);
+            if ($child1_array[0] == $single_dist_ip_str) {
+                $return_ip = $child1_array[0];
+            } else {
+                if (isset($child1_array[1])) {
+                    $node_id_array = explode('|', $child1_array[1]);
+                    if (in_array($source_node->id, $node_id_array)) {
+                        $return_ip = $child1_array[0];
+                    }
+                }
+            }
+        }
+
+        return $return_ip;
+    }
+
+    public static function updateRelayRuleIp($dist_node)
+    {
+        $rules = Relay::where('dist_node_id', $dist_node->id)->get();
+
+        foreach ($rules as $rule) {
+            $source_node = Node::where('id', $rule->source_node_id)->first();
+
+            $rule->dist_ip = Tools::getRelayNodeIp($source_node, $dist_node);
+            $rule->save();
+        }
     }
 }

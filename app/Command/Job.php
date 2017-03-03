@@ -518,7 +518,7 @@ class Job
                                 if (($record->host.".".Config::get('cloudxns_domain'))==$node->server) {
                                     $record_id=$record->record_id;
 
-                                    $api->record->recordUpdate($domain_id, $record->host, $node->node_ip, 'A', 55, 600, 1, '', $record_id);
+                                    $api->record->recordUpdate($domain_id, $record->host, $node->getNodeIp(), 'A', 55, 600, 1, '', $record_id);
                                 }
                             }
 
@@ -553,8 +553,8 @@ class Job
                             $i++;
                         } else {
                             $location=$iplocation->getlocation($userlog->ip);
-                            $nodes=Node::where("node_ip", "=", $ip)->first();
-                            $nodes2=Node::where("node_ip", "=", $userlog->ip)->first();
+                            $nodes=Node::where("node_ip", "LIKE", $ip.'%')->first();
+                            $nodes2=Node::where("node_ip", "LIKE", $userlog->ip.'%')->first();
                             if ($Userlocation!=$location['country']&&$nodes==null&&$nodes2==null) {
                                 $user=User::where("id", "=", $userlog->userid)->first();
                                 echo "Send warn mail to user: ".$user->id."-".iconv('gbk', 'utf-8//IGNORE', $Userlocation)."-".iconv('gbk', 'utf-8//IGNORE', $location['country']);

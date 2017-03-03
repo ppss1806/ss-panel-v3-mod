@@ -32,6 +32,11 @@
 									</div>
 
 									<div class="form-group form-group-label">
+										<label class="floating-label" for="server">节点IP(不填则自动获取，填写请按照 <a href="https://github.com/esdeathlove/ss-panel-v3-mod/wiki/%E8%8A%82%E7%82%B9IP%E5%A1%AB%E5%86%99%E8%A7%84%E5%88%99">这里</a> 的规则进行填写)</label>
+										<input class="form-control" id="node_ip" name="node_ip" type="text">
+									</div>
+
+									<div class="form-group form-group-label">
 										<label class="floating-label" for="method">加密方式</label>
 										<input class="form-control" id="method" type="text" name="method">
 									</div>
@@ -247,20 +252,21 @@
                 data: {
                     name: $("#name").val(),
                     server: $("#server").val(),
+										node_ip: $("#node_ip").val(),
                     method: $("#method").val(),
                     custom_method: custom_method,
                     rate: $("#rate").val(),
                     info: $("#info").val(),
                     type: type,
-					group: $("#group").val(),
+										group: $("#group").val(),
                     status: $("#status").val(),
-					node_speedlimit: $("#node_speedlimit").val(),
+										node_speedlimit: $("#node_speedlimit").val(),
                     sort: $("#sort").val(),
-					class: $("#class").val(),
-					node_bandwidth_limit: $("#node_bandwidth_limit").val(),
-					bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val(),
-					custom_rss: custom_rss,
-					mu_only: mu_only
+										class: $("#class").val(),
+										node_bandwidth_limit: $("#node_bandwidth_limit").val(),
+										bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val(),
+										custom_rss: custom_rss,
+										mu_only: mu_only
                 },
                 success: function (data) {
                     if (data.ret) {

@@ -52,14 +52,17 @@ class NodeController extends AdminController
         $node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->status = $request->getParam('status');
         $node->sort = $request->getParam('sort');
-        if ($node->sort==0 || $node->sort==1 || $node->sort==10) {
-            $node->node_ip=gethostbyname($request->getParam('server'));
+        if ($node->sort == 0 || $node->sort == 1 || $node->sort == 10) {
+            if ($request->getParam('node_ip') != '') {
+                $node->node_ip = $request->getParam('node_ip');
+            } else {
+                $node->node_ip = gethostbyname($request->getParam('server'));
+            }
         } else {
             $node->node_ip="";
         }
 
         if ($node->sort==1) {
-            $node->node_ip=gethostbyname($request->getParam('server'));
             Radius::AddNas($node->node_ip, $request->getParam('server'));
         }
         $node->node_class=$request->getParam('class');
@@ -105,28 +108,35 @@ class NodeController extends AdminController
         $node->node_speedlimit = $request->getParam('node_speedlimit');
         $node->type = $request->getParam('type');
         $node->sort = $request->getParam('sort');
-        if ($node->sort==0 || $node->sort==1 || $node->sort==10) {
-            if ($node->isNodeOnline()) {
-                if (!$node->changeNodeIp($request->getParam('server'))) {
-                    $rs['ret'] = 0;
-                    $rs['msg'] = "更新节点IP失败，请检查您输入的节点地址是否正确！";
-                    return $response->getBody()->write(json_encode($rs));
+
+        if ($node->sort == 0 || $node->sort == 1 || $node->sort == 10) {
+            if ($request->getParam('node_ip') != '') {
+                $node->node_ip = $request->getParam('node_ip');
+            } else {
+                if ($node->isNodeOnline()) {
+                    if (!$node->changeNodeIp($request->getParam('server'))) {
+                        $rs['ret'] = 0;
+                        $rs['msg'] = "更新节点IP失败，请检查您输入的节点地址是否正确！";
+                        return $response->getBody()->write(json_encode($rs));
+                    }
                 }
             }
         } else {
             $node->node_ip="";
         }
 
+        if ($node->sort == 0 || $node->sort == 10) {
+            Tools::updateRelayRuleIp($node);
+        }
+
         if ($node->sort==1) {
             $SS_Node=Node::where('sort', '=', 0)->where('server', '=', $request->getParam('server'))->first();
             if ($SS_Node!=null) {
                 if (time()-$SS_Node->node_heartbeat<300||$SS_Node->node_heartbeat==0) {
-                    $node->node_ip=gethostbyname($request->getParam('server'));
-                    Radius::AddNas($node->node_ip, $request->getParam('server'));
+                    Radius::AddNas(gethostbyname($request->getParam('server')), $request->getParam('server'));
                 }
             } else {
-                $node->node_ip=gethostbyname($request->getParam('server'));
-                Radius::AddNas($node->node_ip, $request->getParam('server'));
+                Radius::AddNas(gethostbyname($request->getParam('server')), $request->getParam('server'));
             }
         }
 

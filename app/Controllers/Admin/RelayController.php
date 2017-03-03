@@ -68,7 +68,10 @@ class RelayController extends AdminController
         $rule = new Relay();
         $rule->user_id = $user_id;
         $rule->dist_node_id = $dist_node_id;
-        $rule->dist_ip = $dist_node->node_ip;
+
+        $dist_node_ip = Tools::getRelayNodeIp($source_node, $dist_node);
+        $rule->dist_ip = $dist_node_ip;
+
         $rule->source_node_id = $source_node_id;
         $rule->port = $port;
         $rule->priority = $priority;
@@ -153,7 +156,10 @@ class RelayController extends AdminController
 
         $rule->user_id = $user_id;
         $rule->dist_node_id = $dist_node_id;
-        $rule->dist_ip = $dist_node->node_ip;
+
+        $dist_node_ip = Tools::getRelayNodeIp($source_node, $dist_node);
+        $rule->dist_ip = $dist_node_ip;
+
         $rule->source_node_id = $source_node_id;
         $rule->port = $port;
         $rule->priority = $priority;
