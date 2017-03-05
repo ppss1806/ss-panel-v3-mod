@@ -74,6 +74,39 @@ class RelayController extends UserController
             }
         }
 
+        foreach ($pathset as $path) {
+            foreach ($pathset as $index => $single_path) {
+                if ($path != $single_path && $path->port == $single_path->port) {
+                    if ($single_path->end_node->id == $path->begin_node->id) {
+                        $path->begin_node = $single_path->begin_node;
+                        if ($path->begin_node->isNodeAccessable() == false) {
+                            $path->path = '<font color="#FF0000">'.$single_path->begin_node->name.'</font>'." → ".$path->path;
+                            $path->status = "阻断";
+                        } else {
+                            $path->path = $single_path->begin_node->name." → ".$path->path;
+                            $path->status = "通畅";
+                        }
+
+                        $pathset->offsetUnset($index);
+                        continue;
+                    }
+
+                    if ($path->end_node->id == $single_path->begin_node->id) {
+                        $path->end_node = $single_path->end_node;
+                        if ($single_path->end_node->isNodeAccessable() == false) {
+                            $path->path = $path->path." → ".'<font color="#FF0000">'.$single_path->end_node->name.'</font>';
+                            $path->status = "阻断";
+                        } else {
+                            $path->path = $path->path." → ".$single_path->end_node->name;
+                        }
+
+                        $pathset->offsetUnset($index);
+                        continue;
+                    }
+                }
+            }
+        }
+
         return $this->view()->assign('rules', $logs)->assign('is_relay_able', $is_relay_able)->assign('pathset', $pathset)->display('user/relay/index.tpl');
     }
 

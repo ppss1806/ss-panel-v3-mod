@@ -318,10 +318,10 @@ class Tools
                 if ($single_rule->dist_node_id == $path->begin_node->id) {
                     $path->begin_node = $single_rule->Source_Node();
                     if ($path->begin_node->isNodeAccessable() == false) {
-                        $path->path = '<font color="#FF0000">'.$single_rule->Source_Node()->name.'</font>'." -> ".$path->path;
+                        $path->path = '<font color="#FF0000">'.$single_rule->Source_Node()->name.'</font>'." → ".$path->path;
                         $path->status = "阻断";
                     } else {
-                        $path->path = $single_rule->Source_Node()->name." -> ".$path->path;
+                        $path->path = $single_rule->Source_Node()->name." → ".$path->path;
                         $path->status = "通畅";
                     }
                     return $pathset;
@@ -330,10 +330,10 @@ class Tools
                 if ($path->end_node->id == $single_rule->source_node_id) {
                     $path->end_node = $single_rule->Dist_Node();
                     if ($path->end_node->isNodeAccessable() == false) {
-                        $path->path = $path->path." -> ".'<font color="#FF0000">'.$single_rule->Dist_Node()->name.'</font>';
+                        $path->path = $path->path." → ".'<font color="#FF0000">'.$single_rule->Dist_Node()->name.'</font>';
                         $path->status = "阻断";
                     } else {
-                        $path->path = $path->path." -> ".$single_rule->Dist_Node()->name;
+                        $path->path = $path->path." → ".$single_rule->Dist_Node()->name;
                     }
                     return $pathset;
                 }
