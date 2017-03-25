@@ -75,17 +75,6 @@ function delete_modal_show(id) {
 
 $(document).ready(function(){
  	table_1 = $('#table_1').DataTable({
-      "ajax": {
-				"url": "user/ajax",
-				"dataSrc": function ( json ) {
-		      for ( var i=0, ien=json.data.length ; i<ien ; i++ ) {
-		        json.data[i][0] = '<a class="btn btn-brand" href="/admin/user/' + json.data[i][0] + '/edit">编辑</a>' +
-						'<a class="btn btn-brand-accent" id="delete" href="javascript:void(0);" onClick="delete_modal_show(\'' + json.data[i][0] + '\')">删除</a>';
-		      }
-		      return json.data;
-		    },
-				type: "POST"
-			},
 			"stateSave": true,
 			"columnDefs": [
 				{
@@ -139,10 +128,6 @@ $(document).ready(function(){
 		});
 	}
 
-	function search(){
-		window.location="/admin/user/search/"+$("#search").val();
-	}
-
 	$("#delete_input").click(function(){
 		delete_id();
 	});
@@ -153,6 +138,27 @@ $(document).ready(function(){
 			search();
 		}
 	});
+
+	$.ajaxSettings.async = false;
+	page = 1;
+	while (1) {
+			next = 1;
+			$.getJSON("user/ajax?page=" + page, function( data ) {
+					if (data.next == 0) {
+							next = 0;
+					}
+					for ( var i=0, ien=data.data.length ; i<ien ; i++ ) {
+						data.data[i][0] = '<a class="btn btn-brand" href="/admin/user/' + data.data[i][0] + '/edit">编辑</a>' +
+						'<a class="btn btn-brand-accent" id="delete" href="javascript:void(0);" onClick="delete_modal_show(\'' + data.data[i][0] + '\')">删除</a>';
+					}
+					table_1.rows.add(data.data).draw();
+			});
+
+			if (next == 0) break;
+
+			page++;
+	}
+	$.ajaxSettings.async = true;
 })
 
 
