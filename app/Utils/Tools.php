@@ -267,7 +267,7 @@ class Tools
 
     public static function is_protocol_relay($user)
     {
-        $relay_able_list = array('auth_aes128_md5', 'auth_aes128_sha1');
+        $relay_able_list = Config::getSupportParam('relay_able_protocol');
 
         if (in_array($user->protocol, $relay_able_list) || Config::get('relay_insecure_mode') == 'true') {
             return true;

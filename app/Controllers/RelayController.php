@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\Auth;
 use App\Controllers\UserController;
 use App\Utils\Tools;
+use App\Services\Config;
 
 class RelayController extends UserController
 {
@@ -107,7 +108,7 @@ class RelayController extends UserController
             }
         }
 
-        return $this->view()->assign('rules', $logs)->assign('is_relay_able', $is_relay_able)->assign('pathset', $pathset)->display('user/relay/index.tpl');
+        return $this->view()->assign('rules', $logs)->assign('relay_able_protocol_list', Config::getSupportParam('relay_able_protocol'))->assign('is_relay_able', $is_relay_able)->assign('pathset', $pathset)->display('user/relay/index.tpl');
     }
 
     public function create($request, $response, $args)
