@@ -26,9 +26,9 @@ class User extends Model
     public $isAdmin;
 
     protected $casts = [
-        "t" => 'int',
-        "u" => 'int',
-        "d" => 'int',
+        "t" => 'float',
+        "u" => 'float',
+        "d" => 'float',
         "port" => 'int',
         "transfer_enable" => 'float',
         "enable" => 'int',

@@ -430,7 +430,7 @@ class Job
                             echo $e->getMessage();
                         }
 
-                        if (Config::get('enable_cloudxns')=='true' && $node->sort==0) {
+                        if (Config::get('enable_cloudxns')=='true' && ($node->sort==0 || $node->sort==10)) {
                             $api=new Api();
                             $api->setApiKey(Config::get("cloudxns_apikey"));//修改成自己API KEY
                             $api->setSecretKey(Config::get("cloudxns_apisecret"));//修改成自己的SECERET KEY
@@ -497,7 +497,7 @@ class Job
                         }
 
 
-                        if (Config::get('enable_cloudxns')=='true'&&$node->sort==0) {
+                        if (Config::get('enable_cloudxns')=='true'&& ($node->sort==0 || $node->sort==10)) {
                             $api=new Api();
                             $api->setApiKey(Config::get("cloudxns_apikey"));//修改成自己API KEY
                             $api->setSecretKey(Config::get("cloudxns_apisecret"));//修改成自己的SECERET KEY

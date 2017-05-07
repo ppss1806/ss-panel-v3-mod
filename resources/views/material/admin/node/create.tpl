@@ -63,11 +63,14 @@
 									</div>
 
 									<div class="form-group form-group-label">
-										<div class="checkbox switch">
-											<label for="mu_only">
-												<input  class="access-hide" id="mu_only" type="checkbox" name="mu_only"><span class="switch-toggle"></span>只启用单端口多用户
-											</label>
-										</div>
+										<label for="mu_only">
+											<label class="floating-label" for="sort">单端口多用户启用</label>
+											<select id="mu_only" class="form-control" name="is_multi_user">
+												<option value="0">单端口多用户与普通端口并存</option>
+												<option value="-1">只启用普通端口</option>
+												<option value="1">只启用单端口多用户</option>
+											</select>
+										</label>
 									</div>
 
 
@@ -235,15 +238,6 @@
 				var custom_rss=0;
 			}
 
-			if(document.getElementById('mu_only').checked)
-			{
-				var mu_only=1;
-			}
-			else
-			{
-				var mu_only=0;
-			}
-
 
             $.ajax({
                 type: "POST",
@@ -266,7 +260,7 @@
 										node_bandwidth_limit: $("#node_bandwidth_limit").val(),
 										bandwidthlimit_resetday: $("#bandwidthlimit_resetday").val(),
 										custom_rss: custom_rss,
-										mu_only: mu_only
+										mu_only: $("#mu_only").val()
                 },
                 success: function (data) {
                     if (data.ret) {

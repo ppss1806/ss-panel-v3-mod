@@ -101,7 +101,7 @@ class UserController extends BaseController
                 $ary['method'] = $this->user->method;
             }
 
-            if ($node->mu_only == 0) {
+            if ($node->mu_only != 1) {
                 if ($node->custom_rss == 1) {
                     $node_name = $node->name;
 
@@ -128,7 +128,7 @@ class UserController extends BaseController
             }
 
 
-            if ($node->custom_rss == 1) {
+            if ($node->custom_rss == 1 && $node->mu_only != -1) {
                 foreach ($mu_nodes as $mu_node) {
                     $mu_user = User::where('port', '=', $mu_node->server)->first();
 
@@ -589,6 +589,10 @@ class UserController extends BaseController
                             $ary['protocol'] = str_replace("_compatible", "", $this->user->protocol);
                         }
                     } else {
+                        if ($node->mu_only == -1) {
+                            return;
+                        }
+
                         $mu_user = User::where('port', '=', $mu)->where("is_multi_user", "<>", 0)->first();
 
                         if ($mu_user == null) {
@@ -790,6 +794,10 @@ class UserController extends BaseController
                             $ary['protocol'] = str_replace("_compatible", "", $this->user->protocol);
                         }
                     } else {
+                        if ($node->mu_only == -1) {
+                            return;
+                        }
+
                         $mu_user = User::where('port', '=', $mu)->where("is_multi_user", "<>", 0)->first();
 
                         if ($mu_user == null) {
@@ -1468,6 +1476,15 @@ class UserController extends BaseController
 
         $user->protocol = $antiXss->xss_clean($protocol);
         $user->obfs = $antiXss->xss_clean($obfs);
+
+
+        if(!Tools::checkNoneProtocol($user))
+        {
+          $res['ret'] = 0;
+          $res['msg'] = "您好，系统检测到您目前的加密方式为 none ，但您将要设置为的协议并不在以下协议<br>".implode(',', Config::getSupportParam('allow_none_protocol')).'<br>之内，请您先修改您的加密方式，再来修改此处设置。';
+          return $this->echoJson($response, $res);
+        }
+
         $user->save();
 
         $res['ret'] = 1;
@@ -1585,6 +1602,15 @@ class UserController extends BaseController
             $res['ret'] = 0;
             $res['msg'] = "悟空别闹";
             return $response->getBody()->write(json_encode($res));
+        }
+
+        $user->method = $method;
+
+        if(!Tools::checkNoneProtocol($user))
+        {
+          $res['ret'] = 0;
+          $res['msg'] = "您好，系统检测到您将要设置的加密方式为 none ，但您的协议并不在以下协议<br>".implode(',', Config::getSupportParam('allow_none_protocol')).'<br>之内，请您先修改您的协议，再来修改此处设置。';
+          return $this->echoJson($response, $res);
         }
 
         $user->updateMethod($method);

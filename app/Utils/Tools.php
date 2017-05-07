@@ -19,7 +19,13 @@ class Tools
         $kb = 1024;
         $mb = 1048576;
         $gb = 1073741824;
-        if (abs($value) > $gb) {
+        $tb = $gb * 1024;
+        $pb = $tb * 1024;
+        if (abs($value) > $pb) {
+            return round($value / $pb, 2) . "PB";
+        } elseif (abs($value) > $tb) {
+            return round($value / $tb, 2) . "TB";
+        } elseif (abs($value) > $gb) {
             return round($value / $gb, 2) . "GB";
         } elseif (abs($value) > $mb) {
             return round($value / $mb, 2) . "MB";
@@ -406,5 +412,15 @@ class Tools
             $rule->dist_ip = Tools::getRelayNodeIp($source_node, $dist_node);
             $rule->save();
         }
+    }
+
+    public static function checkNoneProtocol($user)
+    {
+        if($user->method == 'none' && !in_array($user->protocol, Config::getSupportParam('allow_none_protocol')))
+        {
+          return false;
+        }
+
+        return true;
     }
 }

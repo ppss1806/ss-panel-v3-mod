@@ -68,7 +68,7 @@
 																		{$relay_rule = $tools->pick_out_relay_rule($node->id, $user->port, $relay_rules)}
 																	{/if}
 
-																	{if $node->mu_only == 0}
+																	{if $node->mu_only != 1}
 																	<div class="card">
 																		<div class="card-main">
 																			<div class="card-inner">
@@ -147,7 +147,7 @@
 
 
 
-																	{if ($node->sort == 0 || $node->sort == 10) && $node->custom_rss == 1}
+																	{if ($node->sort == 0 || $node->sort == 10) && $node->custom_rss == 1 && $node->mu_only != -1}
 																		{foreach $node_muport as $single_muport}
 
 																			{if !($single_muport['server']->node_class <= $user->class && ($single_muport['server']->node_group == 0 || $single_muport['server']->node_group == $user->node_group))}

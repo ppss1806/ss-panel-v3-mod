@@ -354,7 +354,7 @@
 								</div>
 							</div>
 						</div>
-						
+
 						{if $config['enable_telegram'] == 'true'}
 						<div class="card margin-bottom-no">
 							<div class="card-main">
@@ -380,8 +380,8 @@
 						</div>
 						{/if}
 					</div>
-					
-					
+
+
 
 
 					{include file='dialog.tpl'}
@@ -492,7 +492,7 @@
 	jQuery('#ga-qr').qrcode({
 		"text": ga_qrcode
 	});
-	
+
 	{if $config['enable_telegram'] == 'true'}
 	var telegram_qrcode = 'mod://bind/{$bind_token}';
 	jQuery('#telegram-qr').qrcode({
@@ -778,7 +778,7 @@
 						$("#msg").html("成功了");
                     } else {
                         $("#result").modal();
-						$("#msg").html("失败了");
+						$("#msg").html(data.msg);
                     }
                 },
                 error: function (jqXHR) {

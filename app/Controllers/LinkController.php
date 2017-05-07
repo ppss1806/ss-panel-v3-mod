@@ -319,7 +319,7 @@ class LinkController extends BaseController
         }
 
         foreach ($nodes as $node) {
-            if ($node->mu_only == 0) {
+            if ($node->mu_only != 1) {
                 $node_name = $node->name;
 
                 if ($node->sort == 10) {
@@ -347,7 +347,7 @@ class LinkController extends BaseController
                                             "enable"=>true));
             }
 
-            if ($node->custom_rss == 1 && $without_mu == 0) {
+            if ($node->custom_rss == 1 && $without_mu == 0 && $node->mu_only != -1) {
                 foreach ($mu_nodes as $mu_node) {
                     $mu_user = User::where('port', '=', $mu_node->server)->first();
 
@@ -1817,7 +1817,7 @@ FINAL,Proxy';
         }
 
         foreach ($nodes as $node) {
-            if ($node->mu_only == 0) {
+            if ($node->mu_only != 1) {
                 $node_name = $node->name;
 
                 if ($node->sort == 10) {
@@ -1839,7 +1839,7 @@ FINAL,Proxy';
                 $count += 1;
             }
 
-            if ($node->custom_rss == 1 && $without_mu == 0) {
+            if ($node->custom_rss == 1 && $without_mu == 0 && $node->mu_only != -1) {
                 foreach ($mu_nodes as $mu_node) {
                     $mu_user = User::where('port', '=', $mu_node->server)->first();
 
