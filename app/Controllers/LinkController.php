@@ -174,17 +174,26 @@ class LinkController extends BaseController
                     return null;
                 }
                 $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename=allinone.conf');//->getBody()->write($builder->output());
-                $newResponse->getBody()->write(LinkController::GetIosConf(Node::where(
+                if ($user->is_admin) {
+                    $newResponse->getBody()->write(LinkController::GetIosConf(Node::where(
                         function ($query) {
                             $query->Where("sort", "=", 0)
                                 ->orWhere("sort", "=", 10);
                         }
-                    )->where("type", "1")->where(
-                    function ($query) use ($user) {
-                        $query->where("node_group", "=", $user->node_group)
-                            ->orWhere("node_group", "=", 0);
-                    }
-                )->where("node_class", "<=", $user->class)->get(), $user));
+                    )->where("type", "1")->get(), $user));
+                } else {
+                    $newResponse->getBody()->write(LinkController::GetIosConf(Node::where(
+                            function ($query) {
+                                $query->Where("sort", "=", 0)
+                                    ->orWhere("sort", "=", 10);
+                            }
+                        )->where("type", "1")->where(
+                        function ($query) use ($user) {
+                            $query->where("node_group", "=", $user->node_group)
+                                ->orWhere("node_group", "=", 0);
+                        }
+                    )->where("node_class", "<=", $user->class)->get(), $user));
+                }
                 return $newResponse;
             case 3:
                 $type = "PROXY";
@@ -224,17 +233,26 @@ class LinkController extends BaseController
                 }
 
                 $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.sh');//->getBody()->write($builder->output());
-                $newResponse->getBody()->write(LinkController::GetRouter(Node::where(
-                    function ($query) {
-                        $query->where('sort', 0)
-                            ->orWhere('sort', 10);
-                    }
-                )->where("type", "1")->where(
-                    function ($query) use ($user) {
-                        $query->where("node_group", "=", $user->node_group)
-                            ->orWhere("node_group", "=", 0);
-                    }
-                )->where("node_class", "<=", $user->class)->get(), User::where("id", "=", $Elink->userid)->first(), $Elink->geo));
+                if ($user->is_admin) {
+                    $newResponse->getBody()->write(LinkController::GetRouter(Node::where(
+                        function ($query) {
+                            $query->where('sort', 0)
+                                ->orWhere('sort', 10);
+                        }
+                    )->where("type", "1")->get(), User::where("id", "=", $Elink->userid)->first(), $Elink->geo));
+                } else {
+                    $newResponse->getBody()->write(LinkController::GetRouter(Node::where(
+                        function ($query) {
+                            $query->where('sort', 0)
+                                ->orWhere('sort', 10);
+                        }
+                    )->where("type", "1")->where(
+                        function ($query) use ($user) {
+                            $query->where("node_group", "=", $user->node_group)
+                                ->orWhere("node_group", "=", 0);
+                        }
+                    )->where("node_class", "<=", $user->class)->get(), User::where("id", "=", $Elink->userid)->first(), $Elink->geo));
+                }
                 return $newResponse;
             default:
                 break;
@@ -297,12 +315,16 @@ class LinkController extends BaseController
         $json=json_decode($string, true);
         $temparray=array();
 
-        $mu_nodes = Node::where('sort', 9)->where('node_class', '<=', $user->class)->where("type", "1")->where(
-            function ($query) use ($user) {
-                $query->where("node_group", "=", $user->node_group)
-                    ->orWhere("node_group", "=", 0);
-            }
-        )->get();
+        if ($user->is_admin) {
+            $mu_nodes = Node::where('sort', 9)->where("type", "1")->get();
+        } else {
+            $mu_nodes = Node::where('sort', 9)->where('node_class', '<=', $user->class)->where("type", "1")->where(
+                function ($query) use ($user) {
+                    $query->where("node_group", "=", $user->node_group)
+                        ->orWhere("node_group", "=", 0);
+                }
+            )->get();
+        }
 
         $relay_rules = Relay::where('user_id', $user->id)->orWhere('user_id', 0)->orderBy('id', 'asc')->get();
 
@@ -1803,12 +1825,16 @@ FINAL,Proxy';
 
         $count = 0;
 
-        $mu_nodes = Node::where('sort', 9)->where('node_class', '<=', $user->class)->where("type", "1")->where(
-            function ($query) use ($user) {
-                $query->where("node_group", "=", $user->node_group)
-                    ->orWhere("node_group", "=", 0);
-            }
-        )->get();
+        if($user->is_admin) {
+            $mu_nodes = Node::where('sort', 9)->where("type", "1")->get();
+        } else {
+            $mu_nodes = Node::where('sort', 9)->where('node_class', '<=', $user->class)->where("type", "1")->where(
+                function ($query) use ($user) {
+                    $query->where("node_group", "=", $user->node_group)
+                        ->orWhere("node_group", "=", 0);
+                }
+            )->get();
+        }
 
         $relay_rules = Relay::where('user_id', $user->id)->where('user_id', 0)->orderBy('id', 'asc')->get();
 

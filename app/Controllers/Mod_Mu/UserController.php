@@ -31,9 +31,27 @@ class UserController extends BaseController
         $node->save();
 
         if ($node->node_group!=0) {
-            $users_raw = User::where("class", ">=", $node->node_class)->where("enable", 1)->where("node_group", "=", $node->node_group)->where("expire_in", ">", date("Y-m-d H:i:s"))->get();
+            $users_raw = User::where(
+                function ($query) use ($node){
+                    $query->where(
+                      function ($query1) use ($node){
+                          $query1->where("class", ">=", $node->node_class)
+                              ->where("node_group", "=", $node->node_group);
+                      }
+                    )->orwhere('is_admin', 1);
+                }
+            )
+            ->where("enable", 1)->where("expire_in", ">", date("Y-m-d H:i:s"))->get();
         } else {
-            $users_raw = User::where("class", ">=", $node->node_class)->where("enable", 1)->where("expire_in", ">", date("Y-m-d H:i:s"))->get();
+            $users_raw = User::where(
+                function ($query) use ($node){
+                    $query->where(
+                      function ($query1) use ($node){
+                          $query1->where("class", ">=", $node->node_class);
+                      }
+                    )->orwhere('is_admin', 1);
+                }
+            )->where("enable", 1)->where("expire_in", ">", date("Y-m-d H:i:s"))->get();
         }
         if ($node->node_bandwidth_limit!=0) {
             if ($node->node_bandwidth_limit < $node->node_bandwidth) {
