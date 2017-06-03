@@ -193,6 +193,8 @@ class UserController extends BaseController
         $router_token = LinkController::GenerateRouterCode($this->user->id, 0);
         $router_token_without_mu = LinkController::GenerateRouterCode($this->user->id, 1);
 
+        $ssr_sub_token = LinkController::GenerateSSRSubCode($this->user->id, 0);
+        $ssr_sub_token_without_mu = LinkController::GenerateSSRSubCode($this->user->id, 1);
 
         $uid = time().rand(1, 10000) ;
         if (Config::get('enable_geetest_checkin') == 'true') {
@@ -204,7 +206,7 @@ class UserController extends BaseController
         $Ann = Ann::orderBy('date', 'desc')->first();
 
 
-        return $this->view()->assign("router_token", $router_token)->assign("router_token_without_mu", $router_token_without_mu)->assign("acl_token", $acl_token)->assign('ann', $Ann)->assign('geetest_html', $GtSdk)->assign("ios_token", $ios_token)->assign("android_add", $android_add)->assign("android_add_without_mu", $android_add_without_mu)->assign('enable_duoshuo', Config::get('enable_duoshuo'))->assign('duoshuo_shortname', Config::get('duoshuo_shortname'))->assign('baseUrl', Config::get('baseUrl'))->display('user/index.tpl');
+        return $this->view()->assign("ssr_sub_token", $ssr_sub_token)->assign("ssr_sub_token_without_mu", $ssr_sub_token_without_mu)->assign("router_token", $router_token)->assign("router_token_without_mu", $router_token_without_mu)->assign("acl_token", $acl_token)->assign('ann', $Ann)->assign('geetest_html', $GtSdk)->assign("ios_token", $ios_token)->assign("android_add", $android_add)->assign("android_add_without_mu", $android_add_without_mu)->assign('enable_duoshuo', Config::get('enable_duoshuo'))->assign('duoshuo_shortname', Config::get('duoshuo_shortname'))->assign('baseUrl', Config::get('baseUrl'))->display('user/index.tpl');
     }
 
 

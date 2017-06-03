@@ -157,6 +157,26 @@ class LinkController extends BaseController
         return $NLink->token;
     }
 
+    public static function GenerateSSRSubCode($userid, $without_mu)
+    {
+        $Elink = Link::where("type", "=", 11)->where("userid", "=", $userid)->where("geo", $without_mu)->first();
+        if ($Elink != null) {
+            return $Elink->token;
+        }
+        $NLink = new Link();
+        $NLink->type = 11;
+        $NLink->address = "";
+        $NLink->port = 0;
+        $NLink->ios = 0;
+        $NLink->geo = $without_mu;
+        $NLink->method = "";
+        $NLink->userid = $userid;
+        $NLink->token = LinkController::GenerateRandomLink();
+        $NLink->save();
+
+        return $NLink->token;
+    }
+
     public static function GetContent($request, $response, $args)
     {
         $token = $args['token'];
@@ -253,6 +273,15 @@ class LinkController extends BaseController
                         }
                     )->where("node_class", "<=", $user->class)->get(), User::where("id", "=", $Elink->userid)->first(), $Elink->geo));
                 }
+                return $newResponse;
+            case 11:
+                $user=User::where("id", $Elink->userid)->first();
+                if ($user == null) {
+                    return null;
+                }
+
+                $newResponse = $response->withHeader('Content-type', ' application/octet-stream; charset=utf-8')->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')->withHeader('Content-Disposition', ' attachment; filename='.$token.'.txt');
+                $newResponse->getBody()->write(LinkController::GetSSRSub(User::where("id", "=", $Elink->userid)->first(), $Elink->geo));
                 return $newResponse;
             default:
                 break;
@@ -1912,5 +1941,144 @@ FINAL,Proxy';
         $bash .= "nvram set rt_ssnum_x=".$count."\n";
 
         return $bash;
+    }
+
+    public static function GetSSRSub($user, $without_mu = 0)
+    {
+        if ($user->is_admin) {
+            $nodes=Node::where(
+                function ($query) {
+                    $query->where('sort', 0)
+                        ->orwhere('sort', 10);
+                }
+            )->where("type", "1")->get();
+        } else {
+            $nodes=Node::where(
+                function ($query) {
+                    $query->where('sort', 0)
+                        ->orwhere('sort', 10);
+                }
+            )->where(
+                function ($query) {
+                    $query->where("node_group", "=", $user->node_group)
+                        ->orWhere("node_group", "=", 0);
+                }
+            )->where("type", "1")->where("node_class", "<=", $user->class)->get();
+        }
+
+        $android_add="";
+        $android_add_without_mu = "";
+
+        if ($user->is_admin) {
+            $mu_nodes = Node::where('sort', 9)->where("type", "1")->get();
+        } else {
+            $mu_nodes = Node::where('sort', 9)->where('node_class', '<=', $user->class)->where("type", "1")->where(
+                function ($query) use ($user) {
+                    $query->where("node_group", "=", $user->node_group)
+                        ->orWhere("node_group", "=", 0);
+                }
+            )->get();
+        }
+
+        $relay_rules = Relay::where('user_id', $user->id)->orwhere('user_id', 0)->orderBy('id', 'asc')->get();
+
+        if (!Tools::is_protocol_relay($user)) {
+            $relay_rules = array();
+        }
+
+        $nodes_count = 0;
+        $without_mu_nodes_count = 0;
+
+        foreach ($nodes as $node) {
+            $ary['server'] = $node->server;
+            $ary['server_port'] = $user->port;
+            $ary['password'] = $user->passwd;
+            $ary['method'] = $node->method;
+            if ($node->custom_method) {
+                $ary['method'] = $user->method;
+            }
+
+            if ($node->mu_only != 1) {
+                if ($node->custom_rss == 1) {
+                    $node_name = $node->name;
+
+                    if ($node->sort == 10) {
+                        $relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
+
+                        if ($relay_rule != null) {
+                            if ($relay_rule->dist_node() != null) {
+                                $node_name .= " - ".$relay_rule->dist_node()->name;
+                            }
+                        }
+                    }
+
+                    $ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible", "", $user->protocol).":".$ary['method'].":".str_replace("_compatible", "", $user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node_name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+                    $ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+                    $android_add .= $ssqr_s_new."\n";
+                    $android_add_without_mu .= $ssqr_s_new."\n";
+                    $nodes_count++;
+                    $without_mu_nodes_count++;
+                } else {
+                    $ssurl = ($node->custom_method==1?$user->method:$node->method) . ":" . $user->passwd . "@" . $node->server . ":" . $user->port;
+                    $ssqr = "ss://" . base64_encode($ssurl);
+                    $android_add .= $ssqr."\n";
+                    $android_add_without_mu .= $ssqr."\n";
+                    $nodes_count++;
+                    $without_mu_nodes_count++;
+                }
+            }
+
+
+            if ($node->custom_rss == 1 && $node->mu_only != -1) {
+                foreach ($mu_nodes as $mu_node) {
+                    $mu_user = User::where('port', '=', $mu_node->server)->first();
+
+                    if ($mu_user == null) {
+                        continue;
+                    }
+
+                    if (!($mu_user->class >= $node->node_class && ($node->node_group == 0 || $node->node_group == $mu_user->node_group))) {
+                        continue;
+                    }
+
+                    if ($mu_user->is_multi_user == 1) {
+                        $mu_user->obfs_param = $user->getMuMd5();
+                    }
+
+                    $mu_user->protocol_param = $user->id.":".$user->passwd;
+
+                    $node_name = $node->name;
+
+                    if ($node->sort == 10 && $mu_user->is_multi_user != 2) {
+                        $relay_rule = Tools::pick_out_relay_rule($node->id, $mu_user->port, $relay_rules);
+
+                        if ($relay_rule != null) {
+                            if ($relay_rule->dist_node() != null) {
+                                $node_name .= " - ".$relay_rule->dist_node()->name;
+                            }
+                        }
+                    }
+
+
+                    $ary['server_port'] = $mu_user->port;
+                    $ary['password'] = $mu_user->passwd;
+                    $ary['method'] = $node->method;
+                    if ($node->custom_method) {
+                        $ary['method'] = $mu_user->method;
+                    }
+
+                    $ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible", "", $mu_user->protocol).":".$ary['method'].":".str_replace("_compatible", "", $mu_user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($mu_user->obfs_param)."&protoparam=".Tools::base64_url_encode($mu_user->protocol_param)."&remarks=".Tools::base64_url_encode($node_name." - ".$mu_node->server." 端口单端口多用户") . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+                    $ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+                    $android_add .= $ssqr_s_new."\n";
+                    $nodes_count++;
+                }
+            }
+        }
+
+        if ($without_mu) {
+            return Tools::base64_url_encode("MAX=".$without_mu_nodes_count."\n".$android_add_without_mu);
+        } else {
+            return Tools::base64_url_encode("MAX=".$nodes_count."\n".$android_add);
+        }
     }
 }

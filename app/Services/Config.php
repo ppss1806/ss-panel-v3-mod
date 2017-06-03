@@ -79,7 +79,7 @@ class Config
         switch ($type) {
             case 'obfs':
                 $list = array('plain', 'http_simple', 'http_simple_compatible', 'http_post', 'http_post_compatible',
-                            'tls1.2_ticket_auth', 'tls1.2_ticket_auth_compatible');
+                            'tls1.2_ticket_auth', 'tls1.2_ticket_auth_compatible', 'tls1.2_ticket_fastauth', 'tls1.2_ticket_fastauth_compatible');
                 return $list;
             case 'protocol':
                 $list = array('origin', 'verify_deflate',
