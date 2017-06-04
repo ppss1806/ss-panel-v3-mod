@@ -1947,19 +1947,19 @@ FINAL,Proxy';
     {
         if ($user->is_admin) {
             $nodes=Node::where(
-                function ($query) {
+                function ($query) use ($user) {
                     $query->where('sort', 0)
                         ->orwhere('sort', 10);
                 }
             )->where("type", "1")->get();
         } else {
             $nodes=Node::where(
-                function ($query) {
+                function ($query) use ($user) {
                     $query->where('sort', 0)
                         ->orwhere('sort', 10);
                 }
             )->where(
-                function ($query) {
+                function ($query) use ($user) {
                     $query->where("node_group", "=", $user->node_group)
                         ->orWhere("node_group", "=", 0);
                 }
@@ -1999,33 +1999,24 @@ FINAL,Proxy';
             }
 
             if ($node->mu_only != 1) {
-                if ($node->custom_rss == 1) {
-                    $node_name = $node->name;
+                $node_name = $node->name;
 
-                    if ($node->sort == 10) {
-                        $relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
+                if ($node->sort == 10) {
+                    $relay_rule = Tools::pick_out_relay_rule($node->id, $user->port, $relay_rules);
 
-                        if ($relay_rule != null) {
-                            if ($relay_rule->dist_node() != null) {
-                                $node_name .= " - ".$relay_rule->dist_node()->name;
-                            }
+                    if ($relay_rule != null) {
+                        if ($relay_rule->dist_node() != null) {
+                            $node_name .= " - ".$relay_rule->dist_node()->name;
                         }
                     }
-
-                    $ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible", "", $user->protocol).":".$ary['method'].":".str_replace("_compatible", "", $user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node_name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
-                    $ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
-                    $android_add .= $ssqr_s_new."\n";
-                    $android_add_without_mu .= $ssqr_s_new."\n";
-                    $nodes_count++;
-                    $without_mu_nodes_count++;
-                } else {
-                    $ssurl = ($node->custom_method==1?$user->method:$node->method) . ":" . $user->passwd . "@" . $node->server . ":" . $user->port;
-                    $ssqr = "ss://" . base64_encode($ssurl);
-                    $android_add .= $ssqr."\n";
-                    $android_add_without_mu .= $ssqr."\n";
-                    $nodes_count++;
-                    $without_mu_nodes_count++;
                 }
+
+                $ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible", "", $user->protocol).":".$ary['method'].":".str_replace("_compatible", "", $user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&remarks=".Tools::base64_url_encode($node_name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
+                $ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
+                $android_add .= $ssqr_s_new."\n";
+                $android_add_without_mu .= $ssqr_s_new."\n";
+                $nodes_count++;
+                $without_mu_nodes_count++;
             }
 
 
