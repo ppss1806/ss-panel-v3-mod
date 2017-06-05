@@ -84,7 +84,7 @@
 												</div>
 												<div class="tab-pane fade" id="all_android">
 													<p><a href="/ssr-download/ssr-android.apk">下载</a>，安装，然后在手机上默认浏览器中点击<a id="android_add" href="{$android_add}">这个</a>或者<a id="android_add_without_mu" href="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后点击确定，批量添加完节点，然后路由选择绕过大陆，右上角开启就可以上网了。同时提供一个 ACL 地址，<a href="/link/{$acl_token}">长按复制地址</a>到客户端里应用即可。</p>
-													<p>SSR 订阅地址：<br>
+													<p>SSR 订阅地址，您可以在节点列表处添加订阅来自动更新节点：<br>
 														有单端口多用户：<code>{$baseUrl}/link/{$ssr_sub_token}</code><br>
 														无单端口多用户：<code>{$baseUrl}/link/{$ssr_sub_token_without_mu}</code>
 													</p>
@@ -96,6 +96,11 @@
 													<code>wget -O- {$baseUrl}/link/{$router_token_without_mu} | bash && echo -e "\n0 */3 * * * wget -O- {$baseUrl}/link/{$router_token_without_mu} | bash\n">> /etc/storage/cron/crontabs/admin && killall crond && crond </code><br>
 													执行完毕以后就可以到路由器的设置面板里随意选择 Shadowsocks 服务器进行连接了。</p>
 												</div>
+											</div>
+										</div>
+										<div class="card-action">
+											<div class="card-action-btn pull-left">
+												<p><a class="btn btn-brand btn-flat waves-attach" href="/user/url_reset"><span class="icon">close</span>&nbsp;重置所有链接</a></p>
 											</div>
 										</div>
 									</div>
