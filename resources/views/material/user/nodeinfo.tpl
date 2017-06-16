@@ -114,21 +114,7 @@
 							<div class="card">
 								<div class="card-main">
 									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">SSR 旧版(3.8.3之前)配置二维码</p>
-										<div class="text-center">
-											<div id="ss-qr-y"></div>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-						</div>
-						
-						<div class="col-lg-12 col-sm-12">
-							<div class="card">
-								<div class="card-main">
-									<div class="card-inner margin-bottom-no">
-										<p class="card-heading">SSR 新版(3.8.3之后)配置二维码</p>
+										<p class="card-heading">SSR 配置二维码</p>
 										<div class="text-center">
 											<div id="ss-qr-n"></div>
 										</div>

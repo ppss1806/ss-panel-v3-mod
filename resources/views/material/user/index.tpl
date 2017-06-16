@@ -71,8 +71,8 @@
 														然后选择一个合适的服务器，系统代理模式选”全局模式”，代理规则选“绕过局域网和大陆”，然后即可上网。</p>
 
 													<p>SSR 订阅地址：<br>
-														有单端口多用户：<code>{$baseUrl}/link/{$ssr_sub_token}</code><br>
-														无单端口多用户：<code>{$baseUrl}/link/{$ssr_sub_token_without_mu}</code>
+														普通端口地址：<code>{$baseUrl}/link/{$ssr_sub_token}?mu=0</code><br>
+														单端口多用户端口地址：<code>{$baseUrl}/link/{$ssr_sub_token}?mu=1</code>
 													</p>
 												</div>
 												<div class="tab-pane fade" id="all_mac">
@@ -85,8 +85,8 @@
 												<div class="tab-pane fade" id="all_android">
 													<p><a href="/ssr-download/ssr-android.apk">下载</a>，安装，然后在手机上默认浏览器中点击<a id="android_add" href="{$android_add}">这个</a>或者<a id="android_add_without_mu" href="{$android_add_without_mu}">这个（无单端口多用户）</a>，然后点击确定，批量添加完节点，然后路由选择绕过大陆，右上角开启就可以上网了。同时提供一个 ACL 地址，<a href="/link/{$acl_token}">长按复制地址</a>到客户端里应用即可。</p>
 													<p>SSR 订阅地址，您可以在节点列表处添加订阅来自动更新节点：<br>
-														有单端口多用户：<code>{$baseUrl}/link/{$ssr_sub_token}</code><br>
-														无单端口多用户：<code>{$baseUrl}/link/{$ssr_sub_token_without_mu}</code>
+														普通端口地址：<code>{$baseUrl}/link/{$ssr_sub_token}?mu=0</code><br>
+														单端口多用户端口地址：<code>{$baseUrl}/link/{$ssr_sub_token}?mu=1</code>
 													</p>
 												</div>
 												<div class="tab-pane fade" id="all_router">

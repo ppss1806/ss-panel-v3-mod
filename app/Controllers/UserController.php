@@ -194,7 +194,6 @@ class UserController extends BaseController
         $router_token_without_mu = LinkController::GenerateRouterCode($this->user->id, 1);
 
         $ssr_sub_token = LinkController::GenerateSSRSubCode($this->user->id, 0);
-        $ssr_sub_token_without_mu = LinkController::GenerateSSRSubCode($this->user->id, 1);
 
         $uid = time().rand(1, 10000) ;
         if (Config::get('enable_geetest_checkin') == 'true') {
@@ -206,7 +205,7 @@ class UserController extends BaseController
         $Ann = Ann::orderBy('date', 'desc')->first();
 
 
-        return $this->view()->assign("ssr_sub_token", $ssr_sub_token)->assign("ssr_sub_token_without_mu", $ssr_sub_token_without_mu)->assign("router_token", $router_token)->assign("router_token_without_mu", $router_token_without_mu)->assign("acl_token", $acl_token)->assign('ann', $Ann)->assign('geetest_html', $GtSdk)->assign("ios_token", $ios_token)->assign("android_add", $android_add)->assign("android_add_without_mu", $android_add_without_mu)->assign('enable_duoshuo', Config::get('enable_duoshuo'))->assign('duoshuo_shortname', Config::get('duoshuo_shortname'))->assign('baseUrl', Config::get('baseUrl'))->display('user/index.tpl');
+        return $this->view()->assign("ssr_sub_token", $ssr_sub_token)->assign("router_token", $router_token)->assign("router_token_without_mu", $router_token_without_mu)->assign("acl_token", $acl_token)->assign('ann', $Ann)->assign('geetest_html', $GtSdk)->assign("ios_token", $ios_token)->assign("android_add", $android_add)->assign("android_add_without_mu", $android_add_without_mu)->assign('enable_duoshuo', Config::get('enable_duoshuo'))->assign('duoshuo_shortname', Config::get('duoshuo_shortname'))->assign('baseUrl', Config::get('baseUrl'))->display('user/index.tpl');
     }
 
 
@@ -658,9 +657,7 @@ class UserController extends BaseController
 
                     $json = json_encode($ary);
                     $json_show = json_encode($ary, JSON_PRETTY_PRINT);
-
-                    $ssurl = str_replace("_compatible", "", $user->obfs).":".str_replace("_compatible", "", $user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
-                    $ssqr_s = "ss://" . base64_encode($ssurl);
+                    
                     $ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible", "", $user->protocol).":".$ary['method'].":".str_replace("_compatible", "", $user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&protoparam=".Tools::base64_url_encode($user->protocol_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
                     $ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
                     $ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
