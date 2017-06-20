@@ -657,7 +657,7 @@ class UserController extends BaseController
 
                     $json = json_encode($ary);
                     $json_show = json_encode($ary, JSON_PRETTY_PRINT);
-                    
+
                     $ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible", "", $user->protocol).":".$ary['method'].":".str_replace("_compatible", "", $user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&protoparam=".Tools::base64_url_encode($user->protocol_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
                     $ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
                     $ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
@@ -670,7 +670,7 @@ class UserController extends BaseController
                     $surge_proxy = "#!PROXY-OVERRIDE:ProxyBase.conf\n";
                     $surge_proxy .= "[Proxy]\n";
                     $surge_proxy .= "Proxy = custom," . $ary['server'] . "," . $ary['server_port'] . "," . $ary['method'] . "," . $ary['password'] . "," . Config::get('baseUrl') . "/downloads/SSEncrypt.module";
-                    return $this->view()->assign('ary', $ary)->assign('mu', $is_mu)->assign('node', $node)->assign('user', $user)->assign('json', $json)->assign('link1', Config::get('baseUrl')."/link/".$token_1)->assign('link2', Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('ssqr_s_new', $ssqr_s_new)->assign('ssqr_s', $ssqr_s)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
+                    return $this->view()->assign('ary', $ary)->assign('mu', $is_mu)->assign('node', $node)->assign('user', $user)->assign('json', $json)->assign('link1', Config::get('baseUrl')."/link/".$token_1)->assign('link2', Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('ssqr_s_new', $ssqr_s_new)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
                 }
             break;
 
@@ -858,8 +858,6 @@ class UserController extends BaseController
                     $json = json_encode($ary);
                     $json_show = json_encode($ary, JSON_PRETTY_PRINT);
 
-                    $ssurl = str_replace("_compatible", "", $user->obfs).":".str_replace("_compatible", "", $user->protocol).":".$ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port']."/".base64_encode($user->obfs_param);
-                    $ssqr_s = "ss://" . base64_encode($ssurl);
                     $ssurl = $ary['server']. ":" . $ary['server_port'].":".str_replace("_compatible", "", $user->protocol).":".$ary['method'].":".str_replace("_compatible", "", $user->obfs).":".Tools::base64_url_encode($ary['password'])."/?obfsparam=".Tools::base64_url_encode($user->obfs_param)."&protoparam=".Tools::base64_url_encode($user->protocol_param)."&remarks=".Tools::base64_url_encode($node->name) . "&group=" . Tools::base64_url_encode(Config::get('appName'));
                     $ssqr_s_new = "ssr://" . Tools::base64_url_encode($ssurl);
                     $ssurl = $ary['method'] . ":" . $ary['password'] . "@" . $ary['server'] . ":" . $ary['server_port'];
@@ -872,7 +870,7 @@ class UserController extends BaseController
                     $surge_proxy = "#!PROXY-OVERRIDE:ProxyBase.conf\n";
                     $surge_proxy .= "[Proxy]\n";
                     $surge_proxy .= "Proxy = custom," . $ary['server'] . "," . $ary['server_port'] . "," . $ary['method'] . "," . $ary['password'] . "," . Config::get('baseUrl') . "/downloads/SSEncrypt.module";
-                    return $this->view()->assign('ary', $ary)->assign('mu', $is_mu)->assign('node', $node)->assign('user', $user)->assign('json', $json)->assign('link1', Config::get('baseUrl')."/link/".$token_1)->assign('link2', Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('ssqr_s_new', $ssqr_s_new)->assign('ssqr_s', $ssqr_s)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
+                    return $this->view()->assign('ary', $ary)->assign('mu', $is_mu)->assign('node', $node)->assign('user', $user)->assign('json', $json)->assign('link1', Config::get('baseUrl')."/link/".$token_1)->assign('link2', Config::get('baseUrl')."/link/".$token_2)->assign('json_show', $json_show)->assign('ssqr', $ssqr)->assign('ssqr_s_new', $ssqr_s_new)->assign('surge_base', $surge_base)->assign('surge_proxy', $surge_proxy)->assign('info_server', $ary['server'])->assign('info_port', $this->user->port)->assign('info_method', $ary['method'])->assign('info_pass', $this->user->passwd)->display('user/nodeinfo.tpl');
                 }
             break;
 
